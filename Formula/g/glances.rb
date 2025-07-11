@@ -6,6 +6,7 @@ class Glances < Formula
   url "https://files.pythonhosted.org/packages/3b/a2/b0cd24f1309002f0488e9861e6c265c4e673ba6e1d3d4503382646c76c43/glances-4.3.3.tar.gz"
   sha256 "56695ff97043149e007edbb188dea82dd29f479e2ca5b8324a119b95aafb8fa4"
   license "LGPL-3.0-or-later"
+  revision 1
   head "https://github.com/nicolargo/glances.git", branch: "develop"
 
   bottle do
@@ -19,18 +20,12 @@ class Glances < Formula
   end
 
   depends_on "cmake" => :build # for pyzmq
-  depends_on "ninja" => :build # for pyarrow
   depends_on "rust" => :build # for orjson
 
-  depends_on "apache-arrow"
   depends_on "certifi"
   depends_on "cryptography"
   depends_on "python@3.13"
   depends_on "zeromq"
-
-  on_linux do
-    depends_on "patchelf" => :build # for pyarrow
-  end
 
   resource "annotated-types" do
     url "https://files.pythonhosted.org/packages/ee/67/531ea369ba64dcff5ec9c3402f9f51bf748cec26dde048a2f973a4eea7f5/annotated_types-0.7.0.tar.gz"
@@ -42,9 +37,11 @@ class Glances < Formula
     sha256 "673c0c244e15788651a4ff38710fea9675823028a6f08a5eda409e0c9840a028"
   end
 
-  resource "batinfo" do
-    url "https://files.pythonhosted.org/packages/a3/51/a0a9ad2d19bb498f2779754209ca80b7ea53f948995367a2bf408b2bef7c/batinfo-0.4.2.tar.gz"
-    sha256 "497e29efc9353ec52e71d43bd040bdfb6d685137ddc2b9143cded4583af572f5"
+  on_linux do
+    resource "batinfo" do
+      url "https://files.pythonhosted.org/packages/a3/51/a0a9ad2d19bb498f2779754209ca80b7ea53f948995367a2bf408b2bef7c/batinfo-0.4.2.tar.gz"
+      sha256 "497e29efc9353ec52e71d43bd040bdfb6d685137ddc2b9143cded4583af572f5"
+    end
   end
 
   resource "bernhard" do
@@ -115,11 +112,6 @@ class Glances < Formula
   resource "graphitesender" do
     url "https://files.pythonhosted.org/packages/23/06/6250bb18e5f96f01d4995e980303ae4d71d8b120f972e9569733e14969cb/graphitesender-0.11.2.tar.gz"
     sha256 "578e93e32f67b6545498f82edd12298e5394c7d5e091dfcc152fb87e04e0b074"
-  end
-
-  resource "h11" do
-    url "https://files.pythonhosted.org/packages/01/ee/02a2c011bdab74c6fb3c75474d40b3052059d95df7e73351460c8588d963/h11-0.16.0.tar.gz"
-    sha256 "4e35b956cf45792e4caa5885e69fba00bdbc6ffafbfa020300e549b208ee5ff1"
   end
 
   resource "ibm-cloud-sdk-core" do
@@ -255,11 +247,6 @@ class Glances < Formula
   resource "psycopg" do
     url "https://files.pythonhosted.org/packages/27/4a/93a6ab570a8d1a4ad171a1f4256e205ce48d828781312c0bbaff36380ecb/psycopg-3.2.9.tar.gz"
     sha256 "2fbb46fcd17bc81f993f28c47f1ebea38d66ae97cc2dbc3cad73b37cefbff700"
-  end
-
-  resource "pyarrow" do
-    url "https://files.pythonhosted.org/packages/a2/ee/a7810cb9f3d6e9238e61d312076a9859bf3668fd21c69744de9532383912/pyarrow-20.0.0.tar.gz"
-    sha256 "febc4a913592573c8d5805091a6c2b5064c8bd6e002131f01061797d91c783c1"
   end
 
   resource "pyasn1" do

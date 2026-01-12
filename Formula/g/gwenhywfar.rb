@@ -1,8 +1,8 @@
 class Gwenhywfar < Formula
   desc "Utility library required by aqbanking and related software"
   homepage "https://www.aquamaniac.de/rdm/projects/gwenhywfar"
-  url "https://www.aquamaniac.de/rdm/attachments/download/533/gwenhywfar-5.12.1.tar.gz"
-  sha256 "d188448b9c3a9709721422ee0134b9d0b7790ab7514058d99e04399e39465dda"
+  url "https://www.aquamaniac.de/rdm/attachments/download/630/gwenhywfar-5.14.1.tar.gz"
+  sha256 "8916feaa99cb954f963f2cba8dd2dffe57cacf7f284daf00eab071aad6fe2ab3"
   license "LGPL-2.1-or-later"
 
   livecheck do
@@ -13,12 +13,12 @@ class Gwenhywfar < Formula
   no_autobump! because: :incompatible_version_format
 
   bottle do
-    sha256 arm64_sequoia: "9930a4548b9f0e08a4a9a1bc8eccd37631a4fec478579ebc2d161d13fe0f0f4c"
-    sha256 arm64_sonoma:  "ad8ee8d79124db8e321bd4e6437acc680dd60d6895e625326c28b77926e5d876"
-    sha256 arm64_ventura: "bb3a822d4f0ad578f9be222b4c14cb7610355778d9b2371fc735b3e83d9c355d"
-    sha256 sonoma:        "5896e3559848e093b54d532bdb052bf14e28f9cf654ddffeef0177027cdbf4bc"
-    sha256 ventura:       "2ece8422f811274a6b9240f7bb1579547b3259ff45ad1ccc331e9fe6540e6adf"
-    sha256 x86_64_linux:  "3a53be3d8dd0e85624fb761a181ac4de99baee1f9ae8cc7024ba4480cce9cc42"
+    sha256 arm64_tahoe:   "0064b8768502f583fd8ca6efb644af7b4951e36157f6f88951d7d8d617e98db2"
+    sha256 arm64_sequoia: "00562b743c4f8dad11ce5746934cad1ecd89d7c7794fb1b1536f8735be528210"
+    sha256 arm64_sonoma:  "f48b5464707113f0ea72a518904a46cf6967904ab82e7ceaa5f0084a03aef71a"
+    sha256 sonoma:        "d248c00aca75c6333b9edfd2d89f0e33f4d49835d53dd1f95ed723741751ff4c"
+    sha256 arm64_linux:   "6f5f7d2f098ca5b058b487c890bb4691921f0d9bed0cc86f74944ac60b02545e"
+    sha256 x86_64_linux:  "8141ecaa807eefbcc2e17f6989c4025788aae4f3111b8d83b40e04abfb19813f"
   end
 
   depends_on "gettext" => :build
@@ -28,7 +28,7 @@ class Gwenhywfar < Formula
   depends_on "libgpg-error"
   depends_on "openssl@3"
   depends_on "pkgconf" # gwenhywfar-config needs pkg-config for execution
-  depends_on "qt@5"
+  depends_on "qtbase"
 
   on_macos do
     depends_on "gettext"
@@ -46,8 +46,12 @@ class Gwenhywfar < Formula
       ENV.append_to_cflags "-Wno-int-conversion -Wno-incompatible-function-pointer-types"
     end
 
+    # Workaround for Qt6 until next release which should have fix.
+    # https://www.aquamaniac.de/rdm/projects/gwenhywfar/repository/revisions/49e4fb81dc41efd966115ff8a610a84495b330e4
+    ln_s buildpath/"gui/qt5", buildpath/"gui/qt6"
+
     inreplace "gwenhywfar-config.in.in", "@PKG_CONFIG@", "pkg-config"
-    guis = ["cpp", "qt5"]
+    guis = ["cpp", "qt6"]
     guis << "cocoa" if OS.mac?
     system "./configure", "--disable-silent-rules",
                           "--with-guis=#{guis.join(" ")}",
@@ -75,24 +79,21 @@ class Gwenhywfar < Formula
       cmake_minimum_required(VERSION 3.29)
       project(test_gwen)
 
-      find_package(Qt5 REQUIRED Core Widgets)
+      find_package(Qt6 REQUIRED Core Widgets)
       find_package(gwenhywfar REQUIRED)
       find_package(gwengui-cpp REQUIRED)
-      find_package(gwengui-qt5 REQUIRED)
+      find_package(gwengui-qt6 REQUIRED)
 
       add_executable(${PROJECT_NAME} test.c)
 
       target_link_libraries(${PROJECT_NAME} PUBLIC
                       gwenhywfar::core
                       gwenhywfar::gui-cpp
-                      gwenhywfar::gui-qt5
+                      gwenhywfar::gui-qt6
       )
     CMAKE
 
-    args = std_cmake_args
-    args << "-DQt5_DIR=#{Formula["qt@5"].opt_prefix/"lib/cmake/Qt5"}"
-
-    system "cmake", testpath.to_s, *args
+    system "cmake", testpath.to_s, *std_cmake_args
     system "make"
   end
 end

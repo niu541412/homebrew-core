@@ -1,7 +1,8 @@
 class Dmg2img < Formula
   desc "Utilities for converting macOS DMG images"
   homepage "http://vu1tur.eu.org/tools/"
-  url "http://vu1tur.eu.org/tools/dmg2img-1.6.7.tar.gz"
+  url "https://cdn.netbsd.org/pub/pkgsrc/distfiles/dmg2img-1.6.7.tar.gz"
+  mirror "http://vu1tur.eu.org/tools/dmg2img-1.6.7.tar.gz"
   sha256 "02aea6d05c5b810074913b954296ddffaa43497ed720ac0a671da4791ec4d018"
   license "GPL-2.0-only"
   revision 1
@@ -15,6 +16,7 @@ class Dmg2img < Formula
 
   bottle do
     rebuild 1
+    sha256 cellar: :any,                 arm64_tahoe:    "0cdc762d353e27c43eacd4221ac499f96a71ac67bd650ceac82d8e8a64f526c2"
     sha256 cellar: :any,                 arm64_sequoia:  "4c3872719a1261f5cd981d5320bba65289e6c2c9e06e73478f3e3bb8267b64ec"
     sha256 cellar: :any,                 arm64_sonoma:   "3abeed11bf75f80c25bfc4f8f3935f8160820623dfb84380ac5b8982ef0498f4"
     sha256 cellar: :any,                 arm64_ventura:  "af9009c8bc805eee1b8b88c88f4323e31f9990476cd61bab48edb90c84c89e4e"
@@ -36,7 +38,7 @@ class Dmg2img < Formula
 
   # Patch for OpenSSL 3 compatibility
   patch :p0 do
-    url "https://raw.githubusercontent.com/Homebrew/formula-patches/b21aeee/dmg2img/openssl-3.diff"
+    url "https://raw.githubusercontent.com/Homebrew/homebrew-core/1cf441a0/Patches/dmg2img/openssl-3.diff"
     sha256 "bd57e74ecb562197abfeca8f17d0622125a911dd4580472ff53e0f0793f9da1c"
   end
 

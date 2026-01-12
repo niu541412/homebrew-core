@@ -1,8 +1,8 @@
 class Gnuplot < Formula
   desc "Command-driven, interactive function plotting"
   homepage "http://www.gnuplot.info/"
-  url "https://downloads.sourceforge.net/project/gnuplot/gnuplot/6.0.3/gnuplot-6.0.3.tar.gz"
-  sha256 "ec52e3af8c4083d4538152b3f13db47f6d29929a3f6ecec5365c834e77f251ab"
+  url "https://downloads.sourceforge.net/project/gnuplot/gnuplot/6.0.4/gnuplot-6.0.4.tar.gz"
+  sha256 "458d94769625e73d5f6232500f49cbadcb2b183380d43d2266a0f9701aeb9c5b"
   license "gnuplot"
 
   livecheck do
@@ -11,12 +11,12 @@ class Gnuplot < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 arm64_sonoma:  "4f2052aecbd2f736e1b2318acce36c0cb233af6be0935deddcf998bd822b1013"
-    sha256 arm64_ventura: "644cb48402329094a8de79741d5798c3720682f22c11330621d348e69bbb968b"
-    sha256 sonoma:        "e347e5938f393d37b8d2f5e3b0bca7954d6829174af3c7768c13ac0c49874bf4"
-    sha256 ventura:       "f8827be16a188c2388f7ad2ff9ccf5eda60152fc98a8fd64df6bbec7227c7011"
-    sha256 x86_64_linux:  "ab0c9ee561bf5ad5c80c772b0210dc905319ac694e6867cef09dbce7d4c63508"
+    sha256 arm64_tahoe:   "84aa92c8f37df3670debec51a5f814b8012ee27805e179d4928cf4c6348c07c6"
+    sha256 arm64_sequoia: "6786833abaf3ace2b368b7a71039b4dc3ac19143c7a68811949293cc635b2c20"
+    sha256 arm64_sonoma:  "2c4cfbe7ed0015117c8749940eebe26d9ed1c44eda5db3fc195ef23a2d7b0db8"
+    sha256 sonoma:        "dcbbb1ba4a60c36591d13df4ee978f7a548b40e4e18c809e9b6be821a9a9ba36"
+    sha256 arm64_linux:   "9ed032636aabdeb38b89739653f18f4f87e9f36b5664051c2502ca62044b39f2"
+    sha256 x86_64_linux:  "3c9c387f8b3c2db2e20783ac054fd384b8233f9447d34e39e7b8e9e520b43529"
   end
 
   head do
@@ -27,8 +27,8 @@ class Gnuplot < Formula
     depends_on "libtool" => :build
   end
 
-  depends_on "gnu-sed" => :build # https://sourceforge.net/p/gnuplot/bugs/2676/
   depends_on "pkgconf" => :build
+  depends_on "qttools" => :build
 
   depends_on "cairo"
   depends_on "gd"
@@ -36,7 +36,9 @@ class Gnuplot < Formula
   depends_on "libcerf"
   depends_on "lua"
   depends_on "pango"
-  depends_on "qt"
+  depends_on "qt5compat"
+  depends_on "qtbase"
+  depends_on "qtsvg"
   depends_on "readline"
   depends_on "webp"
 
@@ -53,32 +55,7 @@ class Gnuplot < Formula
       --with-qt
       --without-x
       --without-latex
-      LRELEASE=#{Formula["qt"].bin}/lrelease
-      MOC=#{Formula["qt"].pkgshare}/libexec/moc
-      RCC=#{Formula["qt"].pkgshare}/libexec/rcc
-      UIC=#{Formula["qt"].pkgshare}/libexec/uic
     ]
-
-    # https://sourceforge.net/p/gnuplot/bugs/2676/
-    ENV.prepend_path "PATH", Formula["gnu-sed"].opt_libexec/"gnubin"
-
-    if OS.mac?
-      # pkg-config files are not shipped on macOS, making our job harder
-      # https://bugreports.qt.io/browse/QTBUG-86080
-      # Hopefully in the future gnuplot can autodetect this information
-      # https://sourceforge.net/p/gnuplot/feature-requests/560/
-      qtcflags = []
-      qtlibs = %W[-F#{Formula["qt"].opt_prefix}/Frameworks]
-      %w[Core Gui Network Svg PrintSupport Widgets Core5Compat].each do |m|
-        qtcflags << "-I#{Formula["qt"].opt_include}/Qt#{m}"
-        qtlibs << "-framework Qt#{m}"
-      end
-
-      args += %W[
-        QT_CFLAGS=#{qtcflags.join(" ")}
-        QT_LIBS=#{qtlibs.join(" ")}
-      ]
-    end
 
     ENV.append "CXXFLAGS", "-std=c++17" # needed for Qt 6
     system "./prepare" if build.head?

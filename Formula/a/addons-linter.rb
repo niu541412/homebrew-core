@@ -1,25 +1,19 @@
 class AddonsLinter < Formula
   desc "Firefox Add-ons linter, written in JavaScript"
   homepage "https://github.com/mozilla/addons-linter"
-  url "https://registry.npmjs.org/addons-linter/-/addons-linter-7.18.0.tgz"
-  sha256 "083cc2a01800df654021683939066521942a5e1075e02113425616126b75fac2"
+  url "https://registry.npmjs.org/addons-linter/-/addons-linter-9.3.0.tgz"
+  sha256 "1833994c732959301e4a81a058176204545c8fc348c78ceba244d0057d6a3feb"
   license "MPL-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "6a6bad77d75215e57406ae5b0bc2709a6a5ea00d8b4d226d0b157cafcd691074"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "6a6bad77d75215e57406ae5b0bc2709a6a5ea00d8b4d226d0b157cafcd691074"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "6a6bad77d75215e57406ae5b0bc2709a6a5ea00d8b4d226d0b157cafcd691074"
-    sha256 cellar: :any_skip_relocation, sonoma:        "c5e5c3f3f4cdb3c8c9ce9d4ab6cacd8884d4a3a33580b5fa16dac3bd05ae72e9"
-    sha256 cellar: :any_skip_relocation, ventura:       "c5e5c3f3f4cdb3c8c9ce9d4ab6cacd8884d4a3a33580b5fa16dac3bd05ae72e9"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "6a6bad77d75215e57406ae5b0bc2709a6a5ea00d8b4d226d0b157cafcd691074"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6a6bad77d75215e57406ae5b0bc2709a6a5ea00d8b4d226d0b157cafcd691074"
+    sha256 cellar: :any_skip_relocation, all: "d03b4e0a693d136e25575390976b12867dfa9ea73f4b116143e099a1911d5dc4"
   end
 
   depends_on "node"
 
   def install
     system "npm", "install", *std_npm_args
-    bin.install_symlink Dir["#{libexec}/bin/*"]
+    bin.install_symlink libexec.glob("bin/*")
   end
 
   test do
@@ -38,7 +32,6 @@ class AddonsLinter < Formula
         }
       }
     JSON
-
     output = shell_output("#{bin}/addons-linter #{testpath}/manifest.json 2>&1")
     assert_match "BAD_ZIPFILE   Corrupt ZIP", output
   end

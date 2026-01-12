@@ -1,29 +1,30 @@
 class Cryptography < Formula
   desc "Cryptographic recipes and primitives for Python"
   homepage "https://cryptography.io/en/latest/"
-  url "https://files.pythonhosted.org/packages/95/1e/49527ac611af559665f71cbb8f92b332b5ec9c6fbc4e88b0f8e92f5e85df/cryptography-45.0.5.tar.gz"
-  sha256 "72e76caa004ab63accdf26023fccd1d087f6d90ec6048ff33ad0445abf7f605a"
+  url "https://files.pythonhosted.org/packages/9f/33/c00162f49c0e2fe8064a62cb92b93e50c74a72bc370ab92f86112b33ff62/cryptography-46.0.3.tar.gz"
+  sha256 "a8b17438104fed022ce745b362294d9ce35b4c2e45c1d958ad4a4b019285f4a1"
   license any_of: ["Apache-2.0", "BSD-3-Clause"]
   head "https://github.com/pyca/cryptography.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "daba4bfadcb353312cfb0b10511a79a0d4046e768e866c89ef688142eb006cee"
-    sha256 cellar: :any,                 arm64_sonoma:  "10b86969f33a296807d807147bea8e6f17588b5521c6319b26ae819a0bba9681"
-    sha256 cellar: :any,                 arm64_ventura: "331ff1134fca001052807d475e5da8e1de71b966b8cc9f2c6d20930de24f0247"
-    sha256 cellar: :any,                 sonoma:        "dbdc6555f631d1c0a59c86c34ec10ed13e720013ec37a37d63f3f565b27a1085"
-    sha256 cellar: :any,                 ventura:       "e89a800bfc69aefcd12826d27004ad35d2cd2823b031f34c875efe4a3872326d"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "27e3a142003979df5c0b78b1a9fe84d183832f4a74c9b1359ca144ac8c112208"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "62406c7fd4bf90a395c86ff34eacc03f20bc283f625d3b80cf6ac044e4f5af7f"
+    sha256 cellar: :any,                 arm64_tahoe:   "48db931aa0ccdb25a9b4fa9c3af4641c555e10952d62ef75a8be9c0f54a0704b"
+    sha256 cellar: :any,                 arm64_sequoia: "cfd504439fd34e6bdf82e3f06c24b275ff748ccdb82b650999da3203e7f5e513"
+    sha256 cellar: :any,                 arm64_sonoma:  "3c2fd65437f27093fa4ab4986c3a046627fdadf1d615fd388457a3d279b0eb50"
+    sha256 cellar: :any,                 sonoma:        "1bb86940ea28a29574da8f153d959e9df4177848c8b5da1381f6408f6212bcb4"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "e7b6143dff90f57c28d5d50d91b67927bac7dfda96c101ede76be85ec7936bc7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "cf9589e0106293376c67e6fda53bab16f494565a74b1608c05a9357f08edcb0d"
   end
 
   depends_on "maturin" => :build
   depends_on "pkgconf" => :build
   depends_on "python-setuptools" => :build
-  depends_on "python@3.12" => [:build, :test]
   depends_on "python@3.13" => [:build, :test]
+  depends_on "python@3.14" => [:build, :test]
   depends_on "rust" => :build
   depends_on "cffi"
   depends_on "openssl@3"
+
+  pypi_packages exclude_packages: ["cffi", "pycparser"]
 
   def pythons
     deps.map(&:to_formula)

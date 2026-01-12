@@ -1,19 +1,18 @@
 class Mailutils < Formula
   desc "Swiss Army knife of email handling"
   homepage "https://mailutils.org/"
-  url "https://ftp.gnu.org/gnu/mailutils/mailutils-3.20.tar.gz"
-  mirror "https://ftpmirror.gnu.org/mailutils/mailutils-3.20.tar.gz"
-  sha256 "d10ee65ba391d6463952d8a81551f8a6e667538ee8587b3c801137e657087d4c"
+  url "https://ftpmirror.gnu.org/gnu/mailutils/mailutils-3.21.tar.gz"
+  mirror "https://ftp.gnu.org/gnu/mailutils/mailutils-3.21.tar.gz"
+  sha256 "5e305de7fcf2f744c8b210f1cfe904d49842bfc6d13a913031ec4dbf0c669c54"
   license "GPL-3.0-or-later"
 
   bottle do
-    sha256 arm64_sequoia: "26c6cce1516f6ea2435473db754bc8f5d1df5cfa993dae465acb5926d53f2a0f"
-    sha256 arm64_sonoma:  "a7febc3f8b9ce9a2ec7ac88c9a4b0663c0706fd51154fd0aba8ea1c04a95818f"
-    sha256 arm64_ventura: "5ef7a611f4898010e32d274502f86702ee4d7415cb41bc8559c616ad0f31f9b8"
-    sha256 sonoma:        "33ca8ab67fe35819016e0f7c076772d7052568d1c877e50d4b0bba65303bad18"
-    sha256 ventura:       "5c677c2ff86e822d323ef6d29c48cfd77688cbab06ae587a1320dc72d8fec0ff"
-    sha256 arm64_linux:   "d915542a1a5b9461b4c6762c4c5177f32a5e23a2282818cbe5702ba5d1b97415"
-    sha256 x86_64_linux:  "f648b8567f2893c9ccc33e418da53ea7d93c50c8fe434f28d8694055019423a2"
+    sha256 arm64_tahoe:   "3bbe34b5065fd6cdf2585b829869afb913e27310f5d9fc17e8ae0c9f55785ce5"
+    sha256 arm64_sequoia: "31c47eda8f72d7d33763a5707b2d8f184471c6c7940ee426c490e6ab72738e7a"
+    sha256 arm64_sonoma:  "0a24ba5ab2eac9531076315acc05549a3b921dbf334ed2624ac2e8dbc51d11af"
+    sha256 sonoma:        "50f0023f1b027e9f6f6f8892f2d907421b210a8a2d0371d3f34c6bbc5ffb10af"
+    sha256 arm64_linux:   "0489c463756a0cf78b6e696339ddb02f695e7ef75a7f002b5e761c7458711299"
+    sha256 x86_64_linux:  "dca5b4e67b558d3641d13075ffb6f7af243d5599227702e2f3440b3e8409acb2"
   end
 
   depends_on "gdbm"
@@ -24,7 +23,6 @@ class Mailutils < Formula
   depends_on "readline"
 
   uses_from_macos "libxcrypt"
-  uses_from_macos "python"
 
   on_macos do
     depends_on "gettext"
@@ -38,6 +36,7 @@ class Mailutils < Formula
     end
 
     system "./configure", "--disable-mh",
+                          "--disable-python",
                           "--disable-silent-rules",
                           "--without-fribidi",
                           "--without-guile",

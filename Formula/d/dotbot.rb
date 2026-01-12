@@ -3,26 +3,25 @@ class Dotbot < Formula
 
   desc "Tool that bootstraps your dotfiles"
   homepage "https://github.com/anishathalye/dotbot"
-  url "https://files.pythonhosted.org/packages/9b/ca/b3ed58bef83a0e25a913b7f77794aa848ad2d7b976c452488b5fe268086b/dotbot-1.23.0.tar.gz"
-  sha256 "909c1b7875c00f5d11d61797e4f1885c4d7a1b4db2290b262a71a0457913a5c6"
+  url "https://files.pythonhosted.org/packages/a6/ee/8ff0180dc5aab1f6fe59aeb66e2eaea20b0dfbc94f3d40ac5047eaf89579/dotbot-1.24.0.tar.gz"
+  sha256 "f2d35eb0a367d1c81d0cd84fcacd1930c64afcbd17013702852a7ee9c104fb65"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "f57c6ab4737f39805aa4706d246179291d8e971c2858ae59c4635e28b69c77fb"
-    sha256 cellar: :any,                 arm64_sonoma:  "63457f9e551e14ebfb5f487deec01a1258088000038779877610d93b209cdf71"
-    sha256 cellar: :any,                 arm64_ventura: "002e18bc8793a3520b7ec7cadc1872e2a1daa6636a3e1b54402e7ae050c0859d"
-    sha256 cellar: :any,                 sonoma:        "c7a687a9367ed1226b8d89143871ec1db4d62737fdf0f590031c508a44227b6a"
-    sha256 cellar: :any,                 ventura:       "04ae107967d76a538865b21c38fc6d5301f91e91188bef63550476ecd0a3c537"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "c6e639112ed4982b4932d6ed0fb2699b0f7ab399075bb2e0708286494a4f5e52"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "02960ddbd7a42420b428e29ef13a4ea2a74ca60847bd111f2fbb15e5c16e61f6"
+    sha256 cellar: :any,                 arm64_tahoe:   "a40f62aa621daccfe4a1a40c39117876eeac862a9d95e079b5ed1817bc633f68"
+    sha256 cellar: :any,                 arm64_sequoia: "cc0da0c4f520eb535c8267f7a94f44e508b68165d363f92f5d4d75af93ffad5b"
+    sha256 cellar: :any,                 arm64_sonoma:  "e93677b6e8c350f53ef70d95c6e27b8e447d4d994e102f528f0cc98661878cf0"
+    sha256 cellar: :any,                 sonoma:        "0a7973e810721b5b016729e597f638cd85898bd59ef6195400edeace22c5ec18"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "7779c8acc1f27d91a99a80eb5ab9eb49101b3b9df09364569f910f06d8c256db"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "cf9c4b4b11dd4993d6e921804063729f7e004a2cc00b6b33dd2ddc87d555372b"
   end
 
   depends_on "libyaml"
-  depends_on "python@3.13"
+  depends_on "python@3.14"
 
   resource "pyyaml" do
-    url "https://files.pythonhosted.org/packages/54/ed/79a089b6be93607fa5cdaedf301d7dfb23af5f25c398d5ead2525b063e17/pyyaml-6.0.2.tar.gz"
-    sha256 "d584d9ec91ad65861cc08d42e834324ef890a082e591037abe114850ff7bbc3e"
+    url "https://files.pythonhosted.org/packages/05/8e/961c0007c59b8dd7729d542c61a4d537767a59645b82a0b521206e1e25c2/pyyaml-6.0.3.tar.gz"
+    sha256 "d76623373421df22fb4cf8817020cbb7ef15c725b9d5e45f17e189bfc384190f"
   end
 
   def install

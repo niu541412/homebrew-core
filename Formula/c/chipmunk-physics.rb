@@ -1,6 +1,7 @@
 class ChipmunkPhysics < Formula
   desc "2D rigid body physics library written in C"
-  homepage "https://chipmunk-physics.net/"
+  # cannot resolve host bug report, https://github.com/slembcke/Chipmunk2D/issues/261
+  homepage "https://github.com/slembcke/Chipmunk2D"
   url "https://chipmunk-physics.net/release/Chipmunk-7.x/Chipmunk-7.0.3.tgz"
   mirror "https://www.mirrorservice.org/sites/distfiles.macports.org/chipmunk/Chipmunk-7.0.3.tgz"
   sha256 "048b0c9eff91c27bab8a54c65ad348cebd5a982ac56978e8f63667afbb63491a"
@@ -15,6 +16,7 @@ class ChipmunkPhysics < Formula
   no_autobump! because: :requires_manual_review
 
   bottle do
+    sha256 cellar: :any,                 arm64_tahoe:   "812f69a9a0065f99dd7c215c6de16629def031aff0bdb8e315e91113c9f45a7e"
     sha256 cellar: :any,                 arm64_sequoia: "be1319def436cdfea53765897ce02cb7a223df465dbac30190d605c0d8c20738"
     sha256 cellar: :any,                 arm64_sonoma:  "4523898ac36348fbfdb179e9ea830cc5eb1ab5bc23ad7d5a12b7a32dc9f4c3dd"
     sha256 cellar: :any,                 arm64_ventura: "327158f4df3225b40bf01d32424a82ff9a23395e13e403e0d02ba4bd76e04fc0"

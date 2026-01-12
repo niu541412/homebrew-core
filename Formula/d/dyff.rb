@@ -1,18 +1,19 @@
 class Dyff < Formula
   desc "Diff tool for YAML files, and sometimes JSON"
   homepage "https://github.com/homeport/dyff"
-  url "https://github.com/homeport/dyff/archive/refs/tags/v1.10.1.tar.gz"
-  sha256 "8f20ba3580fbb45957211efdf5ac4fc60dd339a2f798db0ecf521c930fdb0be0"
+  url "https://github.com/homeport/dyff/archive/refs/tags/v1.10.3.tar.gz"
+  sha256 "07ab1b365f876f92121ef5aa010de26f13a5bf495d29ee886d8781051dce3ea9"
   license "MIT"
   head "https://github.com/homeport/dyff.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "d709739f34f69642ebbadc8aa382b0ef0a4914593dbf31722ad409a79007fd2b"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "d709739f34f69642ebbadc8aa382b0ef0a4914593dbf31722ad409a79007fd2b"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "d709739f34f69642ebbadc8aa382b0ef0a4914593dbf31722ad409a79007fd2b"
-    sha256 cellar: :any_skip_relocation, sonoma:        "37093d31497ba88d80070b9aa1516f93f745d5b4e145a815bb93fdc3c161a5d3"
-    sha256 cellar: :any_skip_relocation, ventura:       "37093d31497ba88d80070b9aa1516f93f745d5b4e145a815bb93fdc3c161a5d3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "86b077cc452fadf472c80a323c7fb655b0ee104aba3f9fe5fd46951d4f9896ba"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "7ca0fa87102d972896699f21fe03d568ac44c612c543c9f2d795745bed318f62"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "7ca0fa87102d972896699f21fe03d568ac44c612c543c9f2d795745bed318f62"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "7ca0fa87102d972896699f21fe03d568ac44c612c543c9f2d795745bed318f62"
+    sha256 cellar: :any_skip_relocation, sonoma:        "5ab5d87309c094322025eabfec3e290c16c82a0f37c5750ddc451723f87b711b"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "4a723f317c0d376ac0caa4035916abe657059b272dc44d0c02fdd2096463e693"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a4f47f8ee55831732ab2ac7a3dc6fa6e0d2d21de056ace6253d337289ae9237a"
   end
 
   depends_on "go" => :build
@@ -21,7 +22,7 @@ class Dyff < Formula
     ldflags = "-s -w -X github.com/homeport/dyff/internal/cmd.version=#{version}"
     system "go", "build", *std_go_args(ldflags:), "./cmd/dyff"
 
-    generate_completions_from_executable(bin/"dyff", "completion")
+    generate_completions_from_executable(bin/"dyff", shell_parameter_format: :cobra)
   end
 
   test do

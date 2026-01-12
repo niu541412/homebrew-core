@@ -1,25 +1,25 @@
 class Mpi4py < Formula
   desc "Python bindings for MPI"
   homepage "https://mpi4py.github.io/"
-  url "https://github.com/mpi4py/mpi4py/releases/download/4.1.0/mpi4py-4.1.0.tar.gz"
-  sha256 "817492796bce771ccd809a6051cf68d48689815493b567a696ce7679260449cd"
+  url "https://github.com/mpi4py/mpi4py/releases/download/4.1.1/mpi4py-4.1.1.tar.gz"
+  sha256 "eb2c8489bdbc47fdc6b26ca7576e927a11b070b6de196a443132766b3d0a2a22"
   license "BSD-3-Clause"
+  revision 1
 
   bottle do
-    sha256 cellar: :any, arm64_sequoia: "61a98a4cb90a3a16484e15c427afb8f98401ce4d6a5b4f40fdc419cb219799e7"
-    sha256 cellar: :any, arm64_sonoma:  "92a9daced60284a5d9cd9969719d3a29c2014d794b1cc2c9f40ed5cdf1cc2006"
-    sha256 cellar: :any, arm64_ventura: "761063a583be9a8f05e2fa7dc63c8ebac069785dbd5e968ebd161ed449132b18"
-    sha256 cellar: :any, sonoma:        "c8d291f48a76502621409a808db8a74492a4e3ebf66cd39402fabd550da912cb"
-    sha256 cellar: :any, ventura:       "2d8eacea786cc0bc99690dfece29172c435c92fd4dbc621d6a296881bd9a9610"
-    sha256               arm64_linux:   "3c4bbc35ab042230c0371df833fc924512ceadb2b315bf192b4b47c5dd78fc76"
-    sha256               x86_64_linux:  "b7a29ffe65f402fb6040a6a000fb43b8ead0826b8d0426f62a8f48779cefd8af"
+    sha256 cellar: :any, arm64_tahoe:   "90e4d286c7363f44451bef72bf75eb139d55454c35bb240eaf37d49c6649ab0d"
+    sha256 cellar: :any, arm64_sequoia: "efcb605cb7760bdee4873a0c3240e54add78210f1c3282c63a61e0aeb94ea753"
+    sha256 cellar: :any, arm64_sonoma:  "19caf71acbf7f93452f674b1aec4f62144246d4c5cbd5d5d4cbf7e11a7243b2d"
+    sha256 cellar: :any, sonoma:        "6fe3a1ea44cc66cd2ab36531d66848f9f0e363591b14c272864d914c1e9422ba"
+    sha256               arm64_linux:   "badce9774ee0885b972ce95082c2dc904d8f7113baae29231a09a884cabbcad2"
+    sha256               x86_64_linux:  "749d4547c856b8cb35bd70869b15deffef02f4e42f9915792715da5338b3deb8"
   end
 
   depends_on "open-mpi"
-  depends_on "python@3.13"
+  depends_on "python@3.14"
 
   def python3
-    "python3.13"
+    "python3.14"
   end
 
   def install

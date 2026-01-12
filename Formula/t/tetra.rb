@@ -1,8 +1,8 @@
 class Tetra < Formula
   desc "Tetragon CLI to observe, manage and troubleshoot Tetragon instances"
   homepage "https://tetragon.io/"
-  url "https://github.com/cilium/tetragon/archive/refs/tags/v1.5.0.tar.gz"
-  sha256 "d30263db6aa7b92282ebf7b8cfad4a3c1a8dd0d2a4480295ae3720b2ea8ffc92"
+  url "https://github.com/cilium/tetragon/archive/refs/tags/v1.6.0.tar.gz"
+  sha256 "83469d661ca86ce74e75c10eb01628291088cedb73e2641029504b3bd7fb1f86"
   license "Apache-2.0"
 
   livecheck do
@@ -11,12 +11,13 @@ class Tetra < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "ed4dd69b9e35173548e777e7a543f34f142476786438e4ce654678f0ed2e956c"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "2af33537c5eda675a767bed836005c6cdaa3da2341eb6c16882db89538bdec7e"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "430b8a8ad4b0efaafa7093f166301a7d0337157b8c5c024fe62ef3504f287afb"
-    sha256 cellar: :any_skip_relocation, sonoma:        "49d789f1e189d0a5b60ed52fef7dce298a03ed209e71cfdfc0c70986fead942f"
-    sha256 cellar: :any_skip_relocation, ventura:       "cb363b0cad2c6aa530020115b7c692cd9868f7dd6cfd6d2ff6c1077be75cfe13"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e76f8eb4ee34b69d7c0e802f15d9051d2a5bce72fc38e3f7d6a9c4f3247a2f26"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "0111161e8793db09cd938510cca6dada677985f41a7ba2b6aa9c8f55b7daf7c1"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "1ffac422ba4d5219d062e6f81d67607e74c20d8e12e3cc32c33da2429c1f89f3"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "0adf70e96f251d395b1cd432012de0d6ce59fd775103c61f775ca0126b5ca516"
+    sha256 cellar: :any_skip_relocation, sonoma:        "b1c926f99a77c8cd14552ccf57788c3453753101cf8ad1b3d853b8dcf44f2b85"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "5e2938872c80920878fb745c56ae96bed320150c878aca248f1e0ce5f47ff2af"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "78633dd890f3b3552edb26ae9822200ac52febaf56a5c23c02423eca6577c895"
   end
 
   depends_on "go" => :build
@@ -25,7 +26,7 @@ class Tetra < Formula
     ldflags = "-s -w -X github.com/cilium/tetragon/pkg/version.Version=#{version}"
     system "go", "build", *std_go_args(ldflags:, output: bin/"tetra"), "./cmd/tetra"
 
-    generate_completions_from_executable(bin/"tetra", "completion")
+    generate_completions_from_executable(bin/"tetra", shell_parameter_format: :cobra)
   end
 
   test do

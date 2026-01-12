@@ -1,18 +1,19 @@
 class Pluto < Formula
   desc "CLI tool to help discover deprecated apiVersions in Kubernetes"
   homepage "https://fairwinds.com"
-  url "https://github.com/FairwindsOps/pluto/archive/refs/tags/v5.22.1.tar.gz"
-  sha256 "6c502e160296e35f9aa51cdbc4767718def7b5846b0f648c472dd427f76ce6ab"
+  url "https://github.com/FairwindsOps/pluto/archive/refs/tags/v5.22.7.tar.gz"
+  sha256 "43f1fc3b93238e20c8adbbc133c4cfcb36c6b7ec8430ea22b24119468eddc09b"
   license "Apache-2.0"
   head "https://github.com/FairwindsOps/pluto.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "bdb5632a6a7cbe4cb77af2c411ea05fee10ba7c21156d9fe0371ff76c5150bd4"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "bdb5632a6a7cbe4cb77af2c411ea05fee10ba7c21156d9fe0371ff76c5150bd4"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "bdb5632a6a7cbe4cb77af2c411ea05fee10ba7c21156d9fe0371ff76c5150bd4"
-    sha256 cellar: :any_skip_relocation, sonoma:        "3d82a09134958705f25c69b5c5da985074eecb7ab858acbde4b6a8ea00d445f6"
-    sha256 cellar: :any_skip_relocation, ventura:       "3d82a09134958705f25c69b5c5da985074eecb7ab858acbde4b6a8ea00d445f6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "23501eb46e3e496deff0be7b8060fd1109037847595dcec08916c3556c4e9afd"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "0f8ba96221b5047fdebe52d7f9f56238749b473b120263f84655feb9c4cf84e2"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "0f8ba96221b5047fdebe52d7f9f56238749b473b120263f84655feb9c4cf84e2"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "0f8ba96221b5047fdebe52d7f9f56238749b473b120263f84655feb9c4cf84e2"
+    sha256 cellar: :any_skip_relocation, sonoma:        "841f562aea4532e9d44d7a89620b0c2b34101eebf5b71970e098a47e26f4de28"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "8c6d4a81f33ca1336f92099474b102e36dd021f03822257d19d17d4da2617b96"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3fe0a7a915dd007ca6136e9c91f27ae003f08dff7d9823dcbade902df7aa4061"
   end
 
   depends_on "go" => :build
@@ -20,7 +21,8 @@ class Pluto < Formula
   def install
     ldflags = "-s -w -X main.version=#{version} -X main.commit=#{tap.user}"
     system "go", "build", *std_go_args(ldflags:), "cmd/pluto/main.go"
-    generate_completions_from_executable(bin/"pluto", "completion")
+
+    generate_completions_from_executable(bin/"pluto", shell_parameter_format: :cobra)
   end
 
   test do

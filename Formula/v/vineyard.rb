@@ -4,24 +4,22 @@ class Vineyard < Formula
   url "https://github.com/v6d-io/v6d/releases/download/v0.24.4/v6d-0.24.4.tar.gz"
   sha256 "055bab09ca67542ccb13229de8c176b7875b4ba8c8a818e942218dccc32a6bae"
   license "Apache-2.0"
-  revision 1
+  revision 6
 
   bottle do
-    rebuild 1
-    sha256                               arm64_sequoia: "2e2a8b3c0f90b05b531b357b9da1061516dd3ba6915f0680fc263d7b03f23a2d"
-    sha256                               arm64_sonoma:  "ba79f2038774c01fab222ed48ad612d63f84576cb73cd8dcf98bac1fc0c1a774"
-    sha256                               arm64_ventura: "79c267dcc2351e82975c128655dfaf51837cbba3e58e83f3704ed247c9b2751e"
-    sha256                               sonoma:        "dd6db36a0a41a9a09d9a06c4478ca7cdbfc92289a104b30eef548c4264faf75e"
-    sha256                               ventura:       "f65107ae26822b775805252e697d8f440c2f88bf214638f3423e64305dcdf905"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "fcc0b596e56cfc398d706ad00be490490ed117d238df83a5ca6af8dba213e7f9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "369ebc7d9049af8247bcba826f2810d3d8a2e1f639431b93dd681211df330743"
+    sha256                               arm64_tahoe:   "bfbacaa6393ca506532de08d2c19a3ac7639ff0290135397921de09bdec5569a"
+    sha256                               arm64_sequoia: "3c27137f41f0981ccd6e5d43b92260031b2a05a778508fa6e5c4328575dfcbd7"
+    sha256                               arm64_sonoma:  "786588b755cc7d01885442c36ee261a56581828b7e0690380235e387b9dcc94e"
+    sha256                               sonoma:        "a3261369bd7841a2b2fe9c73cfbc13005f082a30c13566348c77db58dd371f90"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "3e0365a943bed3bad23faab6b7d3ddf6316ba2cd430a2c7b5fd96399ee5eb068"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "35c9e76f776a1fcbf55036ed8af65f6c097cdf8f26098b8ce445282170a17480"
   end
 
   depends_on "cmake" => [:build, :test]
   depends_on "llvm" => :build # for clang Python bindings
   depends_on "openssl@3" => :build # indirect (not linked) but CMakeLists.txt checks for it
   depends_on "python-setuptools" => :build
-  depends_on "python@3.13" => :build
+  depends_on "python@3.14" => :build
   depends_on "apache-arrow"
   depends_on "boost"
   depends_on "cpprestsdk"
@@ -31,6 +29,13 @@ class Vineyard < Formula
   depends_on "glog"
   depends_on "libgrape-lite"
   depends_on "open-mpi"
+
+  on_tahoe do
+    fails_with :clang do
+      build 1700
+      cause "https://github.com/llvm/llvm-project/issues/142118"
+    end
+  end
 
   on_linux do
     depends_on "autoconf" => :build
@@ -46,6 +51,9 @@ class Vineyard < Formula
   end
 
   def install
+    # TODO: Remove after https://github.com/Homebrew/brew/pull/20696
+    ENV.llvm_clang if OS.mac? && MacOS.version == :tahoe && DevelopmentTools.clang_build_version == 1700
+
     # Workaround to support Boost 1.87.0+ until upstream fix for https://github.com/v6d-io/v6d/issues/2041
     boost_asio_post_files = %w[
       src/server/async/socket_server.cc
@@ -75,7 +83,7 @@ class Vineyard < Formula
     headers = %w[args async child env environment io search_path]
     headers.each { |header| ENV.append "CXXFLAGS", "-include boost/process/v1/#{header}.hpp" }
 
-    python3 = "python3.13"
+    python3 = "python3.14"
     # LLVM is keg-only.
     llvm = deps.map(&:to_formula).find { |f| f.name.match?(/^llvm(@\d+)?$/) }
     ENV.prepend_path "PYTHONPATH", llvm.opt_prefix/Language::Python.site_packages(python3)

@@ -7,7 +7,7 @@ class Nanopb < Formula
   url "https://jpa.kapsi.fi/nanopb/download/nanopb-0.4.9.1.tar.gz"
   sha256 "882cd8473ad932b24787e676a808e4fb29c12e086d20bcbfbacc66c183094b5c"
   license "Zlib"
-  revision 3
+  revision 4
 
   livecheck do
     url "https://jpa.kapsi.fi/nanopb/download/"
@@ -15,22 +15,24 @@ class Nanopb < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "48c0e851922d2dc09a363496b62f994801fae203a54ddf5b1b05db29f548f62f"
-    sha256 cellar: :any,                 arm64_sonoma:  "67695bb4d38d03aa42a096bd4bb305f26a895f0de73d1bcd9cd6da6e05559a23"
-    sha256 cellar: :any,                 arm64_ventura: "cedc6958a61637ca250dd07266e565be80b0229967598ac9a9643dc467de71f8"
-    sha256 cellar: :any,                 sonoma:        "9e1f5e2f2138b529c910edcf3564f29ef868378e65258566f2c0b85bb4621cf8"
-    sha256 cellar: :any,                 ventura:       "2f0bca06374f860e344cc7e9feff526d0dba6068f06c6a8eb5331138fd7d0237"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "b131ea76894ac511c4e4260769cabee26741c1acf53210777e8d04dfcc9ef87f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6822c95d98040f3f845347cbe416bcc4da77cce6cfce82020bcec48caaae463c"
+    sha256 cellar: :any,                 arm64_tahoe:   "ff790570b8a943bd1312bd198ef9610c6068a955ca903080150bb0e5190d32a7"
+    sha256 cellar: :any,                 arm64_sequoia: "6f7a7d02d66a6aca5f6feb14e5355575524b404c5506674aeb6878f2fcb2fb9a"
+    sha256 cellar: :any,                 arm64_sonoma:  "6d940c481acb8fe68989c2e5b7ac4a1db675a95f0062de6f4075a2e50405c4ba"
+    sha256 cellar: :any,                 sonoma:        "a0d5666967fef1a0ab57a6ab443f8a65375f49a21eabe19fae3b03a0f0c448bd"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "27ca104b3c7fccfac6deb7ea38adc50187a87fba2ea34d6c7a4d42d4ed279600"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "82b324cd00950380dada756031cb4fe6f48400f563082f2bd4e650f38139d6e8"
   end
 
   depends_on "cmake" => :build
   depends_on "protobuf"
-  depends_on "python@3.13"
+  depends_on "python@3.14"
+
+  pypi_packages package_name:   "nanopb",
+                extra_packages: "setuptools"
 
   resource "protobuf" do
-    url "https://files.pythonhosted.org/packages/52/f3/b9655a711b32c19720253f6f06326faf90580834e2e83f840472d752bc8b/protobuf-6.31.1.tar.gz"
-    sha256 "d8cac4c982f0b957a4dc73a80e2ea24fab08e679c0de9deb835f4a12d69aca9a"
+    url "https://files.pythonhosted.org/packages/34/44/e49ecff446afeec9d1a66d6bbf9adc21e3c7cea7803a920ca3773379d4f6/protobuf-6.33.2.tar.gz"
+    sha256 "56dc370c91fbb8ac85bc13582c9e373569668a290aa2e66a590c2a0d35ddb9e4"
   end
 
   resource "setuptools" do
@@ -40,7 +42,7 @@ class Nanopb < Formula
 
   def install
     ENV.append_to_cflags "-DPB_ENABLE_MALLOC=1"
-    venv = virtualenv_create(libexec, "python3.13")
+    venv = virtualenv_create(libexec, "python3.14")
     venv.pip_install resources
 
     system "cmake", "-S", ".", "-B", "build",

@@ -1,19 +1,21 @@
 class Hspell < Formula
   desc "Free Hebrew linguistic project"
-  homepage "http://hspell.ivrix.org.il/"
-  url "http://hspell.ivrix.org.il/hspell-1.4.tar.gz"
+  homepage "https://hspell.sourceforge.net/"
+  url "https://hspell.sourceforge.net/hspell-1.4.tar.gz"
   sha256 "7310f5d58740d21d6d215c1179658602ef7da97a816bc1497c8764be97aabea3"
   license "AGPL-3.0-only"
 
   livecheck do
-    url "http://hspell.ivrix.org.il/download.html"
+    url "https://hspell.sourceforge.net/download.html"
     regex(/href=.*?hspell[._-]v?(\d+(?:\.\d+)+)\.t/i)
+    strategy :page_match
   end
 
   no_autobump! because: :requires_manual_review
 
   bottle do
     rebuild 1
+    sha256 arm64_tahoe:    "a0c78516325cebda282510f1f2b02169c8f45055fb752055845617ebaac51664"
     sha256 arm64_sequoia:  "c40456d586f63147c43885dbad8c72e18bafae62f93305d96e29146465f053e8"
     sha256 arm64_sonoma:   "86f6240fcd352f4fe5579be572c0e50fb679b689b2e37e9c04c46ca485f8e6de"
     sha256 arm64_ventura:  "2fcc00698fda6279a021ece352de8c8c7597cabec4ae896416db031215e2dcbb"
@@ -24,7 +26,6 @@ class Hspell < Formula
     sha256 monterey:       "21abb651324e2e46eae76ae915efe203f198a7a74f7c9144b3d21060fc5a2dfd"
     sha256 big_sur:        "426c87d91350f33392c862296b5d1b0081bc953adae5c04a9769ebb2a626213f"
     sha256 catalina:       "a0406d5a4d5adefa40b5e820510a9b7f461fcea6a61112103c112775fff49ae8"
-    sha256 mojave:         "32e8037e9d494241b975c7558635456991285d53c9bbc89005cd6c86744f30e3"
     sha256 arm64_linux:    "8ad90f494f3f74249ff959d11f18ca5e5e5375f79630d768ed2d67889f1f1597"
     sha256 x86_64_linux:   "fd7cae8024a97aadce0f713008dba1f27e7254969f689a21c9501d42be84fcdb"
   end
@@ -37,7 +38,7 @@ class Hspell < Formula
   # standards this patch creates a .dylib instead
   patch :p0 do
     on_macos do
-      url "https://raw.githubusercontent.com/Homebrew/formula-patches/85fa66a9/hspell/1.3.patch"
+      url "https://raw.githubusercontent.com/Homebrew/homebrew-core/1cf441a0/Patches/hspell/1.3.patch"
       sha256 "63cc1bc753b1062d1144dcdd959a0a8f712b8872dce89e54ddff2d24f2ca2065"
     end
   end

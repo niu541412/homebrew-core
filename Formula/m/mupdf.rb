@@ -1,8 +1,8 @@
 class Mupdf < Formula
   desc "Lightweight PDF and XPS viewer"
   homepage "https://mupdf.com/"
-  url "https://mupdf.com/downloads/archive/mupdf-1.26.4-source.tar.gz"
-  sha256 "8a57e9b78ea2c2312c91590fd5eabe1d246b5e98b585bc152100e24bf81252a1"
+  url "https://mupdf.com/downloads/archive/mupdf-1.27.0-source.tar.gz"
+  sha256 "ae2442416de499182d37a526c6fa2bacc7a3bed5a888d113ca04844484dfe7c6"
   license "AGPL-3.0-or-later"
   head "git://git.ghostscript.com/mupdf.git", branch: "master"
 
@@ -12,13 +12,12 @@ class Mupdf < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "acd317819ac36c0a9f5e7ddfa5a1c1d070ff1fbbba042c7aa6eb539ca6c75c79"
-    sha256 cellar: :any,                 arm64_sonoma:  "dcdbb49138545bd05fed49cbb279037dd71d9c3af4f603920c6ee831ef56ce2b"
-    sha256 cellar: :any,                 arm64_ventura: "f1945f60669c93a9262acea3d333729e7bf63bae8e4bef87a99bbeae1a0e4f05"
-    sha256 cellar: :any,                 sonoma:        "825d822487f65ebe5f4ccc9225149640e57c2636a12be61ab1e7201fc3de77ad"
-    sha256 cellar: :any,                 ventura:       "583239089fb1ff8c6ea2c7566e9cb2ec621f2e28e51416702c47dab7d5ec5b8f"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "908be4c6dff8ddada0fcf0d1abd199b3c900f8465c1e2360510d83790d818012"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c0bd23e5cd9472b0de34d34ae50b6bbafeab053943d08d1f445f2d7c01fec113"
+    sha256 cellar: :any,                 arm64_tahoe:   "f220b26700cafb1949b7338bd3d9ab9cf6d7bad31f92e647fc16457d0c37aa95"
+    sha256 cellar: :any,                 arm64_sequoia: "f052033b4c55fe7c89e5276f82d32bf890494fba7d298053ea6ae594b960f907"
+    sha256 cellar: :any,                 arm64_sonoma:  "a47e4f44c449edefe399c8cf7a28a45ac3cc3379e0eade6da06622d03a9e0ade"
+    sha256 cellar: :any,                 sonoma:        "e0edc930d9b49c8c0ae9af842fc8fcd249e34544c328fbeaf50c430fac876ccb"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "6e02b5117b38d4fc87d73ad6a32cb54979893bb7fcfad41dbdce06cbae7e1e19"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0272a405452dfb464b7529a2140b2c851f14c07ef80d6da5075afbd0431fd614"
   end
 
   depends_on "llvm" => :build
@@ -31,10 +30,9 @@ class Mupdf < Formula
   depends_on "jbig2dec"
   depends_on "jpeg-turbo"
   depends_on "leptonica"
-  depends_on "mujs"
   depends_on "openjpeg"
   depends_on "openssl@3"
-  depends_on "python@3.13"
+  depends_on "python@3.14"
   depends_on "tesseract"
 
   uses_from_macos "zlib"
@@ -52,13 +50,27 @@ class Mupdf < Formula
 
   conflicts_with "mupdf-tools", because: "both install the same binaries"
 
+  # Currently, some source of mujs is required for building mupdf, so can't use formula
+  # Issue ref: https://bugs.ghostscript.com/show_bug.cgi?id=708968
+  resource "mujs" do
+    url "https://mujs.com/downloads/mujs-1.3.8.tar.gz"
+    sha256 "506d34882f2620a2fdeb6db63dbb7a8ffd98f417689d8f3c84f2feac275e39a9"
+
+    livecheck do
+      "mujs"
+    end
+  end
+
   def install
     # Remove bundled libraries excluding `extract` and "strongly preferred" `lcms2mt` (lcms2 fork)
     keep = %w[extract lcms2]
     (buildpath/"thirdparty").each_child { |path| rm_r(path) if keep.exclude? path.basename.to_s }
 
+    # Install mujs from resource
+    (buildpath/"thirdparty/mujs").install resource("mujs")
+
     # For python bindings needed by `pymupdf`: https://pymupdf.readthedocs.io/en/latest/packaging.html
-    site_packages = Language::Python.site_packages("python3.13")
+    site_packages = Language::Python.site_packages("python3.14")
     ENV.prepend_path "PYTHONPATH", Formula["llvm"].opt_prefix/site_packages
 
     args = %W[
@@ -70,7 +82,7 @@ class Mupdf < Formula
       pydir=#{prefix/site_packages}
       CC=#{ENV.cc}
       USE_SYSTEM_LIBS=yes
-      USE_SYSTEM_MUJS=yes
+      USE_SYSTEM_MUJS=no
       VENV_FLAG=
     ]
 
@@ -105,8 +117,11 @@ class Mupdf < Formula
         s.gsub! "_mupdf.$(SO)", "_mupdf.so"
       end
 
-      ENV.cxx11
+      ENV.append "CXX", "-std=c++14"
     end
+
+    # Missing rpath for python bindings on macOS
+    ENV.append "LDFLAGS", "-Wl,-rpath,#{lib}" if OS.mac?
 
     system "make", "install", *args
     system "make", "install-shared-python", *args

@@ -6,17 +6,15 @@ class KeepkeyAgent < Formula
   url "https://files.pythonhosted.org/packages/65/72/4bf47a7bc8dc93d2ac21672a0db4bc58a78ec5cee3c4bcebd0b4092a9110/keepkey_agent-0.9.0.tar.gz"
   sha256 "47c85de0c2ffb53c5d7bd2f4d2230146a416e82511259fad05119c4ef74be70c"
   license "LGPL-3.0-only"
-  revision 10
+  revision 11
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_sequoia: "4ef9604e5cdd45c1cd054e8e9d3be0cc25b7473a784a276129d621d7dd316114"
-    sha256 cellar: :any,                 arm64_sonoma:  "d5204bced64588374c8271149e09a929ac222cb83a39ce82992f18600afc36a8"
-    sha256 cellar: :any,                 arm64_ventura: "13776ec6e720d1df734940c512c73ebaa4c2990080c0e8d6414f40e806a1f78d"
-    sha256 cellar: :any,                 sonoma:        "71cd7cb34c99602040d7f5055f76a6e69a8dceaa01120677c03c546bca3b3f78"
-    sha256 cellar: :any,                 ventura:       "f004387f6363861d62f69eb4773835f28176dad695ef6d95f15d1899616406e4"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "45959a29c69d70cbd6ba9e6d375368d1cc858236b1b3445d838a79c22bcffde9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8ff47e5fe6dec3c9699dac2ade4f5682ade18531e1d2371eb9e1379ef1a3f2c4"
+    sha256 cellar: :any,                 arm64_tahoe:   "c53659d3ee8af55416337fa18679276e268bcca1120b41b9d8314e04273ffefb"
+    sha256 cellar: :any,                 arm64_sequoia: "c6c4116334d18c6e125e0294eb9e57c2570fd6e6dbdf5e3dfa3f49a07b9daec4"
+    sha256 cellar: :any,                 arm64_sonoma:  "fe6bce663ae0be7e2dc03f059d0aefdf94078088994875666f073a5908d7d7bd"
+    sha256 cellar: :any,                 sonoma:        "0a13374bdefee18fd5ad3ebb6edc56dbc0073c24f428b0e57609c0688b4d1fca"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "2118622c4dff42f33a4982722fe8d983fab0bd03f61a34eb4f1120c24fc15e40"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c94a7e47d83311bfd1e90cff54d15166988a784bf17a2d2037a352a4b2fb5544"
   end
 
   depends_on "pkgconf" => :build # for hidapi resource
@@ -24,9 +22,12 @@ class KeepkeyAgent < Formula
   depends_on "hidapi"
   depends_on "libsodium" # for pynacl
   depends_on "libusb" # for libusb1
-  depends_on "python@3.13"
+  depends_on "python@3.14"
 
   uses_from_macos "libffi"
+
+  pypi_packages exclude_packages: "cryptography",
+                extra_packages:   "protobuf==3.20.3"
 
   resource "backports-shutil-which" do
     url "https://files.pythonhosted.org/packages/a0/22/51b896a4539f1bff6a7ab8514eb031b9f43f12bff23f75a4c3f4e9a666e5/backports.shutil_which-3.5.2.tar.gz"
@@ -44,8 +45,8 @@ class KeepkeyAgent < Formula
   end
 
   resource "docutils" do
-    url "https://files.pythonhosted.org/packages/ae/ed/aefcc8cd0ba62a0560c3c18c33925362d46c6075480bfa4df87b28e169a9/docutils-0.21.2.tar.gz"
-    sha256 "3a6b18732edf182daa3cd12775bbb338cf5691468f91eeeb109deff6ebfa986f"
+    url "https://files.pythonhosted.org/packages/ae/b6/03bb70946330e88ffec97aefd3ea75ba575cb2e762061e0e62a213befee8/docutils-0.22.4.tar.gz"
+    sha256 "4db53b1fde9abecbb74d91230d32ab626d94f6badfc575d6db9194a49df29968"
   end
 
   resource "ecdsa" do
@@ -54,8 +55,8 @@ class KeepkeyAgent < Formula
   end
 
   resource "hidapi" do
-    url "https://files.pythonhosted.org/packages/47/72/21ccaaca6ffb06f544afd16191425025d831c2a6d318635e9c8854070f2d/hidapi-0.14.0.post4.tar.gz"
-    sha256 "48fce253e526d17b663fbf9989c71c7ef7653ced5f4be65f1437c313fb3dbdf6"
+    url "https://files.pythonhosted.org/packages/74/f6/caad9ed701fbb9223eb9e0b41a5514390769b4cb3084a2704ab69e9df0fe/hidapi-0.15.0.tar.gz"
+    sha256 "ecbc265cbe8b7b88755f421e0ba25f084091ec550c2b90ff9e8ddd4fcd540311"
   end
 
   resource "keepkey" do
@@ -89,13 +90,13 @@ class KeepkeyAgent < Formula
   end
 
   resource "pymsgbox" do
-    url "https://files.pythonhosted.org/packages/7d/ff/4c6f31a4f08979f12a663f2aeb6c8b765d3bd592e66eaaac445f547bb875/PyMsgBox-1.0.9.tar.gz"
-    sha256 "2194227de8bff7a3d6da541848705a155dcbb2a06ee120d9f280a1d7f51263ff"
+    url "https://files.pythonhosted.org/packages/ae/6a/e80da7594ee598a776972d09e2813df2b06b3bc29218f440631dfa7c78a8/pymsgbox-2.0.1.tar.gz"
+    sha256 "98d055c49a511dcc10fa08c3043e7102d468f5e4b3a83c6d3c61df722c7d798d"
   end
 
   resource "pynacl" do
-    url "https://files.pythonhosted.org/packages/a7/22/27582568be639dfe22ddb3902225f91f2f17ceff88ce80e4db396c8986da/PyNaCl-1.5.0.tar.gz"
-    sha256 "8ac7448f09ab85811607bdd21ec2464495ac8b7c66d146bf545b0f08fb9220ba"
+    url "https://files.pythonhosted.org/packages/d9/9a/4019b524b03a13438637b11538c82781a5eda427394380381af8f04f467a/pynacl-1.6.2.tar.gz"
+    sha256 "018494d6d696ae03c7e656e5e74cdfd8ea1326962cc401bcf018f1ed8436811c"
   end
 
   resource "python-daemon" do

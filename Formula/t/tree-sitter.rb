@@ -1,10 +1,9 @@
 class TreeSitter < Formula
   desc "Incremental parsing library"
   homepage "https://tree-sitter.github.io/"
-  url "https://github.com/tree-sitter/tree-sitter/archive/refs/tags/v0.25.8.tar.gz"
-  sha256 "178b575244d967f4920a4642408dc4edf6de96948d37d7f06e5b78acee9c0b4e"
+  url "https://github.com/tree-sitter/tree-sitter/archive/refs/tags/v0.26.3.tar.gz"
+  sha256 "7f4a7cf0a2cd217444063fe2a4d800bc9d21ed609badc2ac20c0841d67166550"
   license "MIT"
-  revision 1
   head "https://github.com/tree-sitter/tree-sitter.git", branch: "master"
 
   livecheck do
@@ -13,13 +12,12 @@ class TreeSitter < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "d9841c5b93cd0157cf9c02efe5050aff286fc83214430ccbadecc899a4b40973"
-    sha256 cellar: :any,                 arm64_sonoma:  "9593afac488bb20dfaf32b35a97a3af0b8b02a262bf831687b366074f017581c"
-    sha256 cellar: :any,                 arm64_ventura: "157886f003ff968de04d584dbc35aba727feaae3102b01188ec4f80ce9b34ee9"
-    sha256 cellar: :any,                 sonoma:        "0cd18ea153dce11c64ebd6e2b708ba7e9169372a9979299959246ab76c540ae2"
-    sha256 cellar: :any,                 ventura:       "ce995bb8e5855d84d468cfe88627ecb51ba39ceacf80c0e001f21cac4c0dc32a"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "7a398e17148d29dae7b1ede9e256c7b44c595c883a41c1e03921dad94d1ddb67"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "dc166c9cac782e06d849cbb00cedabbe92f4050ce9d8d2eba8fc8d4624c8b61c"
+    sha256 cellar: :any,                 arm64_tahoe:   "a9814378eff0b42340bbff075c6e52b68dfb29edc6f0b264334809b02eedffbc"
+    sha256 cellar: :any,                 arm64_sequoia: "40213cc22c7b17e0d7265b72af2bf1c650203ea5379b3e91f5debb46c1104058"
+    sha256 cellar: :any,                 arm64_sonoma:  "e7ddb00fbb96876e17b73e7765f54bdf63104821d5656ae6cd4913f40540e25d"
+    sha256 cellar: :any,                 sonoma:        "426074ecd8fee3c336468daf48958a638274eecd0b305ff13d4bb11ef4ae82d2"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "01ae81da74c8f8f3b3cbcf3641e2a25a813987500ec42eaba0a44ca001320b63"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f9c21b563ee81bbe684db5743a5b6f4245ba7cf81c5102fb40d3c2dde3ea8add"
   end
 
   def install

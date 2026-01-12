@@ -1,18 +1,17 @@
 class GitCliff < Formula
   desc "Highly customizable changelog generator"
   homepage "https://git-cliff.org/"
-  url "https://github.com/orhun/git-cliff/archive/refs/tags/v2.10.0.tar.gz"
-  sha256 "5983409377bb34337ee930af53afb522737d87b9ba15096eae30ced3484b12a2"
+  url "https://github.com/orhun/git-cliff/archive/refs/tags/v2.11.0.tar.gz"
+  sha256 "e298a7ff6c12ee26c814a4aad4829dc4078f1b767710acf0158ab40b0d0e9fe9"
   license all_of: ["Apache-2.0", "MIT"]
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "3cb0c87376ca2b155770ab7ef8e9d2aa2b9376549e64f1021a5c4880108750a9"
-    sha256 cellar: :any,                 arm64_sonoma:  "befc35faab195db834be9399457f6b11d53048d64b562a2507125cf14811a292"
-    sha256 cellar: :any,                 arm64_ventura: "68a9bc5425561ff4cfb0c23cc24e58cfd7373e4f5ca96deb94d66d97a060d25d"
-    sha256 cellar: :any,                 sonoma:        "bbcd18d3b420655522ab5272039530bdccc9a8355b4d67f858d7eb52ad584dd4"
-    sha256 cellar: :any,                 ventura:       "f47c539d319736549a62b63d6716b511fa5a9b17c58d05bdc0b50d2ac7bb8c20"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "0807e2f92262c4eb5a38e4e3082fee1bcc08a7e0432b529a6e55cca9b0b8f546"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "733633afb16d7266616a675734dd21b96f7f4f131f583ff036a648e6d437b45e"
+    sha256 cellar: :any,                 arm64_tahoe:   "857c2529bb79fac2e45a26caad213b8b3e229943bc67e4178f990b78d1d4ea74"
+    sha256 cellar: :any,                 arm64_sequoia: "9dd8d60870d3de54c08078ae2af8b01aa0f97084d0bfb4aba32894bb96bb86ae"
+    sha256 cellar: :any,                 arm64_sonoma:  "984e836284f666d7e96bf1a2bdfb32c7c6c146967db79466152b18f7dd637eb2"
+    sha256 cellar: :any,                 sonoma:        "a21ae3d285aa0082ae83d1321583fd6f99d6a66c642786ff8efe56e01a14ecff"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "93ff5958694b142bd03258fb9660f51acc4b65eb02bb135e1f131180cc4ec847"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5ca339fc01e512b632771d392aadce14e7e130d8663c062fd804608bd7a6d128"
   end
 
   depends_on "pkgconf" => :build
@@ -57,12 +56,9 @@ class GitCliff < Formula
       - Initial commit
     EOS
 
-    linkage_with_libgit2 = (bin/"git-cliff").dynamically_linked_libraries.any? do |dll|
-      next false unless dll.start_with?(HOMEBREW_PREFIX.to_s)
-
-      File.realpath(dll) == (Formula["libgit2"].opt_lib/shared_library("libgit2")).realpath.to_s
-    end
-
-    assert linkage_with_libgit2, "No linkage with libgit2! Cargo is likely using a vendored version."
+    require "utils/linkage"
+    library = Formula["libgit2"].opt_lib/shared_library("libgit2")
+    assert Utils.binary_linked_to_library?(bin/"git-cliff", library),
+           "No linkage with #{library.basename}! Cargo is likely using a vendored version."
   end
 end

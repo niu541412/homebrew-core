@@ -1,8 +1,8 @@
 class Sdl12Compat < Formula
   desc "SDL 1.2 compatibility layer that uses SDL 2.0 behind the scenes"
   homepage "https://github.com/libsdl-org/sdl12-compat"
-  url "https://github.com/libsdl-org/sdl12-compat/archive/refs/tags/release-1.2.68.tar.gz"
-  sha256 "63c6e4dcc1154299e6f363c872900be7f3dcb3e42b9f8f57e05442ec3d89d02d"
+  url "https://github.com/libsdl-org/sdl12-compat/archive/refs/tags/release-1.2.72.tar.gz"
+  sha256 "daf6726b89d71120395472dd3cbc16c7a3b0bcbe2c1495de90885d4c2b266d3e"
   license all_of: ["Zlib", "MIT-0"]
   head "https://github.com/libsdl-org/sdl12-compat.git", branch: "main"
 
@@ -11,18 +11,13 @@ class Sdl12Compat < Formula
     regex(/^release[._-]v?(\d+(?:\.\d+)+)$/i)
   end
 
-  no_autobump! because: :requires_manual_review
-
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia:  "7629feebea88788075d1b222b1096b9f7c1a412fa7dfd5874cfc9ecedeb3cee3"
-    sha256 cellar: :any,                 arm64_sonoma:   "4948b9d4e38766595d0c173458b97c00121834dd6b4161496a09fec4fc094950"
-    sha256 cellar: :any,                 arm64_ventura:  "d8d666b4c119e5dadd9d338d12c59723adad83565e18612afaf934fcf58e2872"
-    sha256 cellar: :any,                 arm64_monterey: "f5a78c668498f0507ffecfce91a2f690b46fc0adc91ed1c3bf207466c1d08f4d"
-    sha256 cellar: :any,                 sonoma:         "e5a972e8c3bd9012f6dca3512f1953c4f7f9b1f1580b7066b930fa9fabc54150"
-    sha256 cellar: :any,                 ventura:        "f355c15e6d99d002a44af8689e835ab14765f0abea078b40c1301283cbd28535"
-    sha256 cellar: :any,                 monterey:       "30cbfb49ab9560fcce09b372ad986a74caa3007704012454f76cc4416dfa0e93"
-    sha256 cellar: :any_skip_relocation, arm64_linux:    "80c3aba4d8108403066285fc7841895247ae5bfbf9e75c188cb5667cd14cee7b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "ac00966975256217cace0e9acf45e8659d5d668e16972a072eb6c298ff630fa2"
+    sha256 cellar: :any,                 arm64_tahoe:   "b2e3618480a324e387efbe8c57da95fe5c2bc9abf3fd07586fb735431832ccac"
+    sha256 cellar: :any,                 arm64_sequoia: "3be1263a87b1fb9d65b1be1aa2b2e8edee92eb7c0d6da61a8f2b509e2c9e8416"
+    sha256 cellar: :any,                 arm64_sonoma:  "e1d7ae2dfeab8aaa5e2bc45c0fd1934ad6bcabc0d3ee5e091978d52231173fb6"
+    sha256 cellar: :any,                 sonoma:        "8a8beb898caa9edb92eb332f91289bb40070c7b700557685fb357550faa9991e"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "45d457557e4a994234c618ffb3201fa48f9f528a602f9cd4be7dcbb8d876c34a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "62513e0453720dba860aa9ab6a89942ec5a61942b2cfec46e6bc62b72f000ff5"
   end
 
   depends_on "cmake" => :build

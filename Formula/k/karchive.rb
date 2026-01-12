@@ -1,8 +1,8 @@
 class Karchive < Formula
   desc "Reading, creating, and manipulating file archives"
-  homepage "https://api.kde.org/frameworks/karchive/html/index.html"
-  url "https://download.kde.org/stable/frameworks/6.16/karchive-6.16.0.tar.xz"
-  sha256 "dba18ff2be1d0b57a1812a33de660d4cf7623dcfaa8f9c0d64efde2152409cff"
+  homepage "https://api.kde.org/karchive-index.html"
+  url "https://download.kde.org/stable/frameworks/6.22/karchive-6.22.0.tar.xz"
+  sha256 "84254bd0a51ff3d5e2fa22bb946309cec508f1fae726a7aea15149260c4db59d"
   license all_of: [
     "BSD-2-Clause",
     "LGPL-2.0-only",
@@ -17,19 +17,21 @@ class Karchive < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:  "ed6273e3bb28e54914cde5680887b024463b7559591af3f809b3934336ddf85c"
-    sha256 cellar: :any,                 arm64_ventura: "12ebb7b5d3b1679e1385da3ccde3fef728e388bb6f5c821591af958baea24b11"
-    sha256 cellar: :any,                 sonoma:        "d812b7044b5d430599b1bb8b795730e36ab346e22e4b79a94394c78f31ce018c"
-    sha256 cellar: :any,                 ventura:       "5e3db0a94a50abab114e5287263db59b25fd0c458fcfdb2a8614c95e3263fb9d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ef53da18f4fda8f1b522efd2a65c246063bd10551c6f6b15369ddce1ba053e2c"
+    sha256 cellar: :any,                 arm64_tahoe:   "ee3e9c78507d928cc1eb5ea839ddcea3de2fefffbd7aa7fefb3e25cc7a771f77"
+    sha256 cellar: :any,                 arm64_sequoia: "d5ab425c82a046c3934c2b9aeca5465a98043ea4354d97e3c6fbead0ba80922a"
+    sha256 cellar: :any,                 arm64_sonoma:  "3cb41476baa0959b0626939ee2f081a55e87f51c0abcdeee96c9cd8ea7308366"
+    sha256 cellar: :any,                 sonoma:        "7ee279b10eee9d8ffa22d09eccdfcea3251f2a46090c3771b4e787a419cbfc59"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "335e24c9c13826e14fc91fca58c8a0432b72c5064e294263fc878e3a1c760d2c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5e17d609369b736aabf074a7c154c4669dd2b39b0186da23f89414460f5cfc5a"
   end
 
   depends_on "cmake" => [:build, :test]
   depends_on "doxygen" => :build
   depends_on "extra-cmake-modules" => [:build, :test]
   depends_on "pkgconf" => :build
+  depends_on "qttools" => :build
   depends_on "openssl@3"
-  depends_on "qt"
+  depends_on "qtbase"
   depends_on "xz"
   depends_on "zstd"
 
@@ -56,7 +58,7 @@ class Karchive < Formula
 
     examples.each do |example|
       inreplace testpath/example/"CMakeLists.txt", /^project\(/, <<~CMAKE
-        cmake_minimum_required(VERSION 3.5)
+        cmake_minimum_required(VERSION 4.0)
         \\0
       CMAKE
 

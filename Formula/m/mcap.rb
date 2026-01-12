@@ -1,8 +1,8 @@
 class Mcap < Formula
   desc "Serialization-agnostic container file format for pub/sub messages"
   homepage "https://mcap.dev"
-  url "https://github.com/foxglove/mcap/archive/refs/tags/releases/mcap-cli/v0.0.53.tar.gz"
-  sha256 "1dea3f72747de3fc5b254008551468d30c0405ebf13a7e3d27d02e50c2a13e0a"
+  url "https://github.com/foxglove/mcap/archive/refs/tags/releases/mcap-cli/v0.0.61.tar.gz"
+  sha256 "8bc715a6a667cdd0d9ce7d474436ca19a9be06d1350ddf026f43cc499c203886"
   license "MIT"
   head "https://github.com/foxglove/mcap.git", branch: "main"
 
@@ -12,13 +12,12 @@ class Mcap < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "9e37b7daf00b078c7f33852753ca7f3b05feba296a498d5b961e4ebd592b9d47"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "d1e495570b9381ec70f69f49e6e2d39e2bcd719a1681402bd0c8c26620e60c86"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "c5fbda70d150a1356a7d6d7e56d2d3fd5cce9a30ff8cb01df60f50733deef198"
-    sha256 cellar: :any_skip_relocation, sonoma:        "d27b20a0976af88458f35d143917d388d7b45896e331caf3268d3923824356fe"
-    sha256 cellar: :any_skip_relocation, ventura:       "75e8f9c45a0e94345fc3193e62c214df180207e7627337c77a3da3c6c22f5876"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "7178a980cb38092fa21b86e638d8e98a58c347f9ca7f10435afc1cd7bd284826"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "bff77b759aba4f8888cc8f9f71f68c2f9d1555d5c679e48c9afaadf9a6cf0db1"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "a5285d5c2295682d3fe70506004115e76ee695a4a1a6f7a48b4fb08080eb7bbc"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "3313c1c9d3ab7168084813e3b2f72095a6727c8e0b7106df8b83cdcbf623b3e0"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "3d6abf93d29a22f0a753b6912416c8f3eef4bfb2eee8a2b6d5afee62ed8d9ead"
+    sha256 cellar: :any_skip_relocation, sonoma:        "63e074b0de17ef809ec07fe19f765f85ba51805d34fd7612add347ff17265ffc"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "6d00e8a12ebe7a922495bb3ed892bc27f40b1784f20aceef441b2a67b4c003c7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0a09c30d2a63b3914170287fc55d5d293a089c4bf46d20172f98859d8a20f5fc"
   end
 
   depends_on "go" => :build
@@ -28,7 +27,7 @@ class Mcap < Formula
       system "make", "build", "VERSION=v#{version}"
       bin.install "bin/mcap"
     end
-    generate_completions_from_executable(bin/"mcap", "completion")
+    generate_completions_from_executable(bin/"mcap", shell_parameter_format: :cobra)
   end
 
   test do

@@ -1,8 +1,8 @@
 class GhcAT910 < Formula
   desc "Glorious Glasgow Haskell Compilation System"
   homepage "https://haskell.org/ghc/"
-  url "https://downloads.haskell.org/~ghc/9.10.2/ghc-9.10.2-src.tar.xz"
-  sha256 "55fd40a005575ac6b33ea928beda81e8c56ffea354b6ac474ee9f9911f23a8de"
+  url "https://downloads.haskell.org/~ghc/9.10.3/ghc-9.10.3-src.tar.xz"
+  sha256 "d266864b9e0b7b741abe8c9d6a790d7c01c21cf43a1419839119255878ebc59a"
   # We build bundled copies of libffi and GMP so GHC inherits the licenses
   license all_of: [
     "BSD-3-Clause",
@@ -19,20 +19,20 @@ class GhcAT910 < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "90bff9369a08cce9a666649dd21add3ec6876886c3da45f3f93127aa0fdbd5b8"
-    sha256 cellar: :any,                 arm64_sonoma:  "bc2fa358b98a3c49e698300acfb43fafad5fbfac0b34a37435664f142d677df8"
-    sha256 cellar: :any,                 arm64_ventura: "37d77b7b2697f54dc1b350a9177f060b539f547c9628048c90df0986f6339656"
-    sha256 cellar: :any,                 sonoma:        "a6db4da32e12152eafdf2ec8be9e9412a605f831c27124f401a35e502a1d0951"
-    sha256 cellar: :any,                 ventura:       "53983bf4a1c87f24cd6e456c73f361a56a5c02345dc3599c79e3f71b24baacfc"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "df93ff76aa8f2cbaf4a6c0798af4b561fd11ef4231d2faceba36c5b09d22a227"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6aa615af9a8ec3cd576670c6c1444f8fa8213fe88bb48d7121b37c1055625fcb"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_tahoe:   "030bfb684494c0b7f5d13dcf23ad531a529e8ec3ee27ed638a876f41f33fa485"
+    sha256 cellar: :any,                 arm64_sequoia: "772bc175945ab38b79bf88cb7d9d2ba028ae7c6cde1391671540f926f9008ff8"
+    sha256 cellar: :any,                 arm64_sonoma:  "1f2e1c66ef293b3deb66e3a244d9a4b9690dea30b905fa7609528877830fd072"
+    sha256 cellar: :any,                 sonoma:        "84afe9e1dab2daab8a716e161aa580a09b26d62ac7ebbdd4bde7e13ae480c1ca"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "fe1cd3d4f0d246f2c6d8e311a6cde3d6d5a4d99926baecc60565db68520188bd"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "af406c8bff2ccb59d78ea00dcdf56250359f2e0a20c2a02f2634c6fc36de3075"
   end
 
   keg_only :versioned_formula
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
-  depends_on "python@3.13" => :build
+  depends_on "python@3.14" => :build
   depends_on "sphinx-doc" => :build
   depends_on "xz" => :build
 
@@ -106,7 +106,12 @@ class GhcAT910 < Formula
     ENV["CC"] = ENV["ac_cv_path_CC"] = OS.linux? ? "cc" : ENV.cc
     ENV["CXX"] = ENV["ac_cv_path_CXX"] = OS.linux? ? "c++" : ENV.cxx
     ENV["LD"] = ENV["MergeObjsCmd"] = "ld"
-    ENV["PYTHON"] = which("python3.13")
+    ENV["PYTHON"] = which("python3.14")
+
+    # Workaround for https://gitlab.haskell.org/ghc/ghc/-/issues/26166
+    if DevelopmentTools.ld64_version >= "1221.4"
+      inreplace "rts/rts.cabal", /("-Wl,-undefined,dynamic_lookup)"/, "\\1,-ld_classic\""
+    end
 
     binary = buildpath/"binary"
     resource("binary").stage do
@@ -140,6 +145,8 @@ class GhcAT910 < Formula
       -j#{ENV.make_jobs}
       --prefix=#{prefix}
       --flavour=release
+      --docs=no-haddocks
+      --docs=no-sphinx-html
       --docs=no-sphinx-pdfs
     ]
     # Let hadrian handle its own parallelization

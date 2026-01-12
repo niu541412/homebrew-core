@@ -11,13 +11,13 @@ class Dnsmasq < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "482fb9095287d8a57943049c8eea8ea59f2c9f127b23e5c9820bcc79f514a0b9"
-    sha256 arm64_sonoma:  "0a155cd6f1100c05013a1522ef2cd49170d38cc17bbc8e6efe094a15d02a2dd8"
-    sha256 arm64_ventura: "cdab8f9171fdfdb0d3992f985bfa47f1e37a21ea8852b858dc99d3530fcdd90f"
-    sha256 sonoma:        "4aa45af1edb9037c600a7dfac19d606adf9ff99751868a21c69dfc3fbbd2aa3d"
-    sha256 ventura:       "00b9f8f1fa62a1e802697213e4f4a8efde894984a686246eca65d94184e7bfe4"
-    sha256 arm64_linux:   "d8dc8fbdd6b69cd8ecf6718792c5121065b4bf7cb06edc107a0de8683c92fc74"
-    sha256 x86_64_linux:  "c7ccd503b66d1e2096490ff52a0fb277fbc91ff7aa57c313fb1b3fdf531560ee"
+    rebuild 2
+    sha256 arm64_tahoe:   "1fc3abe9a474251aeb4979e50a9b70cf87948af082fa3e5f0254f713b0e95fdc"
+    sha256 arm64_sequoia: "b785296bd80d891b648da7927ace6803f604f43ea4612e74ef2fafd8a4dc31f6"
+    sha256 arm64_sonoma:  "ac9befb6d7fdf93f73600545580edd512d3f945698f9d4b335c602028f68e91c"
+    sha256 sonoma:        "bfefd73ce943255a2e67834d26f2e07ac02023ef9bfa3747969d035b9914a065"
+    sha256 arm64_linux:   "9dc2c044fc89c0163cd967ab4dc09ec9a756297cacd4c9a9eb3de8317a9aafc4"
+    sha256 x86_64_linux:  "34e0fc6ec9cdff68e1e5711f56f7e2a484c1cece80b1222e71e248c9c2509e83"
   end
 
   depends_on "pkgconf" => :build
@@ -49,15 +49,19 @@ class Dnsmasq < Formula
     system "make", "install", "PREFIX=#{prefix}"
 
     etc.install "dnsmasq.conf.example" => "dnsmasq.conf"
-  end
-
-  def post_install
     (var/"lib/misc/dnsmasq").mkpath
     (var/"run/dnsmasq").mkpath
     (etc/"dnsmasq.d/ppp").mkpath
     (etc/"dnsmasq.d/dhcpc").mkpath
     touch etc/"dnsmasq.d/ppp/.keepme"
     touch etc/"dnsmasq.d/dhcpc/.keepme"
+  end
+
+  def caveats
+    <<~EOS
+      On current macOS releases, `/etc/resolver/<domain>` resolver overrides do not work if the nameserver is `127.0.0.1` and dnsmasq is running on a non-53 port.
+      To use scoped resolver zones reliably, bind dnsmasq to a non-localhost IP (e.g., a loopback alias like 10.0.0.1) on port 53.
+    EOS
   end
 
   service do
@@ -67,6 +71,6 @@ class Dnsmasq < Formula
   end
 
   test do
-    system "#{sbin}/dnsmasq", "--test"
+    system sbin/"dnsmasq", "--test"
   end
 end

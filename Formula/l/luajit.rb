@@ -6,16 +6,16 @@
 class Luajit < Formula
   desc "Just-In-Time Compiler (JIT) for the Lua programming language"
   homepage "https://luajit.org/luajit.html"
-  # Update this to the tip of the `v2.1` branch at the start of every month.
+  # Update this to the tip of the `v2.1` branch.
   # Get the latest commit with:
   #   `git ls-remote --heads https://github.com/LuaJIT/LuaJIT.git v2.1`
   # This is a rolling release model so take care not to ignore CI failures that may be regressions.
-  url "https://github.com/LuaJIT/LuaJIT/archive/871db2c84ecefd70a850e03a6c340214a81739f0.tar.gz"
+  url "https://github.com/LuaJIT/LuaJIT/archive/707c12bf00dafdfd3899b1a6c36435dbbf6c7022.tar.gz"
   # Use the version scheme `2.1.timestamp` where `timestamp` is the Unix timestamp of the
   # latest commit at the time of updating.
   # `brew livecheck luajit` will generate the correct version for you automatically.
-  version "2.1.1753364724"
-  sha256 "ab3f16d82df6946543565cfb0d2810d387d79a3a43e0431695b03466188e2680"
+  version "2.1.1767980792"
+  sha256 "ac2defd1e9b4ab07ac0a52f2403318ffb0d54505b975dff0cfc49a927ab84d90"
   license "MIT"
   head "https://github.com/LuaJIT/LuaJIT.git", branch: "v2.1"
 
@@ -30,13 +30,12 @@ class Luajit < Formula
   no_autobump! because: :incompatible_version_format
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "f9a3a9c72e6bbe82bd9587813c6804de1e85bb87e70ecc524502a222291cafdc"
-    sha256 cellar: :any,                 arm64_sonoma:  "0572bf48468c4c3a3e6c5c7419d0fcd6022bfd426b12d1bc8c5ede6d2e1187ce"
-    sha256 cellar: :any,                 arm64_ventura: "d9c2c7fa133f65ac675ade63eb71320f3184d9020c849df1b0d0a8e13c9f46f0"
-    sha256 cellar: :any,                 sonoma:        "5e9cfd12ed12b75cca2cd454b1eaad50c733ba3162ea0b4b79920227faecca6d"
-    sha256 cellar: :any,                 ventura:       "138c74f5c169882ef0a794a4706b7587d39bdbe07e27efa2a080390eb5ea8823"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "3b10a0d67ca6aa79c181dbc225661ada0fc8baf904ce9d6a54e671830328d77e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "fea6222588a8363f21504b46ad51d3a636c0c981e322841c31b93437da124bd2"
+    sha256 cellar: :any,                 arm64_tahoe:   "2ec668b196136247b5060210f3d328385bdf3a27f8a539218f7a900b807ac717"
+    sha256 cellar: :any,                 arm64_sequoia: "00f53f7ab2c5f5c4a5319a1cfc60e169cce4a8db6ec0ee855a4d897266d69ee5"
+    sha256 cellar: :any,                 arm64_sonoma:  "5349645db6c23575b3eec8616b930197f20ba4a31957b074da5541061b3dacb0"
+    sha256 cellar: :any,                 sonoma:        "66d01f3b557ae5cdf902d00464b1ee89598eb6509dd9aafea8151c5f1c15f7f6"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "54fcccc12712e2e2b084c68c0019cbc3a926b99991fdb1bcc50084458c6f9836"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "be89d210027fc61d8370507a58c49bcdef07ad4eb58bac701e418d6c74b0c210"
   end
 
   def install

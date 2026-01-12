@@ -1,8 +1,8 @@
 class TailwindcssLanguageServer < Formula
   desc "LSP for TailwindCSS"
   homepage "https://github.com/tailwindlabs/tailwindcss-intellisense/tree/HEAD/packages/tailwindcss-language-server"
-  url "https://github.com/tailwindlabs/tailwindcss-intellisense/archive/refs/tags/v0.14.25.tar.gz"
-  sha256 "f07d66a945a45d824c593b46a8949d5daa6970cb6a961f1c57909e8a6d13e9d4"
+  url "https://github.com/tailwindlabs/tailwindcss-intellisense/archive/refs/tags/v0.14.29.tar.gz"
+  sha256 "50bd5f0fa99b055871165f950db704ce20b12291476d70ea957f96da132680ab"
   license "MIT"
 
   livecheck do
@@ -13,19 +13,29 @@ class TailwindcssLanguageServer < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "a9ac1973d306ab06989354353b1ec6f17412295eabae9a353870cfcfdfd2c635"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "a9ac1973d306ab06989354353b1ec6f17412295eabae9a353870cfcfdfd2c635"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "a9ac1973d306ab06989354353b1ec6f17412295eabae9a353870cfcfdfd2c635"
-    sha256 cellar: :any_skip_relocation, sonoma:        "a9ac1973d306ab06989354353b1ec6f17412295eabae9a353870cfcfdfd2c635"
-    sha256 cellar: :any_skip_relocation, ventura:       "a9ac1973d306ab06989354353b1ec6f17412295eabae9a353870cfcfdfd2c635"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "90b0b851ebbe242cb64bd34658a009d2fcea2707335dd885abf72ee7788f3ffc"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "90b0b851ebbe242cb64bd34658a009d2fcea2707335dd885abf72ee7788f3ffc"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "b1851593616dfc24f7d20fad69d25478fe3628dd23a5a046aa0d219300265998"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "b1851593616dfc24f7d20fad69d25478fe3628dd23a5a046aa0d219300265998"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "b1851593616dfc24f7d20fad69d25478fe3628dd23a5a046aa0d219300265998"
+    sha256 cellar: :any_skip_relocation, sonoma:        "b1851593616dfc24f7d20fad69d25478fe3628dd23a5a046aa0d219300265998"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "feaa7ab8e63b03b7d9294fde0183f0e297f0bdb7039e862c245635a7f197dd16"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "feaa7ab8e63b03b7d9294fde0183f0e297f0bdb7039e862c245635a7f197dd16"
   end
 
-  depends_on "pnpm@9" => :build
+  depends_on "pnpm" => :build
   depends_on "node"
 
+  # lockfile update
+  patch do
+    url "https://github.com/tailwindlabs/tailwindcss-intellisense/commit/6f19018d336ae1b72e124569dd3ee4f328df2fb6.patch?full_index=1"
+    sha256 "ea45bfe06cd0f89c790d465510408dd1adf4ce8364ed24d56c977b81c22bc635"
+  end
+
   def install
+    # Prevent pnpm from downloading another copy due to `packageManager` feature
+    (buildpath/"pnpm-workspace.yaml").append_lines <<~YAML
+      managePackageManagerVersions: false
+    YAML
+
     cd "packages/tailwindcss-language-server" do
       system "pnpm", "install", "--frozen-lockfile"
       system "pnpm", "run", "build"

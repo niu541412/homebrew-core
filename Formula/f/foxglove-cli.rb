@@ -1,19 +1,18 @@
 class FoxgloveCli < Formula
   desc "Foxglove command-line tool"
   homepage "https://github.com/foxglove/foxglove-cli"
-  url "https://github.com/foxglove/foxglove-cli/archive/refs/tags/v1.0.24.tar.gz"
-  sha256 "fbc7cb7665a7286f3f79455652ae45e97be5f17fa398bc240d9090ebdf31fd21"
+  url "https://github.com/foxglove/foxglove-cli/archive/refs/tags/v1.0.29.tar.gz"
+  sha256 "4a62cdec44de68b5aa0c90a5627babcb62404be0bf204ecb9967a033adf0faa9"
   license "MIT"
   head "https://github.com/foxglove/foxglove-cli.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "09224b62375fe4b4e4b3b9c7e89f965229e4299ec7a35a2ed4de745627a86acc"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "1154eea14e5102d46d4ae20778641bf433ca15fda3ae409d46fd44b965fb0a55"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "ae0c9cc662c36bf4994523e3ab3a7132efeb4ef9e5832c65a9a6846126ba269d"
-    sha256 cellar: :any_skip_relocation, sonoma:        "b838507fec19554422fe34e5bc313f685ed7209676b39ab3e63072295b613af4"
-    sha256 cellar: :any_skip_relocation, ventura:       "ca22912eadf73d7f1a916cd6b0f5e475e5984094fab0d72f2fbed1d8584cc2b6"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "e2e3d15396184172805786b5176a38e5c35a9a44cfd15787757e03abff169f05"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "107c2bf2c831c86b97afe942f398bde9d2dfe17d6c4fecbbda6ab983fa9d00e9"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "32aaf14f7e2285b537ffca5b93207e4c53a54f115e227bd4baa968ff4a313a49"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "432197db81e8205381b96e47d25df66555392cbd27ce0febda7d221c76ac9bf7"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "8f3400ba8ff19c71b8f73ee86251569489b58720dfe6e18d0d02101b3b7ac4a0"
+    sha256 cellar: :any_skip_relocation, sonoma:        "abb82d53f98f8eca215fc0117870abaadcb7051def536d78d3821377654d5e02"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "84585943329cbff1b9a9c7a7d24679b52bb0da2a198b31edd058e6aff955cfe0"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a6d31549e92a6d100243cadea8b175068a2b1ecc3e54e473bc21a20b63c6957d"
   end
 
   depends_on "go" => :build

@@ -1,18 +1,18 @@
 class Fzf < Formula
   desc "Command-line fuzzy finder written in Go"
   homepage "https://github.com/junegunn/fzf"
-  url "https://github.com/junegunn/fzf/archive/refs/tags/v0.65.0.tar.gz"
-  sha256 "766e989220453f4b7753a4e99732da5e8550ae3184b3580ffd0c957cabd557b0"
+  url "https://github.com/junegunn/fzf/archive/refs/tags/v0.67.0.tar.gz"
+  sha256 "da72936dd23045346769dbf233a7a1fa6b4cfe4f0e856b279821598ce8f692af"
   license "MIT"
   head "https://github.com/junegunn/fzf.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "6ccb9f330646341917b9f7a9d6f94c3e197a658cf34d8058238e1f9da3600171"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "6ccb9f330646341917b9f7a9d6f94c3e197a658cf34d8058238e1f9da3600171"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "6ccb9f330646341917b9f7a9d6f94c3e197a658cf34d8058238e1f9da3600171"
-    sha256 cellar: :any_skip_relocation, sonoma:        "1a61024e92bb39b8f4f3fefd070462095478479cf0b28ef75bbe3bd1cebdfd4d"
-    sha256 cellar: :any_skip_relocation, ventura:       "1a61024e92bb39b8f4f3fefd070462095478479cf0b28ef75bbe3bd1cebdfd4d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3b031e02b82952420acde5909eebcd1c133cf404560c116ca3187775d3b619aa"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "500afd6091b289afa9ab2cc88d3bccdd9ba5c47d267316a95a74e9dbe32af2ce"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "500afd6091b289afa9ab2cc88d3bccdd9ba5c47d267316a95a74e9dbe32af2ce"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "500afd6091b289afa9ab2cc88d3bccdd9ba5c47d267316a95a74e9dbe32af2ce"
+    sha256 cellar: :any_skip_relocation, sonoma:        "48b7ed06742a75bf050991cb89be475fe8bd70e99d1821dca637e0e5cddcda1f"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "ace29627cfcf99ca30b210298f920b10ffa6e2ff7e34f2949625a47234f96965"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e3f7246b9c58e21dc29690962edc0b4c2b976912f740f6f877c915bc903b1d2c"
   end
 
   depends_on "go" => :build
@@ -20,14 +20,12 @@ class Fzf < Formula
   uses_from_macos "ncurses"
 
   def install
+    ENV["CGO_ENABLED"] = OS.mac? ? "1" : "0"
     ldflags = %W[
       -s -w
       -X main.version=#{version}
-      -X main.revision=brew
+      -X main.revision=#{tap.user}
     ]
-
-    # FIXME: we shouldn't need this, but patchelf.rb does not seem to work well with the layout of Aarch64 ELF files
-    ldflags += ["-extld", ENV.cc] if OS.linux? && Hardware::CPU.arm?
 
     system "go", "build", *std_go_args(ldflags:)
     man1.install "man/man1/fzf.1", "man/man1/fzf-tmux.1"
@@ -54,6 +52,8 @@ class Fzf < Formula
   end
 
   test do
+    assert_match version.to_s, shell_output("#{bin}/fzf --version")
+
     (testpath/"list").write %w[hello world].join($INPUT_RECORD_SEPARATOR)
     assert_equal "world", pipe_output("#{bin}/fzf -f wld", (testpath/"list").read).chomp
   end

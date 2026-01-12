@@ -1,8 +1,8 @@
 class Gdal < Formula
   desc "Geospatial Data Abstraction Library"
   homepage "https://gdal.org/en/stable/"
-  url "https://github.com/OSGeo/gdal/releases/download/v3.11.3/gdal-3.11.3.tar.gz"
-  sha256 "54638f6990f84c16142d93c9daaafaf1eab0a6a61538162095c334de086ef91f"
+  url "https://github.com/OSGeo/gdal/releases/download/v3.12.1/gdal-3.12.1.tar.gz"
+  sha256 "266cbadf8534d1de831db8834374afd95603e0a6af4f53d0547ae0d46bd3d2d1"
   license "MIT"
   revision 1
 
@@ -12,13 +12,12 @@ class Gdal < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "fcc1e7b629cc76b1ae99af220f1fdc45c12446a951a61954bf60d75dd6cfbe04"
-    sha256 arm64_sonoma:  "05367a3626002446915ffd670d2cfa05015b3cc21f6cfdcda0f3f0d338f9e697"
-    sha256 arm64_ventura: "75c1c5907349da193b3d1f7177caf5042c2de916ca88986e7e688fd4e776f556"
-    sha256 sonoma:        "083b6919f07d4f3bf70c511ef7895e69cdad227cf753c813bcab82c2ce313e43"
-    sha256 ventura:       "bade8de85c45c25d229caaff6451cc1691bc961c5e9f029b9ff71be7d304e0fe"
-    sha256 arm64_linux:   "2d295741dbca9d9fbee5eec3c5fa1ca45cfe1d716c5c8f237b0d52e5799580c5"
-    sha256 x86_64_linux:  "178991505a8b47dfa9b99ab7b64b09cffe9765f498dd2de6f96c52ac5b21b7fa"
+    sha256 arm64_tahoe:   "844ea4e12cb613ed804d23d3214d3298cb14dfb13d5d8c226163f0a427e41a45"
+    sha256 arm64_sequoia: "d04a32aceedb0fb32de7b322e3c156cc8bf6f10b0235a3a94e303e784ad150f8"
+    sha256 arm64_sonoma:  "8afe531b9fa3e364b1be26000981f2163a9ffc3b302a6ff5fad71c82562fa4da"
+    sha256 sonoma:        "3adefd7229a79fa7d99955877f0bca4b8410a3dd3913b4560414c9f9632b6c6b"
+    sha256 arm64_linux:   "5da0d234589d53362f087ef3a95bddd781a340658e50d6c290d935a9bd156686"
+    sha256 x86_64_linux:  "c8015e5c4c402203bb9c061d1897189fe0c38ed73722a58a2e50662705ebffba"
   end
 
   head do
@@ -35,7 +34,6 @@ class Gdal < Formula
   depends_on "c-blosc"
   depends_on "cfitsio"
   depends_on "epsilon"
-  depends_on "expat"
   depends_on "freexl"
   depends_on "geos"
   depends_on "giflib"
@@ -65,8 +63,9 @@ class Gdal < Formula
   depends_on "pcre2"
   depends_on "poppler"
   depends_on "proj"
-  depends_on "python@3.13"
+  depends_on "python@3.14"
   depends_on "qhull"
+  depends_on "sfcgal"
   depends_on "sqlite"
   depends_on "unixodbc"
   depends_on "webp"
@@ -75,6 +74,7 @@ class Gdal < Formula
   depends_on "zstd"
 
   uses_from_macos "curl"
+  uses_from_macos "expat"
   uses_from_macos "zlib"
 
   on_macos do
@@ -89,11 +89,29 @@ class Gdal < Formula
   conflicts_with "avce00", because: "both install a cpl_conv.h header"
   conflicts_with "cpl", because: "both install cpl_error.h"
 
+  # Backport fix for poppler 26+ compatibility, remove in next release
+  # PR ref: https://github.com/OSGeo/gdal/pull/13664
+  patch do
+    url "https://github.com/OSGeo/gdal/commit/28a15cb76d26a27be96ab8b8bc8fcb52c153c3a9.patch?full_index=1"
+    sha256 "89171ad0d0e9edd531022011c59d1d0ae21910b4c69c44ab453c5722c82fe297"
+  end
+
   def python3
-    "python3.13"
+    "python3.14"
+  end
+
+  # Work around superenv to avoid mixing `expat` usage in libraries across dependency tree.
+  # Brew `expat` usage in Python has low impact as it isn't loaded unless pyexpat is used.
+  # TODO: Consider adding a DSL for this or change how we handle Python's `expat` dependency
+  def remove_brew_expat
+    env_vars = %w[CMAKE_PREFIX_PATH HOMEBREW_INCLUDE_PATHS HOMEBREW_LIBRARY_PATHS PATH PKG_CONFIG_PATH]
+    ENV.remove env_vars, /(^|:)#{Regexp.escape(Formula["expat"].opt_prefix)}[^:]*/
+    ENV.remove "HOMEBREW_DEPENDENCIES", "expat"
   end
 
   def install
+    remove_brew_expat if OS.mac? && MacOS.version < :sequoia
+
     site_packages = prefix/Language::Python.site_packages(python3)
     # Work around Homebrew's "prefix scheme" patch which causes non-pip installs
     # to incorrectly try to write into HOMEBREW_PREFIX/lib since Python 3.10.

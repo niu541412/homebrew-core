@@ -1,30 +1,28 @@
 class Gdb < Formula
   desc "GNU debugger"
   homepage "https://www.gnu.org/software/gdb/"
-  url "https://ftp.gnu.org/gnu/gdb/gdb-16.3.tar.xz"
-  mirror "https://ftpmirror.gnu.org/gdb/gdb-16.3.tar.xz"
-  sha256 "bcfcd095528a987917acf9fff3f1672181694926cc18d609c99d0042c00224c5"
+  url "https://ftpmirror.gnu.org/gnu/gdb/gdb-17.1.tar.xz"
+  mirror "https://ftp.gnu.org/gnu/gdb/gdb-17.1.tar.xz"
+  sha256 "14996f5f74c9f68f5a543fdc45bca7800207f91f92aeea6c2e791822c7c6d876"
   license "GPL-3.0-or-later"
   head "https://sourceware.org/git/binutils-gdb.git", branch: "master"
 
   no_autobump! because: :requires_manual_review
 
   bottle do
-    rebuild 1
-    sha256 arm64_sequoia: "86430d65b980c9b2f7bed6f6f0d20d9735b48f72a0edd435e7833fcd1a635c4b"
-    sha256 arm64_sonoma:  "b9a4d48e9eaac185639cad6e643b2006aa844e855eb91aa68f7acab9e5a2fa47"
-    sha256 arm64_ventura: "4e7be3bb2cf45fd603167877908faae6d6d08baf8ca118abd81ea2ac5b23087a"
-    sha256 sonoma:        "899a766e0055e46c29593e14f6b451ce9b88e851bde09a1fd020acdcd8077995"
-    sha256 ventura:       "c69b4edf3decec0ae65161625aa706e1320d70d6e57fa0ade1f90665fd01e08d"
-    sha256 arm64_linux:   "b426d4b79eb37d5b7ca4b920b4e89bb0a3829395c3d777f3f6d8517683578043"
-    sha256 x86_64_linux:  "39237eae583ff94cca2ebea1cc8a61688933603b9f51679fc0f20e4d8ae55f46"
+    sha256 arm64_tahoe:   "0a8a0ca274f7d119562044d9a3a7002c8b31a9103202b60e706ee1daed4a555a"
+    sha256 arm64_sequoia: "2a4e4dad528731ac3f73f1b256d721ef1a42e4108db79e983cee79544b89fa26"
+    sha256 arm64_sonoma:  "9ed402d364e859b1f3a5df659e51b59c9be6936dc4d634fed0ea67be1cdd8319"
+    sha256 sonoma:        "2b9027648d7f6ea38505fdadad50ba628115970a47a65b81274f13a451aea35f"
+    sha256 arm64_linux:   "6289743986eb0f3a00515faa95f716f39943197ba16a720702bd84f836c112ce"
+    sha256 x86_64_linux:  "49479941452f597d54bf01f710ad6c1abf8fc28a20c42adc3882e591517213b0"
   end
 
   depends_on "pkgconf" => :build
   depends_on "gmp"
   depends_on "mpfr"
   depends_on "ncurses" # https://github.com/Homebrew/homebrew-core/issues/224294
-  depends_on "python@3.13"
+  depends_on "python@3.14"
   depends_on "readline"
   depends_on "xz" # required for lzma support
   depends_on "zstd"
@@ -47,18 +45,10 @@ class Gdb < Formula
     depends_on "guile"
   end
 
-  fails_with :clang do
-    build 800
-    cause <<~EOS
-      probe.c:63:28: error: default initialization of an object of const type
-      'const any_static_probe_ops' without a user-provided default constructor
-    EOS
-  end
-
   def install
-    # Fix `error: use of undeclared identifier 'command_style'`
-    inreplace "gdb/darwin-nat.c", "#include \"cli/cli-cmds.h\"",
-                                  "#include \"cli/cli-cmds.h\"\n#include \"cli/cli-style.h\""
+    # Fix `error: use of undeclared identifier 'startup_with_shell'`
+    inreplace "gdb/darwin-nat.c", "#include \"inferior.h\"",
+                                  "#include \"inferior.h\"\n#include \"gdbsupport/common-inferior.h\""
 
     args = %W[
       --enable-targets=all
@@ -68,7 +58,7 @@ class Gdb < Formula
       --with-curses
       --with-expat
       --with-lzma
-      --with-python=#{which("python3.13")}
+      --with-python=#{which("python3.14")}
       --with-system-readline
       --with-system-zlib
       --with-zstd

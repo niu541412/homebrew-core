@@ -1,19 +1,19 @@
 class AwsNuke < Formula
   desc "Nuke a whole AWS account and delete all its resources"
   homepage "https://github.com/ekristen/aws-nuke"
-  url "https://github.com/ekristen/aws-nuke/archive/refs/tags/v3.56.2.tar.gz"
-  sha256 "d43ab2e77994e5c9ec19651d998624cb9e68408dc0fa31aab2e6e830910f6fde"
+  url "https://github.com/ekristen/aws-nuke/archive/refs/tags/v3.62.2.tar.gz"
+  sha256 "589c4a8a041d8e6325859e6de8bb72ed8d4f8fc940748493580c6373e2a97efb"
   license "MIT"
   head "https://github.com/ekristen/aws-nuke.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "105469d3f53925908e03a64036ebec65c1e716e30175ffc13db1159bae69a55a"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "105469d3f53925908e03a64036ebec65c1e716e30175ffc13db1159bae69a55a"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "105469d3f53925908e03a64036ebec65c1e716e30175ffc13db1159bae69a55a"
-    sha256 cellar: :any_skip_relocation, sonoma:        "ed3ca3a072681260466b067569769e708d23c9fe9a5e74fe451c9988383164f2"
-    sha256 cellar: :any_skip_relocation, ventura:       "ed3ca3a072681260466b067569769e708d23c9fe9a5e74fe451c9988383164f2"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "12358b18822236b3ba9e238d9804e9a5d65b5824b6c8d34349276d43bccf21c4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "022ce63a421ffc1d5b3aef7f7007e26b9cfdb5b472be612bad6cc23cec37108c"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "0752bc50fc3310b41e75c663ee7fff4b25762a94ed091c1c04659b71ca904f3e"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "0752bc50fc3310b41e75c663ee7fff4b25762a94ed091c1c04659b71ca904f3e"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "0752bc50fc3310b41e75c663ee7fff4b25762a94ed091c1c04659b71ca904f3e"
+    sha256 cellar: :any_skip_relocation, sonoma:        "e5c5939d7eb38628dbb9706ddcc862abb837f338ac4ca9cd08f2701691d27cab"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "0d6b55bf4d99f9e82739c5559f04ef18dd38f39b049f110f6c04eeeb9d4d1dd2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "654d8ea21b48c8b59b1c7646f01c33202cc292b6f1a4691cdb0ddc2e98247b7a"
   end
 
   depends_on "go" => :build
@@ -28,7 +28,7 @@ class AwsNuke < Formula
 
     pkgshare.install "pkg/config"
 
-    generate_completions_from_executable(bin/"aws-nuke", "completion")
+    generate_completions_from_executable(bin/"aws-nuke", shell_parameter_format: :cobra)
   end
 
   test do

@@ -1,40 +1,52 @@
 class Fedify < Formula
   desc "CLI toolchain for Fedify"
   homepage "https://fedify.dev/cli"
-  url "https://github.com/fedify-dev/fedify/archive/refs/tags/1.7.7.tar.gz"
-  sha256 "927b797cacdadd67a470a5ed4bef8371ef06dcdf0cb7e56e80f4063a4dcfeb8c"
+  url "https://github.com/fedify-dev/fedify/archive/refs/tags/1.10.0.tar.gz"
+  sha256 "2a567341bebf90a27ad9e2e15774538da0bb2734444c05545e4ae62f009093d8"
   license "MIT"
   head "https://github.com/fedify-dev/fedify.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "7df85269ee02f904761e2015e91f8ab8cbe15f00c6261bea593b8ab4700f9441"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "6cc2587819ff8af1c651e594e9615486a98b1f7d2a210a6231b87ebfdcf81c18"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "a909759f974c6f135c74b7ff47e5b5e45475c7ef0ef39155c3a67589abfaa946"
-    sha256                               sonoma:        "d0b1b6b32875db7cc5c14389e7d603562841e17cc17953ea87fbb7c1e537b8c6"
-    sha256                               ventura:       "95256b1a09479980840867dc5029a003ed80cb93856f695472150e2777ddecde"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "1ae3e7dad056b8ed6c98c384c7824215c03f92ced6ae8ee370f6ecfac84043e9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8473c9e8e4a43b4cc0e2f3c2a0e02a8ae6fdb8cfb3db1a611df95b16a2c5eec1"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "8b7179e7af4e4a58b670810c178dc3411c482185f64f48debeb53945aad54ebb"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "ebf72d9cbfd76b2ed7e117a72af7b05a710f9f890c8b60f99a2d0008d6fb2b39"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "1cd59514c90521138b6e99d9ba15c9ddfefcc4a3ce4ce1c4ad40276e9fc5bbf5"
+    sha256 cellar: :any_skip_relocation, sonoma:        "2a998198482565a62908cde5e5b4653fc77e975a0528709ece66c4f66a5629bb"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "e3fcb69cdcbc7b093ab73925b4dd2cc0abbaa32b89be722f044bb2893c692362"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a8df44de056aacd5393f27325fa2361e058348d8e37e0f511c438775288ee965"
   end
 
   depends_on "deno" => :build
 
-  # upstream pr ref, https://github.com/fedify-dev/fedify/pull/305
-  patch :DATA
+  on_linux do
+    # We use a workaround to prevent modification of the `fedify` binary
+    # but this means brew cannot rewrite paths for non-default prefix
+    pour_bottle? only_if: :default_prefix
+  end
 
   def install
-    # upstream bug report, https://github.com/fedify-dev/fedify/issues/303
-    odie "Remove `--no-check` workarounds" if build.stable? && version > "1.7.7"
-
     system "deno", "task", "codegen"
-    system "deno", "compile", "--allow-all", "--no-check", "--output=#{bin/"fedify"}", "cli/mod.ts"
+    system "deno", "compile", "--allow-all", "--output=#{bin/"fedify"}", "packages/cli/src/mod.ts"
     generate_completions_from_executable(bin/"fedify", "completions")
+
+    # FIXME: patchelf corrupts the ELF binary as Deno needs to find a magic
+    # trailer string `d3n0l4nd` at a specific location. This workaround should
+    # be made into a brew DSL to skip running patchelf.
+    if OS.linux? && build.bottle?
+      prefix.install bin/"fedify"
+      Utils::Gzip.compress(prefix/"fedify")
+    end
+  end
+
+  def post_install
+    if (prefix/"fedify.gz").exist?
+      system "gunzip", prefix/"fedify.gz"
+      bin.install prefix/"fedify"
+      (bin/"fedify").chmod 0755
+    end
   end
 
   test do
-    # Skip test on Linux CI due to environment-specific failures that don't occur in local testing.
-    # This test passes on macOS CI and all local environments (including Linux).
-    return if OS.linux? && ENV["HOMEBREW_GITHUB_ACTIONS"]
-
     version_output = shell_output "NO_COLOR=1 #{bin}/fedify --version"
     assert_equal "fedify #{version}", version_output.strip
 
@@ -43,34 +55,3 @@ class Fedify < Formula
     assert_equal "https://fosstodon.org/users/homebrew", actor.first["@id"]
   end
 end
-
-__END__
-diff --git a/fedify/deno.json b/fedify/deno.json
-index b3137ad..1d32f20 100644
---- a/fedify/deno.json
-+++ b/fedify/deno.json
-@@ -65,7 +65,7 @@
-     "!vocab/vocab.ts"
-   ],
-   "tasks": {
--    "codegen": "deno run --allow-read --allow-write --check codegen/main.ts vocab/ ../runtime/ > vocab/vocab.ts && deno fmt vocab/vocab.ts && deno cache vocab/vocab.ts && deno check vocab/vocab.ts",
-+    "codegen": "deno run --allow-read --allow-write --no-check codegen/main.ts vocab/ ../runtime/ > vocab/vocab.ts && deno fmt vocab/vocab.ts && deno cache vocab/vocab.ts && deno check vocab/vocab.ts",
-     "check-version": "deno run --allow-read=package.json scripts/check_version.ts && deno run ../cli/scripts/check_version.ts",
-     "sync-version": "deno run --allow-read=package.json --allow-write=package.json scripts/sync_version.ts && deno run --allow-read=../cli/deno.json --allow-write=../cli/deno.json ../cli/scripts/sync_version.ts",
-     "cache": {
-diff --git a/fedify/vocab/type.ts b/fedify/vocab/type.ts
-index 6be730b..5c25c15 100644
---- a/fedify/vocab/type.ts
-+++ b/fedify/vocab/type.ts
-@@ -89,7 +89,10 @@ export function getTypeId(
- export function getTypeId(
-   object: Object | Link | undefined | null,
- ): URL | undefined | null {
--  if (object == null) return object;
-+  // TODO: Deno 2.4.2's TypeScript doesn't properly narrow the type with `object == null` check,
-+  // so we need an explicit type assertion here. This should be revisited when upgrading
-+  // to newer versions that might fix this type narrowing issue.
-+  if (object == null) return object as undefined | null;
-   const cls = object.constructor as
-     & (new (...args: unknown[]) => Object | Link)
-     & {

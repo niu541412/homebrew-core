@@ -1,8 +1,8 @@
 class Kraken2 < Formula
   desc "Taxonomic sequence classification system"
   homepage "https://github.com/DerrickWood/kraken2"
-  url "https://github.com/DerrickWood/kraken2/archive/refs/tags/v2.1.6.tar.gz"
-  sha256 "5bbd79392ff7c530124986dfdfe126bf638477db94fb7a901ec2daf9261707f3"
+  url "https://github.com/DerrickWood/kraken2/archive/refs/tags/v2.17.1.tar.gz"
+  sha256 "4dc64ead045b5ae9180731c260046aa37b6642244be085a9ba9b15db78ab442d"
   license "MIT"
   head "https://github.com/DerrickWood/kraken2.git", branch: "master"
 
@@ -12,16 +12,16 @@ class Kraken2 < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "b732d36ce47d98141c8d428b132ebec7e8005692321ff2d4cecd2c4cf0039109"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "06ca8eba9fab9d0eecb9d9b37ece478ed2c9a54e1163b90f896b6a809002eadc"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "fd7c2282a9bb1ada0f2408901c5af731b581833e48e5e6657337f48dd963c84e"
-    sha256 cellar: :any_skip_relocation, sonoma:        "f7c71697836584e2c651c7dfc9420b0b72012fcf47c2990097f5f5c7531c50c5"
-    sha256 cellar: :any_skip_relocation, ventura:       "4acb1a0a318f21c6a821916580888395bc85839563015db2167fb32785dcfdfe"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "25d4ec13898868eadc4008393a1c3d7ef8c3b6bf34ef903a78bafd300de9f2c0"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2ca100381d28e5c0780b3cd4f765c895132d187a205a7345a3c6f880ab31cd82"
+    sha256 cellar: :any,                 arm64_tahoe:   "88c74f5190f608380ef3734d2ea3a919e6c032d4246a77ca88824b3eeb84d497"
+    sha256 cellar: :any,                 arm64_sequoia: "1c1a8512713c861ecd871579980f200943a6889ecf7313621e69907de3708b79"
+    sha256 cellar: :any,                 arm64_sonoma:  "5c6118db5d37cfacbb54d9d9837d778661da05dc344233e7221c4d6646b0c43b"
+    sha256 cellar: :any,                 sonoma:        "fdb2d185543598e8cfc9ba675295f609bace11cbf57fd1cc6f357fe729ce38dc"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "943cddb18d69c9c93b7adfeacfcd5d319b8dd0821a1ef49dc9761ffa87fcad5e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "067fe5546cd15caa776ee5ed5cc07372031f81897c6a8ce80cd7cb368929ebf8"
   end
 
-  depends_on "python@3.13"
+  depends_on "gperftools"
+  depends_on "python@3.14"
   depends_on "wget"
 
   uses_from_macos "perl"

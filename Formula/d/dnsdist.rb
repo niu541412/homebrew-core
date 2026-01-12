@@ -3,8 +3,8 @@ class Dnsdist < Formula
 
   desc "Highly DNS-, DoS- and abuse-aware loadbalancer"
   homepage "https://www.dnsdist.org/"
-  url "https://downloads.powerdns.com/releases/dnsdist-2.0.0.tar.xz"
-  sha256 "da30742f51aac8be7e116677cb07bc49fbea979fc5443e7e1fa8fa7bd0a63fe5"
+  url "https://downloads.powerdns.com/releases/dnsdist-2.0.2.tar.xz"
+  sha256 "3374eba65a5ca3cfb9fc59791c47e5035149fe521ccbbced5f834a17f45641bf"
   license "GPL-2.0-only"
 
   livecheck do
@@ -13,20 +13,18 @@ class Dnsdist < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "dedc86e6490fc2d3ee19848d21e710a0671b4b366effe81ad5e51a6d96e99640"
-    sha256 arm64_sonoma:  "2fc046179361176023daa6f76b78c1c8c3c88bb1aa16b30af292002d5a9882ef"
-    sha256 arm64_ventura: "08cb6165180a71956e32fbe05da5d0c8801a49fc6abc90a8f4d9780e988b5e0a"
-    sha256 sonoma:        "28e522c9c3c32bcda2eb114eca36a331a202906d9812a17e558b43ef0bd3cecf"
-    sha256 ventura:       "89bc47322c385ceaff2e135b7234e95bbba84e95d955be282fc0c6f73c81e7dd"
-    sha256 arm64_linux:   "098ee30431ee79b80458c5fbfe1e5bee902c0c8a2cdb15cc66174719357adaed"
-    sha256 x86_64_linux:  "6c0ab154479464328731732032552c402237e4f04a27c836c68aa2dcf825d423"
+    sha256 arm64_tahoe:   "fbee023f28414231a54fe396bcc08d5bb4e5ffa2a06a6272d781fb148f43567d"
+    sha256 arm64_sequoia: "7222dea3cfe65f938d4832ee1f5eb6c296f1e966045db4b1487239c78c5d3339"
+    sha256 arm64_sonoma:  "ce89109032eafc18beb5aecbdf7c2813d70f3631ac46a83db209d5fad764faa8"
+    sha256 sonoma:        "14b4c030de8c8aaac5576edb7dd283fa56072fbe2e0c5f13312ac3c7ae9a6713"
+    sha256 arm64_linux:   "01adc30a863af92cffac4ada15498e4bae8fd6e05da8c2700482be4081cf197a"
+    sha256 x86_64_linux:  "cfad2f9f9f79aa4f09c4c5cb93bb76f00218183b540e52d8b0feab38a30c5d42"
   end
 
   depends_on "boost" => :build
   depends_on "libyaml" => :build # for PyYaml
   depends_on "pkgconf" => :build
-  depends_on "python@3.13" => :build
-  depends_on "abseil"
+  depends_on "python@3.14" => :build
   depends_on "fstrm"
   depends_on "libnghttp2"
   depends_on "libsodium"
@@ -37,15 +35,21 @@ class Dnsdist < Formula
 
   uses_from_macos "libedit"
 
-  resource "PyYaml" do
-    url "https://files.pythonhosted.org/packages/54/ed/79a089b6be93607fa5cdaedf301d7dfb23af5f25c398d5ead2525b063e17/pyyaml-6.0.2.tar.gz"
-    sha256 "d584d9ec91ad65861cc08d42e834324ef890a082e591037abe114850ff7bbc3e"
+  resource "pyyaml" do
+    url "https://files.pythonhosted.org/packages/05/8e/961c0007c59b8dd7729d542c61a4d537767a59645b82a0b521206e1e25c2/pyyaml-6.0.3.tar.gz"
+    sha256 "d76623373421df22fb4cf8817020cbb7ef15c725b9d5e45f17e189bfc384190f"
   end
 
   def install
+    # Fix to error: use of undeclared identifier 'vinfolog'
+    inreplace "dnsdist-protobuf.cc", '#include "dnsdist-protobuf.hh"', "\\0\n#include \"dolog.hh\""
+
     venv = virtualenv_create(buildpath/"bootstrap", "python3")
     venv.pip_install resources
     ENV.prepend_path "PATH", venv.root/"bin"
+
+    # Avoid over-linkage to `abseil`.
+    ENV.append "LDFLAGS", "-Wl,-dead_strip_dylibs" if OS.mac?
 
     system "./configure", "--disable-silent-rules",
                           "--without-net-snmp",

@@ -1,19 +1,18 @@
 class SpotifyPlayer < Formula
   desc "Command driven spotify player"
   homepage "https://github.com/aome510/spotify-player"
-  url "https://github.com/aome510/spotify-player/archive/refs/tags/v0.20.7.tar.gz"
-  sha256 "8b4c7ec7855fb2af8862a1ca8818307f2befcb00c02e9e5da570b1a5b3b908c1"
+  url "https://github.com/aome510/spotify-player/archive/refs/tags/v0.21.3.tar.gz"
+  sha256 "1f7e42ebb340b7c83c0ab96a8ef21bce5acae9ef899ff9ecd377570fdd1f1dbe"
   license "MIT"
   head "https://github.com/aome510/spotify-player.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "210045e8f863c7d100461219ed45b1c3b0caba980c5eedf8f542aed5c7641083"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "bf3659ca36c30fb48d77c3ce6aafe7de790a9d8011f5293b142a11d9552e6db6"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "7004b7e3bbc15dc6b6a561b38b743a3108e54d8a327facaabe4a6b88fb01d39b"
-    sha256 cellar: :any_skip_relocation, sonoma:        "86a343468a6f7404ee0f7d83585a9aa32af3e249185fe816b95fe397b2f472ca"
-    sha256 cellar: :any_skip_relocation, ventura:       "e000b00a505e7b13dea4ca2f25bce54bb8264a0d015ef6286c737b69f89859f8"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "700fe9512323c9a1d2b6b8e0960b8a8ff5237d1d4a5dc7c4192590cbd62cf618"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b8ce09c6fba38661139cafe7aeddaf1e3809013f4668232ecc46d18b8d815f7d"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "53bd0d9e7b9c8addf705c01a80de51d3e732107dbe91837bd39b569aa5830a4f"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "323862c14999bdb786e1eb32117e925d9f4b56294267827d021b6226f5c9ff9c"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "5d4bf1f1dbf60abbe30b5b56657a9244f2f9ce74a401b3f7cc58a83d245d81b4"
+    sha256 cellar: :any_skip_relocation, sonoma:        "bc9ae5ed05e379bdff3d08c6ecced9b6dc61b2c81bda19277fbd7bb2186e1c24"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "971bea7084d2baf6dde28e72e6cbd67c818bd32707b11d5743ee32a346794775"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2f7df0bba6c7daaa41e3819407fc979116d459a156c03c6c30f6d74879a43f72"
   end
 
   depends_on "pkgconf" => :build
@@ -35,9 +34,10 @@ class SpotifyPlayer < Formula
   end
 
   test do
+    assert_match version.to_s, shell_output("#{bin}/spotify_player --version")
+
     cmd = "#{bin}/spotify_player -C #{testpath}/cache -c #{testpath}/config 2>&1"
     _, stdout, = Open3.popen2(cmd)
-    assert_match "No cached credentials found", stdout.gets("\n")
-    assert_match version.to_s, shell_output("#{bin}/spotify_player --version")
+    assert_match "https://accounts.spotify.com/authorize", stdout.gets("\n")
   end
 end

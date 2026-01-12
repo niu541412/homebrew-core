@@ -1,19 +1,18 @@
 class Skopeo < Formula
   desc "Work with remote images registries"
   homepage "https://github.com/containers/skopeo"
-  url "https://github.com/containers/skopeo/archive/refs/tags/v1.19.0.tar.gz"
-  sha256 "043e9f568440accf1aafca122a25c4d21441f16de49475192ec4abeef7430358"
+  url "https://github.com/containers/skopeo/archive/refs/tags/v1.21.0.tar.gz"
+  sha256 "f76eeddf697a3cc7a872e3077ab4d0fdbebe9f3c6171462e3e9feb84368b3fac"
   license "Apache-2.0"
-  revision 1
 
   bottle do
-    sha256 arm64_sequoia: "b7337fc7461fe07dd1c6e9c116407df06e03357aaa16dcc916bfea707fb1f24c"
-    sha256 arm64_sonoma:  "01e67815ba97eae7038de368dd93151bef22ecc9962f83e452003018ecdd65c0"
-    sha256 arm64_ventura: "8a39f2a48ee37ff54c03f2386d3c81d1b1a7f912037334aaac33568bdb333713"
-    sha256 sonoma:        "cda9aa991fb9e6e368e3ab073bd6314b6494537f0cf0fd7089af99c1c98d721f"
-    sha256 ventura:       "ebb9e29f52aa493183a234e57b7fda58d64bbf0b8c75b30e8b68e43d6642f5a5"
-    sha256 arm64_linux:   "1b49db712b8d4bbc91e5b2eb90887737629745555ff45676cfe5b5a926810511"
-    sha256 x86_64_linux:  "b9857fb374c271b293b29ef7d9303ca38fc71e98e78600ddacf5f3dd78e119be"
+    rebuild 1
+    sha256               arm64_tahoe:   "1878c928f210477b2ad9cee8a3039d5f009d0183e2d8bb80593fb572b2dc55b9"
+    sha256               arm64_sequoia: "c0326e1463f60304b1f2f17da53d3df06ef16b922f61773c4fdd73a020d30f53"
+    sha256               arm64_sonoma:  "84c516aabdbd1bd1ffa77e7889d39f950f83c8f0a6f4125fb1609d0851b5ee65"
+    sha256 cellar: :any, sonoma:        "0a7b4a8f3293b70ffd6bfdfc7a788005a6cd57616a69a635db5c943ed844cdf0"
+    sha256               arm64_linux:   "3c36ef5de51d21386ed8ede6c1ac229abfadba10b666366dc09bd96a59108355"
+    sha256               x86_64_linux:  "abf6d2bc1c9f4e180b00468e7ea272870042f0da2ce03cffac7dbd5e3244b85c"
   end
 
   depends_on "go" => :build
@@ -36,7 +35,7 @@ class Skopeo < Formula
       Utils.safe_popen_read("hack/libsubid_tag.sh").chomp,
     ].uniq
 
-    ldflag_prefix = "github.com/containers/image/v5"
+    ldflag_prefix = "go.podman.io/image/v5"
     ldflags = %W[
       -X main.gitCommit=
       -X #{ldflag_prefix}/docker.systemRegistriesDirPath=#{etc}/containers/registries.d
@@ -51,7 +50,7 @@ class Skopeo < Formula
     (etc/"containers").install "default-policy.json" => "policy.json"
     (etc/"containers/registries.d").install "default.yaml"
 
-    generate_completions_from_executable(bin/"skopeo", "completion")
+    generate_completions_from_executable(bin/"skopeo", shell_parameter_format: :cobra)
   end
 
   test do

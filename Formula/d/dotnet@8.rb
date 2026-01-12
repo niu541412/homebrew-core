@@ -2,8 +2,8 @@ class DotnetAT8 < Formula
   desc ".NET Core"
   homepage "https://dotnet.microsoft.com/"
   # Source-build tag announced at https://github.com/dotnet/source-build/discussions
-  url "https://github.com/dotnet/dotnet/archive/refs/tags/v8.0.18.tar.gz"
-  sha256 "4555e0151553750de384f235006a2290ae7a6fb64d423dc60740a6fbbca77fd3"
+  url "https://github.com/dotnet/dotnet/archive/refs/tags/v8.0.122.tar.gz"
+  sha256 "5ef94ebdc3f673aff23016038e0f8e9fd1a36ccb8ed89bb003c220d135a0fe96"
   license "MIT"
 
   livecheck do
@@ -12,12 +12,11 @@ class DotnetAT8 < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "eb46597577b4a984f5d475a922f2f5ddf7aee8ac767a891f73a729b61641dd0d"
-    sha256 cellar: :any,                 arm64_sonoma:  "1125890d5396110e7c21d219af6ae1ea6b420e71a19d9ce14995a523dd6f2a2b"
-    sha256 cellar: :any,                 arm64_ventura: "fc9cd3c63ce4cc67d1936a763a20ae6679a3e9c3b17b4cc31e09e97d04a46db0"
-    sha256 cellar: :any,                 ventura:       "9c9eff2cb9679903cd468575dbf8472ffab06c3a4ed1ec8a5e48faeac09e297f"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "81fefffd26ac224f1527f1159f7a76ed14601e9a60000b456fd5f255baff475a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "31b1a1bc0fb641661b300be2aebc80bedbd7df4d219cd50c36cae9d568e18336"
+    sha256 cellar: :any,                 arm64_tahoe:   "66d0594313c7ba5fc1e3744bd085079c7fd69d12da9deb7404042fb0f5571f7c"
+    sha256 cellar: :any,                 arm64_sequoia: "d8c81912a95a54a3e3cd36cfff8adceb5d4c312baca2fd3a2fb6e222e0d21334"
+    sha256 cellar: :any,                 arm64_sonoma:  "09150ddba17caf0a48cee30be2e4828dfe529758e41d673204ec73dc83e49ad3"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "87c0de05a539ec51f0b74209774ff81f99752380c4efa4ee264b75eb764197e7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c234163bd2a61d6aaf487de700be2a958d950384e377ba93a1e227b6e15341f4"
   end
 
   keg_only :versioned_formula
@@ -27,10 +26,10 @@ class DotnetAT8 < Formula
 
   depends_on "cmake" => :build
   depends_on "pkgconf" => :build
-  depends_on "icu4c@77"
+  depends_on "icu4c@78"
   depends_on "openssl@3"
 
-  uses_from_macos "python" => :build, since: :catalina
+  uses_from_macos "python" => :build
   uses_from_macos "krb5"
   uses_from_macos "zlib"
 
@@ -43,9 +42,15 @@ class DotnetAT8 < Formula
     depends_on "lttng-ust"
   end
 
+  on_intel do
+    # Building on Intel Sonoma or later results in stack overflow on restore.
+    # See https://github.com/Homebrew/homebrew-core/issues/197546
+    depends_on maximum_macos: [:ventura, :build]
+  end
+
   resource "release.json" do
-    url "https://github.com/dotnet/dotnet/releases/download/v8.0.18/release.json"
-    sha256 "a463583aa71c9c24e9fd666a8c23ae4c92d0d8cf0d386d2f0b53baf5ae9a0b3c"
+    url "https://github.com/dotnet/dotnet/releases/download/v8.0.122/release.json"
+    sha256 "a5ca063371dd8165cc0c4448e58e8c6d88bf9de7c6b634089e9349709e3f5d03"
 
     livecheck do
       formula :parent

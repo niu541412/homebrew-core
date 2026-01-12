@@ -3,18 +3,18 @@ class Mediamtx < Formula
   homepage "https://github.com/bluenviron/mediamtx"
   # need to use the tag to generate the version info
   url "https://github.com/bluenviron/mediamtx.git",
-      tag:      "v1.13.1",
-      revision: "0b901ade3e102fd63d78dc23d7e68c5d7ad04b19"
+      tag:      "v1.15.6",
+      revision: "62effa79efc7eb151434e3de6ef9cc2501c204a2"
   license "MIT"
   head "https://github.com/bluenviron/mediamtx.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "ac74414c98e5cf4b967cfb5046bf4c2e3f6d834fad1e17a9c414750ed81c3f9a"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "ac74414c98e5cf4b967cfb5046bf4c2e3f6d834fad1e17a9c414750ed81c3f9a"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "ac74414c98e5cf4b967cfb5046bf4c2e3f6d834fad1e17a9c414750ed81c3f9a"
-    sha256 cellar: :any_skip_relocation, sonoma:        "5e9049cad63de61f53cdd34f899f39b04b333418ac7b8cb11f6f41ea3f91c668"
-    sha256 cellar: :any_skip_relocation, ventura:       "5e9049cad63de61f53cdd34f899f39b04b333418ac7b8cb11f6f41ea3f91c668"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "961b7c3e7c4d46a7be54768ab75bf049f8c19c9b947248e797099935f9a46943"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "6bbb80ccae121e7e96aec8160bbdf28142791ed8ee1595eb70347ab63f916e65"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "6bbb80ccae121e7e96aec8160bbdf28142791ed8ee1595eb70347ab63f916e65"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "6bbb80ccae121e7e96aec8160bbdf28142791ed8ee1595eb70347ab63f916e65"
+    sha256 cellar: :any_skip_relocation, sonoma:        "16afb82fa94df991dd9dd4ac8ec386ba99430989dbf670366a3d4bcd614cd3c1"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "8720e2b7860ef4c907ac2bbb2beb6c981f474cdb1899b871150c43722ade61fa"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "bfc5934edb5a07540c07fae0c3a3d36edf446bca9f77b22815e6b32a3cdc4dd3"
   end
 
   depends_on "go" => :build
@@ -24,10 +24,8 @@ class Mediamtx < Formula
     system "go", "build", *std_go_args(ldflags: "-s -w")
 
     # Install default config
-    (etc/"mediamtx").install "mediamtx.yml"
-  end
+    pkgetc.install "mediamtx.yml"
 
-  def post_install
     (var/"log/mediamtx").mkpath
   end
 
@@ -46,9 +44,7 @@ class Mediamtx < Formula
     assert_match version.to_s, shell_output("#{bin}/mediamtx --help")
 
     mediamtx_api = "127.0.0.1:#{port}"
-    pid = fork do
-      exec({ "MTX_API" => "yes", "MTX_APIADDRESS" => mediamtx_api }, bin/"mediamtx", etc/"mediamtx/mediamtx.yml")
-    end
+    pid = spawn({ "MTX_API" => "yes", "MTX_APIADDRESS" => mediamtx_api }, bin/"mediamtx", pkgetc/"mediamtx.yml")
     sleep 3
 
     # Check API output matches configuration

@@ -1,18 +1,18 @@
 class ExtraCmakeModules < Formula
   desc "Extra modules and scripts for CMake"
-  homepage "https://api.kde.org/frameworks/extra-cmake-modules/html/index.html"
-  url "https://download.kde.org/stable/frameworks/6.16/extra-cmake-modules-6.16.0.tar.xz"
-  sha256 "e881c19e335beb82326e02d000766e7ee8324d7ce8583df0f5bfd4c26998fbfe"
+  homepage "https://api.kde.org/ecm/"
+  url "https://download.kde.org/stable/frameworks/6.22/extra-cmake-modules-6.22.0.tar.xz"
+  sha256 "cb83a69571b277c20b3a6567ef0b6f39bf29c43a619282bf4bb076feb4c609a6"
   license all_of: ["BSD-2-Clause", "BSD-3-Clause", "MIT"]
   head "https://invent.kde.org/frameworks/extra-cmake-modules.git", branch: "master"
 
   livecheck do
-    url "https://download.kde.org/stable/frameworks/"
+    url "https://kde.org/announcements/frameworks/#{version.major}/"
     regex(%r{href=.*?v?(\d+(?:\.\d+)+)/?["' >]}i)
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "d5510f2ac733f9956b757d8f296853fc1f5ca9f32c56d53fc46eb3d8b2d47141"
+    sha256 cellar: :any_skip_relocation, all: "7aa5e541a5edd326eb4a61c3989076d43a41128c66ea7bd3c234568e17e8360f"
   end
 
   depends_on "cmake" => [:build, :test]
@@ -27,10 +27,6 @@ class ExtraCmakeModules < Formula
     system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
-
-    # Ensure uniform bottles.
-    inreplace_files = %w[prefix.sh.cmake prefix.sh.fish.cmake].map { |f| share/"ECM/kde-modules"/f }
-    inreplace inreplace_files, "/usr/local", HOMEBREW_PREFIX
   end
 
   test do

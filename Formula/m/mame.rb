@@ -1,9 +1,9 @@
 class Mame < Formula
   desc "Multiple Arcade Machine Emulator"
   homepage "https://mamedev.org/"
-  url "https://github.com/mamedev/mame/archive/refs/tags/mame0278.tar.gz"
-  version "0.278"
-  sha256 "ca5f44a0ed834875f8420a75587706af210ff8c5922942509bc5bfef7d45c360"
+  url "https://github.com/mamedev/mame/archive/refs/tags/mame0284.tar.gz"
+  version "0.284"
+  sha256 "54c9ab67953247c655be47f06575fe3a156f75e2192cfd88e5b865f165057217"
   license "GPL-2.0-or-later"
   head "https://github.com/mamedev/mame.git", branch: "master"
 
@@ -18,15 +18,15 @@ class Mame < Formula
     end
   end
 
-  no_autobump! because: :requires_manual_review
+  no_autobump! because: :incompatible_version_format
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "dbad98208eb3d1cd8af7fb685d51cfa84dec21add1416238d30129ca261d2d12"
-    sha256 cellar: :any,                 arm64_sonoma:  "e9e670d5e80c3761710dc4a07d097cc90a8b485ffe9f54c129f2deadd757746a"
-    sha256 cellar: :any,                 arm64_ventura: "6ed3098e26096d4a64ebff25cfeedefe3d4f7e2a44dfc22934acc9274347ab35"
-    sha256 cellar: :any,                 sonoma:        "46a5c64de0a11af90a79f239c377e337438b1bd19cab141fc8754b1955bd27b2"
-    sha256 cellar: :any,                 ventura:       "12381f05f4e83aba9fb305bb1a285c134104f5983d2873c62a67a262d0cd53c0"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0b0573b26438af844d404a6db6d2227d39da35c1d693ff194ae336e0f973ac46"
+    sha256 cellar: :any,                 arm64_tahoe:   "ec2ff388f604db4925ab1d03261c5ea67a871b1310f1c827dad4459f03ae3531"
+    sha256 cellar: :any,                 arm64_sequoia: "b2ce6a81d34750f61d5106b59390e5b3ade95ad322a938e1d2557c1b03e339a8"
+    sha256 cellar: :any,                 arm64_sonoma:  "d70aebb422aa668ea266e96f23255cd600fe907dda8cd6bc5daf7b15590cbd70"
+    sha256 cellar: :any,                 sonoma:        "a254ef03b2cce41246de8cdf199e3ea709a6c49729cb14f46f82812f2751db70"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "3846f0de779d6a71c953678693520c17bc988346a837a116da57c9fc207eb7d8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "21ed205e73d7d79244855cb8ab74b4b4408b4add3b89da6e1951e43427d1a3e4"
   end
 
   # `asio`` v1.30.1 is bundled and it is not compatible with the `asio` formula
@@ -37,8 +37,6 @@ class Mame < Formula
   depends_on "sphinx-doc" => :build
   depends_on "flac"
   depends_on "jpeg-turbo"
-  # Need C++ compiler and standard library support C++17.
-  depends_on macos: :high_sierra
   depends_on "portaudio"
   depends_on "portmidi"
   depends_on "pugixml"
@@ -57,12 +55,12 @@ class Mame < Formula
     depends_on "libxi"
     depends_on "mesa"
     depends_on "pulseaudio"
-    depends_on "qt"
+    depends_on "qtbase"
     depends_on "sdl2_ttf"
   end
 
   def install
-    ENV["QT_HOME"] = Formula["qt"].opt_prefix if OS.linux?
+    ENV["QT_HOME"] = Formula["qtbase"].opt_prefix if OS.linux?
 
     # Cut sdl2-config's invalid option.
     inreplace "scripts/src/osd/sdl.lua", "--static", ""

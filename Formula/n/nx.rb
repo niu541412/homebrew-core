@@ -1,25 +1,25 @@
 class Nx < Formula
   desc "Smart, Fast and Extensible Build System"
   homepage "https://nx.dev"
-  url "https://registry.npmjs.org/nx/-/nx-21.3.10.tgz"
-  sha256 "2a9d0df0539d9819dd2630a3ff27e2e42ad6e96cb4eefa7b1b1c4201e28a02f8"
+  url "https://registry.npmjs.org/nx/-/nx-22.3.3.tgz"
+  sha256 "1a41938d356f18bc10909fcfe5ea39b4c978c2ee9198b4673e1d76b00c39132a"
   license "MIT"
+  version_scheme 1
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "a2ab0f39127a00066780345265048a1e34a8a2571c5bc6a3f40c96c7ee49ec36"
-    sha256 cellar: :any,                 arm64_sonoma:  "a2ab0f39127a00066780345265048a1e34a8a2571c5bc6a3f40c96c7ee49ec36"
-    sha256 cellar: :any,                 arm64_ventura: "a2ab0f39127a00066780345265048a1e34a8a2571c5bc6a3f40c96c7ee49ec36"
-    sha256 cellar: :any,                 sonoma:        "c2d8f1860030055580eb357986ddd95d01e84a32497a96eb0e54b8e8216a6dcb"
-    sha256 cellar: :any,                 ventura:       "c2d8f1860030055580eb357986ddd95d01e84a32497a96eb0e54b8e8216a6dcb"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "cc98abfc1fd3329931d90480a75c2bc814fc2d7150983818713715912c6a7e09"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4ea7c79a53cfe4d3da24ab0bec09109c6e9707cb0df3e7f314ad75121c46fd7f"
+    sha256 cellar: :any,                 arm64_tahoe:   "7e5ff0798721c7191140e053c2b423152cd948e61631eae5be84f0b4b7e77152"
+    sha256 cellar: :any,                 arm64_sequoia: "604f848c6aaf1489130d5cb4480f8b62ec5cea90ac511e8b152558b5b3868d59"
+    sha256 cellar: :any,                 arm64_sonoma:  "604f848c6aaf1489130d5cb4480f8b62ec5cea90ac511e8b152558b5b3868d59"
+    sha256 cellar: :any,                 sonoma:        "f7dce3959e53220c12f9556ff9641c9af3b4ee9791400a49c33ef50d44ee1974"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "e8fd0d5f15474290e4f86700458dc4ac89bde14c243333784ec04d5a703b3aee"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5513269b4849b65ef5233d8fd0c1b266333bb432528791df4b613bb0572b63a7"
   end
 
   depends_on "node"
 
   def install
     system "npm", "install", *std_npm_args
-    bin.install_symlink Dir["#{libexec}/bin/*"]
+    bin.install_symlink libexec.glob("bin/*")
   end
 
   test do

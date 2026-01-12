@@ -1,8 +1,8 @@
 class Postgrest < Formula
   desc "Serves a fully RESTful API from any existing PostgreSQL database"
   homepage "https://github.com/PostgREST/postgrest"
-  url "https://github.com/PostgREST/postgrest/archive/refs/tags/v13.0.4.tar.gz"
-  sha256 "515ea77c049ef69f4553940ef0f13018dc2b72792195ec11a2020fe8914ceab9"
+  url "https://github.com/PostgREST/postgrest/archive/refs/tags/v14.3.tar.gz"
+  sha256 "8dbf8eff7ff94b592a7efd5e9f9987675581298233b3b9d549ecf8fa598ce104"
   license "MIT"
   head "https://github.com/PostgREST/postgrest.git", branch: "main"
 
@@ -12,24 +12,29 @@ class Postgrest < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "0dd01a0cc4249c3ac70018a53267543cde8f8436541bda7f0d186ed64bf9884c"
-    sha256 cellar: :any,                 arm64_sonoma:  "3cfa32fe2d94aeff85ccd56cd3cec21c127b77d88db7f397e4901da3033eb138"
-    sha256 cellar: :any,                 arm64_ventura: "23b47b1ae739206477cd1f8fd0c22c57b0753af621d29952f039710db0044fbd"
-    sha256 cellar: :any,                 sonoma:        "1f4f9ed02529176f02fd489905dd72c5fc7d81a792ffe8742a8aa6222e395021"
-    sha256 cellar: :any,                 ventura:       "c0adc9b0b3dfb78e3aa82e400f64b8988967792251bcc789c7158b0de4dd101a"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "02951c7486b6b57bc5bca36501e060088cacd70e216d04e9855a946c2802d724"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "39c1e10ef5ba17d7650608e26e743094262fd0e2d3f3b45a7b13e5472089b717"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_tahoe:   "bffed42b459115c6831bdbde95eefa27cd94f1fb4c94c9d3517b6adedbe3d900"
+    sha256 cellar: :any,                 arm64_sequoia: "024fcad9eefff9dc23f9e2d3bc4dff2ad7a778ef25d72bd7d4df9c36178724b8"
+    sha256 cellar: :any,                 arm64_sonoma:  "8caabe204aa6435660cae20e86759c1299ec064784ec27c13291ffc37b18ca33"
+    sha256 cellar: :any,                 sonoma:        "832cc49b92ffd3add29a590f4933c55b7c7f2aca7f5fd449e902f39b56fe07a9"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "642805b73e8416c260f0dad1f6398b21d41625d534d16cf348763e9abfc55176"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d50bc9bb4fca7caca6e77f8952dc0b5983a6db852d7c3fa08a8c41055571ef48"
   end
 
   depends_on "cabal-install" => :build
-  depends_on "ghc@9.8" => :build # GHC 9.10 blocked by deps, e.g. https://github.com/protolude/protolude/issues/149
+  depends_on "ghc" => :build
+  depends_on "gmp"
   depends_on "libpq"
 
+  uses_from_macos "libffi"
   uses_from_macos "zlib"
 
   def install
+    # Workaround to build with GHC >= 9.10
+    args = ["--allow-newer=base,fuzzyset:text"]
+
     system "cabal", "v2-update"
-    system "cabal", "v2-install", "--ignore-project", *std_cabal_v2_args
+    system "cabal", "v2-install", "--ignore-project", *args, *std_cabal_v2_args
   end
 
   test do

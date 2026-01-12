@@ -1,34 +1,33 @@
 class Simdjson < Formula
   desc "SIMD-accelerated C++ JSON parser"
   homepage "https://simdjson.org"
-  url "https://github.com/simdjson/simdjson/archive/refs/tags/v3.13.0.tar.gz"
-  sha256 "07a1bb3587aac18fd6a10a83fe4ab09f1100ab39f0cb73baea1317826b9f9e0d"
+  url "https://github.com/simdjson/simdjson/archive/refs/tags/v4.2.4.tar.gz"
+  sha256 "6f942d018561a6c30838651a386a17e6e4abbfc396afd0f62740dea1810dedea"
   license "Apache-2.0"
   head "https://github.com/simdjson/simdjson.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "2d66e98360e79ddc9c6659aea66532e472b31186f83a9d6efe240065833ef1a0"
-    sha256 cellar: :any,                 arm64_sonoma:  "09d15daf7902bf3d9acaeb330213d8989ec42f6b47d18774805efabc8dcec563"
-    sha256 cellar: :any,                 arm64_ventura: "9f4c5211b7b231e77b6e582dfee0453b1125cecad9e5b0aaa79dab1bcce1961a"
-    sha256 cellar: :any,                 sonoma:        "2d2a463a26509e2b0fb17195ac08f6d64b1f3fd05d518360ae971d79d0fdf69d"
-    sha256 cellar: :any,                 ventura:       "0630a2e93b646ae610a63fcc362d444d5c28c43e1197c7fbcdcef3d128f93790"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "263c95f269c2bd4426e68ede98f171e0bce930258f40752bdd79dbdbae4c4694"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2ee079674bcc8c6c27dd8b812845eb9cacf84e0a8d406a068bed56a50b9dc0e6"
+    sha256 cellar: :any,                 arm64_tahoe:   "2da9015567b405320857b329c62fce8de561cd44339cc38a6bc8d50e4b995149"
+    sha256 cellar: :any,                 arm64_sequoia: "3f328ffe15e6752a84c8f7dc9871ec9da9b8f4893bc8d45697aec7a60305b098"
+    sha256 cellar: :any,                 arm64_sonoma:  "b15638002b457909a564b62e341332f140bb288a13b538e39675d24c76151d9a"
+    sha256 cellar: :any,                 sonoma:        "f9daa286ce22fb0e87c6db7b0b17b2a20b256c35559e0bc60260c01a3ed67ae1"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "176495725b7aacb62b5c08a1a720a9ae837af2b36fc456e7b23322b171253b29"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c61e174e7146d382083f2e27a3dd6e968abb9dfae5d0c8750d44e02e02b9ba03"
   end
 
   depends_on "cmake" => :build
 
   def install
-    system "cmake", "-S", ".", "-B", "build", *std_cmake_args, "-DBUILD_SHARED_LIBS=ON"
+    system "cmake", "-S", ".", "-B", "build",
+                    "-DBUILD_SHARED_LIBS=ON",
+                    "-DSIMDJSON_BUILD_STATIC_LIB=ON",
+                    *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
-    system "cmake", "-S", ".", "-B", "build", *std_cmake_args, "-DBUILD_SHARED_LIBS=OFF"
-    system "cmake", "--build", "build"
-    lib.install "build/libsimdjson.a"
   end
 
   test do
-    (testpath/"test.json").write "{\"name\":\"Homebrew\",\"isNull\":null}"
+    (testpath/"test.json").write({ name: "Homebrew", isNull: nil }.to_json)
     (testpath/"test.cpp").write <<~CPP
       #include <iostream>
       #include <simdjson.h>

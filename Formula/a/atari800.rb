@@ -1,9 +1,13 @@
 class Atari800 < Formula
   desc "Atari 8-bit machine emulator"
   homepage "https://atari800.github.io/"
-  url "https://github.com/atari800/atari800/releases/download/ATARI800_5_2_0/atari800-5.2.0-src.tgz"
-  sha256 "3874d02b89d83c8089f75391a4c91ecb4e94001da2020c2617be088eba1f461f"
   license "GPL-2.0-or-later"
+
+  stable do
+    url "https://github.com/atari800/atari800/releases/download/ATARI800_5_2_0/atari800-5.2.0-src.tgz"
+    sha256 "3874d02b89d83c8089f75391a4c91ecb4e94001da2020c2617be088eba1f461f"
+    depends_on "sdl12-compat"
+  end
 
   livecheck do
     url :stable
@@ -14,6 +18,7 @@ class Atari800 < Formula
   no_autobump! because: :requires_manual_review
 
   bottle do
+    sha256 cellar: :any,                 arm64_tahoe:    "e87acc86cd6e9fa170e8e29bf5c92e649b4af7de49faab2f25f4a573f655e380"
     sha256 cellar: :any,                 arm64_sequoia:  "82df74e82551f83d67d3a7fcba873d4bd62a0084bc96371fbcc16e760a80aac4"
     sha256 cellar: :any,                 arm64_sonoma:   "800ce7fc88004e578e5b69d573b4a3701245de0174fbd4a4494d37ad79c0f3d0"
     sha256 cellar: :any,                 arm64_ventura:  "07b1d045d2e043b5ffa9af66fa8680309ced19869b882783caa535a3895c85c5"
@@ -31,10 +36,10 @@ class Atari800 < Formula
     depends_on "autoconf" => :build
     depends_on "automake" => :build
     depends_on "libtool" => :build
+    depends_on "sdl2"
   end
 
   depends_on "libpng"
-  depends_on "sdl12-compat"
 
   uses_from_macos "zlib"
 

@@ -1,8 +1,8 @@
 class Soplex < Formula
   desc "Optimization package for solving linear programming problems (LPs)"
   homepage "https://soplex.zib.de/"
-  url "https://soplex.zib.de/download/release/soplex-7.1.5.0.tgz"
-  sha256 "318cb631a94407a539ced835d56c038a15ce095affaf33cff6f9310512c62bb8"
+  url "https://soplex.zib.de/download/release/soplex-8.0.0.tgz"
+  sha256 "7b69b4a3dad3c85bbffb30f1a7862e441b9c2984c063e60468d883df0ca0cf28"
   license "Apache-2.0"
 
   livecheck do
@@ -11,23 +11,23 @@ class Soplex < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "15c77602e5db1c983e11a1957d6e43efb00947507dddbec9b90154c72cc2a2ea"
-    sha256 cellar: :any,                 arm64_sonoma:  "edee40e0cda63129735bf2b3a024e550b3617e7fbbed903cf0d2e464b8371101"
-    sha256 cellar: :any,                 arm64_ventura: "2261b573255984583322cc6988df39fc295b93c3127a422f7524d86fcba3dab2"
-    sha256 cellar: :any,                 sonoma:        "8b2fc2fee625c90a061537d1ae43ac1c3610fb4ce7960523eca29ecc14277a34"
-    sha256 cellar: :any,                 ventura:       "b580c1f7f184ab963bb0d1f182e5b0244f21d933bf165fd5933eba881c1332e1"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "612d2bfe2cbf24c5f7e20982ab93fed65672c62c3d23f763ee77ef9d844996de"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "88fc19bc3d34b63529f6a8cc52f1697681b5ed0d818d9aba879ae3b9aedbccc9"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_tahoe:   "68059b60d46e80cf6c28d41c65190e6a0198421dcf3c2e7eeecf5c1890fc6e28"
+    sha256 cellar: :any,                 arm64_sequoia: "50ab905ad91e6ceff4c92fc4851705374cf20c928737ff83719681cd9cd1b1d2"
+    sha256 cellar: :any,                 arm64_sonoma:  "3238afa7cad64a68f290efaee60ccc9c2fd2f3ab60a3b1f258c24e091576c069"
+    sha256 cellar: :any,                 sonoma:        "78413d50a860c9da05d5b4504c57d7a8e1aeffba6c6109b3d5a1f37783eb8997"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "32d147f2be34f87c6654cebe431867e661840b5b45675b73ba1e8da41b2d6a9c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "dc647fe802d9c62b04aa8a7a5cc46f67b60b6291a4d511fc016919b3a5193336"
   end
 
   depends_on "cmake" => :build
   depends_on "boost"
   depends_on "gmp"
-  depends_on "tbb"
+  depends_on "mpfr"
   uses_from_macos "zlib"
 
   def install
-    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "-S", ".", "-B", "build", "-DPAPILO=OFF", *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
     pkgshare.install "src/example.cpp"
@@ -48,10 +48,14 @@ class Soplex < Formula
        x4
       End
     EOS
-    assert_match "problem is solved [optimal]", shell_output("#{bin}/soplex test.lp")
+    assert_match "problem is solved [optimal]",
+      shell_output("#{bin}/soplex test.lp")
+    assert_match "problem is solved [optimal]",
+      shell_output("#{bin}/soplex test.lp -f0 -o0 --readmode=1 --solvemode=2")
 
     system ENV.cxx, pkgshare/"example.cpp", "-std=c++14", "-L#{lib}", "-I#{include}",
-      "-L#{Formula["gmp"].opt_lib}", "-lsoplex", "-lz", "-lgmp", "-o", "test"
+      "-L#{Formula["gmp"].opt_lib}", "-L#{Formula["mpfr"].opt_lib}",
+      "-lsoplex", "-lz", "-lgmp", "-lmpfr", "-o", "test"
     system "./test"
   end
 end

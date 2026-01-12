@@ -1,19 +1,19 @@
 class Neovide < Formula
   desc "No Nonsense Neovim Client in Rust"
   homepage "https://neovide.dev/"
-  url "https://github.com/neovide/neovide/archive/refs/tags/0.15.1.tar.gz"
-  sha256 "9042678f2fa33a86662755b3d37f7b264ebbf28b9a5f021ca89c137faeeda37d"
+  url "https://github.com/neovide/neovide/archive/refs/tags/0.15.2.tar.gz"
+  sha256 "a8179c461d41277b41692edcae64af6d1c80454aafff608af0268c5abca95b5c"
   license "MIT"
+  revision 1
   head "https://github.com/neovide/neovide.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "c08fd54b4c43582bd0f6e043ca65f227a1de29a81208ca3507f8a86f7199c629"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "21d06535abaf109688ff50870ef514838a2d7fa800a239bc5af5285c6aa1043e"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "42d229838f126c492755560d495cd18dc78d817c8fb421a54896da2e6e5dd7d2"
-    sha256 cellar: :any_skip_relocation, sonoma:        "f6d3c2012e42e2eb885e8069a2a76d4ae2e2d6e83c329a1bab45f3e39ee256dc"
-    sha256 cellar: :any_skip_relocation, ventura:       "2707d9fa16541dc71a43476400e6e4a00c5fe65a6236dab9bbc0497ac2a51852"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "122cb9188977603d27d7afef9214c627f3a35f080cee94a93dc80f4cd05b314d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6547720ec1876a2f4a2fa9c4acb23eba4656c7f1a58698940e0b50e53d113306"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "3cd1ae192871c857c1bc7cfdc86dd0ed8d37e2bf468399297dfd2848f4897acd"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "7431a80ee963a89341748415cb400ca9c3b12b4c075e1c132a1249baf3cabade"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "9eb5a431e1f6433db53cf329ac0644741ee173328c47d6420f98771bb91c4215"
+    sha256 cellar: :any_skip_relocation, sonoma:        "97c3ca622612e86cd722364c4f1f369a46be1a0bf0ec37fc871e4e1a73488ba5"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "51f55132c2a8e2bd4a8147297727c1e9c10ce293822616fad48282b826067ffe"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e0ca27a7dc416660e96bc0830c909bbf25d83fa3ec5cf14516ee3d39afe89ac4"
   end
 
   depends_on "ninja" => :build
@@ -21,7 +21,7 @@ class Neovide < Formula
   depends_on "neovim"
 
   uses_from_macos "llvm" => :build
-  uses_from_macos "python" => :build, since: :catalina
+  uses_from_macos "python" => :build
 
   on_macos do
     depends_on "cargo-bundle" => :build
@@ -32,7 +32,7 @@ class Neovide < Formula
     depends_on "fontconfig"
     depends_on "freetype"
     depends_on "harfbuzz"
-    depends_on "icu4c@77"
+    depends_on "icu4c@78"
     depends_on "jpeg-turbo"
     depends_on "libpng"
     # `libxcursor` is loaded when using X11 (DISPLAY) instead of Wayland (WAYLAND_DISPLAY).
@@ -68,6 +68,7 @@ class Neovide < Formula
     # https://github.com/burtonageo/cargo-bundle/issues/118
     with_env(TERM: "xterm") { system "cargo", "bundle", "--release" }
     prefix.install "target/release/bundle/osx/Neovide.app"
+    rm bin/"neovide" # Remove the original binary first
     bin.write_exec_script prefix/"Neovide.app/Contents/MacOS/neovide"
   end
 

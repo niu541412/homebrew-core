@@ -1,28 +1,28 @@
 class Marksman < Formula
   desc "Language Server Protocol for Markdown"
   homepage "https://github.com/artempyanykh/marksman"
-  url "https://github.com/artempyanykh/marksman/archive/refs/tags/2024-12-18.tar.gz"
-  sha256 "7392822c196e6bef68fc1cef3a873aac79b27bf95478c2419ea4761651a6a957"
+  url "https://github.com/artempyanykh/marksman/archive/refs/tags/2025-12-13.tar.gz"
+  sha256 "7dcfb73538690d16950aa43a78aa58c1c144548851797e6088d3e76cd8a3f2ba"
   license "MIT"
+  revision 1
   head "https://github.com/artempyanykh/marksman.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "b9d34d209ff066fc670ef526ef4e1921698345ce643eeeb8e2d5dfff80bffbfc"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "abb4ee028058af4d4f464c83157d3f49783c96f2917fd671bdff11a8dcc3c6bd"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "bea0c8d782eb874e6a3f92dc47884e1e71afaba9741a6c705ef5790c5aadae1c"
-    sha256 cellar: :any_skip_relocation, ventura:       "5d4e38cbf29fea160804f0181cd6a000a877aad5b74222a0fc8f4be2aff1b452"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "490ef5bbb1269f76d14f8945e37f92b66adc1b3a8ee72d681b1f722484a7f659"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "50abec82ec280c5c3c35c770fe08bceeafc3bb20ba8e474843b15a49272907ff"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "6b1b0ec899f0fb55ed6b33d1d7487d45cfc8e6f18a2a2b9048186af27c3f5f0a"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "a44ba9aa0fc0e392d7254dd0638f206feb5ecf7bceca5687a6179e2e457c7dcf"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "4836611c44e4e6bcac6b494a95b3b8b948480694c448147b296562f00bc8ebd6"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "4fd0ef1fefc0e8ee9f13f3b3e6159cad5dbb743a9b473cc97a6660908f3b5d6a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2c4c838ccd87eacfb2d4a4ff2bafb4e756b0be3bae47db548009c0cc86b4cd1d"
   end
 
-  depends_on "dotnet@8"
+  depends_on "dotnet@9"
 
   uses_from_macos "zlib"
 
   def install
     ENV["DOTNET_CLI_TELEMETRY_OPTOUT"] = "true"
 
-    dotnet = Formula["dotnet@8"]
+    dotnet = Formula["dotnet@9"]
     args = %W[
       --configuration Release
       --framework net#{dotnet.version.major_minor}

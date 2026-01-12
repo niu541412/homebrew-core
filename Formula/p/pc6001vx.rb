@@ -2,22 +2,25 @@ class Pc6001vx < Formula
   desc "PC-6001 emulator"
   # http://eighttails.seesaa.net/ gives 405 error
   homepage "https://github.com/eighttails/PC6001VX"
-  url "https://eighttails.up.seesaa.net/bin/PC6001VX_4.2.13_src.tar.gz"
-  sha256 "2bfb323ce600dd886d9370fd0d53678df12fbcdf6ddb4510e7dfd0816fa22616"
+  url "https://eighttails.up.seesaa.net/bin/PC6001VX_4.3.0_src.tar.gz"
+  sha256 "a5536f7bd4931b2efcbdcd85707a9c6fa82a6b169773e6d13d74cea8107ee9cc"
   license "LGPL-2.1-or-later"
   head "https://github.com/eighttails/PC6001VX.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:  "769a5b2a309fd10d4ba770bd25182cf1e1c8dbf4d7af65a2de76e0563575e6d2"
-    sha256 cellar: :any,                 arm64_ventura: "39aadcf264bf130f7cb6144bd5f3a7e2ed9f25923e5973e5c36db26ae0e3d2f9"
-    sha256 cellar: :any,                 sonoma:        "59231b8d819f5913f4c2127052e9f23949d92176ed9d0319d6bc9f103c00363f"
-    sha256 cellar: :any,                 ventura:       "75434a1fb02b83e35412c8d21ed748736cfe67dc582a57efc23dded4a2af837c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "96c548cc860d660baa98713bf5750b6d1282bd9b9ff45f15343a262247a53ae6"
+    sha256 cellar: :any,                 arm64_tahoe:   "dc583a60c9740a5d32eef957ab29607d195bb5b3df2bd48cb2bbf9ca5cb94c89"
+    sha256 cellar: :any,                 arm64_sequoia: "bb18666eaecfe0cac52f38cfd62e96ca86a628e99da2d9c310013ba57fb593dd"
+    sha256 cellar: :any,                 arm64_sonoma:  "648bd5ff43a2628c375ac8719174794ab82a4576df6c8e976f75a0647216e627"
+    sha256 cellar: :any,                 sonoma:        "f2f06bb81db5a8c5f8282aec9ffda9c902613b22e19379a338d6f4c5480f6369"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "c07878d6f75097acff1e644c451829d8d46d9006362e5f781e17351a3bdd653d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6d484870b507bf1ee5c321595fcee9fa79ab68542d1f80edd4d8ff0864ff8a03"
   end
 
   depends_on "pkgconf" => :build
+  depends_on "qttools" => :build
   depends_on "ffmpeg"
-  depends_on "qt"
+  depends_on "qtbase"
+  depends_on "qtmultimedia"
   depends_on "sdl2"
 
   on_macos do

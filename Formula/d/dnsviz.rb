@@ -6,30 +6,32 @@ class Dnsviz < Formula
   url "https://files.pythonhosted.org/packages/59/91/aa152739fea36d4456fbcc71a26333ffef587526d722c10c281ab12a6a35/dnsviz-0.11.1.tar.gz"
   sha256 "203b1aa2e3aa09af415a96a0afc98eef4acf845ab8af57bf9f7569bd13161717"
   license "GPL-2.0-or-later"
-  revision 1
+  revision 2
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "caed4a974f2a1111d2a16262e543e453902627186de111aaa61ddb8032dd35a1"
-    sha256 cellar: :any,                 arm64_sonoma:  "1581924ecb9d02d792a419193ac546d9bd23cf9eebb6c24036057215bb426155"
-    sha256 cellar: :any,                 arm64_ventura: "5298cc8506b62c7a0ab4d777bac991fb323e4fb7aeb3df58c9cdbe30a5705758"
-    sha256 cellar: :any,                 sonoma:        "868cb74462053d69ac21313706d77ee77784e0f16bc1bfa9f4954c75f786d492"
-    sha256 cellar: :any,                 ventura:       "ce1d41d45c74b5fd99a9304908e6f2e0c1b96b6e4c1885092798125107c6af0b"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "a2bf1c4ac13ab45adc76818b196bc0a29cdb15bebb708418cfe1ebae5c851348"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0c57ff69d2c3f50edf3a9ae8c07f2d1d0ba7c0d72dc697c58b46363bb3c3895a"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_tahoe:   "58f6246102424efbe090d5d19a9ee66094d9b6794cc12d4c321e093171558cfc"
+    sha256 cellar: :any,                 arm64_sequoia: "4a27473e4697572460d0e073612a19627a6d5d8bb374989d9c894ff1ee144fe6"
+    sha256 cellar: :any,                 arm64_sonoma:  "66c3394a50ef771c0b3a1ffbd559a89f98b9d8d10dee5d91a9e9e68c5a0c34e7"
+    sha256 cellar: :any,                 sonoma:        "7fdd639b7c9e6c9357bac4dcc167fad445a2d57a594b0429e8937d28a97bad1f"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "4170e714f3e6b25e6e21016ab510bab81d34165aa4942c1db79f9e254bcd3fc4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4b30d7527b2c27dd84a700afffc2ea95bf978164453e96a48be58bd1d1e10fd9"
   end
 
   depends_on "bind" => [:build, :test]
   depends_on "pkgconf" => :build
   depends_on "swig" => :build
   depends_on "json-c" => :test
-  depends_on "cryptography"
+  depends_on "cryptography" => :no_linkage
   depends_on "graphviz"
   depends_on "openssl@3"
-  depends_on "python@3.13"
+  depends_on "python@3.14"
+
+  pypi_packages extra_packages: ["dnspython", "pygraphviz"]
 
   resource "dnspython" do
-    url "https://files.pythonhosted.org/packages/b5/4a/263763cb2ba3816dd94b08ad3a33d5fdae34ecb856678773cc40a3605829/dnspython-2.7.0.tar.gz"
-    sha256 "ce9c432eda0dc91cf618a5cedf1a4e142651196bbcd2c80e89ed5a907e5cfaf1"
+    url "https://files.pythonhosted.org/packages/8c/8b/57666417c0f90f08bcafa776861060426765fdb422eb10212086fb811d26/dnspython-2.8.0.tar.gz"
+    sha256 "181d3c6996452cb1189c4046c61599b84a5a86e099562ffde77d26984ff26d0f"
   end
 
   resource "pygraphviz" do

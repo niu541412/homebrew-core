@@ -1,19 +1,18 @@
 class WasmComponentLd < Formula
   desc "Linker for creating WebAssembly components"
   homepage "https://wasi.dev"
-  url "https://github.com/bytecodealliance/wasm-component-ld/archive/refs/tags/v0.5.15.tar.gz"
-  sha256 "d625ce7efba6b88fd0691d313681b660bb1c456945d812355936c7cd489912b1"
+  url "https://github.com/bytecodealliance/wasm-component-ld/archive/refs/tags/v0.5.20.tar.gz"
+  sha256 "1cae6e3e2dde201fa29aa7c1afae65c3955894a7a3ed9093d911464661146e08"
   license "Apache-2.0"
   head "https://github.com/bytecodealliance/wasm-component-ld.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "17e326a318cde70fc98e3e2a44d0fb84db3fc824be258eb2b64794aa3b9d5639"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "1ad24ad7f196c7ec3eed6c0500ae70aa31e8c90463737e468f06164e4f8d7f51"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "883b7cc81f97350e726af4623c9ca32c25b8334d7f84c285073a3c6c69cfb2f6"
-    sha256 cellar: :any_skip_relocation, sonoma:        "7ec2dfa735316204c130fd0da7fad44640fe2a0f8654304977791e9f1b31fd9f"
-    sha256 cellar: :any_skip_relocation, ventura:       "f0fbf440eaeec7b4f916233dafea6c28956636070c7c3fa4e4949f90412125ce"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "d409cc57606957146707dc72376cb63d5abb81ab8a81542565907df1288abd7f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "70ff1b6e3a39f89bc15d9c0d710f55d422ab17dce8dbe737acad6bd4efdc92ef"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "6712a328692965dfd68e28c679a63e2447a8f22ebd0a8edefb1191a07e2adbd9"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "3995070611f9bce9c1c7209d0f38165817eb08418845bf3bd6ffec6f255cb93d"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "909a42600129905a4f4782147fe1554d44db1f2b67e4df50571a5c1c76a27633"
+    sha256 cellar: :any_skip_relocation, sonoma:        "c765e31c7de67d0ad1caa02a3f7ce0a54ef6cd48d00b73dabc48725031fa4f8e"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "4ae6bd628796a1594fe8bba20ac10012f90d0e8c4b060c4c1147a55e962c0ea6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "99ae282a3c72c7cd7664d2f3d92b1e83d6f71431c98f676689a34cb375a6dc68"
   end
 
   depends_on "rust" => :build

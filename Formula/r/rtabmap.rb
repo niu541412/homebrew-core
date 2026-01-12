@@ -1,10 +1,10 @@
 class Rtabmap < Formula
   desc "Visual and LiDAR SLAM library and standalone application"
   homepage "https://introlab.github.io/rtabmap"
-  url "https://github.com/introlab/rtabmap/archive/refs/tags/0.22.1.tar.gz"
-  sha256 "3988ad84c409e39048a6b23317076d4ee1a0123e94a5ad6574db93647d7a80c0"
+  url "https://github.com/introlab/rtabmap/archive/refs/tags/0.23.1.tar.gz"
+  sha256 "8f0463d0b46418921da0503d5f991c7d0b8308b4926a069d9fe4ec811113502f"
   license "BSD-3-Clause"
-  revision 1
+  revision 2
   head "https://github.com/introlab/rtabmap.git", branch: "master"
 
   # Upstream doesn't create releases for all tagged versions, so we use the
@@ -17,10 +17,12 @@ class Rtabmap < Formula
   no_autobump! because: :requires_manual_review
 
   bottle do
-    sha256 arm64_sonoma:  "94fa474a0202a514bd4dbceb16ca6a60a88985280fdd4c77e8d51b93ef9b69ad"
-    sha256 arm64_ventura: "da521aa54d7c7e6aa49dd429d7f6da66af128d318a6f9caaf18866d4dc6ed3e4"
-    sha256 sonoma:        "f61bbcdbdbda04c53967af9514e2321a76343c2ce73e45633424c9825fae8392"
-    sha256 ventura:       "893193d0069565cba40dbf3c230de078076e689b5c722a51f58552b54acee7aa"
+    sha256                               arm64_tahoe:   "288d26f9845db235aba5a0f17ea178180ca93b1981d3a9b5bd89811376a6f70c"
+    sha256                               arm64_sequoia: "9028fab4e0e8e682e8747e50661cf26a6227ce0c46cb452d340e21da3fee92fc"
+    sha256                               arm64_sonoma:  "3280b7cfd33b46e1f99cd0dddac407c7d9d52bfef934a47f765c46cac11a6a20"
+    sha256                               sonoma:        "b53ab915a9d7e033988ca01a181c0a35c86fa78cc4cd25a97bb6b8aa6e358dff"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "97be7c3ad9515c465ade4b10bb69a186ef15bcb89ede036c917b302e50035e35"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1252c4ddd1c171cebdc39d126f99009f50844c6474fb3484fcd9ae27005e8cbe"
   end
 
   depends_on "cmake" => [:build, :test]
@@ -30,7 +32,8 @@ class Rtabmap < Formula
   depends_on "opencv"
   depends_on "pcl"
   depends_on "pdal"
-  depends_on "qt"
+  depends_on "qtbase"
+  depends_on "qtsvg"
   depends_on "sqlite"
   depends_on "vtk"
 
@@ -41,6 +44,7 @@ class Rtabmap < Formula
     depends_on "flann"
     depends_on "freetype"
     depends_on "glew"
+    depends_on "libfreenect"
     depends_on "libomp"
     depends_on "libpcap"
     depends_on "libpng"
@@ -49,6 +53,9 @@ class Rtabmap < Formula
   end
 
   def install
+    # Use eigen's cmake configuration to support eigen 5.0.0
+    rm "cmake_modules/FindEigen3.cmake"
+
     system "cmake", "-S", ".", "-B", "build", "-DCMAKE_INSTALL_RPATH=#{rpath}", *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"

@@ -1,33 +1,35 @@
 class QtUnixodbc < Formula
   desc "Qt SQL Database Driver"
   homepage "https://www.qt.io/"
-  url "https://download.qt.io/official_releases/qt/6.9/6.9.1/submodules/qtbase-everywhere-src-6.9.1.tar.xz"
-  sha256 "40caedbf83cc9a1959610830563565889878bc95f115868bbf545d1914acf28e"
+  url "https://download.qt.io/official_releases/qt/6.10/6.10.1/submodules/qtbase-everywhere-src-6.10.1.tar.xz"
+  mirror "https://qt.mirror.constant.com/archive/qt/6.10/6.10.1/submodules/qtbase-everywhere-src-6.10.1.tar.xz"
+  mirror "https://mirrors.ukfast.co.uk/sites/qt.io/archive/qt/6.10/6.10.1/submodules/qtbase-everywhere-src-6.10.1.tar.xz"
+  sha256 "5a6226f7e23db51fdc3223121eba53f3f5447cf0cc4d6cb82a3a2df7a65d265d"
   license any_of: ["GPL-2.0-only", "GPL-3.0-only", "LGPL-3.0-only"]
 
   livecheck do
-    formula "qt"
+    formula "qtbase"
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:  "008516acadded77ae23ec47e414b8e24272b7cc801b55b92a6ccafd6c79d16ae"
-    sha256 cellar: :any,                 arm64_ventura: "1d0bebc732a467039ccdaf09460fea2dbd3e9b33ef86f6a1eaafd7a446e6bab0"
-    sha256 cellar: :any,                 sonoma:        "49504baad6787bbf4cc4f0f3a5ca4434031a391188477bcb77e9f7b1644e79a7"
-    sha256 cellar: :any,                 ventura:       "43b22dcf309ae6caefd5d55d32e13ba7c76390d7957019abf6afa1c4a639509e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6faa277119ee47e8ac430a414c56a7d44d7e70e63497fcdce5eb471596688ecd"
+    sha256 cellar: :any,                 arm64_tahoe:   "7b994d24b498746e27638fe9cc3284798d14df639864625f0e1544573cac545a"
+    sha256 cellar: :any,                 arm64_sequoia: "9b59df08d01406da0ebde81f171e2365e9ae52e1f72124cdf5f02d409f8ff0e1"
+    sha256 cellar: :any,                 arm64_sonoma:  "2e14ad1c5408dd372c059ebfc7db997b11ac07a1085ec9c8439e8484b3f2c98e"
+    sha256 cellar: :any,                 sonoma:        "3d9b9249277898b1cb057fc909e41b0b72ae21885b9ed4bb0b11053948b331e7"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "7289b22267cc067540c65782b89d68f9e3d3c9bffc11a35af796f91439c2fea5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "9d91c415ea4d06e00bb7de5d9ba30d6090450bb50af33095c3a74e25a5bddb19"
   end
 
   depends_on "cmake" => [:build, :test]
+  depends_on "ninja" => :build
 
-  depends_on "qt"
+  depends_on "qtbase"
   depends_on "unixodbc"
 
-  conflicts_with "qt-libiodbc",
-    because: "qt-unixodbc and qt-libiodbc install the same binaries"
+  conflicts_with "qt-libiodbc", because: "both install the same binaries"
 
   def install
-    args = %W[
-      -DCMAKE_STAGING_PREFIX=#{prefix}
+    args = %w[
       -DFEATURE_sql_ibase=OFF
       -DFEATURE_sql_mysql=OFF
       -DFEATURE_sql_oci=OFF
@@ -36,37 +38,32 @@ class QtUnixodbc < Formula
       -DFEATURE_sql_sqlite=OFF
       -DQT_GENERATE_SBOM=OFF
     ]
+    args << "-DQT_NO_APPLE_SDK_AND_XCODE_CHECK=ON" if OS.mac?
 
-    system "cmake", "-S", "src/plugins/sqldrivers", "-B", "build", *args, *std_cmake_args
+    system "cmake", "-S", "src/plugins/sqldrivers", "-B", "build", "-G", "Ninja", *args, *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
   end
 
   test do
     (testpath/"CMakeLists.txt").write <<~CMAKE
-      cmake_minimum_required(VERSION #{Formula["cmake"].version})
+      cmake_minimum_required(VERSION 4.0)
       project(test VERSION 1.0.0 LANGUAGES CXX)
-      set(CMAKE_CXX_STANDARD 17)
-      set(CMAKE_CXX_STANDARD_REQUIRED ON)
-      set(CMAKE_AUTOMOC ON)
-      set(CMAKE_AUTORCC ON)
-      set(CMAKE_AUTOUIC ON)
       find_package(Qt6 COMPONENTS Core Sql REQUIRED)
-      add_executable(test
-          main.cpp
-      )
+      qt_standard_project_setup()
+      qt_add_executable(test main.cpp)
       target_link_libraries(test PRIVATE Qt6::Core Qt6::Sql)
     CMAKE
 
-    (testpath/"test.pro").write <<~EOS
-      QT       += core sql
-      QT       -= gui
-      TARGET = test
-      CONFIG   += console debug
-      CONFIG   -= app_bundle
+    (testpath/"test.pro").write <<~QMAKE
+      QT      += core sql
+      QT      -= gui
+      TARGET   = test
+      CONFIG  += console debug
+      CONFIG  -= app_bundle
       TEMPLATE = app
       SOURCES += main.cpp
-    EOS
+    QMAKE
 
     (testpath/"main.cpp").write <<~CPP
       #include <QCoreApplication>
@@ -74,7 +71,6 @@ class QtUnixodbc < Formula
       #include <cassert>
       int main(int argc, char *argv[])
       {
-        QCoreApplication::addLibraryPath("#{share}/qt/plugins");
         QCoreApplication a(argc, argv);
         QSqlDatabase db = QSqlDatabase::addDatabase("QODBC");
         assert(db.isValid());
@@ -82,7 +78,8 @@ class QtUnixodbc < Formula
       }
     CPP
 
-    system "cmake", "-S", ".", "-B", "build", "-DCMAKE_BUILD_TYPE=Debug"
+    ENV["LC_ALL"] = "en_US.UTF-8"
+    system "cmake", "-S", ".", "-B", "build"
     system "cmake", "--build", "build"
     system "./build/test"
 

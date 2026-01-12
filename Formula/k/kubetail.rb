@@ -1,8 +1,8 @@
 class Kubetail < Formula
   desc "Logging tool for Kubernetes with a real-time web dashboard"
   homepage "https://www.kubetail.com/"
-  url "https://github.com/kubetail-org/kubetail/archive/refs/tags/cli/v0.7.1.tar.gz"
-  sha256 "30abc5c597ede51d452b759fe1bf9164838ce672a424065cb6734bdff76d3298"
+  url "https://github.com/kubetail-org/kubetail/archive/refs/tags/cli/v0.10.1.tar.gz"
+  sha256 "87311cdba53c74c6c03a2d51c87491a2c656beb8187c1ef86cce3430a1faf5eb"
   license "Apache-2.0"
   head "https://github.com/kubetail-org/kubetail.git", branch: "main"
 
@@ -12,13 +12,13 @@ class Kubetail < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "2c338f3c7e5fed09e3db7489f3555c51fb861452a28c512c257b159aa6d9ec4f"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "617a3aeb4099ef80e057ccedbe8b63c22d3c2ab7d25241f02c894b0a11bbf96e"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "2858da571ef39c552ee135be646bbe7267b5ef494a0338ad8c14edbe4f73f765"
-    sha256 cellar: :any_skip_relocation, sonoma:        "55903cc3751b9f9f6073c2c60df88f93298ed53b6fcb6629aaf757aca0c6ce50"
-    sha256 cellar: :any_skip_relocation, ventura:       "26c7dae28f2d15ef246e1bbdee90c87a17efd8efa29072b9f149d96133328efc"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "27d013b7e7de1424bbd75a0b822889fa66bb0519ce428b70789a4f96d52ab7ec"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "21eb3bc4ced2bbf5d8e21715ac7e0e35b578b0d86127dd2fc8aec157ea4cdbf5"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "620792ab465f0707a318e1cd2129e27ed919a6a5bb2850c7b6f22e4b80fdf009"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "3a0333a453f77283f5bc88f0ae0086950b8ed0f78659c7812e4ff376293fb871"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "40905b20f5df1d0cff517507777e421de4067342b658c894e7326a1bd1c5b922"
+    sha256 cellar: :any_skip_relocation, sonoma:        "520af592cb2987e51ece834729345a728a6d39eff301468ea87fd697d4187238"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "77f3c6448afe6b34ba85fc650ea8427e4e1d6ff003fb474f5ca4a8a330f7bdfc"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a9c88bf00cfe3c8f05e621f5df273a11ae42fd4bfd69ed17795f4882f2f746f2"
   end
 
   depends_on "go" => :build
@@ -29,7 +29,7 @@ class Kubetail < Formula
   def install
     system "make", "build", "VERSION=#{version}"
     bin.install "bin/kubetail"
-    generate_completions_from_executable(bin/"kubetail", "completion")
+    generate_completions_from_executable(bin/"kubetail", shell_parameter_format: :cobra)
   end
 
   test do

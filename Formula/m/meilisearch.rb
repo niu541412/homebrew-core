@@ -1,8 +1,8 @@
 class Meilisearch < Formula
   desc "Ultra relevant, instant and typo-tolerant full-text search API"
   homepage "https://docs.meilisearch.com/"
-  url "https://github.com/meilisearch/meilisearch/archive/refs/tags/v1.15.2.tar.gz"
-  sha256 "7d74d8d79ec34bc03a818133358b5ca5b8ad455cc359d18bbab08c65e6b00dbc"
+  url "https://github.com/meilisearch/meilisearch/archive/refs/tags/v1.31.0.tar.gz"
+  sha256 "ea5099731516b6ec03142f06503c489dd93256f090efef08c6ddef54e5d56556"
   license "MIT"
 
   # There can be a notable gap between when a version is tagged and a
@@ -13,14 +13,15 @@ class Meilisearch < Formula
     strategy :github_latest
   end
 
+  no_autobump! because: :bumped_by_upstream
+
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "f171f1f818732721af4e0135531efc6814cada2778a09d82fdb304b565e8bc8f"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "f29ea4d0814368be3384df35c848762fc055e47a55380c78ad3e528b71aef12f"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "bfde3887bf43fac6a3d84a4b85206af29014fc3790d9cc92eff4f72bb55c7529"
-    sha256 cellar: :any_skip_relocation, sonoma:        "7e3e6a06e861abab57f96d42a2a2227a14ac2130ade11166910df734b7cee687"
-    sha256 cellar: :any_skip_relocation, ventura:       "f00e3066e067178fc6dccb0c2ecbc7bcb95dfabfc77179e5230e9b092b2faef4"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "add2d1ae43e11547f4f85062425e4c49f55ef412ac144e4575c875fd5d0e8cdf"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "55867964100ae19f324919173f2879717e01e17fa6714f938a665c9f8496db20"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "d14e76a7f13d47d7e6a16b6323a85e5267ac7d7de2adfcec64dd3457d47a5201"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "17c9e578d6d5ae447ec1cc5237d72b4895166cd752b03eb7b58f95afe60c65f6"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "3eaac30f36102f6eb2d39f702b37bb1a6a7f32fb05d6ea0ed1a35bc3e61ceeca"
+    sha256 cellar: :any_skip_relocation, sonoma:        "b8a2e1fdf88bbbd5e3c54efd3b70cd258fca541a11d08b1dd62c15650e91d272"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "79a0e3b08c2307ed9f6de8594300272edae566d19a91ff94fb6cc6f2cb1a5e74"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "39278b3378e13253845774c6df62b7917161ae9f84cc710bea0aef9e99a39e72"
   end
 
   depends_on "rust" => :build
@@ -39,10 +40,8 @@ class Meilisearch < Formula
 
   test do
     port = free_port
-    fork { exec bin/"meilisearch", "--http-addr", "127.0.0.1:#{port}" }
-    sleep_count = Hardware::CPU.arm? ? 3 : 10
-    sleep sleep_count
-    output = shell_output("curl -s 127.0.0.1:#{port}/version")
+    spawn bin/"meilisearch", "--http-addr", "127.0.0.1:#{port}"
+    output = shell_output("curl --silent --retry 5 --retry-connrefused 127.0.0.1:#{port}/version")
     assert_match version.to_s, output
   end
 end

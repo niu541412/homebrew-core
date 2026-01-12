@@ -3,11 +3,11 @@ class SyslogNg < Formula
 
   desc "Log daemon with advanced processing pipeline and a wide range of I/O methods"
   homepage "https://www.syslog-ng.com"
-  url "https://github.com/syslog-ng/syslog-ng/releases/download/syslog-ng-4.9.0/syslog-ng-4.9.0.tar.gz"
-  sha256 "6959545cb9aaa694e4514f472c69d6e5a908abb5161861a0082c917cdf7184e2"
+  url "https://github.com/syslog-ng/syslog-ng/releases/download/syslog-ng-4.10.1/syslog-ng-4.10.1.tar.gz"
+  sha256 "dea90cf1dc4b8674ff191e0032f9dabc24b291abfd7f110fd092ae5f21cde5d7"
   license all_of: ["LGPL-2.1-or-later", "GPL-2.0-or-later"]
-  revision 1
-  head "https://github.com/syslog-ng/syslog-ng.git", branch: "master"
+  revision 5
+  head "https://github.com/syslog-ng/syslog-ng.git", branch: "develop"
 
   livecheck do
     url :stable
@@ -15,13 +15,12 @@ class SyslogNg < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "15c2fe1057b562025cbf334b70fdce8c956545b139bd6c23b6c4272cf991f45c"
-    sha256 arm64_sonoma:  "f327bbb25c83b2881e5270ae4c068dafcc6c1538f00f9368440a6f8266638010"
-    sha256 arm64_ventura: "96ca24c63707e3929b4ba2946be5f871c33b7208557ca7b4b32d8256c9445dfc"
-    sha256 sonoma:        "1368d6a5b14e173d720d2a46f4e2306745fa2c63e8cbb92e65462e39553b451f"
-    sha256 ventura:       "44793208a2394089d8e92f14631910e271b37ad7e6d87a25b629b0100da23db8"
-    sha256 arm64_linux:   "9c2582799e1ce4338aae24eea28591ea3a7cb16e657ed9f52ca8aa7d8e0565e0"
-    sha256 x86_64_linux:  "9c1cfcab5adde514d1f1d24736557999d1a357bfb3eab7d3ecfda80646651291"
+    sha256 arm64_tahoe:   "23b61eba60896cc8e9c9f11e9c3b4f8ba176a511a52328392ecd3fba915173e4"
+    sha256 arm64_sequoia: "7ab52eb53d287c5c56ced089f011a6e72df6d8cf46916b8191da1c5109b146e4"
+    sha256 arm64_sonoma:  "6da5a21d8cabf2fcb4a4a55175c6086a31135b5cafd2b1d56120464cd4d7711b"
+    sha256 sonoma:        "16104c2999f4de04d7da9e44d1754ce03d1bceaf87676aa810afca67a82446e9"
+    sha256 arm64_linux:   "833df1e2a1bcf89d2dbb85c72bda7f2c3ed56e40e0d54d8984335fb9e840cb77"
+    sha256 x86_64_linux:  "adee11841dbafb0c5865c2fc38d443fb65c9be8038cde272a7a7b79d73013fbb"
   end
 
   depends_on "pkgconf" => :build
@@ -37,12 +36,12 @@ class SyslogNg < Formula
   depends_on "libnet"
   depends_on "libpaho-mqtt"
   depends_on "librdkafka"
-  depends_on "mongo-c-driver@1"
+  depends_on "mongo-c-driver"
   depends_on "net-snmp"
   depends_on "openssl@3"
   depends_on "pcre2"
   depends_on "protobuf"
-  depends_on "python@3.12"
+  depends_on "python@3.14"
   depends_on "rabbitmq-c"
   depends_on "riemann-client"
 
@@ -55,7 +54,10 @@ class SyslogNg < Formula
   def install
     ENV["VERSION"] = version
 
-    python3 = "python3.12"
+    # Workaround to allow Python 3.13+
+    inreplace "requirements.txt", "PyYAML==6.0.1", "PyYAML==6.0.2"
+
+    python3 = "python3.14"
     venv = virtualenv_create(libexec, python3)
     # FIXME: we should use resource blocks but there is no upstream pip support besides this requirements.txt
     # https://github.com/syslog-ng/syslog-ng/blob/master/requirements.txt
@@ -63,9 +65,9 @@ class SyslogNg < Formula
     system python3, "-m", "pip", "--python=#{venv.root}/bin/python",
                           "install", *args, "--requirement=#{buildpath}/requirements.txt"
 
-    system "./configure", *std_configure_args,
-                          "CXXFLAGS=-std=c++17",
-                          "--disable-silent-rules",
+    ENV.append "CXXFLAGS", "-std=c++17"
+
+    system "./configure", "--disable-silent-rules",
                           "--enable-all-modules",
                           "--sysconfdir=#{pkgetc}",
                           "--localstatedir=#{var/name}",
@@ -75,7 +77,8 @@ class SyslogNg < Formula
                           "--disable-example-modules",
                           "--disable-java",
                           "--disable-java-modules",
-                          "--disable-smtp"
+                          "--disable-smtp",
+                          *std_configure_args
     system "make", "install"
   end
 

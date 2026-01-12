@@ -1,20 +1,20 @@
 class Hbase < Formula
   desc "Hadoop database: a distributed, scalable, big data store"
   homepage "https://hbase.apache.org"
-  url "https://www.apache.org/dyn/closer.lua?path=hbase/2.6.3/hbase-2.6.3-bin.tar.gz"
-  mirror "https://archive.apache.org/dist/hbase/2.6.3/hbase-2.6.3-bin.tar.gz"
-  sha256 "c5d396994d85feea27bd9bc426598f815db09a4691da5cacbdbf90dc41822ffa"
+  url "https://www.apache.org/dyn/closer.lua?path=hbase/2.6.4/hbase-2.6.4-bin.tar.gz"
+  mirror "https://archive.apache.org/dist/hbase/2.6.4/hbase-2.6.4-bin.tar.gz"
+  sha256 "97e3d07ca9fa1f28f12597662e2eb4e3341fad1521314e3c6c5a26f3b2a27b0e"
   # We bundle hadoop-lzo which is GPL-3.0-or-later
   license all_of: ["Apache-2.0", "GPL-3.0-or-later"]
 
   bottle do
-    sha256 arm64_sequoia: "06384e13687b92cdd86018493fac160e50a7481e01351cbb3e82b4cb069500b0"
-    sha256 arm64_sonoma:  "228ee184adde9f474ccefb7d1ab9ef34c169d1a72f3f90727b18ca35f3a45e5f"
-    sha256 arm64_ventura: "0602ee8b314011812c3bdf5ddc44f2328705d6fb2e3ac916259b3d85254d4f72"
-    sha256 sonoma:        "4250b3dc10bc4bf4dcdfe9b1ba3fa031c4b0a3bc3e41c3ff63dc856b4a41c7e4"
-    sha256 ventura:       "d7450a59e01df807766ab4f04d0d6444e242e8b15d951926359be853022788ae"
-    sha256 arm64_linux:   "5bd30646a0fcb94e312ba8e19cf8e77ce53d12f490a08ae0e8ae971d8ea815e0"
-    sha256 x86_64_linux:  "5c8deb9f83ee3fc5d4e5a2cd9027b9d5ed6207e602e3d2deb89535d1d64c96a7"
+    rebuild 1
+    sha256 arm64_tahoe:   "65045300f54b57ee162251465c51580d32ff03d31f02ac60554919672f770d14"
+    sha256 arm64_sequoia: "9a0ffe45b7478045b48c80f86d955351b37db39ae17715f57ba322d95a9f844b"
+    sha256 arm64_sonoma:  "9f8675ca9d26afbc1b3c4c5c636224d63e7f80aa6e6ec0c2bd227a420d5d3ead"
+    sha256 sonoma:        "dac9cc595749907be623745468ac7a3d541e458ff8320d66d7435c2d5d97976a"
+    sha256 arm64_linux:   "901723f520445cfcd248a70bb9ed5e2936e6130320cf85253c1c730f6f84b668"
+    sha256 x86_64_linux:  "414d6d6b72366b325683087855608f4d31fb3005a1e4ed42e149785022bd6382"
   end
 
   depends_on "ant" => :build
@@ -33,13 +33,13 @@ class Hbase < Formula
     sha256 "aa8ddbb8b3f9e1c4b8cc3523486acdb7841cd97c002a9f2959c5b320c7bb0e6c"
 
     patch do
-      url "https://raw.githubusercontent.com/Homebrew/formula-patches/b89da3afad84bbf69deed0611e5dddaaa5d39325/hbase/build.xml.patch"
+      url "https://raw.githubusercontent.com/Homebrew/homebrew-core/1cf441a0/Patches/hbase/build.xml.patch"
       sha256 "d1d65330a4367db3e17ee4f4045641b335ed42449d9e6e42cc687e2a2e3fa5bc"
     end
 
     # Fix -flat_namespace being used on Big Sur and later.
     patch do
-      url "https://raw.githubusercontent.com/Homebrew/formula-patches/03cf8088210822aa2c1ab544ed58ea04c897d9c4/libtool/configure-pre-0.4.2.418-big_sur.diff"
+      url "https://raw.githubusercontent.com/Homebrew/homebrew-core/1cf441a0/Patches/libtool/configure-pre-0.4.2.418-big_sur.diff"
       sha256 "83af02f2aa2b746bb7225872cab29a253264be49db0ecebb12f841562d9a2923"
       directory "src/native"
     end
@@ -131,9 +131,7 @@ class Hbase < Formula
             <value>#{loopback}</value>
           </property>
       XML
-  end
 
-  def post_install
     (var/"log/hbase").mkpath
     (var/"run/hbase").mkpath
   end

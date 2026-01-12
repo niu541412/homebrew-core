@@ -1,8 +1,8 @@
 class TerraformLs < Formula
   desc "Terraform Language Server"
   homepage "https://github.com/hashicorp/terraform-ls"
-  url "https://github.com/hashicorp/terraform-ls/archive/refs/tags/v0.36.5.tar.gz"
-  sha256 "a5781fbc22c1a1efba5fc4122ede10e1b496dfc18175784cb3cc55b0bcc4c91f"
+  url "https://github.com/hashicorp/terraform-ls/archive/refs/tags/v0.38.3.tar.gz"
+  sha256 "97f5992c57d6cabba72b3ffb69f18c953001f273ee7f24d56603b601fd3f7a40"
   license "MPL-2.0"
   head "https://github.com/hashicorp/terraform-ls.git", branch: "main"
 
@@ -12,12 +12,12 @@ class TerraformLs < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "f5785d7c7a090b3e4df6662d4733b6ba517873f41d2a436dca0beab836ab9a7a"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "f5785d7c7a090b3e4df6662d4733b6ba517873f41d2a436dca0beab836ab9a7a"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "f5785d7c7a090b3e4df6662d4733b6ba517873f41d2a436dca0beab836ab9a7a"
-    sha256 cellar: :any_skip_relocation, sonoma:        "4898ac6529bd9235a9102425d44ee52734e93254834e24f94794049980b9404c"
-    sha256 cellar: :any_skip_relocation, ventura:       "4898ac6529bd9235a9102425d44ee52734e93254834e24f94794049980b9404c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1bdc0b2f075758ab78c9e95837f339a2cf3b0fc891dc9818184d6bb096987487"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "c7fa54d363c947a64e382b72a63e840b7d4aaead3a8ffbb68896e2d2b49cb7ce"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "c7fa54d363c947a64e382b72a63e840b7d4aaead3a8ffbb68896e2d2b49cb7ce"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "c7fa54d363c947a64e382b72a63e840b7d4aaead3a8ffbb68896e2d2b49cb7ce"
+    sha256 cellar: :any_skip_relocation, sonoma:        "4cfd5918d649e22df75a1e588b1fa88119214196ef25ab7d49726e9ddf28eac9"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "c42731d40f4ef1e90de257a1b542eeab596dee4c5123793d3c8a61ca3eb781c3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "15a7180b5a831c7a5253b69053462d9d7f43e571360aae2c6a1bfb0602f54b24"
   end
 
   depends_on "go" => :build
@@ -27,18 +27,14 @@ class TerraformLs < Formula
       -s -w
       -X main.rawVersion=#{version}+#{tap.user}
     ]
-    system "go", "build", *std_go_args(ldflags: ldflags.join(" "))
+    system "go", "build", *std_go_args(ldflags:)
   end
 
   test do
     port = free_port
-
-    pid = fork do
-      exec "#{bin}/terraform-ls serve -port #{port} /dev/null"
-    end
-    sleep 2
-
+    pid = spawn bin/"terraform-ls", "serve", "-port", port.to_s, File::NULL
     begin
+      sleep 2
       tcp_socket = TCPSocket.new("localhost", port)
       tcp_socket.puts <<~EOF
         Content-Length: 59

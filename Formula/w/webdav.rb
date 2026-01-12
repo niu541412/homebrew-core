@@ -1,20 +1,19 @@
 class Webdav < Formula
   desc "Simple and standalone WebDAV server"
   homepage "https://github.com/hacdias/webdav"
-  url "https://github.com/hacdias/webdav/archive/refs/tags/v5.8.0.tar.gz"
-  sha256 "fc9e5272c821f5a4ca98321195469a87a9ba8a8c696c0f4d3008407ee8150039"
+  url "https://github.com/hacdias/webdav/archive/refs/tags/v5.10.2.tar.gz"
+  sha256 "7bc1535e054e3909c203299eb949665fe1ae50d6b87fc26ea8e1eaa019965fd6"
   license "MIT"
   head "https://github.com/hacdias/webdav.git", branch: "main"
 
-  no_autobump! because: :requires_manual_review
-
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "baf72b71abacfc241a374cb784db63779bed55040b4dec593d8fe4c35177331b"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "baf72b71abacfc241a374cb784db63779bed55040b4dec593d8fe4c35177331b"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "baf72b71abacfc241a374cb784db63779bed55040b4dec593d8fe4c35177331b"
-    sha256 cellar: :any_skip_relocation, sonoma:        "061895843ab8e5c0174f3456a265eeda0cdaf3a94509a6db1c5d86848910d6db"
-    sha256 cellar: :any_skip_relocation, ventura:       "061895843ab8e5c0174f3456a265eeda0cdaf3a94509a6db1c5d86848910d6db"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ecf0b783e2adc344c36b94769f905517878de854f8eb4929238dbb1985284ac1"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "ae1bd9347cac2636204fea1d640dae22494a7286d1803a9e471e563de6335462"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "ae1bd9347cac2636204fea1d640dae22494a7286d1803a9e471e563de6335462"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "ae1bd9347cac2636204fea1d640dae22494a7286d1803a9e471e563de6335462"
+    sha256 cellar: :any_skip_relocation, sonoma:        "878b1ef609d7a81c2f17e07bb286562abbb3e7c9f41a4e7bf66b690c1c6b6e93"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "1386ad2a86ab7e82433f14009f78bd1e0789b7a5ba81c4a38d0dddb2acca71c7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "aa211edf9a4f41a9d41549b1dc81fe61eee588f2bded6ed82b12a066985e4ad4"
   end
 
   depends_on "go" => :build
@@ -23,7 +22,7 @@ class Webdav < Formula
     ldflags = "-s -w -X github.com/hacdias/webdav/v5/cmd.version=#{version}"
     system "go", "build", *std_go_args(ldflags:)
 
-    generate_completions_from_executable(bin/"webdav", "completion")
+    generate_completions_from_executable(bin/"webdav", shell_parameter_format: :cobra)
   end
 
   test do

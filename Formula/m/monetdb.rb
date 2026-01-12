@@ -1,8 +1,8 @@
 class Monetdb < Formula
   desc "Column-store database"
   homepage "https://www.monetdb.org/"
-  url "https://www.monetdb.org/downloads/sources/Mar2025/MonetDB-11.53.3.tar.xz"
-  sha256 "23e1f6a73ac721298f9b611f18930b8ceda34c6f497a4e458034b7131660c070"
+  url "https://www.monetdb.org/downloads/sources/Dec2025/MonetDB-11.55.1.tar.xz"
+  sha256 "a5848beef0908ee5b4477beb66a9fa72ee1ab8d5bb4eec5cafcc3fa9dc32b299"
   license "MPL-2.0"
   head "https://www.monetdb.org/hg/MonetDB", using: :hg
 
@@ -14,13 +14,13 @@ class Monetdb < Formula
   no_autobump! because: :requires_manual_review
 
   bottle do
-    sha256 arm64_sequoia: "92579b5419866811ca88e4ee4d03dac2850756ca79de954dea65c9d859f1b8ee"
-    sha256 arm64_sonoma:  "76c21dace99d0c7183e29a23e22347b2bd58d5e0538cab00dd94681ffd68d9c1"
-    sha256 arm64_ventura: "ddd6364ddb2ee11232a1d4e166b3fa068a02738fc615378ff6e2b5540a6ec887"
-    sha256 sonoma:        "d6066e9bd909f4afa9a98f4230bcdf0c7d62a5aa702d2017877cb4de7fdf986f"
-    sha256 ventura:       "f347fb8324a90053e83520a520fcd91995cc8a426a54485d8a9f5140e642760a"
-    sha256 arm64_linux:   "493a56abb54f14e25905f9d73fa276af7ca8afd9953c5a236ba513b544b3518b"
-    sha256 x86_64_linux:  "9245ff70b7bbfee8da7c1607154aaa930b5d34a4dd89a9216c6f0842b3813d21"
+    rebuild 1
+    sha256 arm64_tahoe:   "088ee9cc35814652e59b13eb0e8be109b2cc48054684670233e6103450dce94e"
+    sha256 arm64_sequoia: "217891c7ccab24f60e2668c49742b2a6c65b0040d7a6d3b35b01d017a22d2d1c"
+    sha256 arm64_sonoma:  "6b68ffafb0d7dcc1dfacb33dadc151eb55c6d6f7dfee7592c55d532e2222f9fb"
+    sha256 sonoma:        "74235d4b82a8b2e4a0f01dc6c54252ab487f46e2432d372301f2e33ab312a6f0"
+    sha256 arm64_linux:   "863a28ebac90f2fa1fd5c25e0a1b03f6aaeb8a9c978dac4b00a75c49e20d896c"
+    sha256 x86_64_linux:  "511467df6002ea0e9b6266e99f29d49947daa4d202f3309a96723eb62fb00054"
   end
 
   depends_on "bison" => :build # macOS bison is too old
@@ -28,7 +28,7 @@ class Monetdb < Formula
   depends_on "pkgconf" => :build
   depends_on "lz4"
   depends_on "openssl@3"
-  depends_on "pcre"
+  depends_on "pcre2"
   depends_on "readline" # Compilation fails with libedit
   depends_on "xz"
 

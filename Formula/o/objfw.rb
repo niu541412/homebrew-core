@@ -1,8 +1,8 @@
 class Objfw < Formula
   desc "Portable, lightweight framework for the Objective-C language"
   homepage "https://objfw.nil.im/"
-  url "https://objfw.nil.im/downloads/objfw-1.3.2.tar.gz"
-  sha256 "8148df0d55d1a3218fe9965144b5c3ee2a7f4d8e43e430a6107e294043872cab"
+  url "https://objfw.nil.im/downloads/objfw-1.4.3.tar.gz"
+  sha256 "0e987c82bd482a957360a1cd7e8d14716442f9bfba68f58fef9b81750db301d9"
   license "LGPL-3.0-only"
   head "https://git.nil.im/ObjFW/ObjFW.git", branch: "main"
 
@@ -12,13 +12,12 @@ class Objfw < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "beae7540863a1bd426dc471cf9c2673344008fd266edd41b9a103ab7e10b6141"
-    sha256 arm64_sonoma:  "43829254ef245340617d632f201caac594c76b81c0ec1907c554d0e0509a86db"
-    sha256 arm64_ventura: "321bd53c3b72dc7783866636035f70c7243a900fdca2094739c03a0fc9df7cfd"
-    sha256 sonoma:        "daf32fc7c8401967220ae43d63702c8bad70da6df970c3cd25c306aed93d8a7a"
-    sha256 ventura:       "78a1f38e646712a0368a178c537b6842f38512a1dd68341fd7a56020f73f74e9"
-    sha256 arm64_linux:   "ee605e9810975310d29f96a2b3652d056d3f5959e09551acb0c6547b71242e9e"
-    sha256 x86_64_linux:  "3006257b454f839712b9b53634178d3b60926962e4db04acc54719fa724f7e29"
+    sha256 arm64_tahoe:   "6099b2b9e1aff62ec0057f299526962da4f23a34bc97d595000e88c78ca18533"
+    sha256 arm64_sequoia: "411e5b68c097560a34664b72b3cd3dc953019a8ab380580213bdd5050dbbd358"
+    sha256 arm64_sonoma:  "99710a499b27253dddb817226f91132fb1ea1ce8ddac9e7a86e5a68ad51ba80b"
+    sha256 sonoma:        "99e1c866289d7bf8647b1ca4c756025dd13a498997818f88838e8e43d15008a8"
+    sha256 arm64_linux:   "4ca7c40f85b9d1769d10d73bad6baaae58128100afff66660161c550f3802ffc"
+    sha256 x86_64_linux:  "87802f9fa389c765f53745fe07307291d2e0c34412a228ea1136f30c3a8f071a"
   end
 
   depends_on "autoconf" => :build
@@ -63,7 +62,7 @@ index 3ec1cc5c..c0c31cac 100644
  			FRAMEWORK_LDFLAGS_INSTALL_NAME='-Wl,-install_name,@executable_path/Frameworks/$$out/$${out%.framework}'
  		], [
 -			FRAMEWORK_LDFLAGS_INSTALL_NAME='-Wl,-install_name,@executable_path/../Frameworks/$$out/$${out%.framework}'
-+			FRAMEWORK_LDFLAGS_INSTALL_NAME='-Wl,-install_name,${prefix}/Library/Frameworks/$$out/$${out%.framework}'
++			FRAMEWORK_LDFLAGS_INSTALL_NAME='-Wl,-install_name,@loader_path/../../../$$out/$${out%.framework}'
  		])
  
  		AC_SUBST(FRAMEWORK_LDFLAGS)

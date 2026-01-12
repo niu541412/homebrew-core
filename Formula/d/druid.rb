@@ -1,9 +1,9 @@
 class Druid < Formula
   desc "High-performance, column-oriented, distributed data store"
   homepage "https://druid.apache.org/"
-  url "https://dlcdn.apache.org/druid/33.0.0/apache-druid-33.0.0-bin.tar.gz"
-  mirror "https://archive.apache.org/dist/druid/33.0.0/apache-druid-33.0.0-bin.tar.gz"
-  sha256 "5ee5ddbcc2273834af8a18dd173b2a04b9a911cb7ce516279db605788abd7d79"
+  url "https://dlcdn.apache.org/druid/35.0.1/apache-druid-35.0.1-bin.tar.gz"
+  mirror "https://archive.apache.org/dist/druid/35.0.1/apache-druid-35.0.1-bin.tar.gz"
+  sha256 "2df51edc0d97d4f0019088131d62e6409f37eac1dd7178b461ff13fb5e5448cc"
   license "Apache-2.0"
 
   livecheck do
@@ -12,7 +12,7 @@ class Druid < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "6142abfc9a042da4990f758ac9e284b7f59ede3e94dc30e85a7fc357d06ba917"
+    sha256 cellar: :any_skip_relocation, all: "526dbda2ff468e86b039ebe5b44cbdc7724d346e40ac6aa3b4cb9293e621fc91"
   end
 
   depends_on "zookeeper" => :test
@@ -58,9 +58,7 @@ class Druid < Formula
     Pathname.glob("#{bin}/*.sh") do |file|
       mv file, bin/"druid-#{file.basename}"
     end
-  end
 
-  def post_install
     %w[
       druid/hadoop-tmp
       druid/indexing-logs
@@ -70,6 +68,20 @@ class Druid < Formula
       druid/task
     ].each do |dir|
       (var/dir).mkpath
+    end
+
+    # Reduce bottle and install size by hardlinking duplicate JARs
+    # TODO: Move logic to brew DSL
+    libexec.glob("**/*.jar").each_with_object({}) do |jar, jars_hash|
+      next if !jar.file? || jar.symlink?
+
+      found_jar = jars_hash[jar.basename.to_s]
+      if found_jar.nil?
+        jars_hash[jar.basename.to_s] = jar
+      elsif found_jar.stat.ino != jar.stat.ino && compare_file(found_jar, jar)
+        rm(jar)
+        jar.make_link(found_jar)
+      end
     end
   end
 
@@ -81,15 +93,15 @@ class Druid < Formula
 
     system Formula["zookeeper"].opt_bin/"zkServer", "start"
     begin
-      pid = fork { exec bin/"druid-broker.sh", "start" }
+      pid = spawn bin/"druid-broker.sh", "start"
       sleep 40
-      output = shell_output("curl -s http://localhost:8082/status")
-      assert_match "version", output
     ensure
       system bin/"druid-broker.sh", "stop"
       # force zookeeper stop since it is sometimes still alive after druid-broker.sh finishes
       system Formula["zookeeper"].opt_bin/"zkServer", "stop"
       Process.wait pid
     end
+
+    assert_match "All servers have been synced successfully at least once.", (testpath/"broker.log").read
   end
 end

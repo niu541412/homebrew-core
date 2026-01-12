@@ -3,16 +3,16 @@ class Auditwheel < Formula
 
   desc "Auditing and relabeling cross-distribution Linux wheels"
   homepage "https://github.com/pypa/auditwheel"
-  url "https://files.pythonhosted.org/packages/26/a0/8d998628f1d899420a621fcd7b46825cb96f23b5b52c2b93f4f814ae9c59/auditwheel-6.4.2.tar.gz"
-  sha256 "b7a61afc9183b6b5c661de59ca586f9c7200445a409c58cdf2049d6f71636d51"
+  url "https://files.pythonhosted.org/packages/7b/ed/342df5a75589103d72402dcdd88d7b8cc2df338fbc39042ce1b3ac008960/auditwheel-6.6.0.tar.gz"
+  sha256 "277f3b315ad0b04df0a2be2d126c3fd39930bc265df0f9589d78c970ff06f52b"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "043e7c2153195b76fa1d2387813a9217c57399f7ab31273641e64ba3027b95a4"
+    sha256 cellar: :any_skip_relocation, all: "55ab9c5eceea9c8b091e8f9522f260544e886a1473fe1ee655cfd1c06ba4decf"
   end
 
   depends_on :linux
-  depends_on "python@3.13"
+  depends_on "python@3.14"
 
   resource "packaging" do
     url "https://files.pythonhosted.org/packages/a1/d4/1fc4078c65507b51b96ca8f8c3ba19e6a61c8253c72794544580a7b6c24d/packaging-25.0.tar.gz"

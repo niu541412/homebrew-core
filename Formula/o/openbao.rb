@@ -2,8 +2,8 @@ class Openbao < Formula
   desc "Provides a software solution to manage, store, and distribute sensitive data"
   homepage "https://openbao.org/"
   url "https://github.com/openbao/openbao.git",
-      tag:      "v2.3.1",
-      revision: "e3cdbbde8eb48fb7ae92b1d34afb63012e805233"
+      tag:      "v2.4.4",
+      revision: "4bfd70723d4f9b82be00e87b8c018ac661dd9b99"
   license "MPL-2.0"
   head "https://github.com/openbao/openbao.git", branch: "main"
 
@@ -13,13 +13,13 @@ class Openbao < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "f843906679903c21a0c35d638a6dcca92f0b7e3dc316bb0d85f93ea452e619cd"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "94e7637c77a92f68298d6d0d749ac595a773c487061573d180c446fa70e987be"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "6ea071b41242875fcae6c5400907b6dccc47764c148a44d41d9f21cae0877f77"
-    sha256 cellar: :any_skip_relocation, sonoma:        "93bd2c3b0322ffa33609323441f33dbdab2f6d7feeb0f43af55c9b72549e8b59"
-    sha256 cellar: :any_skip_relocation, ventura:       "31ad64268a5054f74109ebd7f13f369485b1644db52328a677797e22215e4d4e"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "9b497cacf9142908e7e336c4fba7cd2a8274dc427a4b43202e1d25b5f72a57a5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "fee2e9e46c465fb69d283d79e86b66fe922327d360dcd3a6d1d7dd990d77144d"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "8999fa214ae6d762b4a220a4f50962446163fe41b1fee27b219a24654efa5397"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "f68a8e8b14b413aa61647add948f8012222f7b11a33be605bfaf62c1610fac79"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "82e7b1d677857025887ba8d7e27295705b53589927a88b1cfcd671ca5d064d1c"
+    sha256 cellar: :any_skip_relocation, sonoma:        "170749bba9981bcee3d88ce4e73fc6a4edbcd22c0d0abccc580d548e2f44b99e"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "e16e7abfa3a9107c25dd26b0d5d0361bd1e25278f75e5ab96a1235d012338c29"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8fde949f5478f711a4a67dfaf406e3081b6cec60f42e789f53fdf1cb1cad779f"
   end
 
   depends_on "go" => :build
@@ -29,9 +29,24 @@ class Openbao < Formula
   conflicts_with "bao", because: "both install `bao` binaries"
 
   def install
-    ENV.prepend_path "PATH", Formula["node@22"].opt_libexec/"bin" # for npm
-    system "make", "bootstrap", "static-dist", "dev-ui"
-    bin.install "bin/bao"
+    # Build ui assets
+    cd "ui" do
+      ENV.prepend_path "PATH", Formula["node@22"].opt_libexec/"bin" # for npm
+      system "yarn", "install", "--immutable"
+      system "yarn", "build"
+    end
+
+    # Bootstrap go modules
+    system "go", "generate", "-tags", "tools", "tools/tools.go"
+
+    ldflags = %W[
+      -s -w
+      -X github.com/openbao/openbao/version.fullVersion=#{version}
+      -X github.com/openbao/openbao/version.GitCommit=#{Utils.git_head}
+      -X github.com/openbao/openbao/version.BuildDate=#{time.iso8601}
+    ]
+    tags = %w[testonly ui]
+    system "go", "build", *std_go_args(ldflags:, tags:, output: bin/"bao")
   end
 
   service do
@@ -50,6 +65,7 @@ class Openbao < Formula
     pid = spawn bin/"bao", "server", "-dev"
     sleep 5
     system bin/"bao", "status"
+
     # Check the ui was properly embedded
     assert_match "User-agent", shell_output("curl #{addr}/robots.txt")
   ensure

@@ -1,23 +1,20 @@
 class Goredo < Formula
   desc "Go implementation of djb's redo, a Makefile replacement that sucks less"
   homepage "http://www.goredo.cypherpunks.su/"
-  url "http://www.goredo.cypherpunks.su/download/goredo-2.6.4.tar.zst"
-  sha256 "0e53b444a6eb9c5a13088cd680e2e697a5a0e059710c1ad8e30879fe9dc0770c"
+  url "http://www.goredo.cypherpunks.su/download/goredo-2.8.0.tar.zst"
+  sha256 "7aaab717697b1c15f24164122f80e769a82a6a157b01a6590365c749d326bd06"
   license "GPL-3.0-only"
 
-  livecheck do
-    url "http://www.goredo.cypherpunks.su/Install.html"
-    regex(/href=.*?goredo[._-]v?(\d+(?:\.\d+)+)\.t/i)
+  bottle do
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "5a9b1660695595402615e05a83aa7fdb7542387dffad6fdc251bfd7b1569e3d7"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "5a9b1660695595402615e05a83aa7fdb7542387dffad6fdc251bfd7b1569e3d7"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "5a9b1660695595402615e05a83aa7fdb7542387dffad6fdc251bfd7b1569e3d7"
+    sha256 cellar: :any_skip_relocation, sonoma:        "2d1379cfc82524903f892c4108535ac3eb74577adef265275df880f0d7ba44bb"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "d427a1c2fb0cbab8edb36e9378324d938e09c00e214ad0aac0eca221ee3ad1c6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e538694b61f3e59d986cdc13616c9f3388d44ca6be1dd063a2d4fba5452d9ec9"
   end
 
-  bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "f6b8f202aa96cefec546d73380b45f523cb7d5064e8aea5cc7e1ecbd948b0629"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "f6b8f202aa96cefec546d73380b45f523cb7d5064e8aea5cc7e1ecbd948b0629"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "f6b8f202aa96cefec546d73380b45f523cb7d5064e8aea5cc7e1ecbd948b0629"
-    sha256 cellar: :any_skip_relocation, sonoma:        "d9154b4746a01f2088c2d9ff5159d83ea61a95ef709b2bca64ea4d2a0c0c6ac0"
-    sha256 cellar: :any_skip_relocation, ventura:       "d9154b4746a01f2088c2d9ff5159d83ea61a95ef709b2bca64ea4d2a0c0c6ac0"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a37604c5f3eec8a5def60149db7563234b654211925dd997ce2a016a5cc70ac5"
-  end
+  deprecate! date: "2026-01-05", because: "is not available via HTTPS"
 
   depends_on "go" => :build
 

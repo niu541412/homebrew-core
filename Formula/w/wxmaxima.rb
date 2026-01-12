@@ -1,10 +1,9 @@
 class Wxmaxima < Formula
   desc "Cross platform GUI for Maxima"
   homepage "https://wxmaxima-developers.github.io/wxmaxima/"
-  url "https://github.com/wxMaxima-developers/wxmaxima/archive/refs/tags/Version-25.04.0.tar.gz"
-  sha256 "ec0b3005c3663f1bb86b0cc5028c2ba121e1563e3d5b671afcb9774895f4191b"
+  url "https://github.com/wxMaxima-developers/wxmaxima/archive/refs/tags/Version-26.01.0.tar.gz"
+  sha256 "1716c4f27636f909673f63ed0c7c30621683e35eb7bf05a5d5010fa67f0397f6"
   license "GPL-2.0-or-later"
-  revision 1
   head "https://github.com/wxMaxima-developers/wxmaxima.git", branch: "main"
 
   livecheck do
@@ -13,11 +12,12 @@ class Wxmaxima < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:  "553516bf2d49d154ffac0b7e118a27cb3478085b909e60b73c76e417c6a20376"
-    sha256 arm64_ventura: "aba559e8bd9e0ab830535bde38cec741cbe65d7cde73315223a342c698caa100"
-    sha256 sonoma:        "b2c05aa2c38f15bf5b1df79aaccbb2b1f7551bd54ee4cc52ce49852bc9afa19f"
-    sha256 ventura:       "1d07309327d8af917657e324363b74699d2c111b81ce1d973b7bfb452ef15f67"
-    sha256 x86_64_linux:  "b76ed6884b0fe2bcad5a49a6778792cc1d5dc9ad88820dbad0ac250023c02989"
+    sha256 arm64_tahoe:   "9e270b833c8403d08a0aa85b14e9b0cf1e0827325a1dc12270f9badaf7ad8e61"
+    sha256 arm64_sequoia: "53bc46eeadfd5673a607207fb7168e1917668aa4a1df24567f4bf299095940fc"
+    sha256 arm64_sonoma:  "c1c38751311436cb37bfd701862e83a5efc75918cf8ed23c466d94965776747d"
+    sha256 sonoma:        "7f8d1081ad2c1e05c5a2e9ad0ca552f5d8ea9cea965fe220cadb0eeb1c450609"
+    sha256 arm64_linux:   "6eee61bbe356b373f5d8f5ceb80f2b76b8f3e38885fe9acba4da2ec50e6393e1"
+    sha256 x86_64_linux:  "53f774facb87ebf51f2b9a93c8b878494ee97fc297c58275b10686d6e4851867"
   end
 
   depends_on "cmake" => :build
@@ -25,10 +25,14 @@ class Wxmaxima < Formula
   depends_on "ninja" => :build
 
   depends_on "maxima"
-  depends_on "wxwidgets@3.2"
+  depends_on "wxwidgets"
 
   on_macos do
     depends_on "llvm" => :build if DevelopmentTools.clang_build_version <= 1300
+  end
+
+  on_linux do
+    depends_on "xorg-server" => :test
   end
 
   fails_with :clang do
@@ -42,8 +46,6 @@ class Wxmaxima < Formula
   end
 
   def install
-    ENV.llvm_clang if OS.mac? && (DevelopmentTools.clang_build_version <= 1300)
-
     # Disable CMake fixup_bundle to prevent copying dylibs
     inreplace "src/CMakeLists.txt", "fixup_bundle(", "# \\0"
 
@@ -73,10 +75,9 @@ class Wxmaxima < Formula
   end
 
   test do
-    # Error: Unable to initialize GTK+, is DISPLAY set properly
-    return if OS.linux? && ENV["HOMEBREW_GITHUB_ACTIONS"]
-
-    assert_equal "wxMaxima #{version}", shell_output(bin/"wxmaxima --version 2>&1").chomp
-    assert_match "extra Maxima arguments", shell_output("#{bin}/wxmaxima --help 2>&1", 1)
+    wxmaxima = "#{bin}/wxmaxima"
+    wxmaxima = "#{Formula["xorg-server"].bin}/xvfb-run #{wxmaxima}" if OS.linux? && ENV.exclude?("DISPLAY")
+    assert_match "wxMaxima #{version}", shell_output("#{wxmaxima} --version 2>&1").chomp
+    assert_match "extra Maxima arguments", shell_output("#{wxmaxima} --help 2>&1", 1)
   end
 end

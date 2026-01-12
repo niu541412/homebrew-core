@@ -1,8 +1,8 @@
 class Vsd < Formula
   desc "Download video streams over HTTP, DASH (.mpd), and HLS (.m3u8)"
   homepage "https://github.com/clitic/vsd"
-  url "https://github.com/clitic/vsd/archive/refs/tags/vsd-0.4.0.tar.gz"
-  sha256 "06d76e3456c850c8add63db5c8650dfabafb27879dc3b4c461e1123e950a5fb0"
+  url "https://github.com/clitic/vsd/archive/refs/tags/vsd-0.4.3.tar.gz"
+  sha256 "a50a7e749693dc38c48d8ea64178da8c513895f381f6c8a2516925c7442a7bfc"
   license "MIT"
 
   livecheck do
@@ -11,13 +11,14 @@ class Vsd < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "a258a94475f871f437730583deec5741f5c95ea1487ac34fedd4fdd2eb4278a7"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "1c1c2fcafd5ca557e7a48fddc2cc093ff0706db5a7a154b1fa224d73f936b9f4"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "cd12dc6671679e184c8e6a2ded0cd7d1ad4243c64d166aecdbb5b56f11fd5a88"
-    sha256 cellar: :any_skip_relocation, sonoma:        "9c69dd2b6aa6ae5cf1133f240a20231617f91d9e429c34f88a0a74ca1ab5a06e"
-    sha256 cellar: :any_skip_relocation, ventura:       "935cdc757a9f8e5df3ae0fb09837a5ea3a3560733058f7de8ffbaeebaf6bdd05"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "e91b99fbb20f7623350fb452be246266fc27896a6df90ccef481a7858d1117ef"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6652250ce568babbc83646ab97a984c16edbd8096db83d17425ec9429def789c"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "a6afb8eff7a7b62ee6b5c4d500f621c407afa66bf212fa4397fe8af7aa4ee87f"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "8abaffcc19f3666772c38792b46a2371e945e0eaf5941ebbaa754437d39f318c"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "5da1799a9df3a4d1e053aa31986682cc986327c729a4df782a4d7cecd9c62f47"
+    sha256 cellar: :any_skip_relocation, arm64_ventura: "e3f732f0b2d6b00d959aa08289ee2f1c4a98ed5c397796034d27c11a291fd116"
+    sha256 cellar: :any_skip_relocation, sonoma:        "0a583dc975ea90844e8fa056cdcbccd99584fee50e59ae00d663cc4173457cb7"
+    sha256 cellar: :any_skip_relocation, ventura:       "29d474e46b2c8a02689e43515f647a85782a9047ce1806722ee71a904092ed2a"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "a9eb0ce725f4b3592b446e05387e2a5f159c4b1e3c2223154093843cfeb18169"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "51be065f05066ab65664c99440369eeee9b629919fd635bef1e169849f0ce720"
   end
 
   depends_on "pkgconf" => :build

@@ -3,25 +3,21 @@ class Docutils < Formula
 
   desc "Text processing system for reStructuredText"
   homepage "https://docutils.sourceforge.io"
-  url "https://files.pythonhosted.org/packages/e9/86/5b41c32ecedcfdb4c77b28b6cb14234f252075f8cdb254531727a35547dd/docutils-0.22.tar.gz"
-  sha256 "ba9d57750e92331ebe7c08a1bbf7a7f8143b86c476acd51528b042216a6aad0f"
+  url "https://files.pythonhosted.org/packages/ae/b6/03bb70946330e88ffec97aefd3ea75ba575cb2e762061e0e62a213befee8/docutils-0.22.4.tar.gz"
+  sha256 "4db53b1fde9abecbb74d91230d32ab626d94f6badfc575d6db9194a49df29968"
   license all_of: [:public_domain, "BSD-2-Clause", "GPL-3.0-or-later", "Python-2.0"]
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "08104af3fe2f9f1db3c115946b03e2b6c25e956aaaea899c5abde08173e1bd21"
+    sha256 cellar: :any_skip_relocation, all: "858cbe0370c24a44e6225f3209232b5378ec399c3d5ecd9c0adc9511d4ee1cc2"
   end
 
-  depends_on "python@3.13"
+  depends_on "python@3.14"
 
   def install
     virtualenv_install_with_resources
     bin.glob("*.py") do |f|
       bin.install_symlink f => f.basename(".py")
     end
-
-    # Ensure we have an `:all` bottle.
-    metadata_file = libexec/Language::Python.site_packages("python3")/"docutils-#{version}.dist-info/METADATA"
-    inreplace metadata_file, "/usr/local", HOMEBREW_PREFIX
   end
 
   test do
@@ -42,7 +38,7 @@ class Docutils < Formula
     EOS
 
     mkdir_p testpath/"docs"
-    touch testpath/"docs"/"header0.txt"
+    touch testpath/"docs/header0.txt"
     system bin/"rst2man", testpath/"README.txt"
   end
 end

@@ -1,8 +1,8 @@
 class Libgig < Formula
   desc "Library for Gigasampler and DLS (Downloadable Sounds) Level 1/2 files"
   homepage "https://www.linuxsampler.org/libgig/"
-  url "https://download.linuxsampler.org/packages/libgig-4.5.0.tar.bz2"
-  sha256 "0879d28b9b6392da5985826dbdd8d9c957b2a032a2f10190506aef2e22f3c54a"
+  url "https://download.linuxsampler.org/packages/libgig-4.5.2.tar.bz2"
+  sha256 "ca2be8ce5e0969f90c2df76e03d499f5e27fb5021edbc587de182ff27e8efddd"
   license "GPL-2.0-or-later"
 
   livecheck do
@@ -10,16 +10,13 @@ class Libgig < Formula
     regex(/href=.*?libgig[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
-  no_autobump! because: :requires_manual_review
-
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "f85773d19792519d3d19e73b0275a23b9ef84e68e3e57644615a488e4f324af2"
-    sha256 cellar: :any,                 arm64_sonoma:  "e4081ce14559fbd6f48102d7dfc1b513e37cee4afbd7121c74cea1e8d53ffff4"
-    sha256 cellar: :any,                 arm64_ventura: "789e678cdb2dff09270c004bbc81d5e431581a647be96e7ba66302329d6c3b8c"
-    sha256 cellar: :any,                 sonoma:        "2e9b576c4c145c1472c5c78ef36cf3b56d386e98d2cfd82021349d7d2436b7f4"
-    sha256 cellar: :any,                 ventura:       "bf0a74884fdc6883c0684672d528787bb0d2e2472c611af8c2dedc16ef524081"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "906de752a65d327ae5c80451724c6a97cae3e313214e08d021b95ed62d77072f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "894ee2397192dc48e2d0cc236fe3fd8bb3e4bb259683f91f8a3fe9fd0517b571"
+    sha256 cellar: :any,                 arm64_tahoe:   "e08b4cbd024fad1e563040ed574ced16e22ee0b3fb72a084e0375eafe9c7a102"
+    sha256 cellar: :any,                 arm64_sequoia: "8615997077dd111493ce6ccf875c28e3d024a0c41670adeb232ac585d7ee82e0"
+    sha256 cellar: :any,                 arm64_sonoma:  "ae7d66f193e63a8f4371c8837dd1a85d9ca0dcdc47c63704b99dd7b50bb8c55a"
+    sha256 cellar: :any,                 sonoma:        "68ce5928dba5671504d28a8268fc58b8ab5e1dd6cc85e2d65cc46a51f1665cdd"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "7c7488a743c560200d37a7620fe90c4f480134d944f8c81efb3458feff9e61e7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a528fc44ec562e7304d15d3be8728a35c32a209f82985bd99f59cb5b03fbc781"
   end
 
   depends_on "pkgconf" => :build

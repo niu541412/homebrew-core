@@ -1,19 +1,19 @@
 class Egctl < Formula
   desc "Command-line utility for operating Envoy Gateway"
   homepage "https://gateway.envoyproxy.io/"
-  url "https://github.com/envoyproxy/gateway/archive/refs/tags/v1.4.2.tar.gz"
-  sha256 "5c8d2df2246a62f5314bebac3b95f07e3e0d77887201dfe44b5da0c553d9fbe3"
+  url "https://github.com/envoyproxy/gateway/archive/refs/tags/v1.6.1.tar.gz"
+  sha256 "a62c7c93202e8166ceb4cf136549f1cce9f7c3dc630dd68a7bc479845b2bb47b"
   license "Apache-2.0"
   head "https://github.com/envoyproxy/gateway.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "dbea8d46d3331db5d0336a72a51a04e4e684631ce0a99c6d8c207393085c11f4"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "0005fcd6e8ad9ab0bb5d95925d2aaf0d110ca1d946b8f05fa3f3f568484139c7"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "a5a0d1c6a8e66241dd152632f3e653ea4cd031a8a9eb3e087057d80407326027"
-    sha256 cellar: :any_skip_relocation, sonoma:        "5fef4b9f87090e1a2992a87d61310d378ecfaa93f6648ad347069afdae085dd2"
-    sha256 cellar: :any_skip_relocation, ventura:       "b62ecbf4b9237692c57db957acfc3b041bc8c493ad7ba1de5064bce352a57dbf"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "f25da476d398e3fd220c3100f654d71099bd82b71b58aa84d12e524bdb13075b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d3e7feec93f81e58d321b73910706d9aa9431a75b464e84bae83bda0c365b623"
+    rebuild 2
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "281b57a4ebc174cfe6255cabc7d6d895df0eb6378e9837d3102a9d79e2f4e285"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "329233d2ac8ace26cf74948648b01cf1135b2fe2c6b21401585e795eba24098c"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "51c534b5f4b6998d5881aa04ad725d3d7805cd00f36b3015b16cdad6618c55e6"
+    sha256 cellar: :any_skip_relocation, sonoma:        "3c180bbcb74bf92e43ef934ba3b8c73f3900eff5f58873ea2129510bf2b5f4f4"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "9418f4a2ccdb6a639d3f48a774d0b60df8af1b1aa8f763e6c4d61abf41f65c18"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "26b2a9e718b515b3966a93a9f5ba4e24f6e7611e521c661f42a13fe59c489385"
   end
 
   depends_on "go" => :build
@@ -30,7 +30,7 @@ class Egctl < Formula
     ]
     system "go", "build", *std_go_args(ldflags:), "./cmd/egctl"
 
-    generate_completions_from_executable(bin/"egctl", "completion")
+    generate_completions_from_executable(bin/"egctl", shell_parameter_format: :cobra)
   end
 
   test do

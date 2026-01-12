@@ -1,27 +1,26 @@
 class Jackett < Formula
   desc "API Support for your favorite torrent trackers"
   homepage "https://github.com/Jackett/Jackett"
-  url "https://github.com/Jackett/Jackett/archive/refs/tags/v0.22.2208.tar.gz"
-  sha256 "43ac6501aad25ad1c473576f388ff916adf75be07efeeb81f79dab45aaaf3281"
+  url "https://github.com/Jackett/Jackett/archive/refs/tags/v0.24.821.tar.gz"
+  sha256 "681e5166482932f1acd06b4c8f7f2af6741b02edce26c8648ef02dc04f5eb3fe"
   license "GPL-2.0-only"
   head "https://github.com/Jackett/Jackett.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "227a34366de149f92738e4a697e84da4f2a151cae9a3c2ef93aba0aae539881c"
-    sha256 cellar: :any,                 arm64_sonoma:  "d1c17cc50b8e922f55a180497db4e52dc04034f439e9af47031254c575eed901"
-    sha256 cellar: :any,                 arm64_ventura: "f00840f5f268e723c103046cf5e0aec902ac2540a5f606febeb48b3463dc161e"
-    sha256 cellar: :any,                 ventura:       "54a960561d3949d623cc41fa36262c0e4dea196b8eca9efa66ba3960e2a8df86"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "0c5a8aa69d911bd2edfc74045defe35b2afc281ee096ce436b6b0effde6e6ecc"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5cc2887138424e9d1f08e6b810f68489ee4eef930eb6256f117b452b75749dd9"
+    sha256 cellar: :any,                 arm64_tahoe:   "7198c619aed13a4565ac17558477f2feaebfc9f44c6886b59e99ec140c8aa5ce"
+    sha256 cellar: :any,                 arm64_sequoia: "f35da35c40564c0801c0101623ed090e27b131456e90d2028b38b8fbaa845632"
+    sha256 cellar: :any,                 arm64_sonoma:  "bd443b31904af09a7351430fde139ab5f2cc6d2f7cba325cdb6b0fa8c8fdd365"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "28a3e23a8777b52b96a09ee0ce655017ea93abdb67fce2278ceb8704da859d03"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "31887ed17f51114f898933fe31ec0b7a5ef2612b2f2503a8d70ff0118da19407"
   end
 
-  depends_on "dotnet@8"
+  depends_on "dotnet@9"
 
   def install
     ENV["DOTNET_CLI_TELEMETRY_OPTOUT"] = "1"
     ENV["DOTNET_SYSTEM_GLOBALIZATION_INVARIANT"] = "1"
 
-    dotnet = Formula["dotnet@8"]
+    dotnet = Formula["dotnet@9"]
 
     args = %W[
       --configuration Release
@@ -58,9 +57,7 @@ class Jackett < Formula
 
     port = free_port
 
-    pid = fork do
-      exec bin/"jackett", "-d", testpath, "-p", port.to_s
-    end
+    pid = spawn bin/"jackett", "-d", testpath, "-p", port.to_s
 
     begin
       sleep 15

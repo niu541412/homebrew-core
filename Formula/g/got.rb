@@ -1,26 +1,27 @@
 class Got < Formula
   desc "Version control system"
   homepage "https://gameoftrees.org/"
-  url "https://gameoftrees.org/releases/portable/got-portable-0.116.tar.gz"
-  mirror "https://pkg.freebsd.org/ports-distfiles/got-portable-0.116.tar.gz"
-  sha256 "e8a64ad73b82c1b6df9df9da5a3e8da9be6051c3497379940806878d958e4dff"
+  url "https://gameoftrees.org/releases/portable/got-portable-0.120.tar.gz"
+  mirror "https://pkg.freebsd.org/ports-distfiles/got-portable-0.120.tar.gz"
+  sha256 "b7a60c6761f6dc2810f676606a2b32eb7631c17a96dcc74b8d99b67b91e89f43"
   license "ISC"
 
+  # Since GitHub runners are not able to access the homepage, our Linux build
+  # requires FreeBSD mirror to exist before we can bump the version.
   livecheck do
-    url "https://gameoftrees.org/releases/portable/"
-    regex(/href=.*?got-portable[._-]v?(\d+(?:\.\d+)+)\.t/i)
+    url "https://raw.githubusercontent.com/freebsd/freebsd-ports/refs/heads/main/devel/got/distinfo"
+    regex(/got-portable[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
   no_autobump! because: "GitHub runners are not abile to access the homepage or livecheck URL"
 
   bottle do
-    sha256 arm64_sequoia: "de57fc967046ef9aa8fcc1581fe067be0a6ec7b895440b0f667fd783fa0b00d0"
-    sha256 arm64_sonoma:  "9b069ff44e0c2074c2f5d76721be9e79372a44a00a224af6e5ee65cb35adb966"
-    sha256 arm64_ventura: "43be5204391ef038514cb4b9f9487f702682684c6a2a279a907f1117c03664a0"
-    sha256 sonoma:        "bdb0a4a82ab4ca5f0c8f460c3455faeedad98ce47881d48c0697521fd95d17fe"
-    sha256 ventura:       "d70ca44d45431f178f2c819f47c4a4e742b298fb4fa13edf08137c069b78ac3b"
-    sha256 arm64_linux:   "cae4c358d8561930c546d80735c9d66cfdba7e4ba10df83ff7f0c97f3ec2a53c"
-    sha256 x86_64_linux:  "8ba714da3bc588f0955fca0d6eb21b12b24ac92ebaacc12ac6da76b56e68fe68"
+    sha256 arm64_tahoe:   "bf76c719e1d6732fe4db46638666b85204dc39871b5d2c2d09fbda82e69443ca"
+    sha256 arm64_sequoia: "c0bd6ef9fdc5bdeaa8513f79d7f8372ed6e5a2989b7abe15597a795fed877231"
+    sha256 arm64_sonoma:  "b09db6cd72550be0e69c45df893f73ee155e10a3bb18edcfc08ecdc9d58d054d"
+    sha256 sonoma:        "4f62cc6596e872e8f1caec07226060cd2a7d1b895d59b4ac4590d6d6501a4092"
+    sha256 arm64_linux:   "5284b3a3ac65cb796671daaa0171800c17ab6dc3a1f893f0740ee95508156ede"
+    sha256 x86_64_linux:  "3a8eba1a5dccf3b0f003eeb0dd45797d88f58ec611d581b9c84e433c0b6f75e9"
   end
 
   depends_on "bison" => :build

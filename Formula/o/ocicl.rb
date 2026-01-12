@@ -1,19 +1,17 @@
 class Ocicl < Formula
   desc "OCI-based ASDF system distribution and management tool for Common Lisp"
   homepage "https://github.com/ocicl/ocicl"
-  url "https://github.com/ocicl/ocicl/archive/refs/tags/v2.6.5.tar.gz"
-  sha256 "a4cc0055e66c948dce070c98067ebd445d55bd3e349030e819547dd203d5e75b"
+  url "https://github.com/ocicl/ocicl/archive/refs/tags/v2.14.2.tar.gz"
+  sha256 "92cbd9cd16de5c8b5038e09ff8fc1dff589b93e8e8edfe9c0d68087b9e9ebe85"
   license "MIT"
-  revision 1
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "26e4fc8832665f46bc1e30e81f525d2400ffebfa97c22881fc374fa307253638"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "ff1a0794b5de1c10c4f866e3901df7e03c3212aa61de5baf69b51f80f224b318"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "3c7454ffb9c0702e7fa175846a08000b918b8869d1266e161e3be0c080c405e5"
-    sha256 cellar: :any_skip_relocation, sonoma:        "f7b2daeb010ad3d7c3e669d51fd126efa22d307d7196223085ea1cfff6dfb493"
-    sha256 cellar: :any_skip_relocation, ventura:       "22554dc9c176b203b071c9604e495c078f11cab097e5c492c9cd6f57ef7f8ecc"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "4c5ef4bb48dac29cbe9806e26ee9f1624f9a898a1483aaf599354b595bfd578c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e300821200e6a83d64266119a700cc7527d01d5a26a130a4c0e0c2ac58316bf3"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "0fbe29883b09d9d2573f1702ac1387dceba793591948858d0e2d9c8109d68004"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "399f95c678c456682006e9c177ec92a5628a2dc46602680b8535678b8662c4c8"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "dac3a038d86d2c4ae6638c5ced11198412dea4176473602dcc81fa32f4ac44cb"
+    sha256 cellar: :any_skip_relocation, sonoma:        "a6d1a645ca07526a4c13c4601be08cfcce8cfe13ab52bb611f8a1319b9afda62"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "64d969d59fdae91bb6704dc59aaf5e75c366f52b6ad483ba91162bd92031d285"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "622d1a370a3f64adfb75829e448a13fe8e4b9def87fbc8494351457d25cec266"
   end
 
   depends_on "sbcl"

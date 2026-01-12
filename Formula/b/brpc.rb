@@ -1,28 +1,37 @@
 class Brpc < Formula
   desc "Better RPC framework"
   homepage "https://brpc.apache.org/"
-  url "https://dlcdn.apache.org/brpc/1.14.0/apache-brpc-1.14.0-src.tar.gz"
-  sha256 "9fa7ed12ad37f6dea6d021bffe37fee59982b4ad7d9f697bbfc14ac24b10f938"
   license "Apache-2.0"
+  revision 1
   head "https://github.com/apache/brpc.git", branch: "master"
 
+  stable do
+    url "https://dlcdn.apache.org/brpc/1.15.0/apache-brpc-1.15.0-src.tar.gz"
+    sha256 "0bc8c2aee810c96e6c77886f828fbfdf32ae353ce997eb46f2772c0088010c35"
+
+    # Backport support for Protobuf 30+
+    patch do
+      url "https://github.com/apache/brpc/commit/8d87814330d9ebbfe5b95774fdb71056fcb3170c.patch?full_index=1"
+      sha256 "33a133c583d39a1d8394174c8c5f02b791411036faa3b1afe38841c3e6b2e0f1"
+    end
+  end
+
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "3250052cc4ddcb3775072a457404838c682a6f4662b6753b079006125a38a83c"
-    sha256 cellar: :any,                 arm64_sonoma:  "90469b5d0c05e636061b90d141913938be0b40e421afae656e659d0e739b335d"
-    sha256 cellar: :any,                 arm64_ventura: "113262fcee16609506320ff1662ac47954daec764696a73e976d67564e2b8d62"
-    sha256 cellar: :any,                 sonoma:        "cd4c2db0db2658485ee428b0cfe2d68c5fd95a22af34d45ea871b27cf83b3f88"
-    sha256 cellar: :any,                 ventura:       "3a53073a9476a3c4a48c56d5126c198422f3ac9599887c104a2ffc0b7440bf30"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "d7cb5ec8a1842e9636cb09ec7208aebea8935450bf0daa3745b82c8c01ddc36f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8179b289c85dc0cd513576316aa69d54a09582fb2992cecb42c04c2f05ae3610"
+    rebuild 1
+    sha256 cellar: :any, arm64_tahoe:   "9bb436955c0e7cc31bdd69b2c5203371b0e0c96c943ad8dde2e73fafed38dbd8"
+    sha256 cellar: :any, arm64_sequoia: "46acf59fb455c4ec854afd7768d257c203ab33bee2f0306e3031881a2a032c36"
+    sha256 cellar: :any, arm64_sonoma:  "ad4a98f0eba3fa216a849dde8fd3b0026f7d9d18920bc067e5b30e4a57d3cd07"
+    sha256 cellar: :any, sonoma:        "3e5cfc764225b58abaef78dfa4fb951596303c8b66af6b2d86b26d259a2b64a5"
+    sha256               arm64_linux:   "1518389f91a45158db7e6ca2ba19677e74b280817d28d9105bc73b6827b9dc05"
+    sha256               x86_64_linux:  "354a66dd4e9acd360de270ac92acbaa0a58361821cc9f61a49352cca375b499f"
   end
 
   depends_on "cmake" => :build
   depends_on "abseil"
   depends_on "gflags"
-  depends_on "gperftools"
   depends_on "leveldb"
   depends_on "openssl@3"
-  depends_on "protobuf@29"
+  depends_on "protobuf"
 
   on_linux do
     depends_on "pkgconf" => :test
@@ -31,13 +40,6 @@ class Brpc < Formula
   def install
     inreplace "CMakeLists.txt", "/usr/local/opt/openssl",
                                 Formula["openssl@3"].opt_prefix
-
-    # `leveldb` links with `tcmalloc`, so should `brpc` and its dependents.
-    # Fixes: src/tcmalloc.cc:300] Attempt to free invalid pointer 0x143e0d610
-    inreplace "CMakeLists.txt", "-DNO_TCMALLOC", ""
-    tcmalloc_ldflags = "-L#{Formula["gperftools"].opt_lib} -ltcmalloc"
-    ENV.append "LDFLAGS", tcmalloc_ldflags
-    inreplace "cmake/brpc.pc.in", /^Libs:(.*)$/, "Libs:\\1 #{tcmalloc_ldflags}"
 
     args = %w[
       -DBUILD_SHARED_LIBS=ON
@@ -80,17 +82,14 @@ class Brpc < Formula
       }
     CPP
 
-    protobuf = Formula["protobuf@29"]
-    gperftools = Formula["gperftools"]
+    protobuf = Formula["protobuf"]
     flags = %W[
       -I#{include}
       -I#{protobuf.opt_include}
       -L#{lib}
       -L#{protobuf.opt_lib}
-      -L#{gperftools.opt_lib}
       -lbrpc
       -lprotobuf
-      -ltcmalloc
     ]
     # Work around for undefined reference to symbol
     # '_ZN4absl12lts_2024072212log_internal21CheckOpMessageBuilder7ForVar2Ev'

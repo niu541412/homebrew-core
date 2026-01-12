@@ -2,23 +2,22 @@ class Librime < Formula
   desc "Rime Input Method Engine"
   homepage "https://rime.im"
   url "https://github.com/rime/librime.git",
-      tag:      "1.14.0",
-      revision: "e053fb29e4a7c584d93c81e2e314bc1c9efca0a6"
+      tag:      "1.16.0",
+      revision: "a251145d3aafa33871824a40bbec04c966bd8b56"
   license "BSD-3-Clause"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "1adf609bd7d7fbdefdc4c61f22286353bc58e3ccaa37f017d4a95d9fdcb682c1"
-    sha256 cellar: :any,                 arm64_sonoma:  "14d9f57764a6b5a0d53c7f3873be7662b7c165f573094860fb40623cd0691857"
-    sha256 cellar: :any,                 arm64_ventura: "6e45c1b22aaa6aceb263b1193c2da3f8abaaf1d7ef1a024616f12baf052e02dd"
-    sha256 cellar: :any,                 sonoma:        "d29dc1c67f9718755b41cd7c6468635b8c84e9c1139be79b5da2210bf95cf7e6"
-    sha256 cellar: :any,                 ventura:       "fb36ab6bfc5025f2094a4c79635ab3e1c3c79b377382dd1c0253eed5c67467c8"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "593b69d2cd6eb87d1ce411007bfd7cd8b28e28c4e04c3d0e19c657becd9ec2be"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a1fbfebca1dd86132c8420fc30d41c44728371a473c6ae4e608d82cf7a7d27cd"
+    sha256 cellar: :any,                 arm64_tahoe:   "332447e47986003e838ce0f8a7b1ee492294d1e63b476b0fdf58d1d45d946d62"
+    sha256 cellar: :any,                 arm64_sequoia: "f9ad344a6d347d8ca6fe201b644b31370177a924f0f04d0e0175772983094605"
+    sha256 cellar: :any,                 arm64_sonoma:  "5d0ddc59faf1383c513a4ec8a6e282ca741342874c3063265f407c4ef275e7d5"
+    sha256 cellar: :any,                 sonoma:        "b6a7d0d562e9009b73ee535195231506b1c9550edeff57f19da2f79b44ab8ec9"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "47a15181c449c458bed0637ad2c0f6b252ed44895e461c5741b33cf384908bf4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5364dfc32fe4907f06f139838e68ffe52dccade8e4013918935cfcc209df6eeb"
   end
 
   depends_on "boost" => :build
   depends_on "cmake" => :build
-  depends_on "icu4c@77" => :build
+  depends_on "icu4c@78" => :build
   depends_on "pkgconf" => :build
 
   depends_on "capnp"

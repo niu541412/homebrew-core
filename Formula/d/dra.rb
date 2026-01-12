@@ -1,19 +1,18 @@
 class Dra < Formula
   desc "Command-line tool to download release assets from GitHub"
   homepage "https://github.com/devmatteini/dra"
-  url "https://github.com/devmatteini/dra/archive/refs/tags/0.8.2.tar.gz"
-  sha256 "5766c57a0e105d9f86aece2b561d59c81fe22d22eb0c9d7cf1c9992b87b2338b"
+  url "https://github.com/devmatteini/dra/archive/refs/tags/0.10.1.tar.gz"
+  sha256 "81fc4e6bd174d238932a6415db7029a84acda5f4dc84a285ee0a10c6b3cb3580"
   license "MIT"
   head "https://github.com/devmatteini/dra.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "db4e0a18693fb1805da7d9568dbfd43f446b5568a9af969d38480349a883de24"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "e43f85a62dfadf61847482bb653570f03653ec576f2c8edc4517235d619a7504"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "11243acff417ea800cc9ef567fb81c79f9193e912523b7afb6d2047b920ae75c"
-    sha256 cellar: :any_skip_relocation, sonoma:        "ed9dd4a0bad66bc96b697a4ebeb3df27d4a5275134968c12873001813b238f0b"
-    sha256 cellar: :any_skip_relocation, ventura:       "b683ccde18838772976f1f7fd4751bb138adc45fd939e0ac5f488db5aedcb13b"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "f94fdae107783b368d609efef6dec025eae5836a864cf97af7cd5c416275fbb6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "107c784b4b81441bc850994825e806b104a50a8262c61ecd3bdd2d915d1e16bc"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "031cbc375e142c2f2f9900838bf86a81d961d967fd585699dda13eaca25ebd37"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "348e9f517772c9f869fdd2016d2df4fa835e2fc54ff8a04451c002e498a39cae"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "e52533217cb82e1da25963d56222ca2c87890406ff538ec653daf3954b912f27"
+    sha256 cellar: :any_skip_relocation, sonoma:        "c762127ac0eb2a0de24933ff71a177edd803cd5a04b7b150e945826dab703e2d"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "e9cdbc317602cec10306a6b5571c0b3214405530fb4e8a8b42ccdb7174b3da9d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "fdd8087eba173830ce4c65a84615320b922d46729ba6621c177be947b9ef1e7a"
   end
 
   depends_on "rust" => :build
@@ -27,7 +26,7 @@ class Dra < Formula
   end
 
   test do
-    assert_match version.to_s, shell_output(bin/"dra --version")
+    assert_match version.to_s, shell_output("#{bin}/dra --version")
 
     system bin/"dra", "download", "--select",
            "helloworld.tar.gz", "devmatteini/dra-tests"

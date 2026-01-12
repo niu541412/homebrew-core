@@ -5,7 +5,7 @@ class Juju < Formula
   sha256 "c11bb17d5bde7823a63e6354c785274c42008cfaf0e6abeb203b7ec89c83f890"
   license "AGPL-3.0-only"
   version_scheme 1
-  head "https://github.com/juju/juju.git", branch: "develop"
+  head "https://github.com/juju/juju.git", branch: "main"
 
   # We check the Launchpad download page for Juju because the latest version
   # listed on the main project page isn't always a stable version.
@@ -16,6 +16,7 @@ class Juju < Formula
   end
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "b98c9f297f29e76112887dfd4eb4d978f409d89ca46dbcd4b7e1802bb92f098f"
     sha256 cellar: :any_skip_relocation, arm64_sequoia: "9b567efd235b7b08295be11f2da98ccd539d962e15bba629203eb91f55f461f3"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:  "b1ee9eca10d09c293f9886689d122b152e953210218f305b40814ab6a15a9aed"
     sha256 cellar: :any_skip_relocation, arm64_ventura: "b536102f62cc526b92e4c056d8e31310ec0dced2885c9f2a8652aa07210c53ff"

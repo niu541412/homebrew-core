@@ -1,25 +1,26 @@
 class Pygit2 < Formula
   desc "Bindings to the libgit2 shared library"
   homepage "https://github.com/libgit2/pygit2"
-  url "https://files.pythonhosted.org/packages/ae/63/33e406a2c9aa631795fadf2ca5d680f384c22ad8e60d61c2e81417fe2f6f/pygit2-1.18.1.tar.gz"
-  sha256 "84e06fc3708b8d3beeefcec637f61d87deb38272e7487ea1c529174184fff6c4"
+  url "https://files.pythonhosted.org/packages/17/49/cf8350817de19f4cafe4ae47881e38f56d9bbebaa9e5ef31a5458af4bcf8/pygit2-1.19.1.tar.gz"
+  sha256 "3165f784aae56a309a27d8eeae7923d53da2e8f6094308c7f5b428deec925cf9"
   license "GPL-2.0-only" => { with: "GCC-exception-2.0" }
   head "https://github.com/libgit2/pygit2.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "3f3e7971dac70370d0371fd1347f59f8e394f77dc172f00a2b2ed72d8f03bab2"
-    sha256 cellar: :any,                 arm64_sonoma:  "555e72ccdf93a76b8901fd3deed0e3534c231e119cc3b1cf447d8e87f3b7929b"
-    sha256 cellar: :any,                 arm64_ventura: "68ddde683b19c03928a3ab9c98f4872379e617c1ad3bef6c7533df051431894f"
-    sha256 cellar: :any,                 sonoma:        "4219e0f1b4f4615ed38a736cb6c4c096fc7c15f5ec505a6b5b96b687aa7ed32d"
-    sha256 cellar: :any,                 ventura:       "4584b49b95a86df3c13441e3cad45a523b3cae34089afe10684627f57f3fd977"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "29b6ef635ad2f2e2da77e91380d02ea23a837e94209c0fc27d1c79f5a6eb9cef"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "499c0528f729da6b8976076a42182fe2a43988345de862f78e6640256beecf74"
+    sha256 cellar: :any,                 arm64_tahoe:   "15f26a039eaeb8cf8650eaec7fb59014823ed90e02c161b9b982683382499fe9"
+    sha256 cellar: :any,                 arm64_sequoia: "fcf1dcb11ab25e0fae1c66ecfb8641c61b77e617156ce2773cae310bf40d8079"
+    sha256 cellar: :any,                 arm64_sonoma:  "a2742cf033a1434640c0b70cdf44447d7ccce26c3e19aa34eb2777c6c3936ecf"
+    sha256 cellar: :any,                 sonoma:        "095d41bf399bc7b46c6f531c6ffec33913b2dd70a42c08ac44d37b5b21df3581"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "3c02462e83c3919b1125f1e442b252ae3ab69f993dcd7ee82e8d6ca5347326b9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "76d50bbc5185231ce8bcb987b07afaa758c5f8af3dbc888315f3c4082fa325cb"
   end
 
-  depends_on "python@3.12" => [:build, :test]
   depends_on "python@3.13" => [:build, :test]
+  depends_on "python@3.14" => [:build, :test]
   depends_on "cffi"
   depends_on "libgit2"
+
+  pypi_packages exclude_packages: %w[cffi pycparser]
 
   def pythons
     deps.map(&:to_formula)

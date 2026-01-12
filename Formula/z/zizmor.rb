@@ -1,19 +1,18 @@
 class Zizmor < Formula
   desc "Find security issues in GitHub Actions setups"
   homepage "https://docs.zizmor.sh/"
-  url "https://github.com/zizmorcore/zizmor/archive/refs/tags/v1.11.0.tar.gz"
-  sha256 "e60c8c280bee3b3a7eba32a961f6aa23d229f7a9db754715b7c98362a7c6dc7f"
+  url "https://github.com/zizmorcore/zizmor/archive/refs/tags/v1.20.0.tar.gz"
+  sha256 "57cd9d7f0dbb88646adb07fbe4f76815c1070eece5aa7924ec74a688a6da31ad"
   license "MIT"
   head "https://github.com/zizmorcore/zizmor.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "7333ece7f00e1dd057379fa4787fde98ef5d2182fe146ff531cf41d15d7d6dda"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "f45322dad8aebd296a98dfee16a4261378e6eb333a27e9dd4ec762f127edc88d"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "0153acea633f0bad010f85de6f51482df6d56d7121e7a669e0d4940885d7f956"
-    sha256 cellar: :any_skip_relocation, sonoma:        "d63b1f5418bfe1a824125e5d3b938c253a68902b2f559791d9bbd8f252084023"
-    sha256 cellar: :any_skip_relocation, ventura:       "23c8e4a1ea8700441dd93d60401fe8023794b67358c2c5da0e4027694e31df64"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "169e058eb5261cbb32a03b8a74d4321eaaf29a086fdd34ef5aa8ce42f140c3e9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "dee3739dc88016fedb0300b663e0e184b065b97d8bcb4e4cc022cafeef03492b"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "f751e9f0ac50eb592d8d63e8a951aee80af4962dae964b5601d61a34aebcd5a2"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "22292016ece2cc4239275013965f91a81f8788d365d9a8193e037983e2431838"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "c29942f91ae1fda186acb25e0f3d32bf497e605e8234ad886bce17223e2bca58"
+    sha256 cellar: :any_skip_relocation, sonoma:        "4454fdeb909b1d2aeea2db241d4601044d2db9355b520fc3db4732a15882f9ad"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "b206f363d8c120f1ddb1136bcc9c32fad85ec031d61268d9ba41f706980a313a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "82edb431429c3c777aea1107c8192d85616dcfae5b51d4bb92d3a785aeeee938"
   end
 
   depends_on "pkgconf" => :build
@@ -36,7 +35,7 @@ class Zizmor < Formula
               uses: actions/checkout@v4
     YAML
 
-    output = shell_output("#{bin}/zizmor --format plain #{testpath}/workflow.yaml", 13)
+    output = shell_output("#{bin}/zizmor --format plain #{testpath}/workflow.yaml", 14)
     assert_match "does not set persist-credentials: false", output
   end
 end

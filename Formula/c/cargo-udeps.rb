@@ -1,18 +1,17 @@
 class CargoUdeps < Formula
   desc "Find unused dependencies in Cargo.toml"
   homepage "https://github.com/est31/cargo-udeps"
-  url "https://github.com/est31/cargo-udeps/archive/refs/tags/v0.1.57.tar.gz"
-  sha256 "369a1387131ca0548d9bd14fe9d344a8ea217d7a6df2343db6fbdf21a8b94dea"
+  url "https://github.com/est31/cargo-udeps/archive/refs/tags/v0.1.60.tar.gz"
+  sha256 "b1eab01d1fd525db7e8e8b9b843a6a2cc2ddb55450ffef97dcbddeae8d401b0a"
   license any_of: ["Apache-2.0", "MIT"]
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "288551b8c1acff4faaf2f8950b60d9de83e2a6f5643b4bb63ef3689c60f7d029"
-    sha256 cellar: :any,                 arm64_sonoma:  "d16e797594750fb8bd1ad1afc2a49901bea1c48587bef487c2155cb8192c4875"
-    sha256 cellar: :any,                 arm64_ventura: "367123823b4ca2e1bef335e576a33e24926ec638991bafca9144ab4917be0017"
-    sha256 cellar: :any,                 sonoma:        "5e3bfe32151d99bf0dc38f92ebba11452e225269faf7ffcc110b1597aaf72d4c"
-    sha256 cellar: :any,                 ventura:       "da6af4ba4cc045091613a44c346e625977ffc18ae16358e58de46c87260d9d40"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "ce72a837695ac3d74564b1f7d372f717b65deffa5c69301a4d3d0b74eae59e87"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4708ce7778d28d320595eccb0c1e1c7184522a03fb66f1e16e3a0f6769eccdd0"
+    sha256 cellar: :any,                 arm64_tahoe:   "de06a7df4d0ba93d12e5ddf1fba9775747ed832cb120e2c8fb6f0e9150fe2a9b"
+    sha256 cellar: :any,                 arm64_sequoia: "44aa26bf28330849b92a60c68841ad841a7895abf5ecae539fc486a6839b634d"
+    sha256 cellar: :any,                 arm64_sonoma:  "18ea53f3fb4cc6fcd92d0a069c01446919a02c0270d3819cdd6f7880db26cfa2"
+    sha256 cellar: :any,                 sonoma:        "21750d58f982ce3f5cdbdb57f943da3ddff3c6634d4770082eccea5d40e33a61"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "2ba6a379fdaec989fcd7960f99d444bbe2262ad0b5b8d4d0407a197405305947"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "702abdddc3ad718c5839a631f6ccda126289947ce7fe0785c33f644b6df28b20"
   end
 
   depends_on "pkgconf" => :build

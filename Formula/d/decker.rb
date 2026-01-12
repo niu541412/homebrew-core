@@ -1,18 +1,17 @@
 class Decker < Formula
   desc "HyperCard-like multimedia sketchpad"
   homepage "https://beyondloom.com/decker/"
-  url "https://github.com/JohnEarnest/Decker/archive/refs/tags/v1.57.tar.gz"
-  sha256 "db3b9c93dd54e0ff7edc461785b90506cdfb57feb78c8872bc0d00814cfba25d"
+  url "https://github.com/JohnEarnest/Decker/archive/refs/tags/v1.62.tar.gz"
+  sha256 "56ebca420c946fe0ac99b896e6bd4d07c0f08f4f97610897d323b5cfa1940f02"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "7d16e98dd57f3e1e6cbb40b2bd8f01a395360fba8638d97d632c468bd21b8420"
-    sha256 cellar: :any,                 arm64_sonoma:  "2a8776513cf04767f22936e4b91f68cb899e55e0934fa6c9dcce4e819b916617"
-    sha256 cellar: :any,                 arm64_ventura: "f3ee3422268beeb0fde633e58383c91a421fc2460fddee5a1a34ca35db03cd60"
-    sha256 cellar: :any,                 sonoma:        "76d670639bd2edef9bc80a756e3ce9678aaf7573544b9f741069eded18e538ba"
-    sha256 cellar: :any,                 ventura:       "01c63255f87cf3a8e5347db0d829e8dce8cb1b0b548ed2d5ae3328d4c68396c3"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "ae31173d5906ece0390bcf07324c373990af386712bd60c0fadcd107311da240"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f4f68ea6a596f9f7575067ba4671caf9c8a265078200e7401c02ef0691e97d45"
+    sha256 cellar: :any,                 arm64_tahoe:   "1400662f32d196181f59c5d8576f663c5aa47e354aa536f5004e972520db089d"
+    sha256 cellar: :any,                 arm64_sequoia: "ecc163afdee6f99b23937507d58542d3dc16f0cc55e0428f079478ea42986dc4"
+    sha256 cellar: :any,                 arm64_sonoma:  "fd081790a0237c86501e633a2302a903b5ff78cbbfb786349cce0c3989e76d42"
+    sha256 cellar: :any,                 sonoma:        "3075696db27dd53c917d5c285568161ba383ee110bd9fa3c81c197bbf4881e17"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "0eaa1867b2eec5e55be75b874552f13c3fd0ea74880d88575cea7d4d004dfb09"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6d255fd7bc35a2307db75742da5dcdc2ec3f50299a9873969a086c11d4463bb1"
   end
 
   depends_on "sdl2"

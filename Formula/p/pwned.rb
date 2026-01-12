@@ -1,12 +1,12 @@
 class Pwned < Formula
   desc "CLI for the 'Have I been pwned?' service"
   homepage "https://github.com/wKovacs64/pwned"
-  url "https://registry.npmjs.org/pwned/-/pwned-13.0.0.tgz"
-  sha256 "7fc19a4a01c0d25356b7f700583fdfce1963f3942312cfd33e32b225ab7f2e91"
+  url "https://registry.npmjs.org/pwned/-/pwned-13.1.1.tgz"
+  sha256 "b374ccb2a737166cf623d53e9c2fc146055bb59eb318283df0493bd35839ce6c"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "85fef6c273b01f0dbbccd45e0b76008832fddbdfe6fdfd402e672eb751bb208c"
+    sha256 cellar: :any_skip_relocation, all: "cbc27b520473d47b6b140a25464e607275b919a2818e024360afca7cd63408c9"
   end
 
   depends_on "node"
@@ -15,7 +15,7 @@ class Pwned < Formula
 
   def install
     system "npm", "install", *std_npm_args
-    bin.install_symlink Dir["#{libexec}/bin/*"]
+    bin.install_symlink libexec.glob("bin/*")
   end
 
   test do

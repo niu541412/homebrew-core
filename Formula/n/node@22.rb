@@ -1,9 +1,10 @@
 class NodeAT22 < Formula
-  desc "Platform built on V8 to build network applications"
+  desc "Open-source, cross-platform JavaScript runtime environment"
   homepage "https://nodejs.org/"
-  url "https://nodejs.org/dist/v22.17.1/node-v22.17.1.tar.xz"
-  sha256 "327415fd76fcebb98133bf56e2d90e3ac048b038fac2676f03b6db91074575b9"
+  url "https://nodejs.org/dist/v22.21.1/node-v22.21.1.tar.xz"
+  sha256 "487d73fd4db00dc2420d659a8221b181a7937fbc5bc73f31c30b1680ad6ded6a"
   license "MIT"
+  revision 4
 
   livecheck do
     url "https://nodejs.org/dist/"
@@ -12,13 +13,12 @@ class NodeAT22 < Formula
 
   bottle do
     rebuild 1
-    sha256 arm64_sequoia: "ac0d9ed4b6ac14d40098343bf4fdb1f475a395b8718e9981ec4af8971ee74060"
-    sha256 arm64_sonoma:  "94c6085ebb5942d1b42b8568cc5eee4a9618b5e02f360b64c28fd5cc7f03cdc1"
-    sha256 arm64_ventura: "9988f65fc6c28a5639ae965c3c96667b58315c3dfc16d4364118e1934ee11218"
-    sha256 sonoma:        "1e25c7341645e5b96f80b10b8adb148fa5db66523a15706eb8c1d534c561c89e"
-    sha256 ventura:       "d48a4276c6c6541a9b3a8a1f0098cb48e6f1c97e62c70a29ed646625a950742c"
-    sha256 arm64_linux:   "c6a57aacefdaa880caaa1aa60c5f1facbf9de1d0d6e84741c73cb454b18c8128"
-    sha256 x86_64_linux:  "88966d2c70f08387b0c018fe3339c1f09d21e663c1dbb02c2ee2b646cbf73c5b"
+    sha256 cellar: :any,                 arm64_tahoe:   "4899b11cebf0179a7fa104f4bda08cd81b9c863b8b8fde46793f82053880c7bf"
+    sha256 cellar: :any,                 arm64_sequoia: "8c404ee263ac937917d845b5d85414051d96194a0eea5243873e1b5c72f124fa"
+    sha256 cellar: :any,                 arm64_sonoma:  "4f847511ef5fa3afb48e191879f2c6dbc2e6416096c109dd2dcc5606739d9794"
+    sha256 cellar: :any,                 sonoma:        "19073211c4304e11ff20104163b9921a79c91162356da9eac57bbe69f37bb042"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "958d0d88018dca4de8d28925046376797cad6fb20812157e045182bbbb241d14"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3ccd103940998340bfa07c2151d55b64d8168ca068ba381aac79b2a0baa204ab"
   end
 
   keg_only :versioned_formula
@@ -31,7 +31,7 @@ class NodeAT22 < Formula
   depends_on "python@3.13" => :build
   depends_on "brotli"
   depends_on "c-ares"
-  depends_on "icu4c@77"
+  depends_on "icu4c@78"
   depends_on "libnghttp2"
   depends_on "libnghttp3"
   depends_on "libngtcp2"
@@ -40,13 +40,14 @@ class NodeAT22 < Formula
   depends_on "simdjson"
   depends_on "simdutf"
   depends_on "sqlite"
+  depends_on "uvwasi"
   depends_on "zstd"
 
-  uses_from_macos "python", since: :catalina
+  uses_from_macos "python"
   uses_from_macos "zlib"
 
   on_macos do
-    depends_on "llvm" => [:build, :test] if DevelopmentTools.clang_build_version <= 1100
+    depends_on "llvm" => :build if DevelopmentTools.clang_build_version <= 1100
   end
 
   fails_with :clang do
@@ -59,15 +60,13 @@ class NodeAT22 < Formula
   def install
     ENV.llvm_clang if OS.mac? && (DevelopmentTools.clang_build_version <= 1100)
 
-    # The new linker crashed during LTO due to high memory usage.
-    ENV.append "LDFLAGS", "-Wl,-ld_classic" if DevelopmentTools.clang_build_version >= 1500
-
     # make sure subprocesses spawned by make are using our Python 3
     ENV["PYTHON"] = which("python3.13")
 
     args = %W[
       --prefix=#{prefix}
       --with-intl=system-icu
+      --shared
       --shared-brotli
       --shared-cares
       --shared-libuv
@@ -78,6 +77,7 @@ class NodeAT22 < Formula
       --shared-simdjson
       --shared-simdutf
       --shared-sqlite
+      --shared-uvwasi
       --shared-zlib
       --shared-zstd
       --shared-brotli-includes=#{Formula["brotli"].include}
@@ -100,6 +100,8 @@ class NodeAT22 < Formula
       --shared-simdutf-libpath=#{Formula["simdutf"].lib}
       --shared-sqlite-includes=#{Formula["sqlite"].include}
       --shared-sqlite-libpath=#{Formula["sqlite"].lib}
+      --shared-uvwasi-includes=#{Formula["uvwasi"].include}/uvwasi
+      --shared-uvwasi-libpath=#{Formula["uvwasi"].lib}
       --shared-zstd-includes=#{Formula["zstd"].include}
       --shared-zstd-libpath=#{Formula["zstd"].lib}
       --openssl-use-def-ca-store
@@ -107,9 +109,8 @@ class NodeAT22 < Formula
 
     # Enabling LTO errors on Linux with:
     # terminate called after throwing an instance of 'std::out_of_range'
-    # Pre-Catalina macOS also can't build with LTO
     # LTO is unpleasant if you have to build from source.
-    args << "--enable-lto" if OS.mac? && MacOS.version >= :catalina && build.bottle?
+    args << "--enable-lto" if OS.mac? && build.bottle?
 
     # TODO: Try to devendor these libraries.
     # - `--shared-ada` needs the `ada-url` formula, but requires C++20
@@ -117,7 +118,6 @@ class NodeAT22 < Formula
     ignored_shared_flags = %w[
       ada
       http-parser
-      uvwasi
     ].map { |library| "--shared-#{library}" }
 
     configure_help = Utils.safe_popen_read("./configure", "--help")

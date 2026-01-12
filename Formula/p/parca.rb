@@ -1,18 +1,18 @@
 class Parca < Formula
   desc "Continuous profiling for analysis of CPU and memory usage"
   homepage "https://www.parca.dev/"
-  url "https://github.com/parca-dev/parca/archive/refs/tags/v0.24.0.tar.gz"
-  sha256 "a6e70f0687a583e6dfe5adfac9a05722bdc264c3c6017c54b713d8d57603f170"
+  url "https://github.com/parca-dev/parca/archive/refs/tags/v0.25.0.tar.gz"
+  sha256 "7c7ad9a3c41ad1c81d74f20e07b36703c458fff649fc1d0dfdae4b3f4cd1f56c"
   license "Apache-2.0"
   head "https://github.com/parca-dev/parca.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "6fa27fe43d36fbc20c435166dba3a6c9469185c36c9e20662ed2242261cf99fd"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "990936082e88d67e290dd68c4deabe8128bcf0014801ce6e33acc0cada5c6c99"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "8e57cdf205a217af6f088fc1faf5f9a733b3d4b571f36701545c3b7e7431f365"
-    sha256 cellar: :any_skip_relocation, sonoma:        "9c84f3604a5c71a4f7b4563eba865a161d52136587d4b871d481c3585c8f8be1"
-    sha256 cellar: :any_skip_relocation, ventura:       "cdc41c2a248ad03df9ce846575b33d78e6bd69f1c329e6220a9e605fb758fffc"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3325bbd56f7414fb392a234865e50147209c5fc4595e727bb3fe8d06eea558dc"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "f330bafcd9330e32210c7eba0898c0b71a39e4ebf58f1c711132c98c87ecc02e"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "b6e26a4572994fb56b4902b4df124b5166970add4396b01e436fb9aa28f4fdbd"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "ac0a18edb90484be757f362bf061f82eee46f556466a71838313089ac3a65a70"
+    sha256 cellar: :any_skip_relocation, sonoma:        "c6fda46d74ff7ca16f6c0e526e3b13e58f2789fdd33d295fdc52296a42320605"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "9d94e5506cbbe29dc38ed4f22c65db25742a7ab35b05687c44d10d1963388e09"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5e489644ebc57c549f12202bdae742de0fccb10e82a4c92030a61e2062fb6268"
   end
 
   depends_on "go" => :build

@@ -2,7 +2,7 @@ class Innoextract < Formula
   desc "Tool to unpack installers created by Inno Setup"
   homepage "https://constexpr.org/innoextract/"
   license "Zlib"
-  revision 11
+  revision 13
   head "https://github.com/dscharrer/innoextract.git", branch: "master"
 
   stable do
@@ -24,13 +24,12 @@ class Innoextract < Formula
   no_autobump! because: :requires_manual_review
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "a6ecba6f9571ac08021cee5007d4ce46bc1c8af96f996dd58397fe2f2466d9c7"
-    sha256 cellar: :any,                 arm64_sonoma:  "8bcb1acc92f2b71ba74dbd9989858cb4c97c673ea4165d9a917005e3ae20ee0d"
-    sha256 cellar: :any,                 arm64_ventura: "078863c79c61eaa1bf3b34960334582c52c8cf6932d279f460fce2718a6ee852"
-    sha256 cellar: :any,                 sonoma:        "13374c0149963a68d215be71fee1e3be6ad3bc94793b582ec0545fc850a6186b"
-    sha256 cellar: :any,                 ventura:       "2d06f2828524c9790714130e550fe7aad4b157005b39652633500dbe35aaacb8"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "1a14135ee0ef9142fd550768cf198305ba67081514b03fe6ff1c36c3b0e1247b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f307fcdedb067bd399862b2640f25a92c31cd1ce5ab6d00ab113bfcb6a88f62d"
+    sha256 cellar: :any,                 arm64_tahoe:   "1150222eb02fdb776418d3253e62ba75592481225b162026bf45ad687784d730"
+    sha256 cellar: :any,                 arm64_sequoia: "9231e79c53ec988162f3173dad48d1e9a3d104af8b21e10f6837c922d4d12d99"
+    sha256 cellar: :any,                 arm64_sonoma:  "6ce904e75b4a103173837ba1c26d8b595d66123fbf5550a53ec83ff6b9bedc66"
+    sha256 cellar: :any,                 sonoma:        "eccddde976f66e9cddc35f6f72cac7c2377312343bb8cdfb954797c3173ead17"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "54d89c53d511089ab43432dc90c8cf8acc3ea5c3bb5ddf0f01f1954bcd9ec4ab"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4fcfb3e634def1947791fab8be9c9b2ede7a6c453de29d92491a35638090afee"
   end
 
   depends_on "cmake" => :build
@@ -42,6 +41,13 @@ class Innoextract < Formula
   patch do
     url "https://github.com/dscharrer/innoextract/commit/264c2fe6b84f90f6290c670e5f676660ec7b2387.patch?full_index=1"
     sha256 "f968a9c0521083dd4076ce5eed56127099a9c9888113fc50f476b914396045cc"
+  end
+
+  # Fix build with `boost` 1.89.0 using open PR
+  # PR ref: https://github.com/dscharrer/innoextract/pull/199
+  patch do
+    url "https://github.com/dscharrer/innoextract/commit/882796e0e9b134b02deeaae4bbfe92920adb6fe2.patch?full_index=1"
+    sha256 "d5af3e86eb2b74bff559885440d330678e5dbb028ce165bb836ddb14224af201"
   end
 
   def install

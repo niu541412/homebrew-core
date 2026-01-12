@@ -4,7 +4,7 @@ class Ospray < Formula
   url "https://github.com/RenderKit/ospray/archive/refs/tags/v3.2.0.tar.gz"
   sha256 "2c8108df2950bc5d1bc2a62f74629233dbe4f36e3f6a8ea032907d4a3fdc6750"
   license "Apache-2.0"
-  head "https://github.com/RenderKit/ospray.git", branch: "master"
+  head "https://github.com/RenderKit/ospray.git", branch: "devel"
 
   livecheck do
     url :stable
@@ -13,6 +13,7 @@ class Ospray < Formula
 
   bottle do
     rebuild 1
+    sha256 cellar: :any,                 arm64_tahoe:   "37889fb9d563aaffcfd8b7fee60874967a6d4d16e10f5a9947d629f977222c1b"
     sha256 cellar: :any,                 arm64_sequoia: "3df35dfd82214b9ee97e1a56a867d8c01c94f37537160d0e24b11b4656e94afb"
     sha256 cellar: :any,                 arm64_sonoma:  "a9aaf78d07b916b571a4d96eae5d4a570ef9bc0f63b9ec4a02a209798f425c9f"
     sha256 cellar: :any,                 arm64_ventura: "26c886271f141447de4017c2b469488c50f4a13ecaf825971a326dbf85ab8787"

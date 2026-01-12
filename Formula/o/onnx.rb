@@ -1,22 +1,19 @@
 class Onnx < Formula
   desc "Open standard for machine learning interoperability"
   homepage "https://onnx.ai/"
-  url "https://github.com/onnx/onnx/archive/refs/tags/v1.17.0.tar.gz"
-  sha256 "8d5e983c36037003615e5a02d36b18fc286541bf52de1a78f6cf9f32005a820e"
+  url "https://github.com/onnx/onnx/archive/refs/tags/v1.20.1.tar.gz"
+  sha256 "9bcd6473c689b1ac3aeba8df572891756e01c1a151ae788df5cbc7a4499e5db5"
   license "Apache-2.0"
-  revision 2
 
   no_autobump! because: :requires_manual_review
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any,                 arm64_sequoia: "87e803d38d384328e30a6104d461aa429168f34f90166034effa1f2393e68cc2"
-    sha256 cellar: :any,                 arm64_sonoma:  "24042b9d2631f8eaa656651f4d8ae2c0bcf21c9494ad83af0d4157171df0a1dd"
-    sha256 cellar: :any,                 arm64_ventura: "4ea1894f1dbcf250d0a5a8fc6189dae1223c4c8f0540c6e2ce6ddb275d8e578a"
-    sha256 cellar: :any,                 sonoma:        "d3d1459cffc0e2547efc589427b32bf67cf6d5e6daedf30c62747d7bc1bedb61"
-    sha256 cellar: :any,                 ventura:       "657fa2a17084889403dc19a6385df4979c6bade3eea063e559668f387d5017c2"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "3f8ade75bd41095e4e6104c6fa4f3a296c52c626a5fc58ff63c13d8d859e53a3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "9527543ac126f35a52e537eb66386e7a73abc22c197cfc6e5e199dd3eeb949ad"
+    sha256 cellar: :any,                 arm64_tahoe:   "6eab6ffeb8935d337316e8909fc8f219279b442347f9ac62f06edb3c336e3540"
+    sha256 cellar: :any,                 arm64_sequoia: "e4f675af3727ba528d2cb101a45d3a56ed3094482c31635d7be1baf66b5c0f5f"
+    sha256 cellar: :any,                 arm64_sonoma:  "2602812ff2f0e0671422e31298d49a59a57bb274ae157581f9743a1eb1f9d84a"
+    sha256 cellar: :any,                 sonoma:        "035cc8831e70357e30d7f6b05f2e1162911361e8c35d628cb083287756eaa09b"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "e426f4564a0027407e1829814de7bd6fa78f029818155c914c260b22c5f5b952"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3d2c9fa7b22f0ba7186ac95694f4b14258fdfa755d1f8f938a3fd789848caeeb"
   end
 
   depends_on "cmake" => [:build, :test]
@@ -25,12 +22,23 @@ class Onnx < Formula
 
   uses_from_macos "python" => :build
 
+  # Apply Fedora's workaround to allow `onnxruntime` to use `onnx` built without
+  # ONNX_DISABLE_STATIC_REGISTRATION[^1]. We can't use this option as it will
+  # break functionality for any dependents/users expecting the default behavior.
+  #
+  # [^1]: https://github.com/microsoft/onnxruntime/issues/8556#issuecomment-1006091632
+  patch do
+    url "https://src.fedoraproject.org/rpms/onnx/raw/4de8a450afd87b1ba1931f50d841e9c50b63d8a0/f/0004-Add-fixes-for-use-with-onnxruntime.patch"
+    sha256 "d9ddb735c065fd5dae11ab79371e62bdcca157a6d2a7705cc83ee612abeaaa98"
+  end
+
   def install
     args = %W[
       -DBUILD_SHARED_LIBS=ON
       -DCMAKE_INSTALL_RPATH=#{rpath}
+      -DONNX_USE_LITE_PROTO=ON
       -DONNX_USE_PROTOBUF_SHARED_LIBS=ON
-      -DPYTHON_EXECUTABLE=#{which("python3")}
+      -DPython3_EXECUTABLE=#{which("python3")}
     ]
 
     system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
@@ -94,8 +102,9 @@ class Onnx < Formula
     CPP
 
     (testpath/"CMakeLists.txt").write <<~CMAKE
-      cmake_minimum_required(VERSION 3.10)
+      cmake_minimum_required(VERSION 4.0)
       project(test LANGUAGES CXX)
+      find_package(Protobuf CONFIG REQUIRED)
       find_package(ONNX CONFIG REQUIRED)
       add_executable(test test.cpp)
       target_link_libraries(test ONNX::onnx)

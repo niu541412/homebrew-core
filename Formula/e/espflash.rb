@@ -1,18 +1,17 @@
 class Espflash < Formula
   desc "Serial flasher utility for Espressif SoCs and modules based on esptool.py"
   homepage "https://github.com/esp-rs/espflash"
-  url "https://github.com/esp-rs/espflash/archive/refs/tags/v4.0.1.tar.gz"
-  sha256 "f4eb66af5ca11a396b238878d339ca38d9ddcb7c619b47ed5fc91b7f7b4e54ac"
+  url "https://github.com/esp-rs/espflash/archive/refs/tags/v4.3.0.tar.gz"
+  sha256 "ea038015c548421c4aba4a3ed7391ab831d7003d09944f1ac247c77dfe090341"
   license any_of: ["MIT", "Apache-2.0"]
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "81074a30fcabaaec83c0f923c21b3741af0e8bae338d41bfa57cab0ec2539870"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "4e7376eb6973a25c45dcad18f09d4c3f06612be127f363f0553852894140271d"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "2e1e5de9cb685b68e69c15d3fe1addea4448e62dfc1c98d80977abda4584dfc8"
-    sha256 cellar: :any_skip_relocation, sonoma:        "e6a8e8e2a2fa5e5ebe008724bfa66a24c998750dd079c2907cc79d47419f16c6"
-    sha256 cellar: :any_skip_relocation, ventura:       "c2a7abbc65110221d8fdd9f1ed17774909462ce9857c250cfab04b886ccef7f7"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "1159d6a52f878074685cb190134179cbf6b10846482d103dd0103f046e003d4e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d3dd1267b7fd248b893dee7a09dd65caf7981ce5752009521bb6822751581bbb"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "b1e30cbba1b4711890fbe1f435352ba3b06da0054710ba519a1f91e33a4cd14e"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "26b303b44d33cac494f540f795cc17fec581827f3b3f835b0d36385469ecbfad"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "2e9eba0a5f7280288a9b6e1a1b666af5220492bec7995ee2c25e7b2148b791a7"
+    sha256 cellar: :any_skip_relocation, sonoma:        "4d5e2121b6dd229722b0bca9868113a369e898b09524207dd2fbe17377a7a7bb"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "ae3c812a3e2c2a0a2ee029fb71317e8c4f46a242258a2e370dcbd9edfe7f552f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "38f2c7d557115250dcedb4fb1599883298479d8843b47d49ec8598618f0c11ad"
   end
 
   depends_on "pkgconf" => :build

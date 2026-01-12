@@ -2,21 +2,20 @@ class Duckdb < Formula
   desc "Embeddable SQL OLAP Database Management System"
   homepage "https://www.duckdb.org"
   url "https://github.com/duckdb/duckdb.git",
-      tag:      "v1.3.2",
-      revision: "0b83e5d2f68bc02dfefde74b846bd039f078affa"
+      tag:      "v1.4.3",
+      revision: "d1dc88f950d456d72493df452dabdcd13aa413dd"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "2061ae10a4cd05587b37fec9a7abf721763b7ce20f15744505e86745740ed140"
-    sha256 cellar: :any,                 arm64_sonoma:  "be2964118af95274b2bbebe613ba22fdf48dbd82b8a01e6f824e840eeed0904d"
-    sha256 cellar: :any,                 arm64_ventura: "e9154de3fa792c47c77544e63d338dee9a967856463fca7fee9f21a050fdb1f3"
-    sha256 cellar: :any,                 sonoma:        "314f8f1abd862fb47ce2284dd845281a41e1b01a0cfe9d6c5a8f4a23b9debec1"
-    sha256 cellar: :any,                 ventura:       "c1b6b728de521d1969de1d64d27f02036bb8d221ba8ed4199fe6c96623af41e6"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "7bb8a13d4919cc496fd219a6b1c8de0d4718d3d58296fb83c5684e6423d2438d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "797a43be18afd83479b4d97589b68a32307da540de046cf5edb675c328266b5d"
+    sha256 cellar: :any,                 arm64_tahoe:   "aeedf85a92da7734c7c4fe46da8560e6c786cb021c7afd92d2799b44bb00a658"
+    sha256 cellar: :any,                 arm64_sequoia: "5c76937a5f4e46bcdd0bb8f9154e41a4a0152dd50d6b9c021253d4983b5b4042"
+    sha256 cellar: :any,                 arm64_sonoma:  "cbde8ad2a8fd55f4f1fea3bfb428762d5c3b7de2e207d6f0da879f4a69acc716"
+    sha256 cellar: :any,                 sonoma:        "ac968a32a2d759460c448b5bc4f6c255010cc7bdbd50d6b2ec05347578fa460b"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "4d347da14a6cb109b9460f162ad068afb104932d52541edfac1b3957e4531a48"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b76b10577f82d883055dec245d77ec7224a74a0a4067084b75249a74217be1d3"
   end
 
-  depends_on "cmake" => :build
+  depends_on "cmake" => [:build, :test]
   uses_from_macos "python" => :build
 
   def install
@@ -33,8 +32,6 @@ class Duckdb < Formula
     # The cli tool was renamed (0.1.8 -> 0.1.9)
     # Create a symlink to not break compatibility
     bin.install_symlink bin/"duckdb" => "duckdb_cli"
-
-    rm lib.glob("*.a")
   end
 
   test do
@@ -54,5 +51,32 @@ class Duckdb < Formula
     EOS
 
     assert_equal expected_output, pipe_output(bin/"duckdb_cli", sql_commands)
+
+    (testpath/"test.cpp").write <<~CPP
+      #include "duckdb.hpp"
+      #include <iostream>
+      using namespace duckdb;
+      int main() {
+        DuckDB db(nullptr);
+        Connection con(db);
+        con.Query("CREATE TABLE weather (temp INTEGER)");
+        con.Query("INSERT INTO weather (temp) VALUES (40), (45), (50)");
+        auto result = con.Query("SELECT AVG(temp) FROM weather");
+        std::cout << result->Fetch()->GetValue(0, 0).ToString();
+      }
+    CPP
+
+    (testpath/"CMakeLists.txt").write <<~CMAKE
+      cmake_minimum_required(VERSION 3.10)
+      project(test_duckdb)
+      set(CMAKE_CXX_STANDARD 11)
+      find_package(DuckDB REQUIRED)
+      add_executable(test test.cpp)
+      target_link_libraries(test duckdb)
+    CMAKE
+
+    system "cmake", "-S", testpath, "-B", testpath/"build"
+    system "cmake", "--build", testpath/"build"
+    assert_equal "45.0", shell_output(testpath/"build/test")
   end
 end

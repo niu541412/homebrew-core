@@ -2,18 +2,19 @@ class Tygo < Formula
   desc "Generate Typescript types from Golang source code"
   homepage "https://github.com/gzuidhof/tygo"
   url "https://github.com/gzuidhof/tygo.git",
-      tag:      "v0.2.19",
-      revision: "39a3193308d2f22ed302f81ef286eb394aecdad0"
+      tag:      "v0.2.20",
+      revision: "4032e1a9dc75ebb46d968e52c0e0ab7e625be21c"
   license "MIT"
   head "https://github.com/gzuidhof/tygo.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "24e755baa5f3a58505d2f3adfb074d623a9d9c7e7fe050bde251db2efbdb3f20"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "24e755baa5f3a58505d2f3adfb074d623a9d9c7e7fe050bde251db2efbdb3f20"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "24e755baa5f3a58505d2f3adfb074d623a9d9c7e7fe050bde251db2efbdb3f20"
-    sha256 cellar: :any_skip_relocation, sonoma:        "aaee779ee95a066318e97f7511e1c469d66d1a3f6d15f0abf74710cf5678ca85"
-    sha256 cellar: :any_skip_relocation, ventura:       "aaee779ee95a066318e97f7511e1c469d66d1a3f6d15f0abf74710cf5678ca85"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b8116df3dbb098c78a642fd54ac52e926a40a083d3418b4e99e33408d08ca5af"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "30489fe2f93459e58b4a614700bc44fa5291653e56da00e23a605280f6cf05a2"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "30489fe2f93459e58b4a614700bc44fa5291653e56da00e23a605280f6cf05a2"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "30489fe2f93459e58b4a614700bc44fa5291653e56da00e23a605280f6cf05a2"
+    sha256 cellar: :any_skip_relocation, sonoma:        "9a3ccb639c69fa74a0ebe7e6139ec9853c691cf826a6bb34161e88725d741d77"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "4fdf9b24c93cd24c2ff8604011e9664dc098a6829c54044da1979fd2a937066d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "184150ec271b0743c5c4b5cfe4e816c45c4611ba25eb64171006f53f7b316a8f"
   end
 
   depends_on "go" => [:build, :test]
@@ -28,7 +29,7 @@ class Tygo < Formula
 
     system "go", "build", *std_go_args(ldflags:)
 
-    generate_completions_from_executable(bin/"tygo", "completion")
+    generate_completions_from_executable(bin/"tygo", shell_parameter_format: :cobra)
     pkgshare.install "examples"
   end
 

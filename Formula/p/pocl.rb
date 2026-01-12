@@ -1,8 +1,8 @@
 class Pocl < Formula
   desc "Portable Computing Language"
   homepage "https://portablecl.org/"
-  url "https://github.com/pocl/pocl/archive/refs/tags/v7.0.tar.gz"
-  sha256 "f55caba8c3ce12bec7b683ce55104c7555e19457fc2ac72c6f035201e362be08"
+  url "https://github.com/pocl/pocl/archive/refs/tags/v7.1.tar.gz"
+  sha256 "1110057cb0736c74819ad65238655a03f7b93403a0ca60cdd8849082f515ca25"
   license "MIT"
   head "https://github.com/pocl/pocl.git", branch: "main"
 
@@ -12,13 +12,13 @@ class Pocl < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "bed2f14a22b1359771e17f6847e4d37917b9df50a4b746973bafd0feb0e8d9cb"
-    sha256 arm64_sonoma:  "195ef004effb16a6625b5cca3330af4c5c6f68d7c0abfb969744cf5b9d13ce44"
-    sha256 arm64_ventura: "175075666e8fbbb021122229215bd2b34530a8913d610983e33ca4c5d39b4711"
-    sha256 sonoma:        "688a040a1d181481d9552d94fe7dd315006289ff62cf03f2f7d35bfbdaceccf7"
-    sha256 ventura:       "3c1a6a049ec3e48e0d322a239231c0a5be3e5f2a916a007605bb12e60d31339a"
-    sha256 arm64_linux:   "47497124009c872e155bedc44ca09099131cac2ae02f2d5549b2556516d56548"
-    sha256 x86_64_linux:  "33874a69f7385e19a0b117294d85da156090fd7f5b784302bc2cf25769195374"
+    rebuild 1
+    sha256 arm64_tahoe:   "cc45a16ddaf37efac69ad995690efe2979143b304c20c30179581b04161cf6b4"
+    sha256 arm64_sequoia: "03a539344b6f557b050cbda86913e9936cf7dfa3d157ee90e438b40eab16610d"
+    sha256 arm64_sonoma:  "c1492bebca73399ccdbe9db343f5c9999f58ec2dab464cf9249b4b8f07b287d6"
+    sha256 sonoma:        "ac55a8d49c48770e574446ff3ab95e023370059c0e954fe674103a7751fa9b27"
+    sha256 arm64_linux:   "4c88564ba6f258b924e62ea47306847a1a2ed9356f6723de2273d4235dc959a2"
+    sha256 x86_64_linux:  "b3fb64a5cd37f39d1e70240495f41a1d3e3b267911e50ed4a912b1da4edf162d"
   end
 
   depends_on "cmake" => :build
@@ -51,11 +51,15 @@ class Pocl < Formula
       -DLLVM_LIBDIR=#{llvm.opt_lib}
       -DLLVM_INCLUDEDIR=#{llvm.opt_include}
     ]
-    if Hardware::CPU.intel?
-      # Only x86_64 supports "distro" which allows runtime detection of SSE/AVX
-      args << "-DKERNELLIB_HOST_CPU_VARIANTS=distro"
-    elsif OS.mac?
-      args << "-DLLC_HOST_CPU=apple-m1"
+    if build.bottle?
+      args << if Hardware::CPU.intel?
+        # Only x86_64 supports "distro" which allows runtime detection of SSE/AVX
+        "-DKERNELLIB_HOST_CPU_VARIANTS=distro"
+      elsif OS.mac?
+        "-DLLC_HOST_CPU=apple-m1"
+      else
+        "-DLLC_HOST_CPU=generic"
+      end
     end
 
     system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args

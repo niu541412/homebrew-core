@@ -1,19 +1,18 @@
 class Edencommon < Formula
   desc "Shared library for Watchman and Eden projects"
   homepage "https://github.com/facebookexperimental/edencommon"
-  url "https://github.com/facebookexperimental/edencommon/archive/refs/tags/v2025.07.28.00.tar.gz"
-  sha256 "6f9306e50cc1221e5c6aaa3805dd0b8138506db0c3a018fe6a0c9e6610dd929e"
+  url "https://github.com/facebookexperimental/edencommon/archive/refs/tags/v2026.01.05.00.tar.gz"
+  sha256 "e04e988984a778824879df38d35b078c6ca622c5f58538d969923cd470175cfb"
   license "MIT"
   head "https://github.com/facebookexperimental/edencommon.git", branch: "main"
 
   bottle do
-    sha256                               arm64_sequoia: "2ae35f3cde59dac2a464fd9c5f8094ed3524bd5fab3686b32f21b1a8007ee4d4"
-    sha256                               arm64_sonoma:  "70d97e4da2c49497ada499330c5b71a52bb5632eae27c7fab0e27aa7a5042feb"
-    sha256                               arm64_ventura: "8c2646fed47d098603a33b5bfc369ca7d5b3346faab263a478e6a34c8bfd212b"
-    sha256 cellar: :any,                 sonoma:        "a3b6e54ab1727793f22a624cd7ee222d1ee7e1ac7e0d159c730c5de38a3c333a"
-    sha256 cellar: :any,                 ventura:       "5400959bb254e3e01d0513bad2ace087172e6af528626c13ae745d742d852ef8"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "17da24232524dbf005599f2bb82352978d0ca77015b37164c2791b6d1ec4ce98"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7e229c6d71c9abe534fcf949f5e98889906667bdc8340282c325651e49873350"
+    sha256                               arm64_tahoe:   "4e133d8d82f6ace15ba55a07c90751d2238bcbe90a7e0a0b41daa9a34aba0404"
+    sha256                               arm64_sequoia: "e40c757aad19252445c6bd7606b71ea51159cae9d41cda67c7cb8a50405368e9"
+    sha256                               arm64_sonoma:  "007893c8710557c8f1e7c362ab564e45702eb58fab3255a3207efee75e47af5e"
+    sha256 cellar: :any,                 sonoma:        "a2b4c1662e79624da4d8a228cd607c155adbacb73547138889bf76384b2ec068"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "74ee5c4445af11e81e90be9b82f4b429525132c51bcf0c0b894675dfaf6852ca"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5b4170439237fc18d89e97a902cc7e80529310757fc6eefc277f4e5c57d76910"
   end
 
   depends_on "cmake" => :build
@@ -41,7 +40,11 @@ class Edencommon < Formula
     # Avoid having to build FBThrift py library
     inreplace "CMakeLists.txt", "COMPONENTS cpp2 py)", "COMPONENTS cpp2)"
 
-    shared_args = ["-DBUILD_SHARED_LIBS=ON", "-DCMAKE_INSTALL_RPATH=#{rpath}"]
+    shared_args = %W[
+      -DCMAKE_CXX_STANDARD=20
+      -DBUILD_SHARED_LIBS=ON
+      -DCMAKE_INSTALL_RPATH=#{rpath}
+    ]
     linker_flags = %w[-undefined dynamic_lookup -dead_strip_dylibs]
     linker_flags << "-ld_classic" if OS.mac? && MacOS.version == :ventura
     shared_args << "-DCMAKE_SHARED_LINKER_FLAGS=-Wl,#{linker_flags.join(",")}" if OS.mac?

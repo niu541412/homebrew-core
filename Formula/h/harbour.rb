@@ -24,6 +24,7 @@ class Harbour < Formula
 
   bottle do
     rebuild 1
+    sha256 cellar: :any,                 arm64_tahoe:    "935cc21388de6b60757cfc22f1e3692bf9dc0fdd22fab8caf5090325e420aaac"
     sha256 cellar: :any,                 arm64_sequoia:  "c391f2098164917feb69d3e4820c3c7495dbb84689c5fe2b5dcf5f0d5940d82c"
     sha256 cellar: :any,                 arm64_sonoma:   "7e80473b90f18a1d0825801e625bb117f69551e6d04f11fd65b113b2ab8e53cb"
     sha256 cellar: :any,                 arm64_ventura:  "ad3d5b72015a0fb027952c207b4637adb47a3535e8492cb3553e687720b20b59"
@@ -34,6 +35,8 @@ class Harbour < Formula
     sha256 cellar: :any_skip_relocation, arm64_linux:    "798cc4aee29d60fb9fe930c7b22f691de6e5f0b90ac997f42d41d1c1d589baf5"
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "2087353cafad551175524915a162da8520c6401686c1d4d70414553fbc2d1f1b"
   end
+
+  deprecate! date: "2026-01-05", because: "uses deprecated libxdiff"
 
   depends_on "jpeg-turbo"
   depends_on "libharu"
@@ -54,9 +57,15 @@ class Harbour < Formula
     rm "contrib/hbmzip/3rd/minizip/minizip.hbp"
     rm "contrib/hbexpat/3rd/expat/expat.hbp"
 
-    # Fix flat namespace usage.
-    # Upstreamed here: https://github.com/harbour/core/pull/263.
-    inreplace "config/darwin/clang.mk", "-flat_namespace -undefined warning", "-undefined dynamic_lookup"
+    # 1. Fix flat namespace usage.
+    #    Upstreamed here: https://github.com/harbour/core/pull/263.
+    # 2. Avoid using libtool due to `ld: unknown options: -force_cpusubtype_ALL`
+    #    https://github.com/Homebrew/homebrew-core/pull/242642#issuecomment-3292186403
+    inreplace "config/darwin/clang.mk" do |s|
+      s.gsub! "DY := $(AR)", "DY := cc"
+      s.gsub!(/^DFLAGS \+= .* \$\(LIBPATHS\)$/,
+              "DFLAGS += -shared -Wl,-undefined,dynamic_lookup $(LIBPATHS)")
+    end
 
     # The following optional dependencies are not being used at this time:
     # allegro, cairo, cups, freeimage, gd, ghostscript, libmagic, mysql, postgresql, qt@5, unixodbc
@@ -80,7 +89,6 @@ class Harbour < Formula
     if OS.mac?
       ENV["HB_COMPILER"] = ENV.cc
       ENV["HB_USER_DFLAGS"] = "-L#{MacOS.sdk_path}/usr/lib"
-      ENV.append "HB_USER_DFLAGS", "-ld_classic" if DevelopmentTools.clang_build_version >= 1500
       ENV.append "HB_USER_DFLAGS", "-macosx_version_min #{MacOS.version}.0" if Hardware::CPU.arm?
       ENV["HB_WITH_BZIP2"] = MacOS.sdk_path/"usr/include"
       ENV["HB_WITH_CURL"] = MacOS.sdk_path/"usr/include"

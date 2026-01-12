@@ -1,12 +1,12 @@
 class CppHttplib < Formula
   desc "C++ header-only HTTP/HTTPS server and client library"
   homepage "https://github.com/yhirose/cpp-httplib"
-  url "https://github.com/yhirose/cpp-httplib/archive/refs/tags/v0.24.0.tar.gz"
-  sha256 "bb788d1ccf6654af77b63f4f3f01f9d9a5b549a8773d02eb88b33ef252a9f78e"
+  url "https://github.com/yhirose/cpp-httplib/archive/refs/tags/v0.30.1.tar.gz"
+  sha256 "2818b183757e29dd52b47a185f0cea9ef2d0fba377d8710b450a26328e51c2fe"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "8e04097902c724d7624d486a32b5e5051455b1c81d81ae48158b40c62121953d"
+    sha256 cellar: :any_skip_relocation, all: "5863080e0eb81f1e9e15c1ddf6237d05ee136e20a2be6fd0b76c075618c665f7"
   end
 
   depends_on "cmake" => :build
@@ -71,9 +71,7 @@ class CppHttplib < Formula
     system ENV.cxx, "server.cpp", "-I#{include}", "-lpthread", "-std=c++11", "-o", "server"
     system ENV.cxx, "client.cpp", "-I#{include}", "-lpthread", "-std=c++11", "-o", "client"
 
-    fork do
-      exec "./server"
-    end
+    spawn "./server"
     sleep 3
     assert_match "Hello World!", shell_output("./client")
   end

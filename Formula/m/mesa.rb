@@ -3,8 +3,8 @@ class Mesa < Formula
 
   desc "Graphics Library"
   homepage "https://www.mesa3d.org/"
-  url "https://archive.mesa3d.org/mesa-25.1.6.tar.xz"
-  sha256 "9f2b69eb39d2d8717d30a9868fdda3e0c0d3708ba32778bbac8ddb044538ce84"
+  url "https://archive.mesa3d.org/mesa-25.3.3.tar.xz"
+  sha256 "05328b3891c000e6a110a3e7321d8bfbb21631d132bf86bd3d4a8f45c535ef6b"
   license all_of: [
     "MIT",
     "Apache-2.0", # include/{EGL,GLES*,vk_video,vulkan}, src/egl/generate/egl.xml, src/mapi/glapi/registry/gl.xml
@@ -23,13 +23,12 @@ class Mesa < Formula
   head "https://gitlab.freedesktop.org/mesa/mesa.git", branch: "main"
 
   bottle do
-    sha256 arm64_sequoia: "e68026fed60bfe45cc49032020773229711644cf00e624e2a1b81bd7aef1ff72"
-    sha256 arm64_sonoma:  "7e36ba1f5a3bcf8df5e49577d264d5443b229becfeca831209403bf781997b12"
-    sha256 arm64_ventura: "e40a376f566f8d1c13ef98952aef4aedf84e23bc6cd3ad840ec1467db63e7554"
-    sha256 sonoma:        "a0df8f9c13d8d0804a01a7d659368320f04a40b79d91d5615817fb0fc55219bf"
-    sha256 ventura:       "074c954d164280e15011b52bbe4aafb49a15f25e38febe7e00734d8ac48939b5"
-    sha256 arm64_linux:   "dd2a27631e4413c49c023f6dd6c35ed5e50f6fed3a5d66da71cfed028d374e13"
-    sha256 x86_64_linux:  "3e01c0fff41e0024dd2193764e5e259049632fbc52fc4c216b6e6680b7b2ffce"
+    sha256 arm64_tahoe:   "2adfa830e9e069d44d8254cdba36d57ee0a7d19f1de9df0c88f4a655f36c0b01"
+    sha256 arm64_sequoia: "042aa892e1cdef746873dc062a483345c96638d2055a4dd7c1aa133fadd62df7"
+    sha256 arm64_sonoma:  "0637df8c0f8037fac049d64696173483bb5aada86febbf5c31180eb9b310290e"
+    sha256 sonoma:        "feb07d717886f7c026a0799e34900b657858e37b04543e6b69a3b35797cbc554"
+    sha256 arm64_linux:   "f5fe462ea440cc5b10c2373301cfd038056c643bee9ed374c0aaf84546a4d9a7"
+    sha256 x86_64_linux:  "48ffde1a0863f201f0d1eaf14216cb270ea9746ae8aa99e9c96882ad3d657ed3"
   end
 
   depends_on "bindgen" => :build
@@ -42,7 +41,7 @@ class Mesa < Formula
   depends_on "meson" => :build
   depends_on "ninja" => :build
   depends_on "pkgconf" => [:build, :test]
-  depends_on "python@3.13" => :build
+  depends_on "python@3.14" => :build
   depends_on "rust" => :build
   depends_on "xorgproto" => :build
 
@@ -69,7 +68,7 @@ class Mesa < Formula
     depends_on "directx-headers" => :build
     depends_on "gzip" => :build
     depends_on "libva" => :build
-    depends_on "libvdpau" => :build
+    depends_on "pycparser" => :build
     depends_on "valgrind" => :build
     depends_on "wayland-protocols" => :build
 
@@ -81,14 +80,13 @@ class Mesa < Formula
     depends_on "lm-sensors"
     depends_on "wayland"
 
-    on_arm do
-      depends_on "pycparser" => :build
-    end
-
     on_intel do
       depends_on "cbindgen" => :build
     end
   end
+
+  pypi_packages package_name:   "",
+                extra_packages: %w[mako packaging ply pyyaml]
 
   resource "mako" do
     url "https://files.pythonhosted.org/packages/9e/38/bd5b78a920a64d708fe6bc8e0a2c075e1389d53bef8413725c63ba041535/mako-1.3.10.tar.gz"
@@ -96,8 +94,8 @@ class Mesa < Formula
   end
 
   resource "markupsafe" do
-    url "https://files.pythonhosted.org/packages/b2/97/5d42485e71dfc078108a86d6de8fa46db44a1a9295e89c5d6d4a06e23a62/markupsafe-3.0.2.tar.gz"
-    sha256 "ee55d3edf80167e48ea11a923c7386f4669df67d7994554387f84e7d8b0a2bf0"
+    url "https://files.pythonhosted.org/packages/7e/99/7690b6d4034fffd95959cbe0c02de8deb3098cc577c67bb6a24fe5d7caa7/markupsafe-3.0.3.tar.gz"
+    sha256 "722695808f4b6457b320fdc131280796bdceb04ab50fe1795cd540799ebe1698"
   end
 
   resource "packaging" do
@@ -111,12 +109,12 @@ class Mesa < Formula
   end
 
   resource "pyyaml" do
-    url "https://files.pythonhosted.org/packages/54/ed/79a089b6be93607fa5cdaedf301d7dfb23af5f25c398d5ead2525b063e17/pyyaml-6.0.2.tar.gz"
-    sha256 "d584d9ec91ad65861cc08d42e834324ef890a082e591037abe114850ff7bbc3e"
+    url "https://files.pythonhosted.org/packages/05/8e/961c0007c59b8dd7729d542c61a4d537767a59645b82a0b521206e1e25c2/pyyaml-6.0.3.tar.gz"
+    sha256 "d76623373421df22fb4cf8817020cbb7ef15c725b9d5e45f17e189bfc384190f"
   end
 
   def python3
-    "python3.13"
+    "python3.14"
   end
 
   def install
@@ -137,44 +135,46 @@ class Mesa < Formula
 
     args = %w[
       -Db_ndebug=true
+      -Dgallium-rusticl=true
+      -Dllvm=enabled
       -Dopengl=true
       -Dstrip=true
-      -Dllvm=enabled
-
       -Dvideo-codecs=all
-      -Dgallium-rusticl=true
     ]
     args += if OS.mac?
+      # Work around .../rusticl_system_bindings.h:1:10: fatal error: 'stdio.h' file not found
+      ENV["SDKROOT"] = MacOS.sdk_for_formula(self).path
+
       %W[
         -Dgallium-drivers=llvmpipe,zink
-        -Dvulkan-drivers=swrast
-        -Dvulkan-layers=intel-nullhw,overlay,screenshot
-        -Dtools=etnaviv,glsl,nir,nouveau,imagination,dlclose-skip
         -Dmoltenvk-dir=#{Formula["molten-vk"].prefix}
+        -Dtools=etnaviv,glsl,nir,nouveau,dlclose-skip
+        -Dvulkan-drivers=swrast
+        -Dvulkan-layers=intel-nullhw,overlay,screenshot,vram-report-limit
       ]
     else
-      %w[
+      # Not all supported drivers are being auto-enabled on x86 Linux.
+      # TODO: Determine the explicit drivers list for ARM Linux.
+      drivers = Hardware::CPU.intel? ? "all" : "auto"
+
+      %W[
         -Degl=enabled
-        -Dgallium-drivers=auto
+        -Dgallium-drivers=#{drivers}
         -Dgallium-extra-hud=true
-        -Dgallium-nine=true
         -Dgallium-va=enabled
-        -Dgallium-vdpau=enabled
-        -Dgallium-xa=enabled
         -Dgbm=enabled
         -Dgles1=enabled
         -Dgles2=enabled
         -Dglx=dri
-        -Dintel-clc=enabled
+        -Dintel-rt=enabled
         -Dlmsensors=enabled
         -Dmicrosoft-clc=disabled
         -Dplatforms=x11,wayland
-        -Dshared-glapi=enabled
-        -Dtools=drm-shim,dlclose-skip,etnaviv,freedreno,glsl,intel,lima,nir,nouveau,asahi,imagination
+        -Dtools=drm-shim,etnaviv,freedreno,glsl,intel,nir,nouveau,lima,panfrost,asahi,imagination,dlclose-skip
         -Dvalgrind=enabled
-        -Dvulkan-drivers=auto
-        -Dvulkan-layers=device-select,intel-nullhw,overlay,screenshot
-        --force-fallback-for=indexmap,paste,pest_generator,roxmltree,syn
+        -Dvulkan-drivers=#{drivers}
+        -Dvulkan-layers=device-select,intel-nullhw,overlay,screenshot,vram-report-limit
+        --force-fallback-for=indexmap,paste,pest_generator,roxmltree,rustc-hash,syn
       ]
     end
 
@@ -201,8 +201,8 @@ class Mesa < Formula
 
   test do
     resource "glxgears.c" do
-      url "https://gitlab.freedesktop.org/mesa/demos/-/raw/8ecad14b04ccb3d4f7084122ff278b5032afd59a/src/xdemos/glxgears.c"
-      sha256 "cbb5a797cf3d2d8b3fce01cfaf01643d6162ca2b0e97d760cc2e5aec8d707601"
+      url "https://gitlab.freedesktop.org/mesa/demos/-/raw/a533acd00ed0b6d1beda7df0c68a59a873dba2b3/src/xdemos/glxgears.c"
+      sha256 "36376674e73fb0657fd56a3738c330b828da6731c934e2b29d75253dc02ad03b"
     end
 
     resource "gl_wrap.h" do

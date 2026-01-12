@@ -1,8 +1,8 @@
 class Faust < Formula
   desc "Functional programming language for real time signal processing"
   homepage "https://faust.grame.fr"
-  url "https://github.com/grame-cncm/faust/releases/download/2.81.2/faust-2.81.2.tar.gz"
-  sha256 "c91afe17cc01f1f75e4928dc2d2971dd83b37d10be991dda7e8b94ffab1f1ac9"
+  url "https://github.com/grame-cncm/faust/releases/download/2.83.1/faust-2.83.1.tar.gz"
+  sha256 "6ca3d749296191c41e9fd24ce7e5b37f58022d4320acb1c7343fec2df82d5551"
   license "GPL-2.0-or-later"
 
   # Upstream creates releases that use a stable tag (e.g., `v1.2.3`) but are
@@ -14,13 +14,12 @@ class Faust < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "64e84ba0e70664d8db41f73b9f506b5c2de4c97667fbeb156bc084ce453408e0"
-    sha256 cellar: :any,                 arm64_sonoma:  "4b104ba40e172d8def36fca50d3dcc2825f767001b0916a2c53132d84dcd7b45"
-    sha256 cellar: :any,                 arm64_ventura: "d69d16cf8e4c30f9a13eeb72b5bb4447cdf0dc44c66cde88bacd7e0f7f79e9dd"
-    sha256 cellar: :any,                 sonoma:        "e0306e082497d323ffb34fb303439849a9a9e7df011962123b7c14cd841f3e86"
-    sha256 cellar: :any,                 ventura:       "be421d13201c062e73c1bdf6e0c28a104cec612e8caaa0e9b32a5a598a0734ed"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "165d0b7fb4a6bc37309acdc3d5c1b1235ac4b584c7634d2922ec557e8d5f0bd5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3083dc1223fbf8fe8c3c21da79753e8c6818ba09ccf2ae4473e7d79a44df674c"
+    sha256 cellar: :any,                 arm64_tahoe:   "d2a55eacd796dbfb88cb6255a8620e092e77e333fa8404eeb1cd438ed440ecd1"
+    sha256 cellar: :any,                 arm64_sequoia: "219a3d5ec634c88c84ddd71d547ef00408626906165694abf3a82209f6879cd1"
+    sha256 cellar: :any,                 arm64_sonoma:  "44aca203784d43d61fd808f6bd388f7f557846a613aa7d1fcf3354d09e292fdc"
+    sha256                               sonoma:        "12c0f1f3d9cbab7c0ff14adc151b17b10ef4487f225eedd475fa545e98188e15"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "8e73f78c0325a8b989539959a6a57ab825789b613d701a52c536a2ee2c128fdf"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e50c6f304965d4b01d466322b1cd907d88038bd961683ecbb04ee7facb0cff23"
   end
 
   depends_on "cmake" => :build
@@ -70,6 +69,9 @@ class Faust < Formula
 
     system "make", "--directory=tools/sound2faust", "PREFIX=#{prefix}"
     system "make", "--directory=tools/sound2faust", "install", "PREFIX=#{prefix}"
+
+    # Remove Windows files
+    rm(Dir[bin/"*.cmd"])
   end
 
   test do

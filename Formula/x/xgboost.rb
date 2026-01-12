@@ -1,8 +1,8 @@
 class Xgboost < Formula
   desc "Scalable, Portable and Distributed Gradient Boosting Library"
   homepage "https://xgboost.ai/"
-  url "https://github.com/dmlc/xgboost/releases/download/v3.0.3/xgboost-src-3.0.3.tar.gz"
-  sha256 "6598adf6a073a55cc87a31e6712fc6dab938a5317aeae7134a07067d51acdf3a"
+  url "https://github.com/dmlc/xgboost/releases/download/v3.1.3/xgboost-src-3.1.3.tar.gz"
+  sha256 "67800a7c1c0455c22c9be73dbf3c39bfd9ac9627b2cb617eb2795fd675a9d49e"
   license "Apache-2.0"
 
   livecheck do
@@ -11,13 +11,12 @@ class Xgboost < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "337aa2fadab54451aee5f59ac27d502bd58ef19a9fa0b73fe134b33f10e9e07e"
-    sha256 cellar: :any,                 arm64_sonoma:  "138aab3ddb94f9e497d4c1328098a20c96ab1644cc25b12f311c4532d73f34e1"
-    sha256 cellar: :any,                 arm64_ventura: "5fa5b55a3ac8141ab387b6bba7906da0ea91a5c90a624bb9ba9f7fa1bb958123"
-    sha256 cellar: :any,                 sonoma:        "e170435a944f005c0e55383cdbb852157f141ccc8c7862b156c8d38ea1322100"
-    sha256 cellar: :any,                 ventura:       "c98adb1fc7b63a6adeaac6314555d6209a8143830d666c7d12c98b50ac89e097"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "cbddde7b06a12827978db8f77238f7c83f4febf7ca2c3e5d275b3abc135860a2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ff00fedc4ca5f3c3139da4947d94899417a95b33c3545450529f9011f80d3b80"
+    sha256 cellar: :any,                 arm64_tahoe:   "183890261aed9bb97ad5ee316564664e16b36215bb70a3a91e63d489f4ebf537"
+    sha256 cellar: :any,                 arm64_sequoia: "3563bf70ceffc413bfd1671c34d1893b787b576ebac53ba4415a666601ecb290"
+    sha256 cellar: :any,                 arm64_sonoma:  "8f01af1809d93dde95bfff54e79f6671e60db222b74b1a09a8092ed2805303fd"
+    sha256 cellar: :any,                 sonoma:        "27bf55b74bc1ae7c8f54476ea95452ae53c390f4a135a4c87a48d074ed81ab88"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "527fcabfb6aa2663a47ef5195fe5c3eba4770571ccb15a583c9f4f4a6cdadfd7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "580be1b22fdc397a3e8474ac1b1a2d83b3eb763803063ee1859aad076fce343f"
   end
 
   depends_on "cmake" => :build

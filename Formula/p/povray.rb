@@ -1,11 +1,27 @@
 class Povray < Formula
   desc "Persistence Of Vision RAYtracer (POVRAY)"
   homepage "https://www.povray.org/"
-  url "https://github.com/POV-Ray/povray/archive/refs/tags/v3.7.0.10.tar.gz"
-  sha256 "7bee83d9296b98b7956eb94210cf30aa5c1bbeada8ef6b93bb52228bbc83abff"
   license "AGPL-3.0-or-later"
-  revision 13
-  head "https://github.com/POV-Ray/povray.git", branch: "master"
+  revision 15
+
+  stable do
+    url "https://github.com/POV-Ray/povray/archive/refs/tags/v3.7.0.10.tar.gz"
+    sha256 "7bee83d9296b98b7956eb94210cf30aa5c1bbeada8ef6b93bb52228bbc83abff"
+
+    depends_on "boost"
+
+    on_sequoia :or_newer do
+      # Apply FreeBSD patches for libc++ >= 19 needed in Xcode 16.3
+      patch :p0 do
+        url "https://raw.githubusercontent.com/freebsd/freebsd-ports/6133473e4227abbfcf023bea6ab5eeed9c17e55b/graphics/povray37/files/patch-vfe_vfe.cpp"
+        sha256 "81e6ad64dadce1581cbab3be9774d5a5c22307e8738ee1452eb7e4d3e5a7e234"
+      end
+      patch :p0 do
+        url "https://raw.githubusercontent.com/freebsd/freebsd-ports/6133473e4227abbfcf023bea6ab5eeed9c17e55b/graphics/povray37/files/patch-vfe_vfeconf.h"
+        sha256 "8e2246c5ded770b0fe835ae062aca44e98fc220314e39ba6c068ed7f270b71b2"
+      end
+    end
+  end
 
   livecheck do
     url :stable
@@ -15,18 +31,22 @@ class Povray < Formula
   no_autobump! because: :requires_manual_review
 
   bottle do
-    sha256 arm64_sequoia: "a43f64589b9b2abbc3dd1460e56c79c0d8473e0b0cdd343f7fae52474450adc9"
-    sha256 arm64_sonoma:  "ffc8acf31801cc124cf903e3ad6014014e6f5e3784938b43f42bcb39758d3f95"
-    sha256 arm64_ventura: "e3b9af45cf02e6e071dac8e9e15681a727817ceb26e21400dd2f10c4c161211e"
-    sha256 sonoma:        "d43346c84ebe723c8099104abe49b6d28850f4597ef07a0be97bf5af616c6384"
-    sha256 ventura:       "bda46d7ccad80bb6488dac7d09fecc8214ff19bd39c267fbc143cb846d4d2882"
-    sha256 arm64_linux:   "4a6efde256e0f9880d0eef16f7f3f7a70208e751a353313f687040e100a3449c"
-    sha256 x86_64_linux:  "757f8971fcd168f2eedea18303542b1566eaf0308fbcee6833de2aa4b11bdc31"
+    sha256 arm64_tahoe:   "7eddc8686330dcd024455c669830b426dc2fc273447f77bfb161fa8866be47eb"
+    sha256 arm64_sequoia: "6fc88cf463b3fad428b00da5a83b9e6bff75c21ef6d9da48249255fd83e5d6b8"
+    sha256 arm64_sonoma:  "17c6a1dbf5e46607dc547a16eb1a9c57f10cdb1a9a1866327910717aaddcf9b4"
+    sha256 sonoma:        "3562715f0aa05c1788ea9ab7e0b819b86d77ce55849713c7e8cd78e32f3ebaa3"
+    sha256 arm64_linux:   "fada88d5446c7e3916d4435de35bfb1bd762abeab719681766ee0454879a5a2c"
+    sha256 x86_64_linux:  "4d8db3b9ef255514ddcc7d28cb11276a4c30a248a9e3f2479ebc69310bedde8a"
+  end
+
+  head do
+    url "https://github.com/POV-Ray/povray.git", branch: "master"
+    depends_on "boost" => :build
   end
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
-  depends_on "boost"
+  depends_on "pkgconf" => :build
   depends_on "imath"
   depends_on "jpeg-turbo"
   depends_on "libpng"
@@ -37,12 +57,25 @@ class Povray < Formula
 
   def install
     ENV.cxx11
+    # See https://github.com/freebsd/freebsd-ports/commit/6133473e4227abbfcf023bea6ab5eeed9c17e55b
+    if build.stable? && OS.mac? && MacOS.version >= :sequoia
+      ENV.append "CPPFLAGS", "-DPOVMSUCS2=char16_t -DUCS2=char16_t -DUCS4=char32_t"
+    end
 
+    # Workaround for Xcode 16.3+, issue ref: https://github.com/POV-Ray/povray/issues/479
+    inreplace "source/#{build.stable? ? "backend" : "core"}/shape/truetype.cpp",
+              "#if !defined(TARGET_OS_MAC)",
+              "#if !defined(__MACTYPES__)"
+
+    # Remove bundled libraries
+    rm_r("libraries")
+
+    # Disable optimizations similar to Debian/Fedora. This mainly removes `-ffast-math`
+    # as `povray` has open bugs like https://github.com/POV-Ray/povray/issues/460.
+    # Other optimizations like `-O3` and `-march=native` were always removed by brew.
     args = %W[
-      COMPILED_BY=homebrew
-      --disable-debug
-      --disable-dependency-tracking
-      --prefix=#{prefix}
+      COMPILED_BY=#{tap&.user || "Homebrew"}
+      --disable-optimiz
       --mandir=#{man}
       --with-boost=#{Formula["boost"].opt_prefix}
       --with-openexr=#{Formula["openexr"].opt_prefix}
@@ -52,25 +85,28 @@ class Povray < Formula
 
     # Adjust some scripts to search for `etc` in HOMEBREW_PREFIX.
     %w[allanim allscene portfolio].each do |script|
-      inreplace "unix/scripts/#{script}.sh",
-                /^DEFAULT_DIR=.*$/, "DEFAULT_DIR=#{HOMEBREW_PREFIX}"
+      inreplace "unix/scripts/#{script}.sh", /^DEFAULT_DIR=.*$/, "DEFAULT_DIR=#{HOMEBREW_PREFIX}"
     end
 
     cd "unix" do
       system "./prebuild.sh"
     end
 
-    system "./configure", *args
+    system "./configure", *args, *std_configure_args
     system "make", "install"
   end
 
   test do
-    # Condensed version of `share/povray-3.7/scripts/allscene.sh` that only
-    # renders variants of the famous Utah teapot as a quick smoke test.
-    scenes = share.glob("povray-3.7/scenes/advanced/teapot/*.pov")
+    # Render variants of the famous Utah teapot as a quick smoke test
+    sampledir = share/"povray-#{version.major_minor}"
+    scenes = sampledir.glob("scenes/advanced/teapot/*.pov")
     refute_empty scenes, "Failed to find test scenes."
+
+    # Also render a sample without viewing angle set
+    scenes << (sampledir/"scenes/advanced/chess2.pov")
+
     scenes.each do |scene|
-      system share/"povray-3.7/scripts/render_scene.sh", ".", scene
+      system sampledir/"scripts/render_scene.sh", ".", scene
     end
   end
 end

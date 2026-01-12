@@ -1,9 +1,9 @@
 class Snap < Formula
   desc "Tool to work with .snap files"
   homepage "https://snapcraft.io/"
-  url "https://github.com/canonical/snapd/releases/download/2.70/snapd_2.70.vendor.tar.xz"
-  version "2.70"
-  sha256 "208c4356e17e96f25f8e5d4cc9c5494157099d15c091a530bb4f260aae9cf88b"
+  url "https://github.com/canonical/snapd/releases/download/2.73/snapd_2.73.vendor.tar.xz"
+  version "2.73"
+  sha256 "c47fe0c00df5e153b312b5f6dabec49158c8c872ed1eae5e342229bb229a5d85"
   license "GPL-3.0-only"
 
   livecheck do
@@ -12,12 +12,12 @@ class Snap < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "18888d9d87394533c589d566614faf24470207baf4bad96ed9cb048050704d0d"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "18888d9d87394533c589d566614faf24470207baf4bad96ed9cb048050704d0d"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "18888d9d87394533c589d566614faf24470207baf4bad96ed9cb048050704d0d"
-    sha256 cellar: :any_skip_relocation, sonoma:        "31773df5e4cb9ba3472a985d7e244a48c61e795efae8a239d9db058b03b25d0d"
-    sha256 cellar: :any_skip_relocation, ventura:       "31773df5e4cb9ba3472a985d7e244a48c61e795efae8a239d9db058b03b25d0d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "813ea89ec7f1009d04175647e0d119285e1ed0872c07c90c406ca6f19ea6dcbf"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "c8706a57b65a6403d4c0cb1e080a113b466fa51c223fb39b6c34cd0a6fe37a80"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "c8706a57b65a6403d4c0cb1e080a113b466fa51c223fb39b6c34cd0a6fe37a80"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "c8706a57b65a6403d4c0cb1e080a113b466fa51c223fb39b6c34cd0a6fe37a80"
+    sha256 cellar: :any_skip_relocation, sonoma:        "542f877dd4c60f00c51e3d1487b60c60de89894584bacbf59ff9c5542276a20f"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "b42bd7a19d6bbb44eabc056aaaf4954e65c29dd3b7c54058781646b58aebde98"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "bfcf7d50e5348a8737bdfaf4a7189e2a3bef3926b7c0e6396b9abdc0c7971d4d"
   end
 
   depends_on "go" => :build
@@ -25,8 +25,8 @@ class Snap < Formula
 
   def install
     system "./mkversion.sh", version.to_s
-    tags = OS.mac? ? ["-tags=nosecboot"] : []
-    system "go", "build", *std_go_args(ldflags: "-s -w"), *tags, "./cmd/snap"
+    tags = OS.mac? ? "nosecboot" : ""
+    system "go", "build", *std_go_args(ldflags: "-s -w", tags:), "./cmd/snap"
 
     bash_completion.install "data/completion/bash/snap"
     zsh_completion.install "data/completion/zsh/_snap"

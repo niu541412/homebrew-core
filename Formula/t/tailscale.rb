@@ -2,8 +2,8 @@ class Tailscale < Formula
   desc "Easiest, most secure way to use WireGuard and 2FA"
   homepage "https://tailscale.com"
   url "https://github.com/tailscale/tailscale.git",
-      tag:      "v1.86.2",
-      revision: "d72494bac7a2fb6b6a01715cfc5bcc903dbd7594"
+      tag:      "v1.92.5",
+      revision: "b1eb1a05c38c7ea682ddbfcdbd2112304f880d9e"
   license "BSD-3-Clause"
 
   livecheck do
@@ -13,17 +13,17 @@ class Tailscale < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "b2304ca5a3cb0b4e472a2b9616e5775419e6834370750cd910aaa11abe6cdbe3"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "e258fa58642c55cc0ba62505675721f5b93de98a11b961cc312659512b9de318"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "9ee9215408806fde078630b212e3f34d8149babc32d084786cd3cb445930d38a"
-    sha256 cellar: :any_skip_relocation, sonoma:        "143d453666942157bf0aa150049a83a6d158cf7cf207a5ded63e9557ebebe14a"
-    sha256 cellar: :any_skip_relocation, ventura:       "56fb8b1cb3b3e71841890f6139d26fca45c4da88b3fd573b8bfd1207d115ef2f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4f1e36ea43d3dc4290819bcf22339d2341d4e22fc713590bdd4219bbf22b0540"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "8b5a7b36d019b443dc72e1d0058dffed886f3837fa0e73e21dabf185d3dd0150"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "2a8fefe0de4500bb8ae8ecf6e5b79a9fe62488689e671f7cdad12fdd2af7d0d2"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "1c6a81379790cf7563179e0c1f652266734f9b56c06de0e742597f16e7ad0ba8"
+    sha256 cellar: :any_skip_relocation, sonoma:        "303c203e51c59073e6b5c4d9d78a7433970aeff4cb44dec365a886ec61286438"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "7501496f35df70247a00e1ce157f64426049e3d3132b7aa4ce322777bdad336e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e6b97ae0624503c99a357e0451bd1cd093df3bd2c5a92df33a9e7275843d9674"
   end
 
   depends_on "go" => :build
 
-  conflicts_with cask: "tailscale"
+  conflicts_with cask: "tailscale-app"
 
   def install
     vars = Utils.safe_popen_read("./build_dist.sh", "shellvars")
@@ -36,7 +36,7 @@ class Tailscale < Formula
     system "go", "build", *std_go_args(ldflags:), "./cmd/tailscale"
     system "go", "build", *std_go_args(ldflags:, output: bin/"tailscaled"), "./cmd/tailscaled"
 
-    generate_completions_from_executable(bin/"tailscale", "completion")
+    generate_completions_from_executable(bin/"tailscale", shell_parameter_format: :cobra)
   end
 
   service do
@@ -51,10 +51,7 @@ class Tailscale < Formula
     assert_match version.to_s, version_text
     assert_match(/commit: [a-f0-9]{40}/, version_text)
 
-    fork do
-      system bin/"tailscaled", "-tun=userspace-networking", "-socket=#{testpath}/tailscaled.socket"
-    end
-
+    spawn bin/"tailscaled", "-tun=userspace-networking", "-socket=#{testpath}/tailscaled.socket"
     sleep 2
     assert_match "Logged out.", shell_output("#{bin}/tailscale --socket=#{testpath}/tailscaled.socket status", 1)
   end

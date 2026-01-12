@@ -1,25 +1,24 @@
 class PythonTkAT39 < Formula
   desc "Python interface to Tcl/Tk"
   homepage "https://www.python.org/"
-  url "https://www.python.org/ftp/python/3.9.23/Python-3.9.23.tar.xz"
-  sha256 "61a42919e13d539f7673cf11d1c404380e28e540510860b9d242196e165709c9"
+  url "https://www.python.org/ftp/python/3.9.25/Python-3.9.25.tar.xz"
+  sha256 "00e07d7c0f2f0cc002432d1ee84d2a40dae404a99303e3f97701c10966c91834"
   license "Python-2.0"
-
-  livecheck do
-    formula "python@3.9"
-  end
 
   no_autobump! because: :requires_manual_review
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "b227160ed5aef9c4f7e28e09ea937af589e06bc2d6552fe1c165e81c8d1ccd45"
-    sha256 cellar: :any,                 arm64_sonoma:  "8a0e764addd46852b5839650f37eef097d24e19c99934650cdff771293449336"
-    sha256 cellar: :any,                 arm64_ventura: "cd59125fba711a0c87f544a4620d3d7b96a8ed7b0ebce5806648505f3f83d6bf"
-    sha256 cellar: :any,                 sonoma:        "4b03a3f5cee283613c72237191a9c031d1748513f9be078ae34b130a277f2d38"
-    sha256 cellar: :any,                 ventura:       "970a215b6c26de770d34e4d84a92f9601f1a4bf02a54f90cda603a28344fe0c1"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "8c8fe4f4651455838a5c2c670c38c48c43e215510286716bd422e97809e305da"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f4bf36de1aafbde00eed0e09f75c6d0ad0be7d34e7712638a6fead91baec3aad"
+    sha256 cellar: :any,                 arm64_tahoe:   "605652d4b416da946391152dfff95e132051024b39f5bf92874d1c4e7df1bb16"
+    sha256 cellar: :any,                 arm64_sequoia: "15e8153bd95f1440bb888f1e7e944558edde77901a1b0057bdf4ab5645080b1d"
+    sha256 cellar: :any,                 arm64_sonoma:  "4675b5a8cf5c110f06ee19c2afa43df40930a1ce25f8785c7b003ba538ce7cce"
+    sha256 cellar: :any,                 sonoma:        "6a713e912309d33e7155769d2c9a5bf900182b6b9403696b11646fc49cbefb15"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "768e2164044eccdbbb7b436a3f94b9adee9f100311c0994827b6a7cc5afaffcc"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4035a740833fc798719765d1124ceca0c5d5652091befb81f6de94d91d9b34d0"
   end
+
+  # Follow up to python@3.9 deprecation
+  deprecate! date: "2025-10-15", because: :deprecated_upstream
+  disable! date: "2026-10-15", because: :deprecated_upstream
 
   depends_on "python@3.9"
   depends_on "tcl-tk@8"

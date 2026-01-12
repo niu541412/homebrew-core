@@ -2,19 +2,19 @@ class KubectlCnpg < Formula
   desc "CloudNativePG plugin for kubectl"
   homepage "https://cloudnative-pg.io/"
   url "https://github.com/cloudnative-pg/cloudnative-pg.git",
-      tag:      "v1.26.1",
-      revision: "252497fc9092a8b48bac20356026899627d31c8f"
+      tag:      "v1.28.0",
+      revision: "a9696201f760013182c6cdba7c4ed3c236a6423b"
   license "Apache-2.0"
   head "https://github.com/cloudnative-pg/cloudnative-pg.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "efa501cca7d20788c1e2143d4dc095b5777ecdb3575a71bf7f9785b54592611b"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "8e89b15fffd00630203389e756b41ac59b5abf30173b27c8182e3363b53d05d1"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "8363966695bdf5e1a13b7ba6d2bc0013550596db6ddbff8ec872a23504d1d8b0"
-    sha256 cellar: :any_skip_relocation, sonoma:        "b2c962656baf788ab13cedb7e156e16105fca4ea6f060db8764e884c257c2104"
-    sha256 cellar: :any_skip_relocation, ventura:       "1ca813f5ea4e556eb697d6784d2b076edb63d6637fcede20e9a9578db05c547a"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "9cb5ded0fdcf264bd7e72688bd5d7555ef8ee8dfa85a42e091a8d48a73ecce71"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0a908a5fa6bd9211df8e4dc47d5e437373e4ec0c0f76659a9535f4cc8c6bb6dd"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "4acd9b902c8d1a8de896b1b9f8d3496562cbc777c9cc3af62c04c6244490cc51"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "4e5c5e274901fbc7fd4e0da0d4babee96778604b636fb9219e8a57936b310f41"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "689e64a206157534045538dee2778cfcf750c4ad1ce007d40c2ef66c0baa7dd6"
+    sha256 cellar: :any_skip_relocation, sonoma:        "ad54820b63e1c500d1f0d923bdd2ea58940e75b5fcbc594fe30ce977a0a11fbd"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "3141c9f96f0c1d110a52051135775217c6cde6752aab7717f691be25d1b7f572"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3fc75f49da81511a3d323abd96d33d174ef14dcb82cbcde0a0ddce775242dd80"
   end
 
   depends_on "go" => :build
@@ -27,7 +27,7 @@ class KubectlCnpg < Formula
       -X github.com/cloudnative-pg/cloudnative-pg/pkg/versions.buildDate=#{time.iso8601}
     ]
     system "go", "build", *std_go_args(ldflags:), "./cmd/kubectl-cnpg"
-    generate_completions_from_executable(bin/"kubectl-cnpg", "completion")
+    generate_completions_from_executable(bin/"kubectl-cnpg", shell_parameter_format: :cobra)
 
     kubectl_plugin_completion = <<~EOS
       #!/usr/bin/env sh

@@ -1,20 +1,17 @@
 class Frei0r < Formula
   desc "Minimalistic plugin API for video effects"
   homepage "https://frei0r.dyne.org/"
-  url "https://github.com/dyne/frei0r/archive/refs/tags/v2.3.3.tar.gz"
-  sha256 "aeeefe3a9b44761b2cf110017d2b1dfa2ceeb873da96d283ba5157380c5d0ce5"
+  url "https://github.com/dyne/frei0r/archive/refs/tags/v2.5.1.tar.gz"
+  sha256 "318ec4a3042c94a00a58fccdc1eb0d911f36a22beb3504d27aefcca4598f40b0"
   license "GPL-2.0-or-later"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia:  "064f58d291191e9d7264db2992ee79213b3b88927fb953d3cb70dc09eb458d6b"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:   "59d88950f340427381e84fd644fbc6672a1255812f6c1bc4bb82aaed76640190"
-    sha256 cellar: :any_skip_relocation, arm64_ventura:  "e1432fd9d7d702c1c27f0cf574b337e4191ee454ba439ad0e71be1fecb82f707"
-    sha256 cellar: :any_skip_relocation, arm64_monterey: "b080ed40975a908e12c9c94829f2b7664382f9fbd5b6083cfe7a289d5841e792"
-    sha256 cellar: :any_skip_relocation, sonoma:         "7499dc7a7e179e486b641d68d31ee0b7c6f9a16949f58da91e4702ddb970eb32"
-    sha256 cellar: :any_skip_relocation, ventura:        "80dd7d731c9bc516931aa77f313eb9a2016e9f0e50adec2e5e8966c0c860584b"
-    sha256 cellar: :any_skip_relocation, monterey:       "3d74d9a45e232e70927cdc16f9bb90b839efb979297bf887da998c8b1b479747"
-    sha256 cellar: :any_skip_relocation, arm64_linux:    "79baa56d60ecd2123a9155db2aa02d49b4e290e4a5c87d084f3643ebd699ac4b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:   "f85bc09b930b41d316d408e81c26f99f275a578bad4eeb3a24aa8796ca19835d"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "e2047ddbfd007416c55d75edbfc1c71a8ce83c0443ad5901e443b79df2e7606f"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "7185662489177e81190e769c8d407b99d3c438443f5942b073f27b02c72f46c3"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "395b5e3b1837a3f171bb4b7be4ad2dfca2a210754396a75bdc0fce43fa537421"
+    sha256 cellar: :any_skip_relocation, sonoma:        "d668f703092d5c525f8a968e4c969755356de1abc6979ce18c87081448147194"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "f7334ae0b75380b6d14b8d2e054e5b8ade2792e517c155004664375c2d8711a6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6f188e001f3d5ef0af3d5e75fffc72b984dcd73ca3cdd6792782c0fcd13e02ef"
   end
 
   depends_on "cmake" => :build

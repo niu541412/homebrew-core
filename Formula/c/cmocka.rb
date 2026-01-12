@@ -1,21 +1,20 @@
 class Cmocka < Formula
   desc "Unit testing framework for C"
   homepage "https://cmocka.org/"
-  url "https://cmocka.org/files/1.1/cmocka-1.1.8.tar.xz"
-  sha256 "58435b558766d7f4c729ba163bdf3aec38bed3bc766dab684e3526ed0aa7c780"
+  url "https://cmocka.org/files/2.0/cmocka-2.0.1.tar.xz"
+  sha256 "3f3533382ba29ab3abf5c4f4b27b79d165f0df51ea587de749b11b68b4019180"
   license "Apache-2.0"
   head "https://git.cryptomilk.org/projects/cmocka.git", branch: "master"
 
   no_autobump! because: :incompatible_version_format
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "9c21cefd986895363495212fe84bb3d5709aebb98626758c2b740b823105034c"
-    sha256 cellar: :any,                 arm64_sonoma:  "c43364a4f0f426476007f0afce352c2648465f3e728f6ecf6a9005afc743bf14"
-    sha256 cellar: :any,                 arm64_ventura: "4a6cc1b109d9339b23d43814ce6fe2ee9aa91d1e4870833a1912d9ce27d00760"
-    sha256 cellar: :any,                 sonoma:        "cf789d33088219b798f05cef3b6a1409d71631a4a407e290b3c306adde8aad23"
-    sha256 cellar: :any,                 ventura:       "75ebb525e7d69931007433bb05779454d23fe4a85bc848c6885a8200333fa3b9"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "6256a27596e358ee8cd3a9be47564820e92f096853bede4ef3000c1381e435ad"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b5315f47810674b24ac96c441e67ae317c34ca4656520de3292ed810d5d1a8d2"
+    sha256 cellar: :any,                 arm64_tahoe:   "148cfc485e0a3e6dd354dc89c7981f33df53ea0674739530808052bfc25e8b9b"
+    sha256 cellar: :any,                 arm64_sequoia: "4a1a1706a59c01277527c6335d9159b34ab62667a6be88b2d55161d817bdb02b"
+    sha256 cellar: :any,                 arm64_sonoma:  "d187ef26bcf057f3d055b3dbd4f0f892d248e97108ce6ca2ae0272d90540a279"
+    sha256 cellar: :any,                 sonoma:        "15023570231b7ede42054ff5e6dfea93bae217569f82bb6943a6a854b04c277a"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "167eb5ab61a65e203175230dfd1aeb67a86812ad1bd54711bf2a388a5c1137b2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "daa4da82848edee801b09f099e5714edbb90f8863ef66a90246979ed82c39ab9"
   end
 
   depends_on "cmake" => :build

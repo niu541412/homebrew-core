@@ -1,9 +1,9 @@
 class Spidermonkey < Formula
   desc "JavaScript-C Engine"
   homepage "https://spidermonkey.dev"
-  url "https://archive.mozilla.org/pub/firefox/releases/128.13.0esr/source/firefox-128.13.0esr.source.tar.xz"
-  version "128.13.0"
-  sha256 "a4aad0a9aefae5f14ff68fd9854d4af54d04b341a54b1a6465555f0b635042f4"
+  url "https://archive.mozilla.org/pub/firefox/releases/140.6.0esr/source/firefox-140.6.0esr.source.tar.xz"
+  version "140.6.0"
+  sha256 "6c35c9ab507521033c8fd49f1b4c85ee158f33ed36f5781a663f116c3d604dc9"
   license "MPL-2.0"
   head "https://hg.mozilla.org/mozilla-central", using: :hg
 
@@ -15,20 +15,19 @@ class Spidermonkey < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_sequoia: "732547596a3e2ecdd5e1a86f48a4c4c369df95b4c579a99cf10290262035fd56"
-    sha256 cellar: :any, arm64_sonoma:  "2563e68d9806d775fb21a94da0d94c22eec150a0ce29ee8e6b4d4e188ee4a040"
-    sha256 cellar: :any, arm64_ventura: "b8c601b991e83197107b7ce5f2eccaf233511d29d67fde8f6786301e307c7fd4"
-    sha256 cellar: :any, sonoma:        "023dee77f36a08e48629b07adca1936efa2cff3cfc2e7f75788705e729fb455b"
-    sha256 cellar: :any, ventura:       "74542a6290fa6f82bfbd821dfc4564e26b8f2e5cdf4b958d0318beda6bbf6f66"
-    sha256               arm64_linux:   "7f60ce2376ad04001f8bb6f46b6d1d9f3a138d8fda3734113cb926ca3f3097f7"
-    sha256               x86_64_linux:  "4a8529a4a382c44c8afc0f5ff7be40820236e34daaf98f3268bf2eaffff2875d"
+    sha256 cellar: :any, arm64_tahoe:   "c749bb76f6363333acbcf705d9936cf36450e4da47cadc4e456f5702b223ca11"
+    sha256 cellar: :any, arm64_sequoia: "1734a82e9d5333bd3434ce02151f5ee13af55d253dfd79adfc75e03723d46b50"
+    sha256 cellar: :any, arm64_sonoma:  "04218b35486476fdccc660a110a1cc2280946a86342bf757bd448be5f60f6cd8"
+    sha256 cellar: :any, sonoma:        "1478653b3f9fb1e702f00a821fdadef21cb397cef3868020f47f39cc01992855"
+    sha256               arm64_linux:   "71d1d04ba50bafabea079dfd589005f04ccee55da06e5eff6ebe42c227802705"
+    sha256               x86_64_linux:  "f7304a3979145c0e123ca04d5ed068c448da88b23564219dfcaf29de7a88a6cd"
   end
 
   depends_on "cbindgen" => :build
   depends_on "pkgconf" => :build
-  depends_on "python@3.13" => :build
+  depends_on "python@3.14" => :build
   depends_on "rust" => :build
-  depends_on "icu4c@77"
+  depends_on "icu4c@78"
   depends_on "nspr"
   depends_on "readline"
 
@@ -55,21 +54,26 @@ class Spidermonkey < Formula
     end
   end
 
-  # Fix to find linker on macos-15, abusing LD_PRINT_OPTIONS is not working
-  # Issue ref: https://bugzilla.mozilla.org/show_bug.cgi?id=1964280
-  patch :DATA
+  # Apply patch used by `gjs` to work around https://bugzilla.mozilla.org/show_bug.cgi?id=1973994
+  patch do
+    url "https://github.com/ptomato/mozjs/commit/9aa8b4b051dd539e0fbd5e08040870b3c712a846.patch?full_index=1"
+    sha256 "5c2a8c804322ccacbc37f152a4a3d48a5fc2becffb1720a41e32c03899af0be6"
+  end
+
+  # Backport support for Python 3.14
+  patch do
+    url "https://github.com/mozilla-firefox/firefox/commit/d497aa4f770ca02f6083e93b94996a8fe32c2ff4.patch?full_index=1"
+    sha256 "026f91a56cd60907a87c62dd4143eac8300d6fc7433b94888229c632a43c34bf"
+  end
 
   def install
-    # Workaround for ICU 76+
-    # Issue ref: https://bugzilla.mozilla.org/show_bug.cgi?id=1927380
-    inreplace "js/moz.configure", '"icu-i18n >= 73.1"', '"icu-i18n >= 73.1 icu-uc"'
-
     ENV.runtime_cpu_detection
 
     if OS.mac?
       inreplace "build/moz.configure/toolchain.configure" do |s|
         # Help the build script detect ld64 as it expects logs from LD_PRINT_OPTIONS=1 with -Wl,-version
-        s.sub! '"-Wl,--version"', '"-Wl,-ld_classic,--version"' if DevelopmentTools.clang_build_version >= 1500
+        # Issue ref: https://bugzilla.mozilla.org/show_bug.cgi?id=1844694
+        s.sub! '"-Wl,--version"', '"-Wl,-ld_classic,-v"' if DevelopmentTools.clang_build_version >= 1500
         # Allow using brew libraries on macOS (not officially supported)
         s.sub!(/^(\s*def no_system_lib_in_sysroot\(.*\n\s*if )bootstrapped and value:/, "\\1False:")
         # Work around upstream only allowing build on limited macOS SDK (14.4 as of Spidermonkey 128)
@@ -118,27 +122,3 @@ class Spidermonkey < Formula
     assert_equal "hello", shell_output("#{bin}/js #{path}").strip
   end
 end
-
-__END__
-diff --git a/build/moz.configure/toolchain.configure b/build/moz.configure/toolchain.configure
-index 264027e..2e073a3 100644
---- a/build/moz.configure/toolchain.configure
-+++ b/build/moz.configure/toolchain.configure
-@@ -1906,7 +1906,16 @@ def select_linker_tmpl(host_or_target):
-                 kind = "ld64"
- 
-             elif retcode != 0:
--                return None
-+                # macOS 15 fallback: try `-Wl,-v` if --version failed
-+                if target.kernel == "Darwin":
-+                    fallback_cmd = cmd_base + linker_flag + ["-Wl,-v"]
-+                    retcode2, stdout2, stderr2 = get_cmd_output(*fallback_cmd, env=env)
-+                    if retcode2 == 0 and "@(#)PROGRAM:ld" in stderr2:
-+                        kind = "ld64"
-+                    else:
-+                        return None
-+                else:
-+                    return None
- 
-             elif "mold" in stdout:
-                 kind = "mold"

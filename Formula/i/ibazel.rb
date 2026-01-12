@@ -1,24 +1,26 @@
 class Ibazel < Formula
   desc "Tools for building Bazel targets when source files change"
   homepage "https://github.com/bazelbuild/bazel-watcher"
-  url "https://github.com/bazelbuild/bazel-watcher/archive/refs/tags/v0.26.8.tar.gz"
-  sha256 "bdbfb0c2481d8915275980b4ba785890241c0e8100e6c81a62b13d966867a696"
+  url "https://github.com/bazelbuild/bazel-watcher/archive/refs/tags/v0.28.0.tar.gz"
+  sha256 "57997600ef4a6d54464d93a1ce8a35ad9b52e94bab823f97d4769d90c80022f4"
   license "Apache-2.0"
+  revision 1
   head "https://github.com/bazelbuild/bazel-watcher.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "4380a40d82e85bc3893cb249cfcf832a14c00307415a57599ba7b5dbff4a6611"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "3056ac82ef4a2cdb14251809b62335e7da97f08990308bdb7a517620226bbd49"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "66d4f6ea1b4f475cde023d3c2754b7171f60bdc000de2d49ab291c937557eeda"
-    sha256 cellar: :any_skip_relocation, sonoma:        "6638e8a22e6e41f4c5ab1e66ab23305d7e44410bf88153bc9b50defca4150c81"
-    sha256 cellar: :any_skip_relocation, ventura:       "859e45bdf5b4786226d8ed143067151e33e3bbb63332d098a55d9552530e4495"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d9c8ccfb43bf0b15cb4a6f2360aca6debec1b90f0d8490f42f5b779450a16857"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "4544f655f82224223c0b83cf38cde6c11afe1c588ac996b9104e4d0750720622"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "3992a039deafc18af94a83fdc4d5e68536cef5027719916d8819661a102fc076"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "62968ad5c4144b866a2052c9f1ae85cb988a77030f97133094a9756eb1c99ffd"
+    sha256 cellar: :any_skip_relocation, sonoma:        "72737fc0b5b26fb966417463d5a3954160dcb2f3d761de0d8b7efab5a17cbbac"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "431a6c484ce8541ecddd56d01e0d61f1bad7abcd265618fa7e4dc10c0a9f0f8a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "046a24ced93a89d3e0ac04d60f976f421993e61c528d434a56cea6041efdb6ad"
   end
 
   depends_on "go" => [:build, :test]
   depends_on "bazel" => :test
 
   def install
+    ENV["CGO_ENABLED"] = OS.mac? ? "1" : "0"
     system "go", "build", *std_go_args(ldflags: "-s -w -X main.Version=#{version}"), "./cmd/ibazel"
   end
 
@@ -27,7 +29,7 @@ class Ibazel < Formula
 
     # Write MODULE.bazel with Bazel module dependencies
     (testpath/"MODULE.bazel").write <<~STARLARK
-      bazel_dep(name = "rules_go", version = "0.55.1")
+      bazel_dep(name = "rules_go", version = "0.59.0")
 
       # Register brewed go
       go_sdk = use_extension("@rules_go//go:extensions.bzl", "go_sdk")

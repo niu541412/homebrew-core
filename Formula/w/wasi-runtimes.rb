@@ -1,9 +1,10 @@
 class WasiRuntimes < Formula
   desc "Compiler-RT and libc++ runtimes for WASI"
   homepage "https://wasi.dev"
-  url "https://github.com/llvm/llvm-project/releases/download/llvmorg-20.1.8/llvm-project-20.1.8.src.tar.xz"
-  sha256 "6898f963c8e938981e6c4a302e83ec5beb4630147c7311183cf61069af16333d"
+  url "https://github.com/llvm/llvm-project/releases/download/llvmorg-21.1.8/llvm-project-21.1.8.src.tar.xz"
+  sha256 "4633a23617fa31a3ea51242586ea7fb1da7140e426bd62fc164261fe036aa142"
   license "Apache-2.0" => { with: "LLVM-exception" }
+  revision 1
   head "https://github.com/llvm/llvm-project.git", branch: "main"
 
   livecheck do
@@ -11,13 +12,12 @@ class WasiRuntimes < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "6cd664d45755254ce3ae2e19e41e8a81a7a2eb03c47000dae6d026ddd0cb6993"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "1ed3e8da09194c8682c33a5344428709db774efba69d95fb17c155d0effa4724"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "fb6f48eeba18de5e1e65f4c532de1f96715e24aeddb2fdf42828a7ae7b24ecb4"
-    sha256 cellar: :any_skip_relocation, sonoma:        "151407202f74fd0b96c97275e421fcf6f2a0b45abbf105ef83b7303672d99223"
-    sha256 cellar: :any_skip_relocation, ventura:       "ae29e65d5286118494ef89ed92cf9ee3a39dc522298ebe763f7f483ae26a4dc0"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "33a5deda14ed01dfd36a26080c248b14f3f81c7be0e9a87212045024ad283a2b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5aa09804268b9e53b425f98b75f3c621e5f4b42483b6ab93bc25528a21ba9ed7"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "f433a3ccab0903146f085de87d846d145f265614f3bc4f5b704c993ded11a9c6"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "b2df86ef680a00ec6f7717efdf7530821a2dd27dadfe1cb63c53075e68c018b8"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "d2d4b154fce939f2063a0bc80b6b399cc0c83e7bd27076c4b604439e5feebeba"
+    sha256 cellar: :any_skip_relocation, sonoma:        "a3dad12f44439045e740bb97fb746f4634c7cb4ffcd29553b290b802ecd3b1b8"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "1b4933ccfbb424f9bd78b55f6d7db3faaca5003d413335ef12fe2cc8e8fa6666"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0ce5dca488c5fcbc1b0536d6ef8d8632d58798bd3a9905c8f76098593bbcb6cd"
   end
 
   depends_on "cmake" => :build
@@ -81,6 +81,7 @@ class WasiRuntimes < Formula
       -DCOMPILER_RT_OS_DIR=wasi
     ]
     ENV.append_to_cflags "-fdebug-prefix-map=#{buildpath}=wasisdk://v#{wasi_libc.version}"
+    ENV.append_to_cflags "-mcpu=lime1"
     # Don't use `std_cmake_args`. It sets things like `CMAKE_OSX_SYSROOT`.
     system "cmake", "-S", "compiler-rt", "-B", "build-compiler-rt", *compiler_rt_args, *common_cmake_args
     system "cmake", "--build", "build-compiler-rt"
@@ -110,7 +111,6 @@ class WasiRuntimes < Formula
       # Configuration taken from:
       # https://github.com/WebAssembly/wasi-sdk/blob/5e04cd81eb749edb5642537d150ab1ab7aedabe9/cmake/wasi-sdk-sysroot.cmake#L227-L271
       configuration = target_configuration[target]
-      configuration[:threads] = target.end_with?("-threads") ? "ON" : "OFF"
       configuration[:pic] = target.end_with?("-threads") ? "OFF" : "ON"
       configuration[:flags] = target.end_with?("-threads") ? ["-pthread"] : []
 
@@ -136,8 +136,8 @@ class WasiRuntimes < Formula
         -DCMAKE_STAGING_PREFIX=#{share}/wasi-sysroot
         -DCMAKE_POSITION_INDEPENDENT_CODE=#{configuration.fetch(:pic)}
         -DCXX_SUPPORTS_CXX11=ON
-        -DLIBCXX_ENABLE_THREADS:BOOL=#{configuration.fetch(:threads)}
-        -DLIBCXX_HAS_PTHREAD_API:BOOL=#{configuration.fetch(:threads)}
+        -DLIBCXX_ENABLE_THREADS:BOOL=ON
+        -DLIBCXX_HAS_PTHREAD_API:BOOL=ON
         -DLIBCXX_HAS_EXTERNAL_THREAD_API:BOOL=OFF
         -DLIBCXX_BUILD_EXTERNAL_THREAD_LIBRARY:BOOL=OFF
         -DLIBCXX_HAS_WIN32_THREAD_API:BOOL=OFF
@@ -147,6 +147,8 @@ class WasiRuntimes < Formula
         -DLIBCXX_ENABLE_EXCEPTIONS:BOOL=OFF
         -DLIBCXX_ENABLE_FILESYSTEM:BOOL=ON
         -DLIBCXX_ENABLE_ABI_LINKER_SCRIPT:BOOL=OFF
+        -DLIBCXX_USE_COMPILER_RT:BOOL=ON
+        -DLIBCXXABI_USE_COMPILER_RT:BOOL=ON
         -DLIBCXX_CXX_ABI=libcxxabi
         -DLIBCXX_CXX_ABI_INCLUDE_PATHS=#{buildpath}/libcxxabi/include
         -DLIBCXX_HAS_MUSL_LIBC:BOOL=ON
@@ -154,8 +156,8 @@ class WasiRuntimes < Formula
         -DLIBCXXABI_ENABLE_EXCEPTIONS:BOOL=OFF
         -DLIBCXXABI_ENABLE_SHARED:BOOL=OFF
         -DLIBCXXABI_SILENT_TERMINATE:BOOL=ON
-        -DLIBCXXABI_ENABLE_THREADS:BOOL=#{configuration.fetch(:threads)}
-        -DLIBCXXABI_HAS_PTHREAD_API:BOOL=#{configuration.fetch(:threads)}
+        -DLIBCXXABI_ENABLE_THREADS:BOOL=ON
+        -DLIBCXXABI_HAS_PTHREAD_API:BOOL=ON
         -DLIBCXXABI_HAS_EXTERNAL_THREAD_API:BOOL=OFF
         -DLIBCXXABI_BUILD_EXTERNAL_THREAD_LIBRARY:BOOL=OFF
         -DLIBCXXABI_HAS_WIN32_THREAD_API:BOOL=OFF
@@ -214,11 +216,18 @@ class WasiRuntimes < Formula
     clang = Formula["llvm"].opt_bin/"clang"
     targets.each do |target|
       system clang, "--target=#{target}", "-v", "test.c", "-o", "test-#{target}"
-      assert_equal "the answer is 42", shell_output("wasmtime #{testpath}/test-#{target}")
+      wasmtime_flags = if target.end_with?("-threads")
+        "-W threads=y -W shared-memory=y -S threads=y"
+      else
+        ""
+      end
+      assert_equal "the answer is 42",
+                   shell_output("wasmtime run #{wasmtime_flags} #{testpath}/test-#{target}").strip
 
       pthread_flags = target.end_with?("-threads") ? ["-pthread"] : []
       system "#{clang}++", "--target=#{target}", "-v", "test.cc", "-o", "test-cxx-#{target}", *pthread_flags
-      assert_equal "hello from C++ main with cout!", shell_output("wasmtime #{testpath}/test-cxx-#{target}").chomp
+      assert_equal "hello from C++ main with cout!",
+                   shell_output("wasmtime run #{wasmtime_flags} #{testpath}/test-cxx-#{target}").chomp
     end
   end
 end

@@ -3,27 +3,27 @@ class Ratarmount < Formula
 
   desc "Mount and efficiently access archives as filesystems"
   homepage "https://github.com/mxmlnkn/ratarmount"
-  url "https://files.pythonhosted.org/packages/6d/03/e992e711c56634c1893f713b38dd09225bb9ed01c3d3c7cd2ffa2fde3cfb/ratarmount-1.1.1.tar.gz"
-  sha256 "c4643121fd28fe23cc1f7189c7de7a1d5a636b65b7d0bc243f2c0b722bbd6c5a"
+  url "https://files.pythonhosted.org/packages/f6/2f/ce04f40f3cc82bb3ffbc97bffe3b7a2abe83a382c81fe2452ad54792acdf/ratarmount-1.2.1.tar.gz"
+  sha256 "28be2f1b9477ba4d0d8d75ddbc2468fc906970d36f4940bd932d1a51818e06a0"
   license "MIT"
   head "https://github.com/mxmlnkn/ratarmount.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_linux:  "a47c1f4afdfe798b9f95ca27387be51adb9119eec04865822a81db9251dff97f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "ac5b04865362cd22b5da926a986507d9659fcdebcc488a7100777125b6eedae3"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_linux:  "857092d729eac8eb5425c04c5a270b432fb9c68cbfdb0aa50fee2e5900e92cb7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "3ce17abfa283e62f91bfe6ab768954a0e5f330b29b878b0f3cc354eb42f316a8"
   end
 
   depends_on "libffi"
   depends_on "libfuse"
   depends_on "libgit2"
   depends_on :linux
-  depends_on "python@3.13"
+  depends_on "python@3.14"
   depends_on "zlib"
-  depends_on "zstd"
 
   resource "brotli" do
-    url "https://files.pythonhosted.org/packages/2f/c2/f9e977608bdf958650638c3f1e28f85a1b075f075ebbe77db8555463787b/Brotli-1.1.0.tar.gz"
-    sha256 "81de08ac11bcb85841e440c13611c00b67d3bf82698314928d0b676362546724"
+    url "https://files.pythonhosted.org/packages/f7/16/c92ca344d646e71a43b8bb353f0a6490d7f6e06210f8554c8f874e454285/brotli-1.2.0.tar.gz"
+    sha256 "e310f77e41941c13340a95976fe66a8a95b01e783d430eeaf7a2f87e0a57dd0a"
   end
 
   resource "fast-zip-decryption" do
@@ -32,8 +32,8 @@ class Ratarmount < Formula
   end
 
   resource "indexed-gzip" do
-    url "https://files.pythonhosted.org/packages/e7/c4/54bb145774c8b1563308899580142dd17ff6da584ee8c8c6ee307733d14e/indexed_gzip-1.9.5.tar.gz"
-    sha256 "105366567759db6c7df866d869611ded3bb83d5c0e50fbb01d02c1922b98b457"
+    url "https://files.pythonhosted.org/packages/e8/f9/a127e4f1f806b18d43272b6d0bb56f74ca1a16628d60ebc674a62ebf37eb/indexed_gzip-1.10.3.tar.gz"
+    sha256 "1347f3b6c5522c5c50db5d9e2801257cea86639e87b46c6635f22005ee3ded25"
   end
 
   resource "indexed-zstd" do
@@ -42,8 +42,8 @@ class Ratarmount < Formula
   end
 
   resource "inflate64" do
-    url "https://files.pythonhosted.org/packages/e3/a7/974e6daa6c353cf080b540c18f11840e81b36d18106963a0a857b1fc2adf/inflate64-1.0.3.tar.gz"
-    sha256 "a89edd416c36eda0c3a5d32f31ff1555db2c5a3884aa8df95e8679f8203e12ee"
+    url "https://files.pythonhosted.org/packages/3e/f3/41bb2901543abe7aad0b0b0284ae5854bb75f848cf406bf8a046bf525f67/inflate64-1.0.4.tar.gz"
+    sha256 "b398c686960c029777afc0ed281a86f66adb956cfc3fbf6667cc6453f7b407ce"
   end
 
   resource "libarchive-c" do
@@ -52,8 +52,8 @@ class Ratarmount < Formula
   end
 
   resource "mfusepy" do
-    url "https://files.pythonhosted.org/packages/39/09/b9a9e61ae0845c3de0249772dfee2294d269a7d644a9778bc42df97af6ae/mfusepy-1.1.1.tar.gz"
-    sha256 "3647727a6e7775d47fdeff61355935f1ed5edb31c5124d233138f2a91ea01f9f"
+    url "https://files.pythonhosted.org/packages/1c/94/c9d5dcba4a6a2b32ba23e22fd13ca08e6f5408420b2dfe42984af22277b6/mfusepy-3.0.0.tar.gz"
+    sha256 "eddade33e427bac9c455464cd0a7d12d63c033255ec6b1e0d6ada143a945c6f2"
   end
 
   resource "multivolumefile" do
@@ -62,18 +62,18 @@ class Ratarmount < Formula
   end
 
   resource "psutil" do
-    url "https://files.pythonhosted.org/packages/2a/80/336820c1ad9286a4ded7e845b2eccfcb27851ab8ac6abece774a6ff4d3de/psutil-7.0.0.tar.gz"
-    sha256 "7be9c3eba38beccb6495ea33afd982a44074b78f28c434a1f51cc07fd315c456"
+    url "https://files.pythonhosted.org/packages/e1/88/bdd0a41e5857d5d703287598cbf08dad90aed56774ea52ae071bae9071b6/psutil-7.1.3.tar.gz"
+    sha256 "6c86281738d77335af7aec228328e944b30930899ea760ecf33a4dba66be5e74"
   end
 
   resource "py7zr" do
-    url "https://files.pythonhosted.org/packages/97/62/d6f18967875aa60182198a0dd287d3a50d8aea1d844239ea00c016f7be88/py7zr-1.0.0.tar.gz"
-    sha256 "f6bfee81637c9032f6a9f0eb045a4bfc7a7ff4138becfc42d7cb89b54ffbfef1"
+    url "https://files.pythonhosted.org/packages/0c/e6/01fb15361ca75ee5d01df6361825a49816a836c99980c5481da0e40c6877/py7zr-1.1.0.tar.gz"
+    sha256 "087b1a94861ad9eb4d21604f6aaa0a8986a7e00580abd79fedd6f82fecf0592c"
   end
 
   resource "pybcj" do
-    url "https://files.pythonhosted.org/packages/ce/75/bbcf098abf68081fa27c09d642790daa99d9156132c8b0893e3fecd946ab/pybcj-1.0.6.tar.gz"
-    sha256 "70bbe2dc185993351955bfe8f61395038f96f5de92bb3a436acb01505781f8f2"
+    url "https://files.pythonhosted.org/packages/12/0c/2670b672655b18454841b8e88f024b9159d637a4c07f6ce6db85accf8467/pybcj-1.0.7.tar.gz"
+    sha256 "72d64574069ffb0a800020668376b7ebd7adea159adbf4d35f8effc62f0daa67"
   end
 
   resource "pycryptodomex" do
@@ -82,8 +82,8 @@ class Ratarmount < Formula
   end
 
   resource "pyppmd" do
-    url "https://files.pythonhosted.org/packages/f6/d7/b3084ff1ac6451ef7dd93d4f7627eeb121a3bed4f8a573a81978a43ddb06/pyppmd-1.2.0.tar.gz"
-    sha256 "cc04af92f1d26831ec96963439dfb27c96467b5452b94436a6af696649a121fd"
+    url "https://files.pythonhosted.org/packages/81/d7/803232913cab9163a1a97ecf2236cd7135903c46ac8d49613448d88e8759/pyppmd-1.3.1.tar.gz"
+    sha256 "ced527f08ade4408c1bfc5264e9f97ffac8d221c9d13eca4f35ec1ec0c7b6b2e"
   end
 
   resource "python-xz" do
@@ -91,14 +91,9 @@ class Ratarmount < Formula
     sha256 "398746593b706fa9fac59b8c988eab8603e1fe2ba9195111c0b45227a3a77db3"
   end
 
-  resource "pyzstd" do
-    url "https://files.pythonhosted.org/packages/8f/a2/54d860ccbd07e3c67e4d0321d1c29fc7963ac82cf801a078debfc4ef7c15/pyzstd-0.17.0.tar.gz"
-    sha256 "d84271f8baa66c419204c1dd115a4dec8b266f8a2921da21b81764fa208c1db6"
-  end
-
   resource "rapidgzip" do
-    url "https://files.pythonhosted.org/packages/a6/b6/27975b6e7ec25c3fac16cbc73270954fb36ad239dda8b1f7bfb3f424dd2c/rapidgzip-0.14.5.tar.gz"
-    sha256 "faed46013a1a62a5193c49615a896683ea5c14ed4744bcb4bd1869b1420551d8"
+    url "https://files.pythonhosted.org/packages/d6/50/b9bb77eaf841f2fbd8123d9677815d4ef53b53c4c189c5f789c78ef2d05e/rapidgzip-0.15.2.tar.gz"
+    sha256 "fa3f90f17ce185a99514df54b5316bdfa593e98f3eebbb12da301eb25d6dedcd"
   end
 
   resource "rarfile" do
@@ -107,8 +102,8 @@ class Ratarmount < Formula
   end
 
   resource "ratarmountcore" do
-    url "https://files.pythonhosted.org/packages/7b/46/facff13ddb28a5b01fdb58fefbe1d287b4f41271b44d001622c4c25fcf4b/ratarmountcore-0.9.1.tar.gz"
-    sha256 "c5fedc9985d616fca46ae97eaaf43e3da8d3b8542e506f7da19df580e05a97d5"
+    url "https://files.pythonhosted.org/packages/f8/15/b9c2a47a4adba9b7bef8a057896a8e96db1d286ae538bd1d9d2fd147febd/ratarmountcore-0.10.2.tar.gz"
+    sha256 "35e2935e1e135140d1bb8d82061c1527fb168ba5653d0218c06f3ec106711e6c"
   end
 
   resource "texttable" do

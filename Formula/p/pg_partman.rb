@@ -1,28 +1,34 @@
 class PgPartman < Formula
   desc "Partition management extension for PostgreSQL"
   homepage "https://github.com/pgpartman/pg_partman"
-  url "https://github.com/pgpartman/pg_partman/archive/refs/tags/v5.2.4.tar.gz"
-  sha256 "462464d83389ef20256b982960646a1572341c0beb09eeff32b4a69f04e31b76"
+  url "https://github.com/pgpartman/pg_partman/archive/refs/tags/v5.4.0.tar.gz"
+  sha256 "22d3c186c0504e4620f2971318f295903e16b3b39f4db991f37227fc97dc5497"
   license "PostgreSQL"
 
-  bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "bc8d0101a41b8462c808e3b89ced8cf4c35abd2859da258810f45c7cc3d08eab"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "fbb25523f90c489a1d3e960c72a5e25e2015203f076b422979105d4237548fa7"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "da418435f548516e2c08d7152618cba4944c05ea97e7a6caf885d392367d6b1f"
-    sha256 cellar: :any_skip_relocation, sonoma:        "4ff364c6122dd2f76874efa3993473d44c1875a9af05f87ac2b6162e0d3c3081"
-    sha256 cellar: :any_skip_relocation, ventura:       "d354534be1f5892af69af5ad223d00864f39f49a1a05a161a45c32440f51bb87"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "514b8f6796d0853c9dee95b01cae31d554351c999f1ebbc989553d0572fe833a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "35d4cb1858223e0a1b0badd91bc8d83393da2fcd30d9609bef6285d8fe5fef3c"
+  livecheck do
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
 
-  depends_on "postgresql@14" => [:build, :test]
+  bottle do
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "432573032ebd12810ebf31836a0a4b59e75f8bb15786a6e8ed4e3f18a41b4fd7"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "348f96619ac34b8afb3971e52a250f02ab363dd66887ea81e978d0083eba3ee0"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "0f1f6b9abde63155ad8a8bdf4b6768a7ec0649d28297bc462779576f409f3367"
+    sha256 cellar: :any_skip_relocation, sonoma:        "a4f512b8943665b39dfa92eb333552e7f098eadc5635041e8e012c50e4190e2d"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "795e4f9ab4a429350d2711fdc3f775e8e8372577de75c9d82d2a09077414d7c8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f3f3463884bc7024af4f69673823db07e2b24903e2202528e82a7d58b26f1b74"
+  end
+
   depends_on "postgresql@17" => [:build, :test]
+  depends_on "postgresql@18" => [:build, :test]
 
   def postgresqls
     deps.map(&:to_formula).sort_by(&:version).filter { |f| f.name.start_with?("postgresql@") }
   end
 
   def install
+    odie "Too many postgresql dependencies!" if postgresqls.count > 2
+
     postgresqls.each do |postgresql|
       ENV["PG_CONFIG"] = postgresql.opt_bin/"pg_config"
 

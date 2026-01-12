@@ -1,10 +1,10 @@
 class CmakeDocs < Formula
   desc "Documentation for CMake"
   homepage "https://www.cmake.org/"
-  url "https://github.com/Kitware/CMake/releases/download/v4.0.3/cmake-4.0.3.tar.gz"
-  mirror "http://fresh-center.net/linux/misc/cmake-4.0.3.tar.gz"
-  mirror "http://fresh-center.net/linux/misc/legacy/cmake-4.0.3.tar.gz"
-  sha256 "8d3537b7b7732660ea247398f166be892fe6131d63cc291944b45b91279f3ffb"
+  url "https://github.com/Kitware/CMake/releases/download/v4.2.1/cmake-4.2.1.tar.gz"
+  mirror "http://fresh-center.net/linux/misc/cmake-4.2.1.tar.gz"
+  mirror "http://fresh-center.net/linux/misc/legacy/cmake-4.2.1.tar.gz"
+  sha256 "414aacfac54ba0e78e64a018720b64ed6bfca14b587047b8b3489f407a14a070"
   license "BSD-3-Clause"
   head "https://gitlab.kitware.com/cmake/cmake.git", branch: "master"
 
@@ -13,24 +13,20 @@ class CmakeDocs < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "2142bc1d03de7ca94f6d84fb330359a90ea95117d99f2a86312d0503383089e4"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "2142bc1d03de7ca94f6d84fb330359a90ea95117d99f2a86312d0503383089e4"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "2142bc1d03de7ca94f6d84fb330359a90ea95117d99f2a86312d0503383089e4"
-    sha256 cellar: :any_skip_relocation, sonoma:        "07e4f72f6c511546b10cd2c8391b87d9bae3d992df206ab178c11107e3df6a53"
-    sha256 cellar: :any_skip_relocation, ventura:       "07e4f72f6c511546b10cd2c8391b87d9bae3d992df206ab178c11107e3df6a53"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "2142bc1d03de7ca94f6d84fb330359a90ea95117d99f2a86312d0503383089e4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2142bc1d03de7ca94f6d84fb330359a90ea95117d99f2a86312d0503383089e4"
+    sha256 cellar: :any_skip_relocation, all: "a3f80f250ffddcef9b0bac094fe317b1b41be2f4a07f24f61bb203f5fae70856"
   end
 
   depends_on "cmake" => :build
   depends_on "sphinx-doc" => :build
 
   def install
-    system "cmake", "-S", "Utilities/Sphinx", "-B", "build", *std_cmake_args,
-                                                             "-DCMAKE_DOC_DIR=share/doc/cmake",
-                                                             "-DCMAKE_MAN_DIR=share/man",
-                                                             "-DSPHINX_MAN=ON",
-                                                             "-DSPHINX_HTML=ON"
+    args = %w[
+      -DCMAKE_DOC_DIR=share/doc/cmake
+      -DCMAKE_MAN_DIR=share/man
+      -DSPHINX_MAN=ON
+      -DSPHINX_HTML=ON
+    ]
+    system "cmake", "-S", "Utilities/Sphinx", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
   end

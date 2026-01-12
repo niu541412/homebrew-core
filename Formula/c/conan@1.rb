@@ -8,12 +8,8 @@ class ConanAT1 < Formula
   license "MIT"
   revision 3
 
-  livecheck do
-    url "https://github.com/conan-io/conan.git"
-    regex(/^v?(1(?:\.\d+)+)$/i)
-  end
-
   bottle do
+    sha256 cellar: :any,                 arm64_tahoe:   "347415104db865374e09109080fa117d919130b502de713bc9062501e4ff8564"
     sha256 cellar: :any,                 arm64_sequoia: "7dcfb73f071f82c9a5a5a2c081b54030c8c7aa87f11293897d499400972a9b78"
     sha256 cellar: :any,                 arm64_sonoma:  "22c8bfd4738a91ec58429ca930af4d1cdcb2c2e13f4b3759e1c0fa576502f392"
     sha256 cellar: :any,                 arm64_ventura: "e1d35af5f0d27ff9afbc35cf1c81373919968f71928bd78c6ec249d165b7f3ad"
@@ -25,11 +21,20 @@ class ConanAT1 < Formula
 
   keg_only :versioned_formula
 
+  # Upstream comments mention 1.x is no longer supported:
+  # https://github.com/conan-io/conan/pull/17938#issuecomment-3051751396
+  # https://github.com/conan-io/conan/issues/18874#issuecomment-3249873665
+  deprecate! date: "2025-10-27", because: :unsupported
+  disable! date: "2026-10-27", because: :unsupported
+
   depends_on "pkgconf" => :build
   depends_on "cmake" => :test
   depends_on "certifi"
   depends_on "libyaml"
   depends_on "python@3.12" # https://github.com/conan-io/conan/issues/17220#issuecomment-2437381133
+
+  pypi_packages exclude_packages: "certifi",
+                extra_packages:   "distro"
 
   resource "bottle" do
     url "https://files.pythonhosted.org/packages/fd/04/1c09ab851a52fe6bc063fd0df758504edede5cc741bd2e807bf434a09215/bottle-0.12.25.tar.gz"

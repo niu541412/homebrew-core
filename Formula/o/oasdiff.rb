@@ -1,8 +1,8 @@
 class Oasdiff < Formula
   desc "OpenAPI Diff and Breaking Changes"
   homepage "https://www.oasdiff.com/"
-  url "https://github.com/oasdiff/oasdiff/archive/refs/tags/v1.11.4.tar.gz"
-  sha256 "9e000211f5a9561ffeb6ab078e02177349f1f262a69f0619d9b0a507cc73498e"
+  url "https://github.com/oasdiff/oasdiff/archive/refs/tags/v1.11.7.tar.gz"
+  sha256 "bd06a38e62657634ab95ebc06174580fd3840fc07d8e5646eaed229d6dff424f"
   license "Apache-2.0"
   head "https://github.com/oasdiff/oasdiff.git", branch: "main"
 
@@ -13,12 +13,13 @@ class Oasdiff < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "2492fce9f9c04e2a63065f318202b8096faa8fe2d10137eaa440a1fce32d57a8"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "2492fce9f9c04e2a63065f318202b8096faa8fe2d10137eaa440a1fce32d57a8"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "2492fce9f9c04e2a63065f318202b8096faa8fe2d10137eaa440a1fce32d57a8"
-    sha256 cellar: :any_skip_relocation, sonoma:        "1e30d27b8221cac705df90e3d5da2a044b8ddb646f5b294319c6fecb88cc3b47"
-    sha256 cellar: :any_skip_relocation, ventura:       "1e30d27b8221cac705df90e3d5da2a044b8ddb646f5b294319c6fecb88cc3b47"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "79814fa3454417be7ebf2da31ebf0f627850637a0c8192739f5dd8dc02b45d86"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "80b4c7eb3e6a9804d2dc7ac7b2508e7a345c446037dd224e68b6563f30e9dbd9"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "80b4c7eb3e6a9804d2dc7ac7b2508e7a345c446037dd224e68b6563f30e9dbd9"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "80b4c7eb3e6a9804d2dc7ac7b2508e7a345c446037dd224e68b6563f30e9dbd9"
+    sha256 cellar: :any_skip_relocation, sonoma:        "5c4341844285ca3ba57ebf4b790a12d67359393db372b607a848a4f61db0556a"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "f0ba364544298d533a427f1624c64765a74aaafeb7c9df4afef731ebcf104d67"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "574f188d914a8ca9740cca6d5fe86668720748aa29423fa754ca1741ff63c845"
   end
 
   depends_on "go" => :build
@@ -27,7 +28,7 @@ class Oasdiff < Formula
     ldflags = "-s -w -X github.com/oasdiff/oasdiff/build.Version=#{version}"
     system "go", "build", *std_go_args(ldflags:)
 
-    generate_completions_from_executable(bin/"oasdiff", "completion")
+    generate_completions_from_executable(bin/"oasdiff", shell_parameter_format: :cobra)
   end
 
   test do

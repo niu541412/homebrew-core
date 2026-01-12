@@ -1,19 +1,18 @@
 class Shepherd < Formula
   desc "Service manager that looks after the herd of system services"
   homepage "https://www.gnu.org/software/shepherd/"
-  url "https://ftp.gnu.org/gnu/shepherd/shepherd-1.0.6.tar.gz"
-  mirror "https://ftpmirror.gnu.org/shepherd/shepherd-1.0.6.tar.gz"
-  sha256 "fc74dfda499a695e650fc5839d39ad538e2e323949b8904afcfaffa34171be33"
+  url "https://ftpmirror.gnu.org/gnu/shepherd/shepherd-1.0.9.tar.gz"
+  mirror "https://ftp.gnu.org/gnu/shepherd/shepherd-1.0.9.tar.gz"
+  sha256 "e488c585c8418df6e8f476dca81b72910f337c9cd3608fb467de5260004000d6"
   license "GPL-3.0-or-later"
 
   bottle do
-    sha256 arm64_sequoia: "dda15a8992f9da1097edf9f80e60b209ffc16af10811b31a132577e79d77b69b"
-    sha256 arm64_sonoma:  "dda15a8992f9da1097edf9f80e60b209ffc16af10811b31a132577e79d77b69b"
-    sha256 arm64_ventura: "dda15a8992f9da1097edf9f80e60b209ffc16af10811b31a132577e79d77b69b"
-    sha256 sonoma:        "4af0ab3dc56f5b8e22c3e00bb3e71721952fce09446c85c021ab1ac6c32cd1be"
-    sha256 ventura:       "4af0ab3dc56f5b8e22c3e00bb3e71721952fce09446c85c021ab1ac6c32cd1be"
-    sha256 arm64_linux:   "d7aaba6f12e4caa47f1bb698e5c061744b7d940b66facb90390c3e2fd0c6ed18"
-    sha256 x86_64_linux:  "b72c526c73811d2e697aa70424f54e695982068b253bf0225101d78bc09f7918"
+    sha256 arm64_tahoe:   "4d39dcb2ed1d07ec50f5f3dfd56a3d21b07e87893798c9ea6b0f023ba897fae0"
+    sha256 arm64_sequoia: "4d39dcb2ed1d07ec50f5f3dfd56a3d21b07e87893798c9ea6b0f023ba897fae0"
+    sha256 arm64_sonoma:  "4d39dcb2ed1d07ec50f5f3dfd56a3d21b07e87893798c9ea6b0f023ba897fae0"
+    sha256 sonoma:        "fe68652080e171671d839138d2666e60b007ddbfd0d4b880c8a2d21bfa9707bc"
+    sha256 arm64_linux:   "7f39f4594b6683c1bacb579bff184a22f0b7ca0f0945231de1b36e4f09770ddd"
+    sha256 x86_64_linux:  "3c8fe68ecc151524604daf61c286fe549adba9c68e0c3aae7f7f869ad051ad6f"
   end
 
   depends_on "pkgconf" => :build

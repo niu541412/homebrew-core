@@ -1,18 +1,18 @@
 class GiteaMcpServer < Formula
   desc "Interactive with Gitea instances with MCP"
   homepage "https://gitea.com/gitea/gitea-mcp"
-  url "https://gitea.com/gitea/gitea-mcp/archive/v0.3.0.tar.gz"
-  sha256 "7f0bb64d2713ab90b382f52e845f1b5406db9fa5657dbc3e21a19e1634ae77b8"
+  url "https://gitea.com/gitea/gitea-mcp/archive/v0.7.0.tar.gz"
+  sha256 "deb3d08596f1e29da26d9e0a535482d953c41f4e24f2109d94fafb562e7683ba"
   license "MIT"
   head "https://gitea.com/gitea/gitea-mcp.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "00e5f80da0850be068bdaa277df568ffe4b8e5051c282081c3bccfad3e23fa53"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "00e5f80da0850be068bdaa277df568ffe4b8e5051c282081c3bccfad3e23fa53"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "00e5f80da0850be068bdaa277df568ffe4b8e5051c282081c3bccfad3e23fa53"
-    sha256 cellar: :any_skip_relocation, sonoma:        "a43ea1ac727ae983fc085214d17eafd7c7a16a2401665b069d2bc91ae0ab9408"
-    sha256 cellar: :any_skip_relocation, ventura:       "a43ea1ac727ae983fc085214d17eafd7c7a16a2401665b069d2bc91ae0ab9408"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "fe0372e6b26def9b61b77258e0e9a52061a2d708347a2d28eea961f97a7d76e2"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "de9e4c6407ecbc5312da893c5c872931800b17ba2eac135407279520644eb0f6"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "de9e4c6407ecbc5312da893c5c872931800b17ba2eac135407279520644eb0f6"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "de9e4c6407ecbc5312da893c5c872931800b17ba2eac135407279520644eb0f6"
+    sha256 cellar: :any_skip_relocation, sonoma:        "a0a47c1500fa8151237266619e232691f04a675879e497cad19bb026e02b3b17"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "c255d45a8414b6ecc04e1fc056eec19f829ccb00ee6ca56392a81d4f4cb320d9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "71174d341bdb94611a537171aef12ff262a9cee7054712199eac118d484bd09f"
   end
 
   depends_on "go" => :build
@@ -27,6 +27,6 @@ class GiteaMcpServer < Formula
       {"jsonrpc":"2.0","id":2,"method":"tools/list"}
     JSON
 
-    assert_match "Gitea MCP Server", pipe_output(bin/"gitea-mcp-server stdio", json, 0)
+    assert_match "Gitea MCP Server", pipe_output("#{bin}/gitea-mcp-server stdio", json, 0)
   end
 end

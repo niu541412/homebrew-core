@@ -1,34 +1,25 @@
 class Tea < Formula
   desc "Command-line tool to interact with Gitea servers"
   homepage "https://gitea.com/gitea/tea"
-  url "https://gitea.com/gitea/tea/archive/v0.10.1.tar.gz"
-  sha256 "791b7f90eff9ade0d5ee5e3f0dfba128e35eaf83b5f8b8d5f5d6cc9a94ae9b03"
+  url "https://gitea.com/gitea/tea/archive/v0.11.1.tar.gz"
+  sha256 "1da6b6d2534bd6ffb0931400014bbdef26242cf4d35d4ba44c24928811825805"
   license "MIT"
   head "https://gitea.com/gitea/tea.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "583f5f467ac41ee8780036f97b3c34e6e925c2c8175f17eed3cfb42401c6b982"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "583f5f467ac41ee8780036f97b3c34e6e925c2c8175f17eed3cfb42401c6b982"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "583f5f467ac41ee8780036f97b3c34e6e925c2c8175f17eed3cfb42401c6b982"
-    sha256 cellar: :any_skip_relocation, sonoma:        "f90e4b3e7fbebe0214ae29c379b4b8b6fd5e8a7f37ae470e7b6e30532673eef9"
-    sha256 cellar: :any_skip_relocation, ventura:       "f90e4b3e7fbebe0214ae29c379b4b8b6fd5e8a7f37ae470e7b6e30532673eef9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "74c4fbefda1ec421462275236ca561d2166d334f9cb6c36a66328a41f2eb720a"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "e2bfa35ec5ab4abbebb112d8a0fc9e9345446a8adad4711702b8add6afb6b246"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "e2bfa35ec5ab4abbebb112d8a0fc9e9345446a8adad4711702b8add6afb6b246"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "e2bfa35ec5ab4abbebb112d8a0fc9e9345446a8adad4711702b8add6afb6b246"
+    sha256 cellar: :any_skip_relocation, sonoma:        "9d453ba641dd34c5bcebec76d1745fc7d4d98e01e92e412091dbd231b0b9a91e"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "2f69c82c69b48dfc5edba4c6ab98f1eb470a40b6f48451cf7bbd6e9fd9f8c02d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b60cf1abd449ca7d8c0c4dc0591dee476b861dafc5c544618e8e6fbf60f0747c"
   end
 
   depends_on "go" => :build
 
   def install
     system "go", "build", *std_go_args(ldflags: "-s -w -X main.Version=#{version}")
-    bash_completion.install "contrib/autocomplete.sh" => "tea"
-    zsh_completion.install "contrib/autocomplete.zsh" => "_tea"
-
-    system bin/"tea", "shellcompletion", "fish"
-
-    if OS.mac?
-      fish_completion.install "#{Dir.home}/Library/Application Support/fish/conf.d/tea_completion.fish" => "tea.fish"
-    else
-      fish_completion.install "#{Dir.home}/.config/fish/conf.d/tea_completion.fish" => "tea.fish"
-    end
+    generate_completions_from_executable(bin/"tea", "completion")
   end
 
   test do

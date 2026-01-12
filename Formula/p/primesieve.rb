@@ -1,18 +1,17 @@
 class Primesieve < Formula
   desc "Fast C/C++ prime number generator"
   homepage "https://github.com/kimwalisch/primesieve"
-  url "https://github.com/kimwalisch/primesieve/archive/refs/tags/v12.9.tar.gz"
-  sha256 "0638f82a3dc35c0dc0b598857dfd1bc280b6de71e930724a40a35af60b440278"
+  url "https://github.com/kimwalisch/primesieve/archive/refs/tags/v12.11.tar.gz"
+  sha256 "a4f15a055a60fcc5b2198335ca39f3e78cf9eade4b2fe258fe16b3bf1ba4abbb"
   license "BSD-2-Clause"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "cc0679201b60d4ac4d6a7cd3c60b18678ad96d19eaab3a8dfe0d9e4e769072d4"
-    sha256 cellar: :any,                 arm64_sonoma:  "a6383880f88712f8fd81d15a3b00591153e8a77f578cceae774ec904eb0922bc"
-    sha256 cellar: :any,                 arm64_ventura: "8945ed23f37b449a3d56d9d0622ea6f78b3151ed11cd699f8c49ea5ea1125f05"
-    sha256 cellar: :any,                 sonoma:        "03297c90a17bab55ce05fdfe1126f633314c034aac378009cba64483c92d8fb6"
-    sha256 cellar: :any,                 ventura:       "e23540c21969a4cf2f34d57c5e0f107bfcf0de9de28ae07c2bd13a15a2ee61f8"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "b628601087e0d1cebfb0e7ce72001740cc6e7c2f4b659635514709d91c9d71de"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0d1ff8dd0b14fd3c1269285ad76699b8fac6077feb8d5ed7bb1d09e34710f2ca"
+    sha256 cellar: :any,                 arm64_tahoe:   "f3e44bd724601327a982ec9a98a9700cfccc2ff1dcc9a73e311f4725bbe05480"
+    sha256 cellar: :any,                 arm64_sequoia: "e4b94e44eacd63ca7e3bf0c45afdd783d20bff9b79905625768203ce6fdcb887"
+    sha256 cellar: :any,                 arm64_sonoma:  "3dcdd448317dc9d37e52ea520870fd24a7441bfd7f80ce3aa68b9503553055f8"
+    sha256 cellar: :any,                 sonoma:        "430d5ed46d0390f23f3a4c51fbf05f7ee549c3a9b43f24cdcab62a6bcae0542d"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "79cd7a47dbf4124d654b98edb32eb5f2362298a094510cfb8d456ecdee24879b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a5ae8113f0a6ff1a29f57eb0b4a50137c650a62e3adc8f63c7494a4c3f068b12"
   end
 
   depends_on "cmake" => :build

@@ -1,18 +1,18 @@
 class Oauth2Proxy < Formula
   desc "Reverse proxy for authenticating users via OAuth 2 providers"
   homepage "https://oauth2-proxy.github.io/oauth2-proxy/"
-  url "https://github.com/oauth2-proxy/oauth2-proxy/archive/refs/tags/v7.11.0.tar.gz"
-  sha256 "1c32bdf0b9650730cf5f22f02e6f1fc628cd6a25617a076dc9d551a65a29e9b0"
+  url "https://github.com/oauth2-proxy/oauth2-proxy/archive/refs/tags/v7.13.0.tar.gz"
+  sha256 "86d005585f753cda3495cf68f231bcb3be13d7c96d80c8890c0f9939e0bddcad"
   license "MIT"
   head "https://github.com/oauth2-proxy/oauth2-proxy.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "110b81f4879e94018fe919dbf3a4303122a2991f25d8c01bf51445181fd7f384"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "4c3af408caf875cc63465bcfcdcfa994c4187f2250cc7c832a6b9baf2b9a089f"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "2a5f59b2221c5ff5ae259b79da69995cd66a17f4506908aa42c6e7a252fba077"
-    sha256 cellar: :any_skip_relocation, sonoma:        "8d7257d569e962bdc13b8259ba6761780e3fccc5bea7480a0c0dfb5ee00efd40"
-    sha256 cellar: :any_skip_relocation, ventura:       "69d38e7a995bd04e9e4028cdf87354a58c25609dbb09d38fc3da8ef1a21a988d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "90b2d54f6f65fc7e21f41930de9e98d1f78e4cd13bf83a59cecaf223abbc11e0"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "f86bf18a5897098ef96e16577d35121b6931b7b80153ce0805c7dd034f67432d"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "6e92f0af0553a5607efb02eadd04e274ffaab348995e9ec40ed166a485b1f72d"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "9e2c8ac95c58bad8a49fbc2fdbbb41407b0b59361ed726e7a1b2cf0a722d6991"
+    sha256 cellar: :any_skip_relocation, sonoma:        "38a1f93ba92f7b70f06b17311221464107f16dfc0300ac2811b22a2be4cb76e9"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "5669bfc7396ac777fe122e986cf90f1391b53ee95ff5c0bbd200bd9828412c3a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f39fb2b7c2b2e06cf7139c71c9cb79135f9a187b6e61b27da8c0b4ddd8bb8b53"
   end
 
   depends_on "go" => :build
@@ -24,9 +24,7 @@ class Oauth2Proxy < Formula
   end
 
   def caveats
-    <<~EOS
-      #{etc}/oauth2-proxy/oauth2-proxy.cfg must be filled in.
-    EOS
+    "#{etc}/oauth2-proxy/oauth2-proxy.cfg must be filled in."
   end
 
   service do
@@ -36,30 +34,19 @@ class Oauth2Proxy < Formula
   end
 
   test do
-    require "timeout"
-
     port = free_port
-
-    pid = fork do
-      exec "#{bin}/oauth2-proxy",
-        "--client-id=testing",
-        "--client-secret=testing",
-        # Cookie secret must be 16, 24, or 32 bytes to create an AES cipher
-        "--cookie-secret=0b425616d665d89fb6ee917b7122b5bf",
-        "--http-address=127.0.0.1:#{port}",
-        "--upstream=file:///tmp",
-        "--email-domain=*"
-    end
+    pid = spawn "#{bin}/oauth2-proxy",
+                "--client-id=testing",
+                "--client-secret=testing",
+                # Cookie secret must be 16, 24, or 32 bytes to create an AES cipher
+                "--cookie-secret=0b425616d665d89fb6ee917b7122b5bf",
+                "--http-address=127.0.0.1:#{port}",
+                "--upstream=file:///tmp",
+                "--email-domain=*"
 
     begin
-      Timeout.timeout(10) do
-        loop do
-          Utils.popen_read "curl", "-s", "http://127.0.0.1:#{port}"
-          break if $CHILD_STATUS.exitstatus.zero?
-
-          sleep 1
-        end
-      end
+      output = shell_output("curl --silent --retry 5 --retry-connrefused http://127.0.0.1:#{port}")
+      assert_match "<title>Sign In</title>", output
     ensure
       Process.kill("TERM", pid)
       Process.wait(pid)

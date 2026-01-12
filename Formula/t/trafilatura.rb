@@ -6,23 +6,24 @@ class Trafilatura < Formula
   url "https://files.pythonhosted.org/packages/06/25/e3ebeefdebfdfae8c4a4396f5a6ea51fc6fa0831d63ce338e5090a8003dc/trafilatura-2.0.0.tar.gz"
   sha256 "ceb7094a6ecc97e72fea73c7dba36714c5c5b577b6470e4520dca893706d6247"
   license "GPL-3.0-or-later"
-  revision 1
+  revision 4
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "2dba5c5d97a84916d481391ceffc678b42466a3829aeafb46bc4eaed0e4adc20"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "537d9dfb34dca073daf17b627497a5f01c3d8c7c649fb3ba4194156750323ec9"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "cdd750558e244188d93bc09c5d394e5cfa3041d0628e067d7a83c885e526a936"
-    sha256 cellar: :any_skip_relocation, sonoma:        "7689a1b38175c218e2769291ec522f518b2b486d32297f5e62eca77f4f0efa2f"
-    sha256 cellar: :any_skip_relocation, ventura:       "b594755dc2b8b527781683d7d7ceb8690f4ed948d315f44a3ee4131003be7ff7"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "83fb0dc11606bf0500168de65379dd48dff615e82ec37eed935be07f03aa5cda"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ed1b1ed709a99b821733cfee07fb052148b9321a3040047b672ef9cebd02a314"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "358566b43c25bbea35c033ad0cb9cecd13c25b36eb1d2594705a72fe04bd0898"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "976a8670c5353371490f2ad0ac800a4ab508afbbaebcb8cb1d7342b16fbc4330"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "77a624676c57be6c2e8d20eb44760045650286813d8fbf86799ff6197fc179f1"
+    sha256 cellar: :any_skip_relocation, sonoma:        "94a767824d5d4f047c64f6d56e9f6521bd14b318d34349d1f177ff7a70cabdb8"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "1b389dab781883023dab31ac507ac50f783f120864e22c5c3022962a84c3141f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d6b2e0d26da813f2d9d73860872f314195e0ce5fc0f3e0e184114eed132a4882"
   end
 
   depends_on "certifi"
-  depends_on "python@3.13"
+  depends_on "python@3.14"
 
   uses_from_macos "libxml2", since: :ventura
   uses_from_macos "libxslt"
+
+  pypi_packages exclude_packages: "certifi"
 
   resource "babel" do
     url "https://files.pythonhosted.org/packages/7d/6b/d52e42361e1aa00709585ecc30b3f9684b3ab62530771402248b1b1d6240/babel-2.17.0.tar.gz"
@@ -30,8 +31,8 @@ class Trafilatura < Formula
   end
 
   resource "charset-normalizer" do
-    url "https://files.pythonhosted.org/packages/e4/33/89c2ced2b67d1c2a61c19c6751aa8902d46ce3dacb23600a283619f5a12d/charset_normalizer-3.4.2.tar.gz"
-    sha256 "5baececa9ecba31eff645232d59845c07aa030f0c81ee70184a90d35099a0e63"
+    url "https://files.pythonhosted.org/packages/13/69/33ddede1939fdd074bce5434295f38fae7136463422fe4fd3e0e89b98062/charset_normalizer-3.4.4.tar.gz"
+    sha256 "94537985111c35f28720e43603b8e7b43a6ecfb2ce1d3058bbe955b73404e21a"
   end
 
   resource "courlan" do
@@ -40,13 +41,13 @@ class Trafilatura < Formula
   end
 
   resource "dateparser" do
-    url "https://files.pythonhosted.org/packages/bd/3f/d3207a05f5b6a78c66d86631e60bfba5af163738a599a5b9aa2c2737a09e/dateparser-1.2.1.tar.gz"
-    sha256 "7e4919aeb48481dbfc01ac9683c8e20bfe95bb715a38c1e9f6af889f4f30ccc3"
+    url "https://files.pythonhosted.org/packages/a9/30/064144f0df1749e7bb5faaa7f52b007d7c2d08ec08fed8411aba87207f68/dateparser-1.2.2.tar.gz"
+    sha256 "986316f17cb8cdc23ea8ce563027c5ef12fc725b6fb1d137c14ca08777c5ecf7"
   end
 
   resource "htmldate" do
-    url "https://files.pythonhosted.org/packages/a5/26/aaae4cab984f0b7dd0f5f1b823fa2ed2fd4a2bb50acd5bd2f0d217562678/htmldate-1.9.3.tar.gz"
-    sha256 "ac0caf4628c3ded4042011e2d60dc68dfb314c77b106587dd307a80d77e708e9"
+    url "https://files.pythonhosted.org/packages/9d/10/ead9dabc999f353c3aa5d0dc0835b1e355215a5ecb489a7f4ef2ddad5e33/htmldate-1.9.4.tar.gz"
+    sha256 "1129063e02dd0354b74264de71e950c0c3fcee191178321418ccad2074cc8ed0"
   end
 
   resource "justext" do
@@ -55,13 +56,13 @@ class Trafilatura < Formula
   end
 
   resource "lxml" do
-    url "https://files.pythonhosted.org/packages/76/3d/14e82fc7c8fb1b7761f7e748fd47e2ec8276d137b6acfe5a4bb73853e08f/lxml-5.4.0.tar.gz"
-    sha256 "d12832e1dbea4be280b22fd0ea7c9b87f0d8fc51ba06e92dc62d52f804f78ebd"
+    url "https://files.pythonhosted.org/packages/aa/88/262177de60548e5a2bfc46ad28232c9e9cbde697bd94132aeb80364675cb/lxml-6.0.2.tar.gz"
+    sha256 "cd79f3367bd74b317dda655dc8fcfa304d9eb6e4fb06b7168c5cf27f96e0cd62"
   end
 
   resource "lxml-html-clean" do
-    url "https://files.pythonhosted.org/packages/79/b6/466e71db127950fb8d172026a8f0a9f0dc6f64c8e78e2ca79f252e5790b8/lxml_html_clean-0.4.2.tar.gz"
-    sha256 "91291e7b5db95430abf461bc53440964d58e06cc468950f9e47db64976cebcb3"
+    url "https://files.pythonhosted.org/packages/d9/cb/c9c5bb2a9c47292e236a808dd233a03531f53b626f36259dcd32b49c76da/lxml_html_clean-0.4.3.tar.gz"
+    sha256 "c9df91925b00f836c807beab127aac82575110eacff54d0a75187914f1bd9d8c"
   end
 
   resource "python-dateutil" do
@@ -75,8 +76,8 @@ class Trafilatura < Formula
   end
 
   resource "regex" do
-    url "https://files.pythonhosted.org/packages/8e/5f/bd69653fbfb76cf8604468d3b4ec4c403197144c7bfe0e6a5fc9e02a07cb/regex-2024.11.6.tar.gz"
-    sha256 "7ab159b063c52a0333c884e4679f8d7a85112ee3078fe3d9004b2dd875585519"
+    url "https://files.pythonhosted.org/packages/cc/a9/546676f25e573a4cf00fe8e119b78a37b6a8fe2dc95cda877b30889c9c45/regex-2025.11.3.tar.gz"
+    sha256 "1fedc720f9bb2494ce31a58a1631f9c82df6a09b49c19517ea5cc280b4541e01"
   end
 
   resource "six" do
@@ -95,8 +96,8 @@ class Trafilatura < Formula
   end
 
   resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/15/22/9ee70a2574a4f4599c47dd506532914ce044817c7752a79b6a51286319bc/urllib3-2.5.0.tar.gz"
-    sha256 "3fc47733c7e419d4bc3f6b3dc2b4f890bb743906a30d56ba4a5bfa4bbff92760"
+    url "https://files.pythonhosted.org/packages/c7/24/5f1b3bdffd70275f6661c76461e25f024d5a38a46f04aaca912426a2b1d3/urllib3-2.6.3.tar.gz"
+    sha256 "1b62b6884944a57dbe321509ab94fd4d3b307075e0c2eae991ac71ee15ad38ed"
   end
 
   def install

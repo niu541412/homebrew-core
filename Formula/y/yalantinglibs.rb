@@ -1,22 +1,13 @@
 class Yalantinglibs < Formula
   desc "Collection of modern C++ libraries"
   homepage "https://alibaba.github.io/yalantinglibs/en/"
+  url "https://github.com/alibaba/yalantinglibs/archive/refs/tags/lts2.0.1.tar.gz"
+  sha256 "b87e557b031d6a80464a75c5d1b6b9ae56a417350329ac74d14fd14723129634"
   license "Apache-2.0"
   head "https://github.com/alibaba/yalantinglibs.git", branch: "main"
 
-  stable do
-    url "https://github.com/alibaba/yalantinglibs/archive/refs/tags/lts1.2.0.tar.gz"
-    sha256 "1b541ae108bd10962244e2aeea0bbd58952e728d8b32eef7a439a888a1eddcee"
-
-    # fix clang compilation error, upstream pr ref, https://github.com/alibaba/yalantinglibs/pull/947
-    patch do
-      url "https://github.com/alibaba/yalantinglibs/commit/a9c55e6e24e38d2a640a67c0d6ae96095d973b41.patch?full_index=1"
-      sha256 "4435b0d9e68942477d312acca6bba080ac908d05f46eee4292f247ab4217c32d"
-    end
-  end
-
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "d6a233acc309381d259aef2011824e13bfef421ca77f0b8c4f6ba8302df454ff"
+    sha256 cellar: :any_skip_relocation, all: "095764a799c28dd3757f34e889aac7605f919941dc32a3d14480f398826d86fa"
   end
 
   depends_on "cmake" => :build

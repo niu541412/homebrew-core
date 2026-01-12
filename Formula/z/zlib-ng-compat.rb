@@ -1,8 +1,10 @@
 class ZlibNgCompat < Formula
   desc "Zlib replacement with optimizations for next generation systems"
   homepage "https://github.com/zlib-ng/zlib-ng"
-  url "https://github.com/zlib-ng/zlib-ng/archive/refs/tags/2.2.4.tar.gz"
-  sha256 "a73343c3093e5cdc50d9377997c3815b878fd110bf6511c2c7759f2afb90f5a3"
+  url "https://github.com/zlib-ng/zlib-ng/archive/refs/tags/2.3.2.tar.gz"
+  mirror "http://fresh-center.net/linux/misc/zlib-ng-2.3.2.tar.gz"
+  mirror "http://fresh-center.net/linux/misc/legacy/zlib-ng-2.3.2.tar.gz"
+  sha256 "6a0561b50b8f5f6434a6a9e667a67026f2b2064a1ffa959c6b2dae320161c2a8"
   license "Zlib"
   head "https://github.com/zlib-ng/zlib-ng.git", branch: "develop"
 
@@ -11,16 +13,17 @@ class ZlibNgCompat < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "e2d7639b525b2b29a92177ba00e7f9dd20d7d686cb70bfeb7a4ed188b3c8facd"
-    sha256 cellar: :any,                 arm64_sonoma:  "c5349d5f9559feff1607c65e71522907e1ce5f0c7c7409ff6b0ee02142f3de9f"
-    sha256 cellar: :any,                 arm64_ventura: "b83317e0a1ca1730f74a02edf766237627d3799fad25e17274b1bd3b944ab7be"
-    sha256 cellar: :any,                 sonoma:        "e290f3ee57dfd952c5a901b12a1939d4acf3f49778ab975fbf884390be21ef81"
-    sha256 cellar: :any,                 ventura:       "1951f082859a44e33e0ae0d86d60ff9e3800654945e3c75aec0ce67da58277d6"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "28f720023d21a91e58098f474093e58aeb81cf8c7c643bd28f2eb2510c3427b6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c3f0416dc6d54348eddc7a621f3ec918069915ff9ec503a8ab88c3b9c677695b"
+    sha256 cellar: :any,                 arm64_tahoe:   "bbd2413a1db5b7bf43173f56725888855c386f5962e09a3201703749200ccb94"
+    sha256 cellar: :any,                 arm64_sequoia: "b80ea1d2d7872c63508587b9287937383e8e63dbc2b41dade567959101c8346e"
+    sha256 cellar: :any,                 arm64_sonoma:  "5a51f5527fe50e5116dd07a8e6c3f5a04966bdee14651d03f8bf8272a61051e5"
+    sha256 cellar: :any,                 sonoma:        "551ef75024022cc811df70b832831db2be57bfd25ad394b1d9e979ad994057d4"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "c87bb51d56eb46e83dc2f2e7b607ec178b1d032a9a228a83c1fdf8c670aa3d6f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "11cd052934fead732f6084ff17507850c65447842f8b96467c4f0bf114e4e2b0"
   end
 
   keg_only :shadowed_by_macos, "macOS provides zlib"
+
+  depends_on "cmake" => :build
 
   on_linux do
     keg_only "it conflicts with zlib"
@@ -28,10 +31,16 @@ class ZlibNgCompat < Formula
 
   def install
     ENV.runtime_cpu_detection
-    # Disabling new strategies based on Fedora comment on keeping compatibility with zlib
-    # Ref: https://src.fedoraproject.org/rpms/zlib-ng/blob/rawhide/f/zlib-ng.spec#_120
-    system "./configure", "--prefix=#{prefix}", "--without-new-strategies", "--zlib-compat"
-    system "make", "install"
+    args = %w[
+      -DZLIB_COMPAT=ON
+      -DWITH_NEW_STRATEGIES=OFF
+    ]
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
+
+    # Avoid rebuilds of dependents that hardcode this path.
+    inreplace lib/"pkgconfig/zlib.pc", prefix, opt_prefix
   end
 
   test do

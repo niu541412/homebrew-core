@@ -1,18 +1,18 @@
 class ApiLinter < Formula
   desc "Linter for APIs defined in protocol buffers"
   homepage "https://linter.aip.dev/"
-  url "https://github.com/googleapis/api-linter/archive/refs/tags/v1.70.1.tar.gz"
-  sha256 "38f4e72c9018ed44e3ccb879f55b50183217e7a23cffad8b9bbc1c23cfb9c2b5"
+  url "https://github.com/googleapis/api-linter/archive/refs/tags/v2.1.0.tar.gz"
+  sha256 "820753a8f624e53777028c87a76566f25b6343e5ea5913ecd64d6357b807248d"
   license "Apache-2.0"
   head "https://github.com/googleapis/api-linter.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "03617cadfc1aa65d34fc27c0aee1a675021ff96a4d92cb3b20361ec51ec32fef"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "03617cadfc1aa65d34fc27c0aee1a675021ff96a4d92cb3b20361ec51ec32fef"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "03617cadfc1aa65d34fc27c0aee1a675021ff96a4d92cb3b20361ec51ec32fef"
-    sha256 cellar: :any_skip_relocation, sonoma:        "8edc171f3ae2ffb4b428d887f3e54af2db6d34f05509ede84885c79b4439487c"
-    sha256 cellar: :any_skip_relocation, ventura:       "8edc171f3ae2ffb4b428d887f3e54af2db6d34f05509ede84885c79b4439487c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "43e78030ac1e4d2abf94d219d20711a3d396971f55aa106ce989fb43a801578c"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "36b6b6d8f3e6e9f92da96c80b324c7c6b0639c5db5832090ea9271abf0fc85db"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "36b6b6d8f3e6e9f92da96c80b324c7c6b0639c5db5832090ea9271abf0fc85db"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "36b6b6d8f3e6e9f92da96c80b324c7c6b0639c5db5832090ea9271abf0fc85db"
+    sha256 cellar: :any_skip_relocation, sonoma:        "5b05d0d1870fd26d15ad7ae6552a3febce29cf66e1ce842ee568bbcef712fc36"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "3af48c074b9bc6074f99d0069a7830209d45ecabb023cc3afe1298d56e0a3e22"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5566560cc4162b72b9ce0b34e58a4b2d34a2e83115ee26a03b609c0e1cb2c794"
   end
 
   depends_on "go" => :build

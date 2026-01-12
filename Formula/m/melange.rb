@@ -1,8 +1,8 @@
 class Melange < Formula
   desc "Build APKs from source code"
   homepage "https://github.com/chainguard-dev/melange"
-  url "https://github.com/chainguard-dev/melange/archive/refs/tags/v0.30.2.tar.gz"
-  sha256 "27889130416ab0a902193014bdb41e30767c521b3832e1cebc3c7a5996c30e23"
+  url "https://github.com/chainguard-dev/melange/archive/refs/tags/v0.37.4.tar.gz"
+  sha256 "cb96c228a19c935d7bfe156b493021017542f878b7b089fcb0678a581d2b0bce"
   license "Apache-2.0"
   head "https://github.com/chainguard-dev/melange.git", branch: "main"
 
@@ -12,12 +12,12 @@ class Melange < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "bb7a6b2054a5a3d653a4162389d7e9d8a84f48a83d3851498cb31c7a8681a309"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "fdb40baa3625c343042462ba85f1ecc38997f80e8ff83e0777213136716bbf69"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "3bff03da18fc64f34755375321358e3dbc1a7d05748e3acf0031cd3df76fda45"
-    sha256 cellar: :any_skip_relocation, sonoma:        "0315ce6c7965cd2651f964f1b98fb64d8a563bbdce7230342d7f1c31d5e713f8"
-    sha256 cellar: :any_skip_relocation, ventura:       "22c74517feeac6872c1d967ef584c113041ac83ba91718ef52948e1f120371b3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8f09157a117e1ffddb366708e54da63fe1ec4232645730ca695a72b924eb085d"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "2ab26e0a48e9410b686852c6afe7176c58378ea1ae3b45abd6ad3d079f095cef"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "44a407d369bfb0144d4c268017298bab792f9fe782f1ecf86112a573af479142"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "0e048ef4135d53d0ab13ea4358570129bd1cb4d2671e82f5159914b199791647"
+    sha256 cellar: :any_skip_relocation, sonoma:        "802283dfb57da03dfc5c61aa25d4f0f0327d53b61f561db458b2b3132e19ef42"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "713667902c4c4d27ddb0502c1b741e1dabfcbdc845600a19d2fdde2168d87a97"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2748f5f64b5114c1264ff5761018f543d086a352a5fb940872384ec65fae1c0e"
   end
 
   depends_on "go" => :build
@@ -26,13 +26,13 @@ class Melange < Formula
     ldflags = %W[
       -s -w
       -X sigs.k8s.io/release-utils/version.gitVersion=#{version}
-      -X sigs.k8s.io/release-utils/version.gitCommit=brew
+      -X sigs.k8s.io/release-utils/version.gitCommit=#{tap.user}
       -X sigs.k8s.io/release-utils/version.gitTreeState=clean
       -X sigs.k8s.io/release-utils/version.buildDate=#{time.iso8601}
     ]
     system "go", "build", *std_go_args(ldflags:)
 
-    generate_completions_from_executable(bin/"melange", "completion")
+    generate_completions_from_executable(bin/"melange", shell_parameter_format: :cobra)
   end
 
   test do

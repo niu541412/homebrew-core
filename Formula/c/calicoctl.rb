@@ -1,9 +1,9 @@
 class Calicoctl < Formula
   desc "Calico CLI tool"
-  homepage "https://www.projectcalico.org"
+  homepage "https://www.tigera.io/project-calico/"
   url "https://github.com/projectcalico/calico.git",
-      tag:      "v3.30.2",
-      revision: "cf50b562271b7c2ad896af0488d48eddabbb74eb"
+      tag:      "v3.31.3",
+      revision: "2e3c880bcabff580ddd7a08340878ede207f37be"
   license "Apache-2.0"
   head "https://github.com/projectcalico/calico.git", branch: "master"
 
@@ -14,21 +14,23 @@ class Calicoctl < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "7ee8e80f6748f234d5444a98570686f8fa587b4deec28e96f9395eff90b506a9"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "7ee8e80f6748f234d5444a98570686f8fa587b4deec28e96f9395eff90b506a9"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "7ee8e80f6748f234d5444a98570686f8fa587b4deec28e96f9395eff90b506a9"
-    sha256 cellar: :any_skip_relocation, sonoma:        "669ea26e220507c4baa5d5ed8470077f9ce58464c521e05e11043be813b893e3"
-    sha256 cellar: :any_skip_relocation, ventura:       "669ea26e220507c4baa5d5ed8470077f9ce58464c521e05e11043be813b893e3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "920fa79e063454a01c1d82a721c0ad16eae5039bd5625240b17b44a988b9517f"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "b3ee2078f724dd254a3d590ec47aaecd515d4527d7c9c922c3418410d557c57f"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "b3ee2078f724dd254a3d590ec47aaecd515d4527d7c9c922c3418410d557c57f"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "b3ee2078f724dd254a3d590ec47aaecd515d4527d7c9c922c3418410d557c57f"
+    sha256 cellar: :any_skip_relocation, sonoma:        "fd1cc3b52446c62b073fe738caae2344901ab216cf88c13184183382ee68a5a8"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "0f538c9d56a580a8f44eb1f2988de353785dbaef5974937da97815aa37fe3be8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ec3822de28efb4ab81e2f8a05dd9de02388aac44149333b655f7e7f836ad2cc0"
   end
 
   depends_on "go" => :build
 
   def install
-    commands = "github.com/projectcalico/calico/calicoctl/calicoctl/commands"
-    ldflags = "-X #{commands}.VERSION=#{version} " \
-              "-X #{commands}.GIT_REVISION=#{Utils.git_short_head} " \
-              "-s -w"
+    ldflags = %W[
+      -s -w
+      -X github.com/projectcalico/calico/pkg/buildinfo.Version=#{version}
+      -X github.com/projectcalico/calico/pkg/buildinfo.GitRevision=#{Utils.git_short_head}
+      -X github.com/projectcalico/calico/pkg/buildinfo.BuildDate=#{time.iso8601}
+    ]
     system "go", "build", *std_go_args(ldflags:), "calicoctl/calicoctl/calicoctl.go"
   end
 

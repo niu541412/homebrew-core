@@ -1,18 +1,19 @@
 class Oras < Formula
   desc "OCI Registry As Storage"
   homepage "https://github.com/oras-project/oras"
-  url "https://github.com/oras-project/oras/archive/refs/tags/v1.2.3.tar.gz"
-  sha256 "f08ddcccaedbb336e85942b6ccb9625c2a7e4e411d5909bd6f670eb0d7ab3977"
+  url "https://github.com/oras-project/oras/archive/refs/tags/v1.3.0.tar.gz"
+  sha256 "12fc49ddf5c940b0ebba4c318e00b4155b682d590754e0d7330b9c4259b4af51"
   license "Apache-2.0"
   head "https://github.com/oras-project/oras.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "cc809d29e38e49c915a7df9dcfaa2071638430e5c3c4cd072473a5e98962cc81"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "cc809d29e38e49c915a7df9dcfaa2071638430e5c3c4cd072473a5e98962cc81"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "cc809d29e38e49c915a7df9dcfaa2071638430e5c3c4cd072473a5e98962cc81"
-    sha256 cellar: :any_skip_relocation, sonoma:        "ad350040cacf68be5334bf9ee4b236a2308a2a21ed0e5d303706b881c9ef50e8"
-    sha256 cellar: :any_skip_relocation, ventura:       "ad350040cacf68be5334bf9ee4b236a2308a2a21ed0e5d303706b881c9ef50e8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "12b21aabf4213e0b7e5833a535a4a7942d71290117108d083f0d518025f589f7"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "50b9ee43b03ad85deed439c627879a6686f54040b60e2df025ca02cdb604e3d4"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "50b9ee43b03ad85deed439c627879a6686f54040b60e2df025ca02cdb604e3d4"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "50b9ee43b03ad85deed439c627879a6686f54040b60e2df025ca02cdb604e3d4"
+    sha256 cellar: :any_skip_relocation, sonoma:        "b0f03ce231df9105b5b87cca36cc7aa5b147ee96b68e190fe937ece22228017f"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "3cb76ca077a5c8794ff6eb5268a8a1f854e2238f7e6ffac06c243c36b3cf3794"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "766686b5f9c96faf08f48f6c28aa0c0538e456285e4c0a0f933ffb6657ae4d4b"
   end
 
   depends_on "go" => :build
@@ -25,7 +26,7 @@ class Oras < Formula
     ]
     system "go", "build", *std_go_args(ldflags:), "./cmd/oras"
 
-    generate_completions_from_executable(bin/"oras", "completion")
+    generate_completions_from_executable(bin/"oras", shell_parameter_format: :cobra)
   end
 
   test do

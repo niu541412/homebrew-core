@@ -4,15 +4,15 @@ class Biber < Formula
   url "https://github.com/plk/biber/archive/refs/tags/v2.21.tar.gz"
   sha256 "2652cf3ae0abff5fb233aa77f18e70014cc2c70b94a8693c099a3cad9bbb4b20"
   license "Artistic-2.0"
+  revision 2
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "83b48725d0f628c2fcc4a3581952a18549ee546804518a4582ff3f682993aea4"
-    sha256 cellar: :any,                 arm64_sonoma:  "bf9b1d0942aa0f858966cf9d4a7bdcd3190e91164b1d991df7d8ba2aaa184db1"
-    sha256 cellar: :any,                 arm64_ventura: "b59a9eb6df9fca0893fbf4dccfe73a1ce56604e0e66aff8a62173a55ca70afac"
-    sha256 cellar: :any,                 sonoma:        "9b62856f82e553ba0584de00cc40865e13340a0685f9e32fd12012c38ca814e6"
-    sha256 cellar: :any,                 ventura:       "4e884753fa7793a10c3835119435d2dac172c087d21fbe33120b443c7caadb6a"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "d2b4dae187cdd50080771a737b3a312cfec34fb23e793331c3e972f4011f1bf8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "448cae30fe730dadae6387bc4fffb1b7e34cfda58458f19275432aad299bcd44"
+    sha256 cellar: :any,                 arm64_tahoe:   "1dda623dfabdab7fe763214fe4ed90f80a326ddf3fd5d7948bc2b46a9212846a"
+    sha256 cellar: :any,                 arm64_sequoia: "a8b265f38d9264e8d392a54cc6b099647cef9901098c3a724bcc0f8587edb2e7"
+    sha256 cellar: :any,                 arm64_sonoma:  "1ac53f3e5da33c5c98bbb2cbfdfde332ec5521120ebf34d2877b3cba38232a8d"
+    sha256 cellar: :any,                 sonoma:        "28098c955a9d5becfdc0ec4f82344bc975ec6cf5c84a0dc0b28607e0b6cba75b"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "ec6dd8f6868d6b288732f92dbc9c973a8ad01440d3bb4e2c470f447045b5f9bf"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "9dc44bd455825b795a35eeeafca76ea45257c01b71dccad627c26ceee501fc7b"
   end
 
   depends_on "pkgconf" => :build

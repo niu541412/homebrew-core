@@ -1,19 +1,19 @@
 class Zx < Formula
   desc "Tool for writing better scripts"
   homepage "https://google.github.io/zx/"
-  url "https://registry.npmjs.org/zx/-/zx-8.7.2.tgz"
-  sha256 "bec25dd9b4fc4d41a2fa128bf8a7a4fd4de93342b57fe6a37bc27b5516cc598b"
+  url "https://registry.npmjs.org/zx/-/zx-8.8.5.tgz"
+  sha256 "20df3c1b6160372f02bd26176898c9b791690af4599573c99a04b2624a6aaab9"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "330ab2cd845a48f1662a80a114b032f586aae6ed6529e81b8a2d970482d70350"
+    sha256 cellar: :any_skip_relocation, all: "7b9906d0d69c0dcf726b2e8287fc62518b2f4dc08be0cc72cbfd1b92aa79b55e"
   end
 
   depends_on "node"
 
   def install
     system "npm", "install", *std_npm_args
-    bin.install_symlink Dir["#{libexec}/bin/*"]
+    bin.install_symlink libexec.glob("bin/*")
   end
 
   test do

@@ -1,27 +1,26 @@
 class Lmod < Formula
   desc "Lua-based environment modules system to modify PATH variable"
   homepage "https://lmod.readthedocs.io"
-  url "https://github.com/TACC/Lmod/archive/refs/tags/8.7.64.tar.gz"
-  sha256 "08078a35dfdf261b327c9684effa5c517100947c042d46eb3af35904555433db"
+  url "https://github.com/TACC/Lmod/archive/refs/tags/9.0.5.tar.gz"
+  sha256 "7d5b5db9f252dff7469d3a5369b7b58dbbfd4b3a879a97ee21954f26e04b13e3"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "54db41efad0ce692db2e97c5655f4a1883a541e42ab59b3b03908fc3b694376b"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "db2dc15f1bb5f3fda1f2daca7e0883faac2b33d1bb266b833fd8eeb83a57d1e0"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "d95b953137f4a60809bccfa9a929ffe520e649e865c546b87157a910ae6aea53"
-    sha256 cellar: :any_skip_relocation, sonoma:        "bbc7780052ea14013afc81f7bd231ac9eaa742dae4bda655f053a21968459a56"
-    sha256 cellar: :any_skip_relocation, ventura:       "4db9b3206cc615702dab5b99cf438e1ce9f24889b1a7d9d95230e49dcfc9fa3e"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "fe43224353d1d2daa4e378f922977466642207eb6c8a9521a6a98e8319ae7bee"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6a2858d23abb7747c9e133e28ec968d6129225a5041e159f497d4679e0c1c704"
+    sha256 cellar: :any,                 arm64_tahoe:   "7517a87455dc9a52a896c35dd8036dc7aba34b7742deb6d2fc932aa3e73341af"
+    sha256 cellar: :any,                 arm64_sequoia: "b69db71ff9e0cc5a11c88e689b8046e7bc42a5c6406ba128f65196ec4b734cb4"
+    sha256 cellar: :any,                 arm64_sonoma:  "9415728157c8e19e1b681e5446e4d41446cb30e98adfe6fd6fd53f4644414718"
+    sha256 cellar: :any,                 sonoma:        "51d4b1b2ed9b6986060ff517134b2558f73589c41469af414e68e8a3ea774d89"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "cc1c0b52c6caf7d3a92f377e624863ea5401c78c802c3d1f5ed1c8e7639d7f2c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3eb551c67e48d20a359d0dc484c622016d88682022eb173410fc4c47a8a4458a"
   end
 
   depends_on "luarocks" => :build
   depends_on "pkgconf" => :build
   depends_on "lua"
+  depends_on "tcl-tk"
 
   uses_from_macos "bc" => :build
   uses_from_macos "libxcrypt"
-  uses_from_macos "tcl-tk"
 
   on_macos do
     depends_on "gnu-sed" => :build
@@ -56,14 +55,8 @@ class Lmod < Formula
       end
     end
 
-    # pkgconf cannot find tcl-tk on Linux correctly, so we manually set the include and libs
-    if OS.linux?
-      tcltk_version = Formula["tcl-tk"].version.major_minor
-      ENV["TCL_INCLUDE"] = "-I#{Formula["tcl-tk"].opt_include}/tcl-tk"
-      ENV["TCL_LIBS"] = "-L#{Formula["tcl-tk"].opt_lib} -ltcl#{tcltk_version} -ltclstub"
-      # Homebrew installed tcl-tk library has major_minor version suffix
-      inreplace "configure", "'' tcl tcl8.8 tcl8.7 tcl8.6 tcl8.5", "'' tcl#{tcltk_version}"
-    end
+    # configure overrides PKG_CONFIG_PATH with TCL_PKG_CONFIG_DIR value
+    ENV["TCL_PKG_CONFIG_DIR"] = ENV["PKG_CONFIG_PATH"]
 
     system "./configure", "--with-siteControlPrefix=yes", "--prefix=#{prefix}"
     system "make", "install"

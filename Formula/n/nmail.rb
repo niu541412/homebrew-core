@@ -1,19 +1,18 @@
 class Nmail < Formula
   desc "Terminal-based email client for Linux and macOS"
   homepage "https://github.com/d99kris/nmail"
-  url "https://github.com/d99kris/nmail/archive/refs/tags/v5.5.1.tar.gz"
-  sha256 "204fe05ac8f960529e65d20cf88cef03773f4c40639eb87795e40999f2086be2"
+  url "https://github.com/d99kris/nmail/archive/refs/tags/v5.9.2.tar.gz"
+  sha256 "349217973622ee7d3d3b1ad6e7108efa4926d0f9324839b04a8d22f52e3e6a8d"
   license "MIT"
   head "https://github.com/d99kris/nmail.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "e8f8553d4bd15c2839c7f4c16d35e882711c93d2c736c6bd0f2f402f85bb39d1"
-    sha256 cellar: :any,                 arm64_sonoma:  "90c4ae49c423e3045acf767a01d71ac55772a9cca192f4867eee8c3a87a2923b"
-    sha256 cellar: :any,                 arm64_ventura: "71e1613fe8d13756f6a51cadbe734e62e5f3a8c3f4a29eb606f49e3630d3c9b2"
-    sha256 cellar: :any,                 sonoma:        "3bd6de152112e4e18f0ba7e544654e0fdc646b9f0159b7d509a69bd05ab37ec9"
-    sha256 cellar: :any,                 ventura:       "5404a07c2fc058dbc992ac2a793e6f92bce05e079c830e11fff914244dde986b"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "ebc502b1564468a7f2caad62fe1cf6517a8dda8d4f3e453b6fa9ea2ddb2d2ae8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a01ff8ab0972c78d811448956ba724fbabf111ff6be7a427bb1cfac787cdf4bd"
+    sha256 cellar: :any,                 arm64_tahoe:   "46b3ef34316bbd33256de94bf836e737ac6d1bec2c41e09a4e3f2bcc02071b91"
+    sha256 cellar: :any,                 arm64_sequoia: "29367f33eab52385d437e11234c6a706b2f9b6d2265fbb7e3e4fece95e99dd1e"
+    sha256 cellar: :any,                 arm64_sonoma:  "054bd0f632586cf4c82c3920db190db6c049d350d6f27456b03ebef703b5934e"
+    sha256 cellar: :any,                 sonoma:        "67cb8f33fbf8b77a83eaf0d5a79d0ad0ca07535f271a24dce8430a67c4b3123a"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "790c50dc346004a73cddf5cf8ebd4d50084af3646920cd45a18f300d0d61bafa"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ca405942305b204a1c228c66408f9b48ccd9a49a2edb53dddc2cd8034336eec3"
   end
 
   depends_on "cmake" => :build

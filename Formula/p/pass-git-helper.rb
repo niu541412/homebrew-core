@@ -3,23 +3,20 @@ class PassGitHelper < Formula
 
   desc "Git credential helper interfacing with pass"
   homepage "https://github.com/languitar/pass-git-helper"
-  url "https://github.com/languitar/pass-git-helper/archive/refs/tags/v3.3.1.tar.gz"
-  sha256 "3e90c567b4cb6223aaca270c853328a4bc9fe0c22b7d3eae06f443301e4c394a"
+  url "https://github.com/languitar/pass-git-helper/archive/refs/tags/v4.1.0.tar.gz"
+  sha256 "ef8679ea3e2c953ad2881f4239eba4f36c623151779d14c6f9e3aff261716b7c"
   license "LGPL-3.0-or-later"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "6446919f05a0f6f432fd8db7a472e16c997bd34e012eaa1f7d90d2042debb8a4"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "6446919f05a0f6f432fd8db7a472e16c997bd34e012eaa1f7d90d2042debb8a4"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "6446919f05a0f6f432fd8db7a472e16c997bd34e012eaa1f7d90d2042debb8a4"
-    sha256 cellar: :any_skip_relocation, sonoma:        "7a6a534472dc493515a3b87ba3df9b60b0c9e969cdc86cc61e7d2d04706dcc36"
-    sha256 cellar: :any_skip_relocation, ventura:       "7a6a534472dc493515a3b87ba3df9b60b0c9e969cdc86cc61e7d2d04706dcc36"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "6446919f05a0f6f432fd8db7a472e16c997bd34e012eaa1f7d90d2042debb8a4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6446919f05a0f6f432fd8db7a472e16c997bd34e012eaa1f7d90d2042debb8a4"
+    sha256 cellar: :any_skip_relocation, all: "87411557c35040a7553dbee00c8f0cc99a6b0485373901142f5eb46c51bb91b9"
   end
 
   depends_on "gnupg" => :test
   depends_on "pass"
-  depends_on "python@3.13"
+  depends_on "python@3.14"
+
+  pypi_packages package_name:   "",
+                extra_packages: "pyxdg"
 
   resource "pyxdg" do
     url "https://files.pythonhosted.org/packages/b0/25/7998cd2dec731acbd438fbf91bc619603fc5188de0a9a17699a781840452/pyxdg-0.28.tar.gz"

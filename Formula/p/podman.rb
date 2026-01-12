@@ -1,10 +1,9 @@
 class Podman < Formula
   desc "Tool for managing OCI containers and pods"
   homepage "https://podman.io/"
-  url "https://github.com/containers/podman/archive/refs/tags/v5.5.2.tar.gz"
-  sha256 "a2dbd8280cd92d4741f32f5a99d385d7fc6f0dd36bc9cc90a7273767e26d43d9"
+  url "https://github.com/containers/podman/archive/refs/tags/v5.7.1.tar.gz"
+  sha256 "c04c12f90d1bf410ccc4d27a30cff188d6a9361bddb5fceb19659ae08257cc6f"
   license all_of: ["Apache-2.0", "GPL-3.0-or-later"]
-  revision 1
   head "https://github.com/containers/podman.git", branch: "main"
 
   # There can be a notable gap between when a version is tagged and a
@@ -18,12 +17,12 @@ class Podman < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "cceba5d35b1ee39f7ef3eae14d2bf756dc1108f54fefb83d0db9c3ce97b9e181"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "744eddc6123a736a17a959c684b8f2fb18f329658c2e0088d37f2d0266b23112"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "a70da7e6a7b3217d4677d3108c2a74323678ddc4e376aa74b8ac5ccbe1bec763"
-    sha256 cellar: :any_skip_relocation, sonoma:        "4cc393634cceec6d5afd9faa7e5c6920555e2d1987225d72926947da75b894f7"
-    sha256 cellar: :any_skip_relocation, ventura:       "1de74f82702fa70210260556759bde1de8fbd96ba0d2c337b2b96c09778489ed"
-    sha256                               x86_64_linux:  "4de180d26bcb960c073840bc9f335b3a62824ef5778cc4816b72dc6847dd6209"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "0692ae88493c92c2c781b9f78bdb66708ddda653c6340eb2fe8acfb9074769ce"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "e1d9460ac3f30152104bccd904d248656d8d41b6f7b3cb2a7a2c5b6300d6bff1"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "c1a0959ef55c65bd3853aa2c237c1008c89563864576ada23231142416a9bb3b"
+    sha256 cellar: :any_skip_relocation, sonoma:        "4860080622a2b8491b8e05b82482e2dadad36d6a1e5cedcac5100c9175bdecaa"
+    sha256                               arm64_linux:   "92038f58154d5c67e77ccb6ec1cf1a8fb50edef48291dd81d7ac537887bd7e45"
+    sha256                               x86_64_linux:  "9dbe7bceb66e3b7ea9a43f112c1fe2d98fe832bb9478c7897fd33ceb5c1f8a9b"
   end
 
   depends_on "go" => :build
@@ -49,6 +48,7 @@ class Podman < Formula
     depends_on "libseccomp"
     depends_on "passt"
     depends_on "slirp4netns"
+    depends_on "sqlite"
     depends_on "systemd"
   end
 
@@ -58,8 +58,8 @@ class Podman < Formula
   # More context: https://github.com/Homebrew/homebrew-core/pull/205303
   resource "gvproxy" do
     on_macos do
-      url "https://github.com/containers/gvisor-tap-vsock/archive/refs/tags/v0.8.6.tar.gz"
-      sha256 "eb08309d452823ca7e309da2f58c031bb42bb1b1f2f0bf09ca98b299e326b215"
+      url "https://github.com/containers/gvisor-tap-vsock/archive/refs/tags/v0.8.7.tar.gz"
+      sha256 "ef9765d24bc3339014dd4a8f2e2224f039823278c249fb9bd1416ba8bbab590b"
     end
   end
 
@@ -79,15 +79,15 @@ class Podman < Formula
 
   resource "netavark" do
     on_linux do
-      url "https://github.com/containers/netavark/archive/refs/tags/v1.15.2.tar.gz"
-      sha256 "84325e03aa0a2818aef9fb57b62cda8e9472584744d91ce5e5b191098f9e6d6a"
+      url "https://github.com/containers/netavark/archive/refs/tags/v1.16.1.tar.gz"
+      sha256 "e655fcd882fe891bcc8328ddcfff3745831c8b1013ae59f012d37ce87175b0b3"
     end
   end
 
   resource "aardvark-dns" do
     on_linux do
-      url "https://github.com/containers/aardvark-dns/archive/refs/tags/v1.15.0.tar.gz"
-      sha256 "4ecc3996eeb8c579fbfe50901a2d73662441730ca4101e88983751a96b9fc010"
+      url "https://github.com/containers/aardvark-dns/archive/refs/tags/v1.16.0.tar.gz"
+      sha256 "6c84a3371087d6af95407b0d3de26cdc1e720ae8cd983a9bdaec8883e2216959"
     end
   end
 
@@ -133,6 +133,13 @@ class Podman < Formula
       ENV["PREFIX"] = prefix
       ENV["HELPER_BINARIES_DIR"] = opt_libexec/"podman"
       ENV["BUILD_ORIGIN"] = "brew"
+
+      # Workaround to avoid patchelf corruption when cgo is required
+      if Hardware::CPU.arch == :arm64
+        ENV["CGO_ENABLED"] = "1"
+        ENV["GO_EXTLINK_ENABLED"] = "1"
+        ENV.append "GOFLAGS", "-buildmode=pie -trimpath"
+      end
 
       system "make"
       system "make", "install", "install.completions"

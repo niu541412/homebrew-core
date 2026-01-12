@@ -4,8 +4,8 @@ class Samba < Formula
   # option. The shared folder appears in the guest as "\\10.0.2.4\qemu".
   desc "SMB/CIFS file, print, and login server for UNIX"
   homepage "https://www.samba.org/"
-  url "https://download.samba.org/pub/samba/stable/samba-4.22.3.tar.gz"
-  sha256 "8fd7092629a3596d935cd7567d934979f94272918ec3affd0cc807934ecf22ba"
+  url "https://download.samba.org/pub/samba/stable/samba-4.23.4.tar.gz"
+  sha256 "af429d078a86f1ce16d0d1ecee35c42a3610790b47b84468f31284a8c4060140"
   license "GPL-3.0-or-later"
 
   livecheck do
@@ -14,13 +14,12 @@ class Samba < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "852df986a060ebd4ab477d57d2880c009226fafd73260e899801094f9942c44d"
-    sha256 arm64_sonoma:  "30720543a039008832d5cbc2f3c29adef48ad29d685ee78ee939720c1da79385"
-    sha256 arm64_ventura: "9637edd957672002525c7f348337c9bac11cb2a5b89e5c0a1c4618d783118ca3"
-    sha256 sonoma:        "a5ab1aa78d9ab9902a7372b7f71e448624f111364b0ab86fcf2b09355fc5765a"
-    sha256 ventura:       "e549dff13cea82f170e29b34cb4a9835dfceabf7f90a2ede1266ca52320ab601"
-    sha256 arm64_linux:   "c3ea3b07a4cbf26d14e23259b273ec5a505ce99c485ad54c5c5fc31c334cf95e"
-    sha256 x86_64_linux:  "468e1e186c168132edd142451589649e88a170c39a77b97310022e61776b6ee3"
+    sha256 arm64_tahoe:   "636a807c96408a7db410b58e898b1c3aeeafbcf83068e5188c807d45eb891813"
+    sha256 arm64_sequoia: "9be52d8307f953bc32407437653cb224ae02c40b5617d5f09fe67fd3845a7d87"
+    sha256 arm64_sonoma:  "3b2623b50be7cbb482224115a74d5d503a8e11453feca1780bdc0c644e7b08d1"
+    sha256 sonoma:        "6331191c94bf7817e87b79c45de174a2c1d98b88ad10d8e503039c18dbd44f1c"
+    sha256 arm64_linux:   "ab19350949353fb5f247d601cdf58a31c3ea2444b1f83acbfc89ec9bba595c90"
+    sha256 x86_64_linux:  "2400dfb9103a925a03e8fcd7f0c0dad9c671fa2ac7a585aaea7a2485be3ff01c"
   end
 
   depends_on "bison" => :build
@@ -29,7 +28,7 @@ class Samba < Formula
   depends_on "gnutls"
   # icu4c can get linked if detected by pkg-config and there isn't a way to force disable
   # without disabling spotlight support. So we just enable the feature for all systems.
-  depends_on "icu4c@77"
+  depends_on "icu4c@78"
   depends_on "krb5"
   depends_on "libtasn1"
   depends_on "libxcrypt"
@@ -87,8 +86,16 @@ class Samba < Formula
       end
     end
     ENV.append "LDFLAGS", "-Wl,-rpath,#{lib}/private" if OS.linux?
+
+    bundled_libs_list = []
+    # Upstream (https://github.com/lxin/quic) has no tagged releases, so we would have to add an arbitrary
+    # commit as a resource. That's not really better than just using the vendored copy. Consider breaking
+    # it out into a resource or formula once tagged releases become available.
+    bundled_libs_list << "libquic" if OS.linux?
+    bundled_libs = bundled_libs_list.empty? ? "NONE" : bundled_libs_list.join(",")
+
     system "./configure",
-           "--bundled-libraries=NONE",
+           "--bundled-libraries=#{bundled_libs}",
            "--private-libraries=!ldb",
            "--disable-cephfs",
            "--disable-cups",

@@ -1,10 +1,10 @@
 class Itk < Formula
   desc "Insight Toolkit is a toolkit for performing registration and segmentation"
   homepage "https://itk.org"
-  url "https://github.com/InsightSoftwareConsortium/ITK/releases/download/v5.4.4/InsightToolkit-5.4.4.tar.gz"
-  sha256 "d2092cd018a7b9d88e8c3dda04acb7f9345ab50619b79800688c7bc3afcca82a"
+  url "https://github.com/InsightSoftwareConsortium/ITK/releases/download/v5.4.5/InsightToolkit-5.4.5.tar.gz"
+  sha256 "ecab9119664e2571b90740ba9ab3ca11cb46942dbd7bb87c0de5bb15309a36c9"
   license "Apache-2.0"
-  head "https://github.com/InsightSoftwareConsortium/ITK.git", branch: "master"
+  head "https://github.com/InsightSoftwareConsortium/ITK.git", branch: "main"
 
   livecheck do
     url :stable
@@ -12,17 +12,17 @@ class Itk < Formula
   end
 
   bottle do
-    sha256                               arm64_sonoma:  "5e3b8ae8aa6b157c8aaa289ed199bd4792e923e30cb363b8f7f7e0abe6da1b83"
-    sha256                               arm64_ventura: "f945f35c13497db6a21d68f1059ab33222e165f312728e23b7e07dd2db7ced51"
-    sha256                               sonoma:        "5c6d5f10c0d0b54be49b4103eddab3cbe7ff6686c6888ddcec2b7a3370e346a9"
-    sha256                               ventura:       "eec52a03c332a2fd63366982f15bcdcc93ee4abaf595a73db0ed7090f039e787"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "986e570d815f58bd7801ea3c1a954068ec769c0be40e9d6b0ac8bad7ffe84c9a"
+    sha256 arm64_tahoe:   "ad0fea9594908679180652dc80101a525091c60bf162a5048728ea75c8b372fb"
+    sha256 arm64_sequoia: "eb59726ec0e2ebb1794f2d72d248a0ee389669b6298e813d0b92aa0b121f3e96"
+    sha256 arm64_sonoma:  "2a359438cb059e0da5f04aa43776cc19afd8384f60da4e9fc22f6f13455e2e55"
+    sha256 sonoma:        "0e3805bfaa77d3fc149171ed8ebc9a4b0549935e79bff2f9295ee8c1d952998e"
+    sha256 arm64_linux:   "569096193617b1f675b9a8d30b456817e93165a2b204747c769cf2b6d3d22e8f"
+    sha256 x86_64_linux:  "09230cc27bff9a6eab3598f8a6fe3f0126fc39ce3003d3c66f50b75af610cd2d"
   end
 
   depends_on "cmake" => :build
 
   depends_on "double-conversion"
-  depends_on "expat"
   depends_on "fftw"
   depends_on "gdcm"
   depends_on "hdf5"
@@ -31,6 +31,7 @@ class Itk < Formula
   depends_on "libtiff"
   depends_on "vtk"
 
+  uses_from_macos "expat"
   uses_from_macos "zlib"
 
   on_macos do
@@ -43,7 +44,18 @@ class Itk < Formula
     depends_on "unixodbc"
   end
 
+  # Work around superenv to avoid mixing `expat` usage in libraries across dependency tree.
+  # Brew `expat` usage in Python has low impact as it isn't loaded unless pyexpat is used.
+  # TODO: Consider adding a DSL for this or change how we handle Python's `expat` dependency
+  def remove_brew_expat
+    env_vars = %w[CMAKE_PREFIX_PATH HOMEBREW_INCLUDE_PATHS HOMEBREW_LIBRARY_PATHS PATH PKG_CONFIG_PATH]
+    ENV.remove env_vars, /(^|:)#{Regexp.escape(Formula["expat"].opt_prefix)}[^:]*/
+    ENV.remove "HOMEBREW_DEPENDENCIES", "expat"
+  end
+
   def install
+    remove_brew_expat if OS.mac? && MacOS.version < :sequoia
+
     # Avoid CMake trying to find GoogleTest even though tests are disabled
     rm_r(buildpath/"Modules/ThirdParty/GoogleTest")
 

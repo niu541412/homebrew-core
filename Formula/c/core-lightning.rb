@@ -3,8 +3,8 @@ class CoreLightning < Formula
 
   desc "Lightning Network implementation focusing on spec compliance and performance"
   homepage "https://github.com/ElementsProject/lightning"
-  url "https://github.com/ElementsProject/lightning/releases/download/v25.05/clightning-v25.05.zip"
-  sha256 "00d633a63570f6419db0dbd75b503bb04ba0f6eb469894da6fced2a8949d8007"
+  url "https://github.com/ElementsProject/lightning/releases/download/v25.09.3/clightning-v25.09.3.zip"
+  sha256 "d051a08f1432ddc7b26d1132ea9ad302de935f89a5a930eafcf92f68830649ab"
   license "MIT"
   head "https://github.com/ElementsProject/lightning.git", branch: "master"
 
@@ -15,13 +15,12 @@ class CoreLightning < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "c54f40a76481c041795b57ea1475a45604b933c99ea195c65828eabf4a3d05aa"
-    sha256 arm64_sonoma:  "4c311bf0640be8433913743950c41fc7114ecb57be98244588467225b355b782"
-    sha256 arm64_ventura: "deed4f30089eb8d52e8939aee742dd59f750f64d586fa50303edc2e447154a52"
-    sha256 sonoma:        "d4307711486764ec1385a54fd4decc41668d3f1e8cc104939e77a09552b31b26"
-    sha256 ventura:       "fb51a25a6bc146fb5cba2c566cc6e2c7daa53d9f0ac992d4e15af1e745f70ace"
-    sha256 arm64_linux:   "0f433e4a7a10a6ace1abd488d9aa92b5213bee048055767b166b5f1730b4b4e7"
-    sha256 x86_64_linux:  "9724576cede91ef3c14d683da34a23862364fb70fc50a179877e941615e5dde5"
+    sha256 arm64_tahoe:   "75ca48adeba263c619a9d5d65c40d2241029a091bdd8f0193a64096dd8092de2"
+    sha256 arm64_sequoia: "4bced7dfdb093e6a47b8acd1e348f7add7b202a3898fef45a5ef2bca2a9bb775"
+    sha256 arm64_sonoma:  "a5b4255ed27057b54b10c56d519318b43c45db090b76c9019812e8973a090716"
+    sha256 sonoma:        "1f58816b192df9206224ab9d09a8c7d755e80b35febc7d6dae5691c1e2c0ecfc"
+    sha256 arm64_linux:   "de4e72e16c6f9b3eae1fe41fc6c60ada3123497bdae46fe42dfe5e726595882b"
+    sha256 x86_64_linux:  "4a4d0ada5c687be92c131a196df65d0c5cc14adeabd03d657d57e827c4659fa2"
   end
 
   depends_on "autoconf" => :build
@@ -31,13 +30,13 @@ class CoreLightning < Formula
   depends_on "lowdown" => :build
   depends_on "pkgconf" => :build
   depends_on "protobuf" => :build
-  depends_on "python@3.13" => :build
+  depends_on "python@3.14" => :build
   depends_on "rust" => :build
   depends_on "bitcoin"
   depends_on "libsodium"
 
   uses_from_macos "jq" => :build, since: :sequoia
-  uses_from_macos "python", since: :catalina
+  uses_from_macos "python"
   uses_from_macos "sqlite"
   uses_from_macos "zlib"
 
@@ -45,14 +44,17 @@ class CoreLightning < Formula
     depends_on "gnu-sed" => :build
   end
 
+  pypi_packages package_name:   "",
+                extra_packages: ["mako", "setuptools"]
+
   resource "mako" do
     url "https://files.pythonhosted.org/packages/9e/38/bd5b78a920a64d708fe6bc8e0a2c075e1389d53bef8413725c63ba041535/mako-1.3.10.tar.gz"
     sha256 "99579a6f39583fa7e5630a28c3c1f440e4e97a414b80372649c0ce338da2ea28"
   end
 
   resource "markupsafe" do
-    url "https://files.pythonhosted.org/packages/b2/97/5d42485e71dfc078108a86d6de8fa46db44a1a9295e89c5d6d4a06e23a62/markupsafe-3.0.2.tar.gz"
-    sha256 "ee55d3edf80167e48ea11a923c7386f4669df67d7994554387f84e7d8b0a2bf0"
+    url "https://files.pythonhosted.org/packages/7e/99/7690b6d4034fffd95959cbe0c02de8deb3098cc577c67bb6a24fe5d7caa7/markupsafe-3.0.3.tar.gz"
+    sha256 "722695808f4b6457b320fdc131280796bdceb04ab50fe1795cd540799ebe1698"
   end
 
   resource "setuptools" do
@@ -70,13 +72,15 @@ class CoreLightning < Formula
   def install
     rm_r(["external/libsodium", "external/lowdown"])
 
-    venv = virtualenv_create(buildpath/"venv", "python3.13")
+    venv = virtualenv_create(buildpath/"venv", "python3.14")
     venv.pip_install resources
     ENV.prepend_path "PATH", venv.root/"bin"
     ENV.prepend_path "PATH", Formula["gnu-sed"].libexec/"gnubin" if OS.mac?
 
     system "./configure", "--prefix=#{prefix}"
     system "make", "install"
+
+    rm_r Dir["#{bin}/*.dSYM"]
   end
 
   test do

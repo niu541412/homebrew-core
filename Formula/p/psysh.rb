@@ -1,18 +1,12 @@
 class Psysh < Formula
   desc "Runtime developer console, interactive debugger and REPL for PHP"
   homepage "https://psysh.org/"
-  url "https://github.com/bobthecow/psysh/releases/download/v0.12.9/psysh-v0.12.9.tar.gz"
-  sha256 "67c4f2c1c3fcf32177b0b740f0cf97818e6abc888ab2bfbde8a270b72371d630"
+  url "https://github.com/bobthecow/psysh/releases/download/v0.12.18/psysh-v0.12.18.tar.gz"
+  sha256 "47c35f6e966d6d6a42c61d928369a932be4a2154ffcf8670036932f0a885053b"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "2fcbe60c7c8061b73002734ee99c45340a6bb8021ef13fc3a332f5bb253c4c7e"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "2fcbe60c7c8061b73002734ee99c45340a6bb8021ef13fc3a332f5bb253c4c7e"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "2fcbe60c7c8061b73002734ee99c45340a6bb8021ef13fc3a332f5bb253c4c7e"
-    sha256 cellar: :any_skip_relocation, sonoma:        "41572ae18ef058a3b6d20b955d50170737bbebcf882e44bf2f06e603032922c3"
-    sha256 cellar: :any_skip_relocation, ventura:       "41572ae18ef058a3b6d20b955d50170737bbebcf882e44bf2f06e603032922c3"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "2fcbe60c7c8061b73002734ee99c45340a6bb8021ef13fc3a332f5bb253c4c7e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2fcbe60c7c8061b73002734ee99c45340a6bb8021ef13fc3a332f5bb253c4c7e"
+    sha256 cellar: :any_skip_relocation, all: "619f5c3a9dee0b21bfd71f7959f842d868a5bab5f2372612239248ffb9cc5e22"
   end
 
   depends_on "php"

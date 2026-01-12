@@ -1,20 +1,19 @@
 class OpentelemetryCpp < Formula
   desc "OpenTelemetry C++ Client"
   homepage "https://opentelemetry.io/"
-  url "https://github.com/open-telemetry/opentelemetry-cpp/archive/refs/tags/v1.22.0.tar.gz"
-  sha256 "3428f433f4b435ed1fad64cbdbe75b7288c06f6297786a7036d65d5b9a1d215b"
+  url "https://github.com/open-telemetry/opentelemetry-cpp/archive/refs/tags/v1.24.0.tar.gz"
+  sha256 "7b8e966affca1daf1906272f4d983631cad85fb6ea60fb6f55dcd1811a730604"
   license "Apache-2.0"
   revision 1
   head "https://github.com/open-telemetry/opentelemetry-cpp.git", branch: "main"
 
   bottle do
-    sha256                               arm64_sequoia: "66956d44829a91dbb80ea5cdf289fbbf67ea262dc29db9682c76e0b67d5ab298"
-    sha256                               arm64_sonoma:  "77b6fd8ff95ac67c2baa9e572bd8c2142ab57e7e8f97ffa8f1520496bab3007f"
-    sha256                               arm64_ventura: "1ff2735444934659cae67cc8e954b0597cf4de6ffa861c1d03eec07175c6daff"
-    sha256 cellar: :any,                 sonoma:        "fa7eea6c58c1b1e17b15954d6c0754a840ad397a5acc7bc9ad129c29766925f1"
-    sha256 cellar: :any,                 ventura:       "34fa18a1816c59b26a6ccded66421fc6eb92281e9fa816e1abfa0b656cf54c27"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "a6e8d2174c50aff77118e0a469e1f04ac93e3f4ea482eebb4c3ae95ebc52d309"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c5e04089838129d93c8e81fee8998e530deedd3b8e63e6d4716809cd1a72c0b3"
+    sha256               arm64_tahoe:   "faf52a14aa58161998cc3fc85498d24cc209501e217afd13d881800711642e33"
+    sha256               arm64_sequoia: "922c750694059731446d1512efa4914f7373342697dc3dd3062dec52918d76f3"
+    sha256               arm64_sonoma:  "d43a44157c777f4908ea67a78b10f8dec8d8a2db9e0aefa8b8338fd66325cad7"
+    sha256 cellar: :any, sonoma:        "3295767db871997ede5861733f22aa2296b430013c99a2ebece5a1b32930e4be"
+    sha256               arm64_linux:   "9b4961d3f07e0c7c06276c0415c58f2910e2a21698b2ee95fbb77b2b0f47a305"
+    sha256               x86_64_linux:  "a056c7e70fc03b1f0a7b8c3f0ef93ab98b85509c3451822984627d255cc05d06"
   end
 
   depends_on "cmake" => :build
@@ -33,8 +32,8 @@ class OpentelemetryCpp < Formula
   end
 
   resource "openetelemetry-proto" do
-    url "https://github.com/open-telemetry/opentelemetry-proto/archive/refs/tags/v1.7.0.tar.gz"
-    sha256 "11330d850f5e24d34c4246bc8cb21fcd311e7565d219195713455a576bb11bed"
+    url "https://github.com/open-telemetry/opentelemetry-proto/archive/refs/tags/v1.9.0.tar.gz"
+    sha256 "2d2220db196bdfd0aec872b75a5e614458f8396557fc718b28017e1a08db49e4"
   end
 
   def install

@@ -3,41 +3,32 @@ class Sqlmap < Formula
 
   desc "Penetration testing for SQL injection and database servers"
   homepage "https://sqlmap.org"
-  url "https://github.com/sqlmapproject/sqlmap/archive/refs/tags/1.9.7.tar.gz"
-  sha256 "e8c5c369f502451f29905267b5223e5cf49b16de89667f24c70207007e1bfffc"
+  url "https://github.com/sqlmapproject/sqlmap/archive/refs/tags/1.10.tar.gz"
+  sha256 "aea3bf921d9a2466bc0e33cf43bc941f527eabf7981ec1de104220def3a1cba4"
   license "GPL-2.0-or-later"
   head "https://github.com/sqlmapproject/sqlmap.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "a1fee6f1529c495107bc367143d7d66c683f2deae9eaa0dd19f536911e32a6ed"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "a1fee6f1529c495107bc367143d7d66c683f2deae9eaa0dd19f536911e32a6ed"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "a1fee6f1529c495107bc367143d7d66c683f2deae9eaa0dd19f536911e32a6ed"
-    sha256 cellar: :any_skip_relocation, sonoma:        "cedb49149f487b1eec11e9d98612ebc6f62ca61be11c0ca636524a1ac494a4d9"
-    sha256 cellar: :any_skip_relocation, ventura:       "cedb49149f487b1eec11e9d98612ebc6f62ca61be11c0ca636524a1ac494a4d9"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "bfa338fdd0af66059c0416a934d900c93eb74b72219257e95800c779603791a1"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "bfa338fdd0af66059c0416a934d900c93eb74b72219257e95800c779603791a1"
+    sha256 cellar: :any_skip_relocation, all: "5160948123e8e2554a4df905929c06173341196b3b0ac66fb4fd40d99a297155"
   end
 
-  depends_on "python@3.13"
+  depends_on "python@3.14"
 
   uses_from_macos "sqlite" => :test
 
   def install
     libexec.install Dir["*"]
 
-    files = [
-      libexec/"lib/core/dicts.py",
-      libexec/"lib/core/settings.py",
-      libexec/"lib/request/basic.py",
-      libexec/"thirdparty/magic/magic.py",
-    ]
-    inreplace files, "/usr/local", HOMEBREW_PREFIX
-
     %w[sqlmap sqlmapapi].each do |cmd|
       rewrite_shebang detected_python_shebang, libexec/"#{cmd}.py"
       bin.install_symlink libexec/"#{cmd}.py"
       bin.install_symlink bin/"#{cmd}.py" => cmd
     end
+
+    # Build an `:all` bottle
+    inreplace libexec/"thirdparty/magic/magic.py", "/usr/local/Cellar", "#{HOMEBREW_PREFIX}/Cellar"
+    inreplace libexec/"lib/core/dicts.py", "/usr/local/var/www", "#{HOMEBREW_PREFIX}/var/www"
+    inreplace libexec/"lib/core/settings.py", "/opt/homebrew", HOMEBREW_PREFIX
   end
 
   test do

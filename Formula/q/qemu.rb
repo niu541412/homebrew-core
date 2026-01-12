@@ -1,8 +1,8 @@
 class Qemu < Formula
   desc "Generic machine emulator and virtualizer"
   homepage "https://www.qemu.org/"
-  url "https://download.qemu.org/qemu-10.0.3.tar.xz"
-  sha256 "5c891267b1534a774465db8b1a0dfcb0c5e6d7ecb6f71345625adf4e0889945b"
+  url "https://download.qemu.org/qemu-10.2.0.tar.xz"
+  sha256 "9e30ad1b8b9f7b4463001582d1ab297f39cfccea5d08540c0ca6d6672785883a"
   license "GPL-2.0-only"
   head "https://gitlab.com/qemu-project/qemu.git", branch: "master"
 
@@ -12,20 +12,19 @@ class Qemu < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "96b93973c0525c02ec320fd8eb68e025df78e163a61a123cccc0e36fb6d930d0"
-    sha256 arm64_sonoma:  "9720c3451756690fc0c6badb11c91f1fdd2b56478f974b3c39ee71b54142769e"
-    sha256 arm64_ventura: "3b9b67ba44f4423fdd5ba8b2e3bd05456311d41f4ab75f0fa0fce8fa6e044076"
-    sha256 sonoma:        "7878e6ef873bf16d8e1562827078f241ca6d9d91cb3dbe0cf6bc2e6749622267"
-    sha256 ventura:       "751aed2fc380765f2f215609cc93c7cfbf36d3fdd7dabc3ce43190bc7036f01d"
-    sha256 arm64_linux:   "c4ecf3a83cd7dd84e9a3c3284cd964781c88f8c02bee9018504303e0a85bb17b"
-    sha256 x86_64_linux:  "23463ce5924fbe47ef4c237bb7279eae5f2d8d36f72e068b56945fdd2e4c6c50"
+    sha256 arm64_tahoe:   "54cef29e9be0160316fcc296009b95b6536026e63dd0ef85493c5f07f0216e0a"
+    sha256 arm64_sequoia: "0c403b53d0dbe62a4dd2ae84a44e646d810167013a8b985f1f635c7d76bbef7e"
+    sha256 arm64_sonoma:  "f40251478ae8a7f051637d3e5b953657cc93daa393f58a1e9e039cfb32a49083"
+    sha256 sonoma:        "04ce41d1e51777f63bcc0db1f9507bbe63fc904541c879f0b842497a31226b92"
+    sha256 arm64_linux:   "a8c4292054ac58cf88a5ff77840864feac2297f891adab7c1581f107b0169994"
+    sha256 x86_64_linux:  "f096bfd84838e82806ef05fc2abbefdcb270eeb5bc49f90159f010720524d641"
   end
 
   depends_on "libtool" => :build
   depends_on "meson" => :build
   depends_on "ninja" => :build
   depends_on "pkgconf" => :build
-  depends_on "python@3.13" => :build # keep aligned with meson
+  depends_on "python@3.14" => :build # keep aligned with meson
   depends_on "spice-protocol" => :build
 
   depends_on "capstone"
@@ -39,7 +38,6 @@ class Qemu < Formula
   depends_on "libusb"
   depends_on "lzo"
   depends_on "ncurses"
-  depends_on "nettle"
   depends_on "pixman"
   depends_on "snappy"
   depends_on "vde"
@@ -56,6 +54,7 @@ class Qemu < Formula
     depends_on "elfutils"
     depends_on "gdk-pixbuf"
     depends_on "gtk+3"
+    depends_on "keyutils"
     depends_on "libcap-ng"
     depends_on "libepoxy"
     depends_on "libx11"

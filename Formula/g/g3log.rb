@@ -8,6 +8,7 @@ class G3log < Formula
   no_autobump! because: :requires_manual_review
 
   bottle do
+    sha256 cellar: :any,                 arm64_tahoe:   "d709b89aa430846366121b385f710239c46c2f4ca6bd3dbbed07158a633b9bca"
     sha256 cellar: :any,                 arm64_sequoia: "53d72c30b9c9d193b8130c2801645c67504d5a2c12532984cbf478dd143f81ca"
     sha256 cellar: :any,                 arm64_sonoma:  "b80a5c5242decc0bd7f779bad92027c92969928c67e5b89b1c6fb15e69a1b932"
     sha256 cellar: :any,                 arm64_ventura: "c9a0603682f5e3e90ca5d878759b65898c92ad09707357f3581b0eae972412f6"
@@ -26,14 +27,13 @@ class G3log < Formula
   end
 
   test do
-    (testpath/"test.cpp").write <<~CPP.gsub("TESTDIR", testpath)
+    (testpath/"test.cpp").write <<~CPP
       #include <g3log/g3log.hpp>
       #include <g3log/logworker.hpp>
       int main()
       {
-        using namespace g3;
-        auto worker = LogWorker::createLogWorker();
-        worker->addDefaultLogger("test", "TESTDIR");
+        auto worker = g3::LogWorker::createLogWorker();
+        worker->addDefaultLogger("test", "#{testpath}");
         g3::initializeLogging(worker.get());
         LOG(DEBUG) << "Hello World";
         return 0;
@@ -41,6 +41,9 @@ class G3log < Formula
     CPP
     system ENV.cxx, "-std=c++17", "test.cpp", "-L#{lib}", "-lg3log", "-o", "test"
     system "./test"
-    Dir.glob(testpath/"test.g3log.*.log").any?
+
+    log = testpath.glob("test.g3log.*.log").first
+    refute_nil log, "Expected log file"
+    assert_match "\tDEBUG [test.cpp->main:8]\tHello World\n", log.read
   end
 end

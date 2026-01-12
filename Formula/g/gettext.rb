@@ -1,20 +1,23 @@
 class Gettext < Formula
   desc "GNU internationalization (i18n) and localization (l10n) library"
   homepage "https://www.gnu.org/software/gettext/"
-  url "https://ftp.gnu.org/gnu/gettext/gettext-0.26.tar.gz"
-  mirror "https://ftpmirror.gnu.org/gettext/gettext-0.26.tar.gz"
+  url "https://ftpmirror.gnu.org/gnu/gettext/gettext-0.26.tar.gz"
+  mirror "https://ftp.gnu.org/gnu/gettext/gettext-0.26.tar.gz"
   mirror "http://ftp.gnu.org/gnu/gettext/gettext-0.26.tar.gz"
   sha256 "39acf4b0371e9b110b60005562aace5b3631fed9b1bb9ecccfc7f56e58bb1d7f"
-  license "GPL-3.0-or-later"
+  license all_of: [
+    "GPL-3.0-or-later",
+    "LGPL-2.1-or-later", # libintl, libasprintf
+  ]
+  revision 1
 
   bottle do
-    sha256 arm64_sequoia: "b25ac1e62443f8f79eadc3dadf6d3af954d4cbc33a0577fc626aa0c8f2bb01a5"
-    sha256 arm64_sonoma:  "1615e931a23c6875c9bcae0ffccf5a4a35f796fb90b7192804c771cb25d766e2"
-    sha256 arm64_ventura: "c9cf89dc04f56eb4939b00eea3c0361cd4498f8237e527f2f741682bf7e6de61"
-    sha256 sonoma:        "87ac92958d68cfd4c000879302cc8237f9ab38aec9429c6970b31667c3d53870"
-    sha256 ventura:       "36da5ebc7064150238eb5fd4c9640ee9ef2482cabb9707357d0ab7b198bf9c4f"
-    sha256 arm64_linux:   "65da5d3da37d8ac70048648ec6c0680d5c22f9f55b4452a61374c8c267d1990f"
-    sha256 x86_64_linux:  "fce5e0fea8441a729599191161a94a03ce4328e5c7a276df4ec322ff5e92958f"
+    sha256 arm64_tahoe:   "ba9215fd5110a60cf544cbdf76536d5b7d198c73cad97c9552ebd54216312862"
+    sha256 arm64_sequoia: "f1aa739f3f4b720b7abf4512af6d1c470feafe57b15ebca25c45f8b22afe7ab5"
+    sha256 arm64_sonoma:  "cf146240f332843bd4eb21286f678e4625d46b49a635153f1f1eba926793ee55"
+    sha256 sonoma:        "55a702b28d00815fb7dbd01f5d77059c84fcd65763e417a3b0a021a13481259e"
+    sha256 arm64_linux:   "1bd1fd569c6caca916593563d720b3e10bc01144bc5920611c54b23f462f36b0"
+    sha256 x86_64_linux:  "4107f2ed57956975c0af99807991d62372df69abcd9e8990757b8b22c3d7d766"
   end
 
   depends_on "libunistring"
@@ -27,10 +30,12 @@ class Gettext < Formula
   end
 
   def install
+    # Workaround for newer Clang
+    ENV.append_to_cflags "-Wno-incompatible-function-pointer-types" if DevelopmentTools.clang_build_version >= 1500
+
     # macOS iconv implementation is slightly broken since Sonoma.
-    # This is also why we skip `make check`.
     # upstream bug report, https://savannah.gnu.org/bugs/index.php?66541
-    ENV["am_cv_func_iconv_works"] = "yes" if OS.mac? && MacOS.version == :sequoia
+    ENV["am_cv_func_iconv_works"] = "yes" if OS.mac? && MacOS.version >= :sequoia
 
     args = [
       "--with-libunistring-prefix=#{Formula["libunistring"].opt_prefix}",

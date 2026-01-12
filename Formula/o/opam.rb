@@ -1,8 +1,8 @@
 class Opam < Formula
   desc "OCaml package manager"
   homepage "https://opam.ocaml.org"
-  url "https://github.com/ocaml/opam/releases/download/2.4.1/opam-full-2.4.1.tar.gz"
-  sha256 "c4d053029793c714e4e7340b1157428c0f90783585fb17f35158247a640467d9"
+  url "https://github.com/ocaml/opam/releases/download/2.5.0/opam-full-2.5.0.tar.gz"
+  sha256 "25fb98f962c4227c1261e142afc68a416778e6e819600bd5ee3ec4a18ae1e238"
   license "LGPL-2.1-only"
   head "https://github.com/ocaml/opam.git", branch: "master"
 
@@ -22,16 +22,16 @@ class Opam < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "2e44b50546eadb8dffec31ae55b5904176bc24509f2eab257555b62e03c3c231"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "614581f51eaf7d33783c5034fd7a8929af3b9954532b5b5c6aeeab64bdefe48c"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "337336308e954e3c0276614984d9cb725c0f12cbdd2c57f3d664f35db625e064"
-    sha256 cellar: :any_skip_relocation, sonoma:        "03372b53426066e6aa31171013677e2f4f525b9addb8b56f7cb094be7aa5ad68"
-    sha256 cellar: :any_skip_relocation, ventura:       "f76b7794e9318e63f54fa9005843c366717b35f78d710feadbea521dc90b11a0"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "4e30086e9c3082a15e0452269c8e7589e1fde7d5bdb3a2cbf089b935e9d20f2f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "455d8d1cc9aefb06a9e13a27f3ec8c0648d24081e9c81fee3fa2ffed62a58499"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "49fa1631fb9dc7f680166f185f095d1eeedd84f30c34a363b9a57a86b286ab91"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "a499ecffcda3cbd6264b6d110e54d632544fae0d80ef106d81e9328ca0bbc9be"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "13e3540dd831e33ecb61be42da177cd9a7cd815f2e2fe90cf3ddbd38dfaf2dfb"
+    sha256 cellar: :any_skip_relocation, sonoma:        "aebc9646975f09d68083d69eddf58221fa8e0bb221958b67fecbb6b9ce95e8fb"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "71866a75c2a3f2c6f87927e7d74b059d8f49d792a03968364583df919adec39d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0fc029045abb424f08f33f54b9bf6a48e6ffad9bce02f05c4e3e93a5093146b4"
   end
 
   depends_on "ocaml" => [:build, :test]
+  depends_on "rsync" # macOS's openrsync won't work (see https://github.com/ocaml/opam/issues/6628)
 
   uses_from_macos "unzip"
 
@@ -56,7 +56,7 @@ class Opam < Formula
   end
 
   test do
-    system bin/"opam", "init", "--auto-setup", "--disable-sandboxing"
+    system bin/"opam", "init", "--auto-setup", "--compiler=ocaml-system", "--disable-sandboxing"
     system bin/"opam", "list"
   end
 end

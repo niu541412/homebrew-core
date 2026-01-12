@@ -1,8 +1,8 @@
 class Webkitgtk < Formula
   desc "GTK interface to WebKit"
   homepage "https://webkitgtk.org"
-  url "https://webkitgtk.org/releases/webkitgtk-2.48.4.tar.xz"
-  sha256 "f62c1077d3a0f63d50259a802d1143be5d4d0c7c4c05e581819af1ce935afab3"
+  url "https://webkitgtk.org/releases/webkitgtk-2.50.4.tar.xz"
+  sha256 "d3bfa473845acfab72635bada5e0d134fda6792c5b95c5c5cd141b46125bd8e4"
   license "GPL-3.0-or-later"
 
   livecheck do
@@ -11,8 +11,8 @@ class Webkitgtk < Formula
   end
 
   bottle do
-    sha256 arm64_linux:  "d3c22a298c9b10a6fc702b362445769af93d50794ce6b13bb288664c97065c97"
-    sha256 x86_64_linux: "b379897f744fc76f9e4ab84c9866e8555af17414f10101bfee5c75b94a994681"
+    sha256 arm64_linux:  "34c6dede8645e3e025e0291c445e1b2ee0e825c3ce8078db836bb9b953f891f5"
+    sha256 x86_64_linux: "13ebc4b63ad2e5fb481f9df53c0593baabf737e0d409258efe27682dcb0f7c4c"
   end
 
   depends_on "cmake" => :build
@@ -21,12 +21,13 @@ class Webkitgtk < Formula
   depends_on "gperf" => :build
   depends_on "perl" => :build
   depends_on "pkgconf" => [:build, :test]
-  depends_on "python@3.13" => :build
+  depends_on "python@3.14" => :build
   depends_on "ruby" => :build
   depends_on "unifdef" => :build
   depends_on "at-spi2-core"
   depends_on "cairo"
   depends_on "enchant"
+  depends_on "expat"
   depends_on "fontconfig"
   depends_on "freetype"
   depends_on "gdk-pixbuf"
@@ -34,7 +35,7 @@ class Webkitgtk < Formula
   depends_on "gstreamer"
   depends_on "gtk+3"
   depends_on "harfbuzz"
-  depends_on "icu4c@77"
+  depends_on "icu4c@78"
   depends_on "jpeg-turbo"
   depends_on "jpeg-xl"
   depends_on "libavif"
@@ -79,7 +80,7 @@ class Webkitgtk < Formula
       -DUSE_JPEGXL=ON
       -DUSE_LIBBACKTRACE=OFF
       -DUSE_LIBHYPHEN=OFF
-      -DPython_EXECUTABLE=#{which("python3.13")}
+      -DPython_EXECUTABLE=#{which("python3.14")}
     ]
 
     system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args

@@ -1,22 +1,15 @@
 class ApibuilderCli < Formula
   desc "Command-line interface to generate clients for api builder"
   homepage "https://www.apibuilder.io"
-  url "https://github.com/apicollective/apibuilder-cli/archive/refs/tags/0.1.52.tar.gz"
-  sha256 "3ce833ef38dfeebcd4d4c27133b567412c28cf160c156993700d22f706caa738"
+  url "https://github.com/apicollective/apibuilder-cli/archive/refs/tags/0.2.1.tar.gz"
+  sha256 "282e976178e07f941cd627db9a5760508dcef43fc0dbd51613cb37f5003b321d"
   license "MIT"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, all: "39cbf3461c7f364bf4f50327ef24d23e877c8ab8cd27253f9c1a29a94ba359bc"
+    sha256 cellar: :any_skip_relocation, all: "229749a7462fb0963cb584dac715a6faf6fe03be20266ea5c8fa973c0f2fce86"
   end
 
   uses_from_macos "ruby"
-
-  # patch to remove ask.rb file load, upstream pr ref, https://github.com/apicollective/apibuilder-cli/pull/89
-  patch do
-    url "https://github.com/apicollective/apibuilder-cli/commit/2f901ad345c8a5d3b7bf46934d97f9be2150eae7.patch?full_index=1"
-    sha256 "d57b7684247224c7d9e43b4b009da92c7a9c9ff9938e2376af544662c5dfd6c4"
-  end
 
   def install
     system "./install.sh", prefix

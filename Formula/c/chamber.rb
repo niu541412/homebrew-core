@@ -1,8 +1,8 @@
 class Chamber < Formula
   desc "CLI for managing secrets through AWS SSM Parameter Store"
   homepage "https://github.com/segmentio/chamber"
-  url "https://github.com/segmentio/chamber/archive/refs/tags/v3.1.3.tar.gz"
-  sha256 "2509cb2a1e3c0959ee21a6724513f327d1c7127352fab4e316469a2ee9cad56b"
+  url "https://github.com/segmentio/chamber/archive/refs/tags/v3.1.4.tar.gz"
+  sha256 "89226bd14752fc36a2032ba1b102b3dd223d9372cee01fdd7c6d7df1518b025a"
   license "MIT"
   head "https://github.com/segmentio/chamber.git", branch: "master"
 
@@ -13,19 +13,20 @@ class Chamber < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "697dd0e5e98d6ab28cd992438dcda8e4dfa9e7a30cbc8084eaa4f20dbc76e68b"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "697dd0e5e98d6ab28cd992438dcda8e4dfa9e7a30cbc8084eaa4f20dbc76e68b"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "697dd0e5e98d6ab28cd992438dcda8e4dfa9e7a30cbc8084eaa4f20dbc76e68b"
-    sha256 cellar: :any_skip_relocation, sonoma:        "32e4902a1ff7ca48ca609d7f33c479f026032d2b25caf7c7a04766e9d02ec236"
-    sha256 cellar: :any_skip_relocation, ventura:       "32e4902a1ff7ca48ca609d7f33c479f026032d2b25caf7c7a04766e9d02ec236"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4b21ad171679fdce9e7fb937c1ab5c067b8155388178391cf79b3905b91300fa"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "b5337bd1bd08714a29659e6d96e9e5c7fe8fb1588699673f9bcb3bbe92093f2d"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "b5337bd1bd08714a29659e6d96e9e5c7fe8fb1588699673f9bcb3bbe92093f2d"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "b5337bd1bd08714a29659e6d96e9e5c7fe8fb1588699673f9bcb3bbe92093f2d"
+    sha256 cellar: :any_skip_relocation, sonoma:        "1272a1b240390595c0334614deb8896d1398889673f061c83b52549ced6ef3b5"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "7cbb3e3a701c9f6b4ace172f74d865255d7e1b6aa6f8e274275a877f6d754f8d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "69d7da496e18074c011af273f90fc95ccdc4aba35c14132f175090a01cfefd70"
   end
 
   depends_on "go" => :build
 
   def install
     system "go", "build", *std_go_args(ldflags: "-s -w -X main.Version=v#{version}")
-    generate_completions_from_executable(bin/"chamber", "completion")
+    generate_completions_from_executable(bin/"chamber", shell_parameter_format: :cobra)
   end
 
   test do

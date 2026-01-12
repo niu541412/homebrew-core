@@ -1,8 +1,8 @@
 class Vipsdisp < Formula
   desc "Viewer for large images"
   homepage "https://github.com/jcupitt/vipsdisp"
-  url "https://github.com/jcupitt/vipsdisp/releases/download/v4.1.0/vipsdisp-4.1.0.tar.xz"
-  sha256 "51a1105f27e495fdd8e55a8628c4f688f28f900475efc479c9a7202ba59f09c2"
+  url "https://github.com/jcupitt/vipsdisp/releases/download/v4.1.3/vipsdisp-4.1.3.tar.xz"
+  sha256 "4e3dbd72f8f56e0216045ef36b5097d00b3d14f2608cf856f0ecbab3d4c44ba4"
   license "MIT"
 
   livecheck do
@@ -11,13 +11,12 @@ class Vipsdisp < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_sequoia: "c9f3846017d8e88abe84648a4d2e44dccdb7c4d5abb59abf08d5b60c77255e3c"
-    sha256 cellar: :any, arm64_sonoma:  "a04b7c9c63a8806c41ed262aeed0b940c9b84f51ca0d446f03e12753917f85af"
-    sha256 cellar: :any, arm64_ventura: "2bfcc9baff915774aa2b17dd70e6a4fd87294fa801b1dc6e4138b2fe93b21032"
-    sha256 cellar: :any, sonoma:        "3a0c948f1fa347a2a87a27006ec9baeac7487da201bcdbad0465801b9298d818"
-    sha256 cellar: :any, ventura:       "ad37afb98fbfa1bbef6b6c4edef37f153009f49d57cb97bb600e655beaddc1c9"
-    sha256               arm64_linux:   "0a489aaad7823803dbb7b7ff5ca367d7e9f10ad5df2a23c0eb572ce8761be11d"
-    sha256               x86_64_linux:  "431ea15fde91d102763f0313ebb611279ca13b627d388db493bf1816d9edc679"
+    sha256 cellar: :any, arm64_tahoe:   "f1d8149ab410b4e98de0609ccc20638687c7301e9ac2d9db74e289ccc89ea455"
+    sha256 cellar: :any, arm64_sequoia: "21acc4673aa44528f22ec4809479eea073c5351426e54bbf1c6d1af01ca49690"
+    sha256 cellar: :any, arm64_sonoma:  "489ec5f277560ac2739715407a7ffa73bd44885650b1c885d7ad8789d95e9fcc"
+    sha256 cellar: :any, sonoma:        "b9e7e86fa6fba8bb99701646e492e315ef20dd6eb850780477509c30025ba64b"
+    sha256               arm64_linux:   "22ed1327cab00506ea09028e5e3b818e23aecb95cca43df09cde10b408af4d82"
+    sha256               x86_64_linux:  "6135a5be7f7cadf2294843c1a7bbe96a5539366696eac56e37533458e438ffd6"
   end
 
   depends_on "meson" => :build

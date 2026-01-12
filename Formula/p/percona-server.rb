@@ -1,10 +1,9 @@
 class PerconaServer < Formula
   desc "Drop-in MySQL replacement"
   homepage "https://www.percona.com"
-  url "https://downloads.percona.com/downloads/Percona-Server-8.4/Percona-Server-8.4.3-3/source/tarball/percona-server-8.4.3-3.tar.gz"
-  sha256 "dfb5b46fccd8284ad3a09054f9a62d0a6423a2b703b6fb86d186cec09cee660a"
+  url "https://downloads.percona.com/downloads/Percona-Server-8.4/Percona-Server-8.4.7-7/source/tarball/percona-server-8.4.7-7.tar.gz"
+  sha256 "e5405e81c4f6e5ad5052de1043a2e529607b5060677d01ba3cafc7c69f4661a6"
   license "BSD-3-Clause"
-  revision 3
 
   livecheck do
     url "https://www.percona.com/products-api.php", post_form: {
@@ -23,25 +22,24 @@ class PerconaServer < Formula
   no_autobump! because: :requires_manual_review
 
   bottle do
-    sha256 arm64_sequoia: "667692148bc552e299c087fe201d5b3c2433853d83d319f788e12c890d920563"
-    sha256 arm64_sonoma:  "aef3e0bec890a7011a100df94c56d672f0b05c408f45691c3cb65615c67e1937"
-    sha256 arm64_ventura: "7737f1363d22039a2128e182d972582b70d7c7f9857b6b9ae499a41a8b211291"
-    sha256 sonoma:        "5834d901d5a515e4c87d7ca1202039e59d5ce4a305cef02975b32d2ab04d7104"
-    sha256 ventura:       "bdafc8bba5adc53febfa71285d0afd280c5dc2d5d4cea6b02010d201bcca5edf"
-    sha256 arm64_linux:   "051f0ebc2f4ec908ea0303b61153be100ab92e68767951368eeea48f978a13eb"
-    sha256 x86_64_linux:  "ba6a6a6afb166a0de797496fd1cea7ff7114b5a6b594b06f61bb2ac5ff8c79ef"
+    sha256 arm64_tahoe:   "22755b31e5da70fb8f646928a10dff19956ffe76854f5d91be34724d07ef0332"
+    sha256 arm64_sequoia: "c4a76510b2679e21084bf20519bcb518e14ca5d833edee55d84ee311315f7b7c"
+    sha256 arm64_sonoma:  "808869a7b92693cb1587160a3fb624c807a672c21b80c061798bd3305f65ecc8"
+    sha256 sonoma:        "04c4ff85179104b3c9e131c15ca9a469bef58b1ad319a518e4eeac9519360b5c"
+    sha256 arm64_linux:   "3cbc6024ab5eec1fa8cdbcbf9f68e0d43b645dcd97f1e9424c7ae20a427755e1"
+    sha256 x86_64_linux:  "72a7d63c2f1b07bd21d14993267f6a454cef05d547cca0beeb5bfdbb326ac9ab"
   end
 
   depends_on "bison" => :build
   depends_on "cmake" => :build
   depends_on "pkgconf" => :build
   depends_on "abseil"
-  depends_on "icu4c@77"
+  depends_on "icu4c@78"
   depends_on "libfido2"
   depends_on "lz4"
   depends_on "openldap" # Needs `ldap_set_urllist_proc`, not provided by LDAP.framework
   depends_on "openssl@3"
-  depends_on "protobuf@29"
+  depends_on "protobuf"
   depends_on "zlib" # Zlib 1.2.13+
   depends_on "zstd"
 
@@ -57,23 +55,10 @@ class PerconaServer < Formula
 
   conflicts_with "mariadb", "mysql", because: "percona, mariadb, and mysql install the same binaries"
 
-  # https://github.com/percona/percona-server/blob/8.4/cmake/os/Darwin.cmake
-  fails_with :clang do
-    build 999
-    cause "Requires Apple Clang 10.0 or newer"
-  end
-
   # https://github.com/percona/percona-server/blob/8.4/cmake/os/Linux.cmake
   fails_with :gcc do
     version "9"
     cause "Requires GCC 10 or newer"
-  end
-
-  # Backport fix for CMake 4.0
-  patch do
-    url "https://github.com/Percona-Lab/coredumper/commit/715fa9da1d7958e39d69e9b959c7a23fec8650ab.patch?full_index=1"
-    sha256 "632a6aff4091d9cbe010ed600eeb548ae7762ac7e822113f9c93e3fef9aafb4f"
-    directory "extra/coredumper"
   end
 
   # Patch out check for Homebrew `boost`.
@@ -89,16 +74,11 @@ class PerconaServer < Formula
     # Remove bundled libraries other than explicitly allowed below.
     # `boost` and `rapidjson` must use bundled copy due to patches.
     # `lz4` is still needed due to xxhash.c used by mysqlgcs
-    keep = %w[boost coredumper duktape libbacktrace libcno libkmip lz4 opensslpp rapidjson unordered_dense]
+    keep = %w[boost coredumper duktape libbacktrace libcno libkmip lz4 opensslpp rapidjson unordered_dense xxhash]
     (buildpath/"extra").each_child { |dir| rm_r(dir) unless keep.include?(dir.basename.to_s) }
 
     # Find Homebrew OpenLDAP instead of the macOS framework
     inreplace "cmake/ldap.cmake", "NAMES ldap_r ldap", "NAMES ldap"
-
-    # Fix mysqlrouter_passwd RPATH to link to metadata_cache.so
-    inreplace "router/src/http/src/CMakeLists.txt",
-              "ADD_INSTALL_RPATH(mysqlrouter_passwd \"${ROUTER_INSTALL_RPATH}\")",
-              "\\0\nADD_INSTALL_RPATH(mysqlrouter_passwd \"${RPATH_ORIGIN}/../${ROUTER_INSTALL_PLUGINDIR}\")"
 
     # Disable ABI checking
     inreplace "cmake/abi_check.cmake", "RUN_ABI_CHECK 1", "RUN_ABI_CHECK 0" if OS.linux?
@@ -137,6 +117,12 @@ class PerconaServer < Formula
     args << "-DROCKSDB_DISABLE_AVX2=ON" if build.bottle?
     args << "-DWITH_KERBEROS=system" unless OS.mac?
 
+    # Workaround for
+    #  error: a template argument list is expected after a name prefixed by the template keyword
+    #   84 |     return Archive_derived_type::template get_size(std::forward<Type>(arg));
+    #      |                                           ^
+    ENV.append_to_cflags "-Wno-missing-template-arg-list-after-template-kw" if OS.mac?
+
     system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
@@ -146,7 +132,10 @@ class PerconaServer < Formula
       # For Linux, disable failing on warning: "Setting thread 31563 nice to 0 failed"
       # Docker containers lack CAP_SYS_NICE capability by default.
       test_args << "--nowarnings" if OS.linux?
-      system "./mysql-test-run.pl", "status", *test_args
+      system "./mysql-test-run.pl", "check", *test_args
+    ensure
+      status_log_file = buildpath/"mysql-test-vardir/log/main.status/status.log"
+      logs.install status_log_file if status_log_file.exist?
     end
 
     # Remove the tests directory

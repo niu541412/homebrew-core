@@ -1,25 +1,23 @@
 class PythonFreethreading < Formula
   desc "Interpreted, interactive, object-oriented programming language"
   homepage "https://www.python.org/"
-  url "https://www.python.org/ftp/python/3.13.5/Python-3.13.5.tgz"
-  sha256 "e6190f52699b534ee203d9f417bdbca05a92f23e35c19c691a50ed2942835385"
+  url "https://www.python.org/ftp/python/3.14.2/Python-3.14.2.tgz"
+  sha256 "c609e078adab90e2c6bacb6afafacd5eaf60cd94cf670f1e159565725fcd448d"
   license "Python-2.0"
 
   livecheck do
     formula "python"
   end
 
-  no_autobump! because: :requires_manual_review
-
   bottle do
-    sha256 arm64_sequoia: "b9c0c3dc0a2d7c1046de2882358dbe6cfe22ca8307b3a99d90731c66bb5c4c97"
-    sha256 arm64_sonoma:  "e328895cb1bc0c8226fd1f821278bb5cd2e98472ad18baccca1cc0e39de69090"
-    sha256 arm64_ventura: "9f08e025e60eed7a068ce64fc2e7c833db1c691ec0b0a3767856378f1f1734d5"
-    sha256 sequoia:       "c5e8398d27194f97c51bb744f3bf7182ad03a7b62129b661abd34056a1712869"
-    sha256 sonoma:        "765d9d6a86a004185ea5965457d34b2f0304b523f226a7b14e358086d4dd96b8"
-    sha256 ventura:       "ebcb7c2ee423ca32a51fcff7f4c9f282c3be0dfc01a9172c6da66169807c3d48"
-    sha256 arm64_linux:   "f91e6b35fa3a699eab0340629d60064a0589277330faa623d22eeb1eb204f8df"
-    sha256 x86_64_linux:  "88d8b56d861e4e3a2fb735919d07fc2a302220c34bc18edbf32327f897f57944"
+    sha256 arm64_tahoe:   "c4e44996a1c5039ad3ef1a62ca62f23f61378e254489745b5dd1808820a42603"
+    sha256 arm64_sequoia: "3754f1ded413890fa9b7bf3febcfdd599291a40efb3c4d8df7213de8fa1d3456"
+    sha256 arm64_sonoma:  "f4a720480acc3ab9d88782af590534687bad18cee3e55533d8af23d1f8e17895"
+    sha256 tahoe:         "56e47f44bf050e33bd866498f925f513f22a167e7a81ee0194551d2cbd89dca9"
+    sha256 sequoia:       "ec771da1d9f72dc9d8add6daa4edba3354fea80af0c4ccbc9d3e0dbf378e4c43"
+    sha256 sonoma:        "7acdfd03bb9d482041f04add33c0bd2390e9093959f5502c325d0651e5567c9f"
+    sha256 arm64_linux:   "6776898cc755dad3eff3dd97848b8be64d8b9615b9809b0a00a2a8696d93ffb7"
+    sha256 x86_64_linux:  "00fd027c6ee94b887d61e8b571038f577d86429f2918ca14aafbce6efbe1a8a6"
   end
 
   depends_on "pkgconf" => :build
@@ -27,13 +25,14 @@ class PythonFreethreading < Formula
   depends_on "openssl@3"
   depends_on "sqlite"
   depends_on "xz"
+  depends_on "zstd"
 
   # not actually used, we just want this installed to ensure there are no conflicts.
   uses_from_macos "python" => :test
   uses_from_macos "bzip2"
   uses_from_macos "expat", since: :sequoia
   uses_from_macos "libedit"
-  uses_from_macos "libffi", since: :catalina
+  uses_from_macos "libffi"
   uses_from_macos "libxcrypt"
   uses_from_macos "ncurses"
   uses_from_macos "unzip"
@@ -45,8 +44,8 @@ class PythonFreethreading < Formula
     depends_on "libtirpc"
   end
 
-  link_overwrite "lib/python3.13t/site-packages/pip*"
-  link_overwrite "lib/python3.13t/site-packages/wheel*"
+  pypi_packages package_name:   "",
+                extra_packages: %w[flit-core pip wheel]
 
   # Always update to latest release
   resource "flit-core" do
@@ -55,13 +54,8 @@ class PythonFreethreading < Formula
   end
 
   resource "pip" do
-    url "https://files.pythonhosted.org/packages/59/de/241caa0ca606f2ec5fe0c1f4261b0465df78d786a38da693864a116c37f4/pip-25.1.1.tar.gz"
-    sha256 "3de45d411d308d5054c2168185d8da7f9a2cd753dbac8acbfa88a8909ecd9077"
-  end
-
-  resource "setuptools" do
-    url "https://files.pythonhosted.org/packages/9e/8b/dc1773e8e5d07fd27c1632c45c1de856ac3dbf09c0147f782ca6d990cf15/setuptools-80.7.1.tar.gz"
-    sha256 "f6ffc5f0142b1bd8d0ca94ee91b30c0ca862ffd50826da1ea85258a06fd94552"
+    url "https://files.pythonhosted.org/packages/fe/6e/74a3f0179a4a73a53d66ce57fdb4de0080a8baa1de0063de206d6167acc2/pip-25.3.tar.gz"
+    sha256 "8d0538dbbd7babbd207f261ed969c65de439f6bc9e5dbd3b3b9a77f25d95f343"
   end
 
   resource "wheel" do
@@ -73,7 +67,7 @@ class PythonFreethreading < Formula
   # Remove when a non-patching mechanism is added (https://bugs.python.org/issue43976).
   # We (ab)use osx_framework_library to exploit pip behaviour to allow --prefix to still work.
   patch do
-    url "https://raw.githubusercontent.com/Homebrew/formula-patches/22f07354b9778579dd3297bbce0ed3d3244dd982/python/3.13-sysconfig.diff"
+    url "https://raw.githubusercontent.com/Homebrew/homebrew-core/1cf441a0/Patches/python/3.13-sysconfig.diff"
     sha256 "9f2eae1d08720b06ac3d9ef1999c09388b9db39dfb52687fc261ff820bff20c3"
   end
 
@@ -243,7 +237,7 @@ class PythonFreethreading < Formula
     ]
     whl_build = buildpath/"whl_build"
     system python3, "-m", "venv", whl_build
-    %w[flit-core wheel setuptools].each do |r|
+    %w[flit-core wheel].each do |r|
       resource(r).stage do
         system whl_build/"bin/pip3", "install", *common_pip_args, "."
       end
@@ -430,6 +424,7 @@ class PythonFreethreading < Formula
     system python3, "-c", "import pyexpat"
     system python3, "-c", "import readline"
     system python3, "-c", "import zlib"
+    system python3, "-c", "import _zstd"
 
     # tkinter is provided in a separate formula
     assert_match "ModuleNotFoundError: No module named '_tkinter'",

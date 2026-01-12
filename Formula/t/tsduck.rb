@@ -1,19 +1,27 @@
 class Tsduck < Formula
   desc "MPEG Transport Stream Toolkit"
   homepage "https://tsduck.io/"
-  url "https://github.com/tsduck/tsduck/archive/refs/tags/v3.41-4299.tar.gz"
-  sha256 "1940946f5d15b9c1fea941e91d4685eb60cf4857a77f55eb3ad71d4e7e79ce65"
+  url "https://github.com/tsduck/tsduck/archive/refs/tags/v3.43-4549.tar.gz"
+  sha256 "a3399661d21e0d965dfef3750d4af7da61eb2924e7b48ee3edaae194ffa5203c"
   license "BSD-2-Clause"
   head "https://github.com/tsduck/tsduck.git", branch: "master"
 
+  # There can be a notable gap between when a version is tagged and a
+  # corresponding release is created, so we check the "latest" release instead
+  # of the Git tags.
+  livecheck do
+    url :stable
+    regex(/^v?(\d+(?:[.-]\d+)+)$/i)
+    strategy :github_latest
+  end
+
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "89caf54a4a8b3a60372e677578e3d075b8701fc1bd691a0025967a590ba87dba"
-    sha256 cellar: :any,                 arm64_sonoma:  "a0fbaf64f98fe26a65e7ea920e9035adf3eed5aa637d04bdb652225191335fc4"
-    sha256 cellar: :any,                 arm64_ventura: "e8e21c371612c8b33ee52e36e4bc96cf920fa28d64b7bbc91dff666be6b28233"
-    sha256 cellar: :any,                 sonoma:        "43a5fb8c411c30631c67af3a1d2229906b426bac871a9f03dae988fd1d91f427"
-    sha256 cellar: :any,                 ventura:       "7a2c6c741da948332d34dee8197d55dd27fb41439b97b00bed119c9086d708d0"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "44021b8af87155ac7875e35893fd7b322b8c02ad44ff4d6eb7c61093f3a4876c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b249f7b5116a18bcb88e3930d3138450a1873c51f936b9211d7e7ba065d3c823"
+    sha256 cellar: :any,                 arm64_tahoe:   "6df3bda97beca0157e253de2048841ef6d0164bcd624f50e8444e552766b2cc1"
+    sha256 cellar: :any,                 arm64_sequoia: "5b7140f45aed01d2b25bb577b21600b64057c41326a604e4f3e816e9d0c9b031"
+    sha256 cellar: :any,                 arm64_sonoma:  "b21748e23ee625c44d7fa743c03eb7c61b556d4104191dae75662ad1f22de88e"
+    sha256 cellar: :any,                 sonoma:        "2bfd6c803f74c29ae919f147980ae9fa44a830070cb9319ae5f7d5d615db0109"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "8e422088c607c170a5dcb7d7e1dda9eeacd8507dca9b7f37b33f97d0bff7b437"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "68e7d58bf0f93d4600bc093b729163245b709edb9bb83282017c718cfb744e3d"
   end
 
   depends_on "asciidoctor" => :build
@@ -43,6 +51,13 @@ class Tsduck < Formula
   fails_with :clang do
     build 1599
     cause "Requires full C++20 support"
+  end
+
+  # Add sys/time.h header
+  # PR ref: https://github.com/tsduck/tsduck/pull/1689
+  patch do
+    url "https://github.com/tsduck/tsduck/commit/c46fd301f31be8c9aa00ce6d6e21c4e4c6bfc1cf.patch?full_index=1"
+    sha256 "c20a1989f2fb528c5326e088beac78cae438c9ea00a93c4b6d04400df7b4ff77"
   end
 
   def install

@@ -1,8 +1,8 @@
 class Velero < Formula
   desc "Disaster recovery for Kubernetes resources and persistent volumes"
   homepage "https://velero.io/"
-  url "https://github.com/vmware-tanzu/velero/archive/refs/tags/v1.16.2.tar.gz"
-  sha256 "e0af83f193050c50068de7c77cb54dedd3aa773396369349b3cba08fa89aceed"
+  url "https://github.com/vmware-tanzu/velero/archive/refs/tags/v1.17.1.tar.gz"
+  sha256 "bc5008588b86255f1d7ced93dca2497e8656da75bd16644cf6252d48a46eac56"
   license "Apache-2.0"
 
   livecheck do
@@ -11,12 +11,12 @@ class Velero < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "6bfb226399c32ab2b6c64b4be43537f6d6f190bfe1009c9f02ae9b09b06c8eae"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "6bfb226399c32ab2b6c64b4be43537f6d6f190bfe1009c9f02ae9b09b06c8eae"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "6bfb226399c32ab2b6c64b4be43537f6d6f190bfe1009c9f02ae9b09b06c8eae"
-    sha256 cellar: :any_skip_relocation, sonoma:        "c7d0683a5494c3f28f6427c46b5263c0270235a7e4c413f5ac8b33ed166b92cd"
-    sha256 cellar: :any_skip_relocation, ventura:       "c7d0683a5494c3f28f6427c46b5263c0270235a7e4c413f5ac8b33ed166b92cd"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0d30ac7f2cd6f3a1670d6937f9bdb8ceec08d751fe39cf40d9a991f97b268a26"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "61cfb2d6f739b935cba875c859b5cc790bc6386d1bd8dcbfc43528c665641b6c"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "daaf56080f799af86cd3cfbad40e76fa449a2c1f68d63c074e2f9bebbe653899"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "143781124c20fc2dbd95417d9fbe4dd456cdb1a892005dff79b0f54ae7415ff8"
+    sha256 cellar: :any_skip_relocation, sonoma:        "abceb9aae5201d3ac2bb33cfa9e37b3720df6a22ac0c5c24e95c4a6c74ef2891"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "382957611dd33c59853029427009f6f6aace26cc8b8e6d6b14090340141b9e8b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "59c8e9b5e127bf9fb625317d95723659f9d78aa4383668049789a49acbe6fd58"
   end
 
   depends_on "go" => :build

@@ -1,8 +1,8 @@
 class OilsForUnix < Formula
   desc "Bash-compatible Unix shell with more consistent syntax and semantics"
   homepage "https://oils.pub/"
-  url "https://oils.pub/download/oils-for-unix-0.34.0.tar.gz"
-  sha256 "469018ef475a1ca9e8397c02f75b2dc63882a4a2e20d77a303d74a728ae31a22"
+  url "https://oils.pub/download/oils-for-unix-0.37.0.tar.gz"
+  sha256 "f4d41d20a0523dbcfbd4ba231f82edf25b08d4965d65bc71fcb56666d6743000"
   license "Apache-2.0"
 
   livecheck do
@@ -11,13 +11,12 @@ class OilsForUnix < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "3e597429c3a8c62f8146694750642df47c254f223aec253d25225e0df604f2fe"
-    sha256 cellar: :any,                 arm64_sonoma:  "65cb120242cec4a7849696bc67f32ce5bd58289d18e9bd0cf497a7438f7cdc61"
-    sha256 cellar: :any,                 arm64_ventura: "98decc2e2e19d48888f34b2790e5234782dd4df969f85a2c6ceb2ea766a65d7f"
-    sha256 cellar: :any,                 sonoma:        "7f485aa1e32c88a5d2128870f9697924a8660d1707d2435bea6eb383ad962954"
-    sha256 cellar: :any,                 ventura:       "e2ab59d3311aafd99d19fade3a746c91c73c61ef1e802e26039f1c6f30403dad"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "fca21426aec9f99dc293f49f3450ba56e7638206ede7ff4fa78eb7455e871571"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a76d16bc6a44b91f7a99fb22b76620a9692d836acd3f2cd557b1cb6056f242b3"
+    sha256 cellar: :any,                 arm64_tahoe:   "78ad773133116d4f0552f7aee472eadaeb746242c18709af21f1174b56dbfe40"
+    sha256 cellar: :any,                 arm64_sequoia: "9376c438f4cc76b588affa35c61f2be91729ff34ff213afdaf27e091ccebfd7f"
+    sha256 cellar: :any,                 arm64_sonoma:  "1211e0bcdd6b6ccf0e16cfb310b40295f496e131374c390184aafef8c88bef48"
+    sha256 cellar: :any,                 sonoma:        "21baa2abb4dead1655801f44a1ec764ba37c3dbc99ff0e3489affb94b711065d"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "96888e840150140c0101352d2f6aa8ba526b48cec35564555255edc65e36c57b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0b779dc36db8448f09582af439acb8b41e2d712dbb7ebbbc340526cb7c3f9131"
   end
 
   depends_on "readline"
@@ -35,7 +34,7 @@ class OilsForUnix < Formula
   end
 
   test do
-    system bin/"osh", "-c", "shopt -q parse_backticks"
+    system bin/"osh", "-c", "shopt -q lastpipe"
     assert_equal testpath.to_s, shell_output("#{bin}/osh -c 'echo `pwd -P`'").strip
 
     system bin/"ysh", "-c", "shopt -u parse_equals"

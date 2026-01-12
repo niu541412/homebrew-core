@@ -4,12 +4,12 @@ class Coin3d < Formula
   license "BSD-3-Clause"
 
   stable do
-    url "https://github.com/coin3d/coin/releases/download/v4.0.4/coin-4.0.4-src.tar.gz"
-    sha256 "80efd056a445050939a265db307d106ac7524105774d4be924a71b0cff23a719"
+    url "https://github.com/coin3d/coin/releases/download/v4.0.6/coin-4.0.6-src.tar.gz"
+    sha256 "e04a600809593feb2acbec4282803d1673926ddfa1d9fcd402f35ec26fc52e7e"
 
     resource "soqt" do
-      url "https://github.com/coin3d/soqt/releases/download/v1.6.3/soqt-1.6.3-src.tar.gz"
-      sha256 "79342e89290783457c075fb6a60088aad4a48ea072ede06fdf01985075ef46bd"
+      url "https://github.com/coin3d/soqt/releases/download/v1.6.4/soqt-1.6.4-src.tar.gz"
+      sha256 "1387d702df5578fdbc16b9c0a12dd52a68c0478f5e112cb6a45c033f02ba4d24"
     end
   end
 
@@ -19,11 +19,12 @@ class Coin3d < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:  "1d0a00f874475b39591d10cb9547a4b71d02524c668775a3fa3c9f2aeb514fd2"
-    sha256 cellar: :any,                 arm64_ventura: "ba81941b962638fa968defb6b0420cd2067b2080a5ce68ec3b5a68270287961e"
-    sha256 cellar: :any,                 sonoma:        "8632b7925921ce935bd7030420a270f374be62d58ec2b50dab44b1caa1ab2177"
-    sha256 cellar: :any,                 ventura:       "4a4e57dfa965415f26fd8757f2358a8ca660070d647f63409e41caf0dd8832cd"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2572d61c237d74bc32c4c645b29720611eca19e8ae4528711a61acc910d32a95"
+    sha256 cellar: :any,                 arm64_tahoe:   "40a953c5da778240ee206304efd942c4c6417e30520700ac37f54b17840d9559"
+    sha256 cellar: :any,                 arm64_sequoia: "f97cbf252a50387b2589db4f56bc474c45235095a017bcb1afd033e09c1f7c23"
+    sha256 cellar: :any,                 arm64_sonoma:  "a516f84b868ed0911b2d7ca6d3bbc29252501955a146147c8cad25f2914aced7"
+    sha256 cellar: :any,                 sonoma:        "758e7e7da2579c5462b5beff4370099d7d640d513c4ba2688b3a9d539b29270d"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "8857329b9b978a804adfa800124678ae573b981cd815f31a8017cf3d1c5fa6ef"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a0f975512d3180a87c61ed8c5fb7b4a49c95065239a5379779261e98dd749f5d"
   end
 
   head do
@@ -37,7 +38,7 @@ class Coin3d < Formula
   depends_on "boost" => :build
   depends_on "cmake" => :build
   depends_on "doxygen" => :build
-  depends_on "qt"
+  depends_on "qtbase"
 
   uses_from_macos "expat"
 
@@ -53,7 +54,6 @@ class Coin3d < Formula
   end
 
   def install
-    odie "Remove cmake 4 build patch" if build.stable? && resource("soqt").version > "1.6.3"
     system "cmake", "-S", ".", "-B", "_build",
                     "-DCOIN_BUILD_MAC_FRAMEWORK=OFF",
                     "-DCOIN_BUILD_DOCUMENTATION=ON",
@@ -69,7 +69,6 @@ class Coin3d < Formula
                       "-DSOQT_BUILD_MAC_FRAMEWORK=OFF",
                       "-DSOQT_BUILD_DOCUMENTATION=OFF",
                       "-DSOQT_BUILD_TESTS=OFF",
-                      "-DCMAKE_POLICY_VERSION_MINIMUM=3.5",
                       *std_cmake_args(find_framework: "FIRST")
       system "cmake", "--build", "_build"
       system "cmake", "--install", "_build"

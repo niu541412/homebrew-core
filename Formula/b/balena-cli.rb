@@ -1,8 +1,8 @@
 class BalenaCli < Formula
   desc "Command-line tool for interacting with the balenaCloud and balena API"
   homepage "https://docs.balena.io/reference/balena-cli/latest/"
-  url "https://registry.npmjs.org/balena-cli/-/balena-cli-22.1.4.tgz"
-  sha256 "52ef56c1072e3720f9ef18a78f4c0755caf84b8b06a628d096efe2f2645afc30"
+  url "https://registry.npmjs.org/balena-cli/-/balena-cli-23.2.16.tgz"
+  sha256 "ce4b6c9306b988bad3853688bbca307a94464a1f03c1d4ccbe11ab133ea2a371"
   license "Apache-2.0"
 
   livecheck do
@@ -14,17 +14,15 @@ class BalenaCli < Formula
 
   bottle do
     rebuild 1
-    sha256                               arm64_sequoia: "00f6c60d52d4fe8e4a13de5d55d53d838e6027d59fb11558b1b0403ccf412c80"
-    sha256                               arm64_sonoma:  "3ef96e3bf6ac225b95adeb6bdb75ecdc8bf80febf0dec75f92368a5cdacff567"
-    sha256                               arm64_ventura: "0891d1c8789cd9373dcab9416c4f3a099dca4467facc532f32daac2a17e6623c"
-    sha256                               sonoma:        "823879681ca58133d222fbf031e25e6d59d336206ebd19b386871f3e431d8a38"
-    sha256                               ventura:       "e7232df20effcdafb84594678ed74db40806b46b4a39feee52c416632d164249"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "20664c07e710b91c822ef922af699fcf6c6611d4d5c64117e75b9ed9699f3ead"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d320d127dd89e2fea18a337a4ef075b0cb330f3447655489b97d319fada22c95"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "dc69c0f129f00c466c4934365ed84b9488276a3051d2f9c86810d7fb56ce56d8"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "ef7817a8bac53c9de64e931cc297fc24d6d20afb7f8c93ea10ec72b7344c1a4d"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "ef7817a8bac53c9de64e931cc297fc24d6d20afb7f8c93ea10ec72b7344c1a4d"
+    sha256 cellar: :any_skip_relocation, sonoma:        "0cc36c0c0c13f7e01c5e69509e9ee9b23fbc4e817c5df8746f1fd1966876c5c7"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "2d1991cee97bd5d4817887be32b3a5a3d2e000dd6a71cba57b3e2c46e20b47e5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "39fee1dfb729785c602b37fe7f15eacd470760436aef5d91ab7d2ec9f3c88009"
   end
 
-  # align with upstream, https://github.com/balena-io/balena-cli/blob/master/.github/actions/publish/action.yml#L21
-  depends_on "node@22"
+  depends_on "node"
 
   on_linux do
     depends_on "libusb"
@@ -42,10 +40,15 @@ class BalenaCli < Formula
     os = OS.kernel_name.downcase
     arch = Hardware::CPU.intel? ? "x64" : Hardware::CPU.arch.to_s
     node_modules = libexec/"lib/node_modules/balena-cli/node_modules"
-    node_modules.glob("{ffi-napi,ref-napi}/prebuilds/*")
-                .each { |dir| rm_r(dir) if dir.basename.to_s != "#{os}-#{arch}" }
+    node_modules.glob("{bcrypt,lzma-native,mountutils}/prebuilds/*")
+                .each do |dir|
+                  if dir.basename.to_s == "#{os}-#{arch}"
+                    dir.glob("*.musl.node").each(&:unlink) if OS.linux?
+                  else
+                    rm_r(dir)
+                  end
+                end
 
-    rm_r(node_modules/"lzma-native/build")
     rm_r(node_modules/"usb") if OS.linux?
 
     # Replace universal binaries with native slices

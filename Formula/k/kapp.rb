@@ -1,8 +1,8 @@
 class Kapp < Formula
   desc "CLI tool for Kubernetes users to group and manage bulk resources"
   homepage "https://carvel.dev/kapp/"
-  url "https://github.com/carvel-dev/kapp/archive/refs/tags/v0.64.2.tar.gz"
-  sha256 "80e170ee87e68096a3349670f2f4d7c44047f4159711950f5759a0a71469736a"
+  url "https://github.com/carvel-dev/kapp/archive/refs/tags/v0.65.0.tar.gz"
+  sha256 "cfe141f6e00816e9bddaa3d32216295176386b42d9202adbb76f48b78fd5e979"
   license "Apache-2.0"
   head "https://github.com/carvel-dev/kapp.git", branch: "develop"
 
@@ -12,12 +12,13 @@ class Kapp < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "39315cc4aabafb1645c0f153e0614c9d04d93cd2849fe7f33a2f379e403e9067"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "39315cc4aabafb1645c0f153e0614c9d04d93cd2849fe7f33a2f379e403e9067"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "39315cc4aabafb1645c0f153e0614c9d04d93cd2849fe7f33a2f379e403e9067"
-    sha256 cellar: :any_skip_relocation, sonoma:        "172deffd5a5522297778b6d98ddedeb93af490cb8e8bd95321cbdbee0116b922"
-    sha256 cellar: :any_skip_relocation, ventura:       "172deffd5a5522297778b6d98ddedeb93af490cb8e8bd95321cbdbee0116b922"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "aca74f296372166c00f43e97ac99f2610adb8d07ca6aefc119e310fb57843aa5"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "5392d1c444411b771ab5651b09c4779004a8a979ef1e4db20ebb9a1010e6716f"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "5392d1c444411b771ab5651b09c4779004a8a979ef1e4db20ebb9a1010e6716f"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "5392d1c444411b771ab5651b09c4779004a8a979ef1e4db20ebb9a1010e6716f"
+    sha256 cellar: :any_skip_relocation, sonoma:        "a87e16dce4aeff42ab1e88096e35c6a78d3eaa1fcca5076b1a8b7461aed92864"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "405507876fe4b05e0420112238c97f7ef22971dca45137139474f09525e7fa15"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "97526aee57e11d21f2bb509ab8787c5f4f70b7ca58a65f2f7098f9e194769ec9"
   end
 
   depends_on "go" => :build
@@ -26,7 +27,7 @@ class Kapp < Formula
     ldflags = "-s -w -X carvel.dev/kapp/pkg/kapp/version.Version=#{version}"
     system "go", "build", *std_go_args(ldflags:), "./cmd/kapp"
 
-    generate_completions_from_executable(bin/"kapp", "completion")
+    generate_completions_from_executable(bin/"kapp", shell_parameter_format: :cobra)
   end
 
   test do

@@ -2,24 +2,23 @@ class Carrot2 < Formula
   desc "Search results clustering engine"
   homepage "https://search.carrot2.org/"
   url "https://github.com/carrot2/carrot2.git",
-      tag:      "release/4.8.1",
-      revision: "102ecc3d83e95cb2fefe061116f0b01882a6d2ec"
+      tag:      "release/4.8.3",
+      revision: "e2e57a553b8d6015af23f43dfff245157a267bc8"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "14bb225f30be22eb91287e80e02350c1993587ff2c61c4fac3a5f7e38332729e"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "4667e867fdc53456269c94885a150b8e2cf0f5b9f87d79d235e031a9f11a51c0"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "6e738ae94bcd072d42f41c4ab3be0a702a43ab7135ccb0cec766c385f6376c86"
-    sha256 cellar: :any_skip_relocation, sonoma:        "0ef9dac90b90a3607ca5e98e9668dcaec5755658c3c24523862c14f3c52fce52"
-    sha256 cellar: :any_skip_relocation, ventura:       "3378de48381ca0794ebef99173884faa190fd15871c6d9431c5b5f6364d51988"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "4b9bf87ecc619295a91aa4e6a74e33d9f2ecc6f7078fdbe399ad832c3c911b03"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2a640419faa82a316a67876291de8cab8999c1683bdce397fa77b681db12f87e"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "851efb7ea413d096ad2ff96f9d2f726507065f8107922af401a87b7d65b8edce"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "526625534a78b14fce2023d2927daec0b69b114c8974d4a868f3aafeeb935b47"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "8f977963b7a9c05ccf28d598b03b9ea585ab185613a314122ac39fbb74114a93"
+    sha256 cellar: :any_skip_relocation, sonoma:        "6afd51b10e424be4f15eba55fc0458ab9146b7d9c9e6244a4c48cc36ed73fe18"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "1f457acbc704c8bf66dbcec5cb24d44017f572fe88187536ecc2d363204d24f5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "73d0c05cf12b9da21aae87335be309884c8c682f65195ac31872176a5b9da2a8"
   end
 
   depends_on "gradle" => :build
   depends_on "node@22" => :build
   depends_on "yarn" => :build
-  depends_on "openjdk@21"
+  depends_on "openjdk"
 
   on_linux do
     on_arm do
@@ -46,7 +45,7 @@ class Carrot2 < Formula
     end
 
     (bin/"carrot2").write_env_script "#{libexec}/dcs/dcs",
-      JAVA_CMD:    "exec '#{Formula["openjdk@21"].opt_bin}/java'",
+      JAVA_CMD:    "exec '#{Formula["openjdk"].opt_bin}/java'",
       SCRIPT_HOME: libexec/"dcs"
   end
 
@@ -57,7 +56,7 @@ class Carrot2 < Formula
 
   test do
     port = free_port
-    fork { exec bin/"carrot2", "--port", port.to_s }
+    spawn bin/"carrot2", "--port", port.to_s
     sleep 20
     assert_match "Lingo", shell_output("curl -s localhost:#{port}/service/list")
   end

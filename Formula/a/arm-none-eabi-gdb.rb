@@ -1,9 +1,9 @@
 class ArmNoneEabiGdb < Formula
   desc "GNU debugger for arm-none-eabi cross development"
   homepage "https://www.gnu.org/software/gdb/"
-  url "https://ftp.gnu.org/gnu/gdb/gdb-16.3.tar.xz"
-  mirror "https://ftpmirror.gnu.org/gdb/gdb-16.3.tar.xz"
-  sha256 "bcfcd095528a987917acf9fff3f1672181694926cc18d609c99d0042c00224c5"
+  url "https://ftpmirror.gnu.org/gnu/gdb/gdb-17.1.tar.xz"
+  mirror "https://ftp.gnu.org/gnu/gdb/gdb-17.1.tar.xz"
+  sha256 "14996f5f74c9f68f5a543fdc45bca7800207f91f92aeea6c2e791822c7c6d876"
   license "GPL-3.0-or-later"
   head "https://sourceware.org/git/binutils-gdb.git", branch: "master"
 
@@ -14,14 +14,12 @@ class ArmNoneEabiGdb < Formula
   no_autobump! because: :requires_manual_review
 
   bottle do
-    rebuild 1
-    sha256 arm64_sequoia: "1a7301cc72a0e20ca3210b0a039226319eaa33259670ef53d9f2fe57a3ad91ef"
-    sha256 arm64_sonoma:  "e3f460c763a63f70e0b3f93a9763638a3e2a358e561d3216d102cabea65cebb5"
-    sha256 arm64_ventura: "185b464524777e63901da56fb727d6ae6c3b1d776213294d330ca7ffa8c0b55f"
-    sha256 sonoma:        "0768015caa13cddc4e56cfa265e396bef30e786d052417d530595f6965fc6e13"
-    sha256 ventura:       "bafd4327eaf7943a9b11d28e9d99699245b8e1ff2302db8474a4466142446b15"
-    sha256 arm64_linux:   "2866df5b2c8bb8e5d8a7ee04b407cca220877c0494004cda4e35bb17af9b4069"
-    sha256 x86_64_linux:  "50f19c339ae4ea0e2e15300ef4d1720f3550c99cffe4ed4f9b3302a543e34d97"
+    sha256 arm64_tahoe:   "7e6b02d9411faceb7e1d98a132a2b78bd69922b253a91a83502aadb17d176172"
+    sha256 arm64_sequoia: "eef5d475f067ee68ea467d95def08cf229959b2640b013afcefb3b73ff11d63f"
+    sha256 arm64_sonoma:  "fb91f8614bd3d391f65bed8a2429b4fcbfda0eb5984dd6206e5a7e387f5843dd"
+    sha256 sonoma:        "1819485a2c076b9e9a27c9b6de9713a284f71d4b98110e528ad456734ed86b1b"
+    sha256 arm64_linux:   "32601f6aa1b2217dace47b30b24e26e0b5bac95c550ff0b0657fadf761317b62"
+    sha256 x86_64_linux:  "a42ed2f91e57004e0726c9ed4803ae598d67ef0dc788d24012957383ea43e7ab"
   end
 
   depends_on "pkgconf" => :build
@@ -29,7 +27,7 @@ class ArmNoneEabiGdb < Formula
   depends_on "gmp"
   depends_on "mpfr"
   depends_on "ncurses" # https://github.com/Homebrew/homebrew-core/issues/224294
-  depends_on "python@3.13"
+  depends_on "python@3.14"
   depends_on "readline"
   depends_on "xz" # required for lzma support
   depends_on "zstd"
@@ -62,7 +60,7 @@ class ArmNoneEabiGdb < Formula
       --with-curses
       --with-expat
       --with-lzma
-      --with-python=#{which("python3.13")}
+      --with-python=#{which("python3.14")}
       --with-system-readline
       --with-system-zlib
       --with-zstd

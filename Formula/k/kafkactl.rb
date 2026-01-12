@@ -1,18 +1,18 @@
 class Kafkactl < Formula
   desc "CLI for managing Apache Kafka"
   homepage "https://deviceinsight.github.io/kafkactl/"
-  url "https://github.com/deviceinsight/kafkactl/archive/refs/tags/v5.11.1.tar.gz"
-  sha256 "3661f29890fe0709838e5464a51e1431f3ef1415140cfc90d0ca627d41ec1206"
+  url "https://github.com/deviceinsight/kafkactl/archive/refs/tags/v5.17.0.tar.gz"
+  sha256 "6a77d3860e26219a46877ea216ec6f4009c76a3b7d403b7d7b2074b0e0898ffc"
   license "Apache-2.0"
   head "https://github.com/deviceinsight/kafkactl.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "c49a6fcc094508d3fc998f44a1a5916a6a89cc9b05ed49c7bdb2301425cc5072"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "c49a6fcc094508d3fc998f44a1a5916a6a89cc9b05ed49c7bdb2301425cc5072"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "c49a6fcc094508d3fc998f44a1a5916a6a89cc9b05ed49c7bdb2301425cc5072"
-    sha256 cellar: :any_skip_relocation, sonoma:        "d512f12f95600e1c5a7932257b9405354024443d48d4bbe77fb9994b9aba5098"
-    sha256 cellar: :any_skip_relocation, ventura:       "d512f12f95600e1c5a7932257b9405354024443d48d4bbe77fb9994b9aba5098"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4694903a00091692938a01d38deb53c933e20439fedc34512379e97814b260ff"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "a9fb051984a66dee5f08e0c5d1755199e5fc4fddfc4670eb9d03f3be99a05077"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "a9fb051984a66dee5f08e0c5d1755199e5fc4fddfc4670eb9d03f3be99a05077"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "a9fb051984a66dee5f08e0c5d1755199e5fc4fddfc4670eb9d03f3be99a05077"
+    sha256 cellar: :any_skip_relocation, sonoma:        "c2b191e8301889abb51b3dc07852c9540deba03dda1fb6a72f6b967ce3e469fc"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "cb9830ccc0e92c184425eb0ba33db04a5e297c94c64fd4b8a0b60d73f2595151"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "40198dd9e2091a6fd1e45540656b997a9685d0dc28db13c7991094e26ed7d2e6"
   end
 
   depends_on "go" => :build
@@ -26,7 +26,7 @@ class Kafkactl < Formula
     ]
     system "go", "build", *std_go_args(ldflags:)
 
-    generate_completions_from_executable(bin/"kafkactl", "completion")
+    generate_completions_from_executable(bin/"kafkactl", shell_parameter_format: :cobra)
   end
 
   test do

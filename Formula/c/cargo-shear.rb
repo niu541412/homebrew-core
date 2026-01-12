@@ -1,19 +1,18 @@
 class CargoShear < Formula
   desc "Detect and remove unused dependencies from `Cargo.toml` in Rust projects"
   homepage "https://github.com/Boshen/cargo-shear"
-  url "https://github.com/Boshen/cargo-shear/archive/refs/tags/v1.4.1.tar.gz"
-  sha256 "5a368a903f96e6e142ccb2f8c63d8b1d8291537cc187ebbe9791b7501eff7c34"
+  url "https://github.com/Boshen/cargo-shear/archive/refs/tags/v1.9.1.tar.gz"
+  sha256 "1a7e3b00b6103c2c7ccca0bfba48001ef98c80e9b72be7cf5ddc99953ee8b686"
   license "MIT"
   head "https://github.com/Boshen/cargo-shear.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "c151133ed973e4db54c9638ba81fca8f91fa3ae6be75468589655373c05b1e49"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "2c048108846be93a12e255681097bc2563c5f8138190d5c21468a07bba9e2497"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "65ec94dbe4dd630cfe352452c78bd8fe38d93bd3a427cc3f3982e8b2bb9a2a46"
-    sha256 cellar: :any_skip_relocation, sonoma:        "e6d4d4ba92985b6a1e7a43f9ec18c4290260f1a14fefa56f3575282b458dda1b"
-    sha256 cellar: :any_skip_relocation, ventura:       "5fe3ffd7e0ee584ae32dbde8752854e5fe1102416911f5297da9d0629fb00a4d"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "c684b24c9fd30e814af3080c0a1d0dd2e5e5b23877d9ee7a24548dd2d409a7c1"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5b2255ccfd83c20e28b515a3b34ec89350859628c80eaeacf135f2c6058c2c75"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "18024fdd034df07f4f212e1e96eed38cbf907cf8fa4c23936d7c9968a4110175"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "f61e5f3fd820588bb6bb3154a1fa886ceffdac6dbe08ee0232b8e229603bc350"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "b3e58a2a825b4734243830164b799c9ed984ff37148971de7b3b245d702d5cef"
+    sha256 cellar: :any_skip_relocation, sonoma:        "23cf9e4cb6f815e64be3376a35c344a412a277bd98c01cb7d19395f84d809c4a"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "67f0ff8184e34a1604b931c57c132e56761f181ce07e602afa640ea57b7254ce"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "afca1a869aff37054ca4ebe855200c30785ada31b456be07198dbc85e40908b4"
   end
 
   depends_on "rust" => :build
@@ -47,12 +46,8 @@ class CargoShear < Formula
 
       (crate/"lib.rs").write "use libc;"
 
-      output = shell_output("cargo shear", 1)
       # bear is unused
-      assert_match <<~OUTPUT, output
-        demo-crate -- Cargo.toml:
-          bear
-      OUTPUT
+      assert_match "unused dependency `bear`", shell_output("cargo shear", 1)
     end
   end
 end

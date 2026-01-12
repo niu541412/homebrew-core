@@ -2,14 +2,15 @@ class Audacious < Formula
   desc "Lightweight and versatile audio player"
   homepage "https://audacious-media-player.org/"
   license "BSD-2-Clause"
+  revision 1
 
   stable do
-    url "https://distfiles.audacious-media-player.org/audacious-4.5.tar.bz2"
-    sha256 "1ea5e0f871c6a8b2318e09a9d58fc573fe3f117ae0d8d163b60cc05b2ce7c405"
+    url "https://distfiles.audacious-media-player.org/audacious-4.5.1.tar.bz2"
+    sha256 "7194743a0a41b1d8f582c071488b77f7b917be47ca5e142dd76af5d81d36f9cd"
 
     resource "plugins" do
-      url "https://distfiles.audacious-media-player.org/audacious-plugins-4.5.tar.bz2"
-      sha256 "36c19940ee7227f67df4f0c7fd98a5f60c60257a1a47ecd014c9e2a26d7846dd"
+      url "https://distfiles.audacious-media-player.org/audacious-plugins-4.5.1.tar.bz2"
+      sha256 "f4feedc32776acfa9d24701d3b794fc97822f76da6991e91e627e70e561fdd3b"
 
       livecheck do
         formula :parent
@@ -23,11 +24,12 @@ class Audacious < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:  "b8e6a2b5042848dff35ce6f1663e5211be76440f84089e774026bad4c2db0d8a"
-    sha256 arm64_ventura: "6ce63a96598894f77d8fd6181b0010269681f1b1ba41fa3044f53d64d1e8df85"
-    sha256 sonoma:        "9b0973a29af16156c8d855b13aefb5c337efe4c979e76af5ff6de70fb3ad1a5d"
-    sha256 ventura:       "004067e57f90a6f75ae07fb1433704fffb9963d13e15d10d08b0164631e636cc"
-    sha256 x86_64_linux:  "87f15bc2e6224d5e1653d5996f01eb4622e3cebff5e8c7ef2fb134cf0239ac09"
+    sha256 arm64_tahoe:   "43dddbdc3339e46dd9f16ed25f934a8e3b7840275e34d012ab400d51214afc72"
+    sha256 arm64_sequoia: "6152a1ffc0685fe363561de8be7a1d0e48ff715b4ff84280572ae73f5d0fcdf7"
+    sha256 arm64_sonoma:  "4d50ad67057b8518b2afe81968b8b439a041807439a38282dede9405fc1e945f"
+    sha256 sonoma:        "aa642b6fb11f90296a049298ac3671e7adc0ca1d8f80f3fe57637abf4732c4ea"
+    sha256 arm64_linux:   "277e4522ad10fdac7ad7930b41b423a7ac5e895334b9b916c75c96d7bcf60967"
+    sha256 x86_64_linux:  "d29b3426f41034f8d0a4874777953e56911d5261d21fa2f83d32b2da3bc722a8"
   end
 
   head do
@@ -42,6 +44,7 @@ class Audacious < Formula
   depends_on "meson" => :build
   depends_on "ninja" => :build
   depends_on "pkgconf" => :build
+  depends_on "qttools" => :build
   depends_on "faad2"
   depends_on "ffmpeg"
   depends_on "flac"
@@ -63,7 +66,10 @@ class Audacious < Formula
   depends_on "mpg123"
   depends_on "neon"
   depends_on "opusfile"
-  depends_on "qt"
+  depends_on "qtbase"
+  depends_on "qtimageformats" => :no_linkage # for webp album covers
+  depends_on "qtmultimedia"
+  depends_on "qtsvg" => :no_linkage # for svg icons
   depends_on "sdl2"
   depends_on "wavpack"
 
@@ -72,7 +78,6 @@ class Audacious < Formula
 
   on_macos do
     depends_on "gettext"
-    depends_on "opus"
   end
 
   on_linux do

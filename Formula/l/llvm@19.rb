@@ -14,13 +14,13 @@ class LlvmAT19 < Formula
   no_autobump! because: :requires_manual_review
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "7b14323528280fe8da37c282cfe3b5b34a9a56f0730c3ce599d165f2c5353a8a"
-    sha256 cellar: :any,                 arm64_sonoma:  "5fdcbc697b42d0559d5d5c76ae2f9a17e3a30014eab679b6b591336ce7072dea"
-    sha256 cellar: :any,                 arm64_ventura: "db184348dbb58b9b9a466664a19747201a36574f9380dfa6158b0ed7cd5b1ca0"
-    sha256 cellar: :any,                 sonoma:        "005ea2af7ececed09684ca0cb19542503edbf849aa9698f3eaa8c0ea5e407fa3"
-    sha256 cellar: :any,                 ventura:       "a4d34e93625d78b8f9766ed561c230dede8302a167e5f6204a6287cc9667149d"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "eb59a5239d343eddc315c28f2860a34405d113b5a8c6db96373e55cf11b14e87"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "371be1cba0e7b3b688e80d9e80d529e30bc8f149ba6492a36cd20233f41b6b16"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_tahoe:   "4ea352020fbe109623ee1737e24625a68d207aed9c48ce5be35edf7231178622"
+    sha256 cellar: :any,                 arm64_sequoia: "42a13d15ba57363bb209e68c21a75dda9ff247969d453a778d4fc3bf43d994d7"
+    sha256 cellar: :any,                 arm64_sonoma:  "3388313ecb5ced7024b481d696351bdc43ad32da4701e6498d64ab9a65fb43db"
+    sha256 cellar: :any,                 sonoma:        "a0da1eaeeb6d2f4719b081855d02047a9dd847f6941a206c43ece5bce66b232e"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "173e13c4dccb1151d88dda647d6db96a112de1e9d1c516ee2a82b41f0501684b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ca1f1961a6b5168d56947cd8c74cdbf49e4e7b11ea2073350a18ab9d0b1e656d"
   end
 
   keg_only :versioned_formula
@@ -28,13 +28,13 @@ class LlvmAT19 < Formula
   # https://llvm.org/docs/GettingStarted.html#requirement
   depends_on "cmake" => :build
   depends_on "ninja" => :build
-  depends_on "python@3.13" => [:build, :test]
+  depends_on "python@3.14" => [:build, :test]
   depends_on "swig" => :build
   depends_on "xz"
   depends_on "zstd"
 
   uses_from_macos "libedit"
-  uses_from_macos "libffi", since: :catalina
+  uses_from_macos "libffi"
   uses_from_macos "ncurses"
   uses_from_macos "zlib"
 
@@ -66,7 +66,7 @@ class LlvmAT19 < Formula
   end
 
   def python3
-    "python3.13"
+    "python3.14"
   end
 
   def clang_config_file_dir
@@ -100,7 +100,7 @@ class LlvmAT19 < Formula
     # Work around build failure (maybe from CMake 4 update) by using environment
     # variable for https://cmake.org/cmake/help/latest/variable/CMAKE_OSX_SYSROOT.html
     # TODO: Consider if this should be handled in superenv as impacts other formulae
-    ENV["SDKROOT"] = MacOS.sdk_for_formula(self).path if OS.mac? && MacOS.sdk_root_needed?
+    ENV["SDKROOT"] = MacOS.sdk_for_formula(self).path if OS.mac?
 
     # Apple's libstdc++ is too old to build LLVM
     ENV.libcxx if ENV.compiler == :clang
@@ -158,10 +158,8 @@ class LlvmAT19 < Formula
 
     if OS.mac?
       macos_sdk = MacOS.sdk_path_if_needed
-      if MacOS.version >= :catalina
-        args << "-DFFI_INCLUDE_DIR=#{macos_sdk}/usr/include/ffi"
-        args << "-DFFI_LIBRARY_DIR=#{macos_sdk}/usr/lib"
-      end
+      args << "-DFFI_INCLUDE_DIR=#{macos_sdk}/usr/include/ffi"
+      args << "-DFFI_LIBRARY_DIR=#{macos_sdk}/usr/lib"
 
       libcxx_install_libdir = lib/"c++"
       libunwind_install_libdir = lib/"unwind"
@@ -290,12 +288,10 @@ class LlvmAT19 < Formula
     arches = Set.new([:arm64, :x86_64, :aarch64])
     arches << arch
 
-    sysroot = if macos_version.blank? || (MacOS.version > macos_version && MacOS::CLT.separate_header_package?)
+    sysroot = if macos_version.blank? || MacOS.version > macos_version
       "#{MacOS::CLT::PKG_PATH}/SDKs/MacOSX.sdk"
-    elsif macos_version >= "10.14"
-      "#{MacOS::CLT::PKG_PATH}/SDKs/MacOSX#{macos_version}.sdk"
     else
-      "/"
+      "#{MacOS::CLT::PKG_PATH}/SDKs/MacOSX#{macos_version}.sdk"
     end
 
     {

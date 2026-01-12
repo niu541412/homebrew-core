@@ -1,18 +1,18 @@
 class Mdless < Formula
   desc "Provides a formatted and highlighted view of Markdown files in Terminal"
   homepage "https://github.com/ttscoff/mdless"
-  url "https://github.com/ttscoff/mdless/archive/refs/tags/2.1.58.tar.gz"
-  sha256 "c82a52a2ff76c2a7e184268ae961bae398fa97012d46ab8dad092f21e2fa8752"
+  url "https://github.com/ttscoff/mdless/archive/refs/tags/2.1.62.tar.gz"
+  sha256 "1819b0b082b6cea95be542e39828b3ced344334bcfe62a318df71386518d07a6"
   license "MIT"
+  revision 1
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "c3170bec5e29e4aa9037952afd01517d85fc9ec217d80e109bcd4bc1bd9f4692"
-    sha256 cellar: :any,                 arm64_sonoma:  "1c26f3603c1b1d8d5951631240ea826f2256d7e9d7d03f3373c81c458c3f9546"
-    sha256 cellar: :any,                 arm64_ventura: "5f69d4e24aa3c4899df7800a264427150a0effb5e4cbd62bca9b4cacd58dfade"
-    sha256 cellar: :any,                 sonoma:        "b64d98c5631d8f3bf59e308861d63f955d8737521131704e475269b237ccdc28"
-    sha256 cellar: :any,                 ventura:       "08ba0765eb24fd5a0219e415a5fc794f30a7efa901e2a88f9808481ac199ea8f"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "4dac47d6094557b5e505b99b40321e9b4c5572503bc1ba9b76e6b930ea56c340"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5422bb32ab7aaaf248af272af66f297e91c9c81bac139a47f69dd201a48dc10a"
+    sha256 cellar: :any,                 arm64_tahoe:   "11949a05aecb70154127649ab6e7fda3d75770269b197463b2bd33c0cb15402a"
+    sha256 cellar: :any,                 arm64_sequoia: "303cd91620317c9db7361953e29f577071fc42722fb47d4bedb400dbb319c480"
+    sha256 cellar: :any,                 arm64_sonoma:  "dd1ce5189df56da597ec02e41a0d96a403da92e7b4117b51a123c447a47a8a04"
+    sha256 cellar: :any,                 sonoma:        "66a314542add622d3d1f6fb253dbde821f84e945baf86f4400c9962f4d326a7b"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "584bb364b3412bc3f864e1e634a5d130a3e253d0788d6a169994efd3d9b468dc"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "76d804aca01c89a186456ef369cdf630cdf0bd84c436d6d25430c894adb1624f"
   end
 
   # Requires Ruby >= 2.7

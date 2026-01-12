@@ -41,7 +41,7 @@ class GitFlow < Formula
     end
   end
 
-  conflicts_with "git-flow-avh", because: "both install `git-flow` binaries and completions"
+  deprecate! date: "2025-12-19", because: :repo_archived
 
   def install
     (buildpath/"shFlags").install resource("shFlags")

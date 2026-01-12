@@ -5,12 +5,12 @@ class Bash < Formula
   head "https://git.savannah.gnu.org/git/bash.git", branch: "master"
 
   stable do
-    url "https://ftp.gnu.org/gnu/bash/bash-5.3.tar.gz"
-    mirror "https://ftpmirror.gnu.org/bash/bash-5.3.tar.gz"
+    url "https://ftpmirror.gnu.org/gnu/bash/bash-5.3.tar.gz"
+    mirror "https://ftp.gnu.org/gnu/bash/bash-5.3.tar.gz"
     mirror "https://mirrors.kernel.org/gnu/bash/bash-5.3.tar.gz"
     mirror "https://mirrors.ocf.berkeley.edu/gnu/bash/bash-5.3.tar.gz"
-    sha256 "62dd49c44c399ed1b3f7f731e87a782334d834f08e098a35f2c87547d5dbb269"
-    version "5.3.3"
+    sha256 "0d5cd86965f869a26cf64f4b71be7b96f90a3ba8b3d74e27e8e9d9d5550f31ba"
+    version "5.3.9"
 
     # Add new patches using this format:
     #
@@ -24,12 +24,18 @@ class Bash < Formula
       001 1f608434364af86b9b45c8b0ea3fb3b165fb830d27697e6cdfc7ac17dee3287f
       002 e385548a00130765ec7938a56fbdca52447ab41fabc95a25f19ade527e282001
       003 f245d9c7dc3f5a20d84b53d249334747940936f09dc97e1dcb89fc3ab37d60ed
+      004 9591d245045529f32f0812f94180b9d9ce9023f5a765c039b852e5dfc99747d0
+      005 cca1ef52dbbf433bc98e33269b64b2c814028efe2538be1e2c9a377da90bc99d
+      006 29119addefed8eff91ae37fd51822c31780ee30d4a28376e96002706c995ff10
+      007 c0976bbfffa1453c7cfdd62058f206a318568ff2d690f5d4fa048793fa3eb299
+      008 097cd723cbfb8907674ac32214063a3fd85282657ec5b4e544d2c0f719653fb4
+      009 eee30fe78a4b0cb2fe20e010e00308899cfc613e0774ebb3c8557a1552f24f8c
     ]
 
     patch_checksum_pairs.each_slice(2) do |p, checksum|
       patch :p0 do
-        url "https://ftp.gnu.org/gnu/bash/bash-5.3-patches/bash53-#{p}"
-        mirror "https://ftpmirror.gnu.org/bash/bash-5.3-patches/bash53-#{p}"
+        url "https://ftpmirror.gnu.org/gnu/bash/bash-5.3-patches/bash53-#{p}"
+        mirror "https://ftp.gnu.org/gnu/bash/bash-5.3-patches/bash53-#{p}"
         mirror "https://mirrors.kernel.org/gnu/bash/bash-5.3-patches/bash53-#{p}"
         mirror "https://mirrors.ocf.berkeley.edu/gnu/bash/bash-5.3-patches/bash53-#{p}"
         sha256 checksum
@@ -40,7 +46,7 @@ class Bash < Formula
   # We're not using `url :stable` here because we need `url` to be a string
   # when we use it in the `strategy` block.
   livecheck do
-    url "https://ftp.gnu.org/gnu/bash/?C=M&O=D"
+    url "https://ftpmirror.gnu.org/gnu/bash/?C=M&O=D"
     regex(/href=.*?bash[._-]v?(\d+(?:\.\d+)+)\.t/i)
     strategy :gnu do |page, regex|
       # Match versions from files
@@ -76,13 +82,12 @@ class Bash < Formula
   no_autobump! because: :incompatible_version_format
 
   bottle do
-    sha256 arm64_sequoia: "4320a344c3026bdc04760002504da6bab0186f5dba723a88e3d53d8652e96c34"
-    sha256 arm64_sonoma:  "5715c825e5f9b57b5bb88e73f7c725b9918eca118f430bfa52d30ba5f5491b69"
-    sha256 arm64_ventura: "beaca9b0eb3ab41bb69b85e6e27674d99ab0c46ea017d9bcb435f5fbc6390dc2"
-    sha256 sonoma:        "bbdabe48035a64e989c9da9f01308891af5363c6db77e2c736d7335142de8316"
-    sha256 ventura:       "92c424100bfd0c5305f8d06b5e1485f9670cbca0040ac725c3fee477ec9f9642"
-    sha256 arm64_linux:   "8540aa00c510c4f969c219e6302e7ba5083797724590383eee115117f6b210ee"
-    sha256 x86_64_linux:  "8526a9a3fc80caddd4f2c583e3a9c9934d646d77fa95fa943b48e943c789475e"
+    sha256 arm64_tahoe:   "075fd682409ff27a9acbbe88a1456b12826634a1669c0c99fe4d76fda574e0ef"
+    sha256 arm64_sequoia: "99ad5486305387ebc826b15f2c8ac0eb5e0c221ee03bc2b8c74902f6478d8627"
+    sha256 arm64_sonoma:  "6de5e01ff6246712ee5f78dbe2828bdffffd4bd91539963dfa6d0eb10b0dcd0f"
+    sha256 sonoma:        "16d2c963e646d30f259382a3b20c6f959b5f9c69dce11e6e62fc7a6648752612"
+    sha256 arm64_linux:   "f1dab753e73b8ba1d4569214f7d47c4e6f34f1e37a4272855143b4ee7346b157"
+    sha256 x86_64_linux:  "7f7a002baad948b82cd8e1e0a89ef8816fb3433fe6e914ac2d0ab4f50c90202f"
   end
 
   # System ncurses lacks functionality

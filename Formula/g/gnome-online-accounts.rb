@@ -1,19 +1,18 @@
 class GnomeOnlineAccounts < Formula
   desc "Single sign-on framework for GNOME"
   homepage "https://gitlab.gnome.org/GNOME/gnome-online-accounts"
-  url "https://download.gnome.org/sources/gnome-online-accounts/3.54/gnome-online-accounts-3.54.4.tar.xz"
-  sha256 "55739943e747dcb4885ea607a4c2767d8002f71295e1affea62ea36f6d1cf593"
+  url "https://download.gnome.org/sources/gnome-online-accounts/3.56/gnome-online-accounts-3.56.3.tar.xz"
+  sha256 "38596f17e0269f77e1623a6bf79569573c7bdf7b7cd863fb478a78ae664dea30"
   license "LGPL-2.0-or-later"
   head "https://gitlab.gnome.org/GNOME/gnome-online-accounts.git", branch: "master"
 
   bottle do
-    sha256 arm64_sequoia: "346423767aca7d97c4972ca05e22061d6f65cb123513a8aeb1c2ee02f0c8e7b2"
-    sha256 arm64_sonoma:  "6e569a502d492e34b794ac7bb1359d7aa910e625673553c1d4b680db6b5e1190"
-    sha256 arm64_ventura: "3eae0e0b8c34940279819af809185a0251c24ee74865e96360a8282c5d773439"
-    sha256 sonoma:        "3705b696d159611156d67b826af4713df4a541f4653ed3fd840d43a9db7aa331"
-    sha256 ventura:       "6e5ce2a3c41703d651da38c6a04f4b2568bddfea2caafe3de09b0b23254c9672"
-    sha256 arm64_linux:   "c5501ac7264276bcc936c235503085ded8196c39ac20505ee064c263dae43b65"
-    sha256 x86_64_linux:  "d1078358c325c28c40e7eab3b2fd9870993bc4eef57fb7a901ef304ba3f0e060"
+    sha256 arm64_tahoe:   "085c77c9dcff7a4769aec6cae0d5506117593b70f56ba76221d4cab019706ab9"
+    sha256 arm64_sequoia: "54502402945f1b65bb79c29a2125e2b169ee5e235b0d36162b2a7b250bf29563"
+    sha256 arm64_sonoma:  "4839c2e37c5641acdf1a74ff49f1a44b243234523d9e8b78601a0c39cc7e5d0a"
+    sha256 sonoma:        "f978eddbf77b8ebe597411779a239a871a310a77b2b395670a7c35d7e428e3c1"
+    sha256 arm64_linux:   "b64f3d64a6115fa1a315d18f4794778ee2982697a7f36908b396fe8a26b40f71"
+    sha256 x86_64_linux:  "629a65257c077d6c2ac2230f3d2aa060f523bb25fe595206363aceec7332e742"
   end
 
   depends_on "dbus" => :build
@@ -122,7 +121,7 @@ class GnomeOnlineAccounts < Formula
       }
     C
 
-    providers = ["Google", "WebDAV", "Nextcloud", "Microsoft", "Microsoft Exchange", "IMAP and SMTP"]
+    providers = ["Google", "WebDAV", "Nextcloud", "Microsoft Exchange", "IMAP and SMTP"]
     providers << "Kerberos" unless OS.mac?
     providers << "Microsoft 365"
 

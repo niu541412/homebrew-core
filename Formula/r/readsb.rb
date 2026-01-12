@@ -1,18 +1,17 @@
 class Readsb < Formula
   desc "ADS-B decoder swiss knife"
   homepage "https://github.com/wiedehopf/readsb"
-  url "https://github.com/wiedehopf/readsb/archive/refs/tags/v3.14.1691.tar.gz"
-  sha256 "bcef677e51ed4547eb41a50dd011acd9dad0b3965914cbba886fa60a059988f7"
+  url "https://github.com/wiedehopf/readsb/archive/refs/tags/v3.16.8.tar.gz"
+  sha256 "71c92150fb44a451fa63498a552cc2fb1872ba21157374363065de4bb5dc57e0"
   license "GPL-3.0-or-later"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "05245541404aee91aa9cd833303b301eb8049fcea6d59d69bf55b08f8094e44e"
-    sha256 cellar: :any,                 arm64_sonoma:  "e2a9c03eb3decae99eaba38f95e8fbcb9d3be966dbde42779889a699280bff93"
-    sha256 cellar: :any,                 arm64_ventura: "ea7e1f2bf6bd5718aec08b26ec7959e0ace7ecb6f266661466bf74d51531581c"
-    sha256 cellar: :any,                 sonoma:        "8adb880a8e68e8a169a25614368ef970cd3871fcf07950e56faf992b1be253fb"
-    sha256 cellar: :any,                 ventura:       "2137f05af4d99eee35032ea7f2d212ef85c3f920a34ea115d958c0247e855104"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "72eee1ce7465c6e01c50ab3d146c710cdc58d9bbb1627e3ba640895f9b26abf4"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "792374b98a08ed0bd9a6771e39a86a31234114efdf3c167eb768ed198d7e5d85"
+    sha256 cellar: :any,                 arm64_tahoe:   "d27eceafabd543f6de66f399f8468f4f51ea4b10a14ef05b70f342a3d053a96a"
+    sha256 cellar: :any,                 arm64_sequoia: "96a7146c6949cc984fe265aaba7f4a7ef959fe3564431f0f661fa3999647d149"
+    sha256 cellar: :any,                 arm64_sonoma:  "731a31088040c901fb3abd6802f9e0b4c8f9038ca9d03048e1cda4e6d2b5066c"
+    sha256 cellar: :any,                 sonoma:        "295af8379bbcaddb2a7ec4b315ec7c9f3520691791a3021c9745640db0768d9d"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "b73131bc5a7e6e4c83c3b6c9a8211ba530a7c07a24e31a6242516e2d3b25f7a3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "86738b4885705e77ca75fb88043ac2955f62792b1c1edfcbb39935a3759c3e28"
   end
 
   depends_on "pkgconf" => :build
@@ -57,6 +56,6 @@ class Readsb < Formula
     EOS
 
     (testpath/"input.bin").write Base64.decode64(enc)
-    assert_match "ICAO Address:", shell_output("#{bin}/readsb --device-type ifile --ifile input.bin 2>/dev/null")
+    assert_match "ICAO Address:", shell_output("#{bin}/readsb --device-type ifile --ifile input.bin 2>/dev/null", 1)
   end
 end

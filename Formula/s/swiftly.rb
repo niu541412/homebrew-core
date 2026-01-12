@@ -2,8 +2,8 @@ class Swiftly < Formula
   desc "Swift toolchain installer and manager"
   homepage "https://github.com/swiftlang/swiftly"
   url "https://github.com/swiftlang/swiftly.git",
-      tag:      "1.0.1",
-      revision: "c14ee6e9fc94988e04b164b457a3b4afa800f68c"
+      tag:      "1.1.1",
+      revision: "714cc4e057e214132ee892b5a1bc66c3de590a97"
   license "Apache-2.0"
   head "https://github.com/swiftlang/swiftly.git", branch: "main"
 
@@ -13,12 +13,12 @@ class Swiftly < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "8a84f3d6faf7a00e1e9e836b0bd16bea9ddb1e49005ab420499bdb2f8328060e"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "b6ccee7ec1311078cb828331131f003237f0c136f85ca5167e86daf03d54301d"
-    sha256 cellar: :any,                 arm64_ventura: "dd8a30f30d7a712bcefdbbc87c46d334e9d58f029fd2ef9087f5f90a56d69da7"
-    sha256 cellar: :any_skip_relocation, sonoma:        "191b819cb5f9baec07adef449079cd55b7b6eeecd298eeb8ccad2694dd134d63"
-    sha256 cellar: :any,                 ventura:       "b340ce4b7c4c4eea79250e94375b4f5459638dd330cb391ca053aec2df300bf2"
-    sha256                               x86_64_linux:  "db1b6d3fe662fcb8279542b4f84b2d05b308566c24dd5d05c20169febbe7ef7c"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "6b4b8592cccdcdc87ccc6444423569d5cc56e54932f42ce373d28f3367b1d6d1"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "cd932983c67c6f54e31365ca89abf6193e10a8e9e8bf07605ada99f13ce773e0"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "2d1658a4fafacc477489dd87ca87d4ea1abac2e64b1cd5fbe0d3b72613346b84"
+    sha256 cellar: :any_skip_relocation, sonoma:        "f4933dd9007c8635d3ba99f82c6bb8c2164284d5728189f3318b13888e5672d7"
+    sha256                               arm64_linux:   "ef0ec9dcb6bfc565518d6c29be534005e02dde2c035245979a46388371e22ae9"
+    sha256                               x86_64_linux:  "2f3168ca8e72139b9b3a8d38384621b0140f4ae932b263d8e291497d1a051ed3"
   end
 
   uses_from_macos "swift" => :build, since: :sonoma # swift 5.10+
@@ -44,19 +44,20 @@ class Swiftly < Formula
         -Xswiftc -I#{HOMEBREW_PREFIX}/include
         -Xlinker -L#{HOMEBREW_PREFIX}/lib
       ]
+      ENV.prepend_path "LD_LIBRARY_PATH", Formula["libarchive"].opt_lib
     end
     system "swift", "build", *args
-
     bin.install ".build/release/swiftly"
+    generate_completions_from_executable(bin/"swiftly", "--generate-completion-script")
   end
 
   test do
     # Test swiftly with a private installation
-    swiftly_bin = testpath/"swiftly"/"bin"
+    swiftly_bin = testpath/"swiftly/bin"
     mkdir_p swiftly_bin
     ENV["SWIFTLY_HOME_DIR"] = testpath/"swiftly"
     ENV["SWIFTLY_BIN_DIR"] = swiftly_bin
-    ENV["SWIFTLY_TOOLCHAINS_DIR"] = testpath/"swiftly"/"toolchains"
+    ENV["SWIFTLY_TOOLCHAINS_DIR"] = testpath/"swiftly/toolchains"
     system bin/"swiftly", "init", "--assume-yes", "--no-modify-profile", "--skip-install"
   end
 end

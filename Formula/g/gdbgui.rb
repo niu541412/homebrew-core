@@ -8,18 +8,17 @@ class Gdbgui < Formula
   license "GPL-3.0-only"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, sonoma:       "8ee30e8ea6b15f70c555bfa1ce141e543ff3b6a3b8294c62ab2e4a5b6e068b61"
-    sha256 cellar: :any_skip_relocation, ventura:      "87dafc3dbe6bac680988b7cf310ede086b94741642eee11a3019b90edbef9dc6"
-    sha256 cellar: :any_skip_relocation, arm64_linux:  "10051a0de1ed423302e53e70bd398568d38355a054d0f3612d846cd470eda4f6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "95cdbe6fd039a1627cae786f3c43ae904bd18b8dc7fc6f3ff607ef625c726552"
+    rebuild 2
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "305daf07812dd5941548e611414a1dd7ea509a8230275b12c7981f04481abb90"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "2a8f4508a00e9302ebaf63888d4505e027dde3710278601fc7229d4fe06521e3"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "a4ee59b13d9263ef333db195513bacde470ead12f92fb4a828ff6801f8624d3f"
+    sha256 cellar: :any_skip_relocation, sonoma:        "3a5a99218db05c8875e10ed5dae431912493f7296c8933763c163adbe0c7e7da"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "e5cab7defea471b94a728c30bf2fcecb57f9b0ffcde63f704246cc02958e3a51"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "42ddd8b183bbf4134c83b15345f53480bc73d0f246ef71891de56179ee094cb0"
   end
 
   depends_on "gdb"
-  depends_on "python@3.13"
-
-  on_macos do
-    depends_on arch: :x86_64 # gdb is not supported on macOS ARM
-  end
+  depends_on "python@3.14"
 
   resource "bidict" do
     url "https://files.pythonhosted.org/packages/9a/6e/026678aa5a830e07cd9498a05d3e7e650a4f56a42f267a53d22bcda1bdc9/bidict-0.23.1.tar.gz"
@@ -134,9 +133,7 @@ class Gdbgui < Formula
     assert_equal version.to_s, shell_output("#{bin}/gdbgui -v").strip
     port = free_port
 
-    fork do
-      exec bin/"gdbgui", "-n", "-p", port.to_s
-    end
+    spawn bin/"gdbgui", "-n", "-p", port.to_s
     sleep 3
 
     assert_match "gdbgui - gdb in a browser", shell_output("curl -s 127.0.0.1:#{port}")

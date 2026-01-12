@@ -1,18 +1,19 @@
 class Algolia < Formula
   desc "CLI for Algolia"
-  homepage "https://www.algolia.com/doc/tools/cli"
-  url "https://github.com/algolia/cli/archive/refs/tags/v1.7.0.tar.gz"
-  sha256 "34083ff0480baef9cc4fe3339fa605cec9b66f7da89aecadca1256477799f396"
+  homepage "https://www.algolia.com/doc/tools/cli/get-started"
+  url "https://github.com/algolia/cli/archive/refs/tags/v1.7.2.tar.gz"
+  sha256 "0b7477c554c006de12fa936c9256c76361b3edd2a402b9be912efa61c4a1d400"
   license "MIT"
   head "https://github.com/algolia/cli.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "21e39a4812dbb07883c67bbdde1bb29ffcd233b51f8809c013bc85b443575328"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "21e39a4812dbb07883c67bbdde1bb29ffcd233b51f8809c013bc85b443575328"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "21e39a4812dbb07883c67bbdde1bb29ffcd233b51f8809c013bc85b443575328"
-    sha256 cellar: :any_skip_relocation, sonoma:        "b59008e3bb8bb0b8df47ed41030b0bdb278fb7f1ccb18a71245c768058cf6223"
-    sha256 cellar: :any_skip_relocation, ventura:       "b59008e3bb8bb0b8df47ed41030b0bdb278fb7f1ccb18a71245c768058cf6223"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0da67cd02cfdbfdb136d84a00dcce0dcaddfe7d287d255b9c9d3f76846a5bec3"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "8793143ba32c59eb92a56d6cb78810ac4ae5dce2e0d701f5eda245f72502043d"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "8793143ba32c59eb92a56d6cb78810ac4ae5dce2e0d701f5eda245f72502043d"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "8793143ba32c59eb92a56d6cb78810ac4ae5dce2e0d701f5eda245f72502043d"
+    sha256 cellar: :any_skip_relocation, sonoma:        "dcae2959e0157957a0c9812d800b642a8015e8ed8a63f854acdecf6b2e06b49b"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "bef97a8af4fd13535f8bfc8683cba135f15cd67e925c706b0a8df5289595acc3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "76fcee9eb35f5abf29950923a26587d84a5baecfbefd65a56872724c067221b0"
   end
 
   depends_on "go" => :build
@@ -21,7 +22,7 @@ class Algolia < Formula
     ldflags = "-s -w -X github.com/algolia/cli/pkg/version.Version=#{version}"
     system "go", "build", *std_go_args(ldflags:), "./cmd/algolia"
 
-    generate_completions_from_executable(bin/"algolia", "completion")
+    generate_completions_from_executable(bin/"algolia", shell_parameter_format: :cobra)
   end
 
   test do

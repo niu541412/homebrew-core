@@ -4,12 +4,12 @@ class Opencv < Formula
   license "Apache-2.0"
 
   stable do
-    url "https://github.com/opencv/opencv/archive/refs/tags/4.12.0.tar.gz"
-    sha256 "44c106d5bb47efec04e531fd93008b3fcd1d27138985c5baf4eafac0e1ec9e9d"
+    url "https://github.com/opencv/opencv/archive/refs/tags/4.13.0.tar.gz"
+    sha256 "1d40ca017ea51c533cf9fd5cbde5b5fe7ae248291ddf2af99d4c17cf8e13017d"
 
     resource "contrib" do
-      url "https://github.com/opencv/opencv_contrib/archive/refs/tags/4.12.0.tar.gz"
-      sha256 "4197722b4c5ed42b476d42e29beb29a52b6b25c34ec7b4d589c3ae5145fee98e"
+      url "https://github.com/opencv/opencv_contrib/archive/refs/tags/4.13.0.tar.gz"
+      sha256 "1e0077a4fd2960a7d2f4c9e49d6ba7bb891cac2d1be36d7e8e47aa97a9d1039b"
 
       livecheck do
         formula :parent
@@ -22,21 +22,20 @@ class Opencv < Formula
     regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
 
-  no_autobump! because: :requires_manual_review
-
   bottle do
-    sha256 arm64_sonoma:  "8d9dc9f16eeb5f2acd3b9bb21cf1db96fb1b11cb5c02d20a237ccd0ac6245e20"
-    sha256 arm64_ventura: "90207a4a2d7de57ac41491c7e28b878da0232baaf528b306c8d1b7a5c2107224"
-    sha256 sonoma:        "29efbb8210e680beaae8fc415afe3d30aec356a0126ba91ca7aa6e582e27330d"
-    sha256 ventura:       "981cd771a676cf0762b98903a8b785e8ad5c26cde497717b019b6bdccd2dfc66"
-    sha256 x86_64_linux:  "6ef326dd8a2437968b83ebc0495a688e17c1b981e2ab4549be4704ec119a6fec"
+    sha256 arm64_tahoe:   "1e8c2311fa4bbf564a4568bd954da27c34ac24f7df97d4bf31fbb84be7df21de"
+    sha256 arm64_sequoia: "c18fa9478ef8cd0097cacc7b044d543dafac4955b60f2cff62ee0fb9eafef918"
+    sha256 arm64_sonoma:  "0bb6bc7722070ad666307d5cc730876a74f665003497373278e025b2f18936db"
+    sha256 sonoma:        "1640498a328ef8cd7fab676126bfe7ebb864295e3b9cf40545f44a53171ea1e9"
+    sha256 arm64_linux:   "835404f6e9e6aa909e4d9080614e10fa0582a479ca1a45ad5aa744e67505aff9"
+    sha256 x86_64_linux:  "b8d639eb0fb3c53c3f7224da90becdccfefa12e759b248feb60e4807b196f752"
   end
 
   head do
-    url "https://github.com/opencv/opencv.git", branch: "master"
+    url "https://github.com/opencv/opencv.git", branch: "4.x"
 
     resource "contrib" do
-      url "https://github.com/opencv/opencv_contrib.git", branch: "master"
+      url "https://github.com/opencv/opencv_contrib.git", branch: "4.x"
     end
   end
 
@@ -61,7 +60,7 @@ class Opencv < Formula
   depends_on "openjpeg"
   depends_on "openvino"
   depends_on "protobuf"
-  depends_on "python@3.13"
+  depends_on "python@3.14"
   depends_on "tbb"
   depends_on "tesseract"
   depends_on "vtk"
@@ -83,7 +82,7 @@ class Opencv < Formula
   end
 
   def python3
-    "python3.13"
+    "python3.14"
   end
 
   def install
@@ -202,7 +201,8 @@ class Opencv < Formula
                     "-L#{lib}", "-lopencv_core", "-lopencv_imgcodecs"
     assert_equal version.to_s, shell_output("./test").strip
 
-    return if OS.linux? && Hardware::CPU.intel?
+    # The test below seems to time out on Intel macOS.
+    return if OS.mac? && Hardware::CPU.intel?
 
     output = shell_output("#{python3} -c 'import cv2; print(cv2.__version__)'")
     assert_equal version.to_s, output.chomp

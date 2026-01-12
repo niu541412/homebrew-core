@@ -1,18 +1,17 @@
 class Bbtools < Formula
   desc "Brian Bushnell's tools for manipulating reads"
-  homepage "https://jgi.doe.gov/data-and-tools/software-tools/bbtools/"
-  url "https://downloads.sourceforge.net/bbmap/BBMap_39.33.tar.gz"
-  sha256 "b82d06579e118467b5f129f06c93991196d25cc7e43cd233aeb777f85507175e"
+  homepage "https://bbmap.org/"
+  url "https://downloads.sourceforge.net/bbmap/BBMap_39.61.tar.gz"
+  sha256 "044522b02eb2f1c2ca271babf5e36cfd31cbf817cb3f1e9d79d0a57b3779a2d6"
   license "BSD-3-Clause"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "627fc9ffca035d04926fbb5359e7120ad448ddb1cc24ac47cf8de4ac7be7cddb"
-    sha256 cellar: :any,                 arm64_sonoma:  "7c30faefc226b1654258adf44d90bcf9b38d3d34128e2fc67b0bdce358afa8bb"
-    sha256 cellar: :any,                 arm64_ventura: "68fdba2c838fd1e8afd5243255adbeef092be2019370e8207695c369a5a338f8"
-    sha256 cellar: :any,                 sonoma:        "e83cdfe7e18a3c719d35b59a0262771081183e2d1909cd2c933d28634a36b1af"
-    sha256 cellar: :any,                 ventura:       "4b6e1fa2e2a95106fab07caf23d581720454bbde6540e9f6ac627f72189f189f"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "dbb6821688e10a55e549cf52da4aa7ecff38be8be4a906ab733bf83df0a761f5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f982e275d268f3bb1e1e471b762cbedeb80876c43ff77356d043c0304e5d2411"
+    sha256 cellar: :any,                 arm64_tahoe:   "c7facada6f63e1c2fb12557c1e38c9d1e7e89d4315ffb3c19e55cd2247dfcb57"
+    sha256 cellar: :any,                 arm64_sequoia: "a88c6f1ec1adf73b7eacba5f8b6d49a91941ce57bbf1c407b629bbe076932e50"
+    sha256 cellar: :any,                 arm64_sonoma:  "dc00ca27e2a9de42b9a75415ca0ed6147c3adeec2ceb05e2e973dcfec5ddce56"
+    sha256 cellar: :any,                 sonoma:        "2d5cd755a09f2719ac421c1d11f4d8fb7b79430e409d8af5ccc8fa4f94120bbe"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "fa184f336a79a8b6e6f98a67d0251373e9e63f58395d174cb853718afc5870a6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8029f63484a18e69382318f12a169c4b30eca18e921e5b90ae2b0ee035f6483e"
   end
 
   depends_on "openjdk"

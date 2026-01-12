@@ -1,34 +1,41 @@
 class Kuttl < Formula
   desc "KUbernetes Test TooL"
-  homepage "https://kuttl.dev"
-  url "https://github.com/kudobuilder/kuttl/archive/refs/tags/v0.22.0.tar.gz"
-  sha256 "45777fdca82d14030b9661a2819b15e6380a9f4b0f8bbcfd826d8b21ffae7803"
+  homepage "https://github.com/kudobuilder/kuttl"
+  url "https://github.com/kudobuilder/kuttl/archive/refs/tags/v0.24.0.tar.gz"
+  sha256 "d576b1be8294451a53dee27e9c95b814d2641573bd4a1963de468498347802cf"
   license "Apache-2.0"
   head "https://github.com/kudobuilder/kuttl.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "a200c41971635ed7a3653587e733f9ba432eef06741e418c9ca76ff8f8164d54"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "a200c41971635ed7a3653587e733f9ba432eef06741e418c9ca76ff8f8164d54"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "a200c41971635ed7a3653587e733f9ba432eef06741e418c9ca76ff8f8164d54"
-    sha256 cellar: :any_skip_relocation, sonoma:        "02527ab79b8757cbdef026cf010d835ab249bcc7eef92c23900490afa334521f"
-    sha256 cellar: :any_skip_relocation, ventura:       "02527ab79b8757cbdef026cf010d835ab249bcc7eef92c23900490afa334521f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "bda78e3404303c5bfcdc8f9a7d0c9b39c1315be6bce046589de118146e587712"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "31768f5c40e809d0517bb53112899083f9b8a012919a7ac1a35cecd32b782f6a"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "b79bd1d9bcc6929198da2e8b45a8696d1c4d23aacd715c76e542bf6a96f53c58"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "b7f7ea52d9a5df48ffa50dddff4278235bde7b20a86b50bbdb86766530f93b80"
+    sha256 cellar: :any_skip_relocation, sonoma:        "3269e471333b67934d9679ed06ad78ffed1440e5cd2d76f8d8e6f0114255b10f"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "7f89b1a3d4455cfe5d49fabb951a3a3e4815d5048c28ec64d4878759f964c32e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e1a3fa46ee479beb11948ff8f5d04ccc70f5b96fe0f09fe594bfd67cef781eb2"
   end
 
   depends_on "go" => :build
   depends_on "kubernetes-cli" => :test
 
+  # patch to add Go 1.26 testDeps ModulePath, upstream pr ref, https://github.com/kudobuilder/kuttl/pull/664
+  patch do
+    url "https://github.com/kudobuilder/kuttl/commit/80911cc18d690efe88a8b12a32b419b495d7bb20.patch?full_index=1"
+    sha256 "8749ea6b9cabaa92b44894b8ed5e6a5271a9bbb5fa76f35502df948d529b83cb"
+  end
+
   def install
     project = "github.com/kudobuilder/kuttl"
     ldflags = %W[
       -s -w
-      -X #{project}/pkg/version.gitVersion=v#{version}
-      -X #{project}/pkg/version.gitCommit=#{tap.user}
-      -X #{project}/pkg/version.buildDate=#{time.iso8601}
+      -X #{project}/internal/version.gitVersion=v#{version}
+      -X #{project}/internal/version.gitCommit=#{tap.user}
+      -X #{project}/internal/version.buildDate=#{time.iso8601}
     ]
 
     system "go", "build", *std_go_args(output: bin/"kubectl-kuttl", ldflags:), "./cmd/kubectl-kuttl"
-    generate_completions_from_executable(bin/"kubectl-kuttl", "completion")
+    generate_completions_from_executable(bin/"kubectl-kuttl", shell_parameter_format: :cobra)
   end
 
   test do

@@ -1,19 +1,19 @@
 class Weechat < Formula
   desc "Extensible IRC client"
   homepage "https://weechat.org/"
-  url "https://weechat.org/files/src/weechat-4.7.0.tar.xz"
-  sha256 "45dc0396060c863169868349ec280af1c6f4ac524aa492580e1a065e142c2cd8"
+  url "https://weechat.org/files/src/weechat-4.8.1.tar.xz"
+  sha256 "e7ac1fbcc71458ed647aada8747990905cb5bfb93fd8ccccbc2a969673a4285a"
   license "GPL-3.0-or-later"
-  head "https://github.com/weechat/weechat.git", branch: "master"
+  revision 2
+  head "https://github.com/weechat/weechat.git", branch: "main"
 
   bottle do
-    sha256 arm64_sequoia: "2dfd2add90d8b8ce6faa01bc53331e9da8937b6c63bed4e6136a127096ea7bf9"
-    sha256 arm64_sonoma:  "a4ec4abf904cbe3240429982c5ac5c8bbd8368bba8fe39a4a298ac2922f52f4c"
-    sha256 arm64_ventura: "d5304434de438f2a21aba0c69a4133a05de242ac6762ae74ff3cb981fb1be513"
-    sha256 sonoma:        "e90393c9f7a3b331349598a5a40e4d17142bb709e4ad171997a5ee9b9e380b8d"
-    sha256 ventura:       "acf08811e48f442633021c83cf47b10307971be3f1c1595d5dab8ae38a20f683"
-    sha256 arm64_linux:   "f91e637f1f4926e25d2885a6ca1cdc7f6d93a181749bb751853a173064d4eace"
-    sha256 x86_64_linux:  "a9f71dfe5e74c57df6788417cb68763424d10dade22eedc86730f19661da4dc7"
+    sha256 arm64_tahoe:   "a498e1e85892dbd99c4870bd339bc5f3cce3a21e72c5e25c6fe4cc5d9b28879c"
+    sha256 arm64_sequoia: "4ddaf60ed9ecd5a76685d337f92bca8e77aa498c8e8556e6d5721a1d252ddf87"
+    sha256 arm64_sonoma:  "4d76b7238e5cbb8b712ccac45a7ceef05a2cf1325e8fcc2a4df12a79c7958233"
+    sha256 sonoma:        "8127910e73551961779462f914c9abbb098af83e72ab4799addf398f8455bce1"
+    sha256 arm64_linux:   "7273a5092bf8bc89bdc9c3841a1588860ea49033d6a91d7ec2dd72c942d46e7e"
+    sha256 x86_64_linux:  "48e8d6f0d7d4780a1a397d8e5c3bbdbe993d1388d446419079208d0e8b5c7dfa"
   end
 
   depends_on "asciidoctor" => :build
@@ -27,12 +27,12 @@ class Weechat < Formula
   depends_on "lua"
   depends_on "ncurses"
   depends_on "perl"
-  depends_on "python@3.13"
+  depends_on "python@3.14"
   depends_on "ruby"
+  depends_on "tcl-tk"
   depends_on "zstd"
 
   uses_from_macos "curl"
-  uses_from_macos "tcl-tk"
   uses_from_macos "zlib"
 
   on_macos do
@@ -41,18 +41,18 @@ class Weechat < Formula
   end
 
   def install
+    tcltk = Formula["tcl-tk"]
     args = %W[
       -DENABLE_MAN=ON
       -DENABLE_GUILE=OFF
       -DCA_FILE=#{Formula["gnutls"].pkgetc}/cert.pem
       -DENABLE_JAVASCRIPT=OFF
       -DENABLE_PHP=OFF
+      -DTCL_INCLUDE_PATH=#{tcltk.opt_include}/tcl-tk
+      -DTCL_LIBRARY=#{tcltk.opt_lib/shared_library("libtcl#{tcltk.version.major_minor}")}
+      -DTK_INCLUDE_PATH=#{tcltk.opt_include}/tcl-tk
+      -DTK_LIBRARY=#{tcltk.opt_lib/shared_library("libtcl#{tcltk.version.major}tk#{tcltk.version.major_minor}")}
     ]
-
-    if OS.linux?
-      args << "-DTCL_INCLUDE_PATH=#{Formula["tcl-tk"].opt_include}/tcl-tk"
-      args << "-DTK_INCLUDE_PATH=#{Formula["tcl-tk"].opt_include}/tcl-tk"
-    end
 
     system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"

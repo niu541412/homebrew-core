@@ -5,9 +5,10 @@ class Caf < Formula
   url "https://github.com/actor-framework/actor-framework/archive/refs/tags/1.1.0.tar.gz"
   sha256 "9febd85d3a4f50dac760592043028a36bea62bba50c3ee2fc1eace954dd8ae27"
   license "BSD-3-Clause"
-  head "https://github.com/actor-framework/actor-framework.git", branch: "master"
+  head "https://github.com/actor-framework/actor-framework.git", branch: "main"
 
   bottle do
+    sha256 cellar: :any,                 arm64_tahoe:   "faa09c3ddebe8332936b1cc01028494b75a7b80763b045256840983be78f3785"
     sha256 cellar: :any,                 arm64_sequoia: "7678c03ac5833969bc5ef720b398e774d1e3156d268d34ce9d95349e7f885823"
     sha256 cellar: :any,                 arm64_sonoma:  "34839f1a22902b556f3ece25edc7e1b3123768f17ed76f2a0e5a24ae0f13110b"
     sha256 cellar: :any,                 arm64_ventura: "c2b9cac897daf44e7c17dcf6b52790a4ed3b74d36a96b61f1794bf3077be02df"

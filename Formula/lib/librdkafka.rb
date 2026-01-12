@@ -1,8 +1,8 @@
 class Librdkafka < Formula
   desc "Apache Kafka C/C++ library"
   homepage "https://github.com/confluentinc/librdkafka"
-  url "https://github.com/confluentinc/librdkafka/archive/refs/tags/v2.11.0.tar.gz"
-  sha256 "592a823dc7c09ad4ded1bc8f700da6d4e0c88ffaf267815c6f25e7450b9395ca"
+  url "https://github.com/confluentinc/librdkafka/archive/refs/tags/v2.13.0.tar.gz"
+  sha256 "ac44ed450ccd2c4ab4cdeba70115e6f878d794d6df3e61c9f47902f766852058"
   license "BSD-2-Clause"
   head "https://github.com/confluentinc/librdkafka.git", branch: "master"
 
@@ -12,13 +12,12 @@ class Librdkafka < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "2ac3aa0a91ea976d3727697d001e443b338688951d2b6a2d25aac7cd90aff251"
-    sha256 cellar: :any,                 arm64_sonoma:  "2526867da6b0c75f1158b9362f3ff6e398773065f190bb55b9f498c67ddb9e8e"
-    sha256 cellar: :any,                 arm64_ventura: "6836ce187b58c920a72c5ad986880d0bc15e1e43815c2c77431a8030d058b05d"
-    sha256 cellar: :any,                 sonoma:        "1f240fc839e22fa052d6bd8eec9e63669868f3490134c2e9c059bbf2b84ad517"
-    sha256 cellar: :any,                 ventura:       "0f58b52753588fdaa2c116a3c744154fc96171f20870657dd6745c8500a41ca0"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "9e6d9d4c008ebb2e2f6204f8b0b0b0fc776dd83381946c522f8d5b1814965df8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e29667cd155192a052ac1fd82b11e094d1ef91e96b3c09a8342df869d7b56dc0"
+    sha256 cellar: :any,                 arm64_tahoe:   "973e114bee8abc100af834a2a1571ea26456373e0cb4097354a857017c11c41f"
+    sha256 cellar: :any,                 arm64_sequoia: "1d69b44b03725da1ef0dcfba60ab4b66f972b9d8fa9c7018f7dd10244881cff6"
+    sha256 cellar: :any,                 arm64_sonoma:  "f2011aa4cacbc8904888f7d4bbb3b70b14b691f8208dc1c60d555141ce96197e"
+    sha256 cellar: :any,                 sonoma:        "b221ab1fd609d75ab7df1def9c6dbcfe11e4e54bf62a823c2b53faeb9f97166e"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "041e91e277e944a9ea19718a682b2bcf4a096edfd2de9b58eb2f7c326c5a97cf"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d977994179f43582c738358c923c54a435fd1332b8ef2a27cbbcd5d74da4e946"
   end
 
   depends_on "pkgconf" => :build

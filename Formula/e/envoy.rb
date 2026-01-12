@@ -1,8 +1,8 @@
 class Envoy < Formula
   desc "Cloud-native high-performance edge/middle/service proxy"
   homepage "https://www.envoyproxy.io/index.html"
-  url "https://github.com/envoyproxy/envoy/archive/refs/tags/v1.33.2.tar.gz"
-  sha256 "e54d444a8d4197c1dca56e7f6e7bc3b7d83c1695197f5699f62e250ecbece169"
+  url "https://github.com/envoyproxy/envoy/archive/refs/tags/v1.36.4.tar.gz"
+  sha256 "a7546cc7ac8b7cee7e7fb8b4c9f751557d8f3cfc2bdacf7fe5a12fc0c24beea0"
   license "Apache-2.0"
   head "https://github.com/envoyproxy/envoy.git", branch: "main"
 
@@ -12,12 +12,12 @@ class Envoy < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "5e150c63d6060aceeafe7a53ad19af6e849e5698b0c4efd21297611c9681963b"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "f719f8850ccd293a12bb1da640773197dcb3b08013f900f509dd12566720884c"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "4ddd7d90ee1f9d92e14bbe9cd1ae85ea4c7675c771ca990a9cf325327f9a611c"
-    sha256 cellar: :any_skip_relocation, sonoma:        "bee7826424b1d75e9617c88530ae01a127bc52321aca6738b6e40eb095dc2a88"
-    sha256 cellar: :any_skip_relocation, ventura:       "879dac6ca9ca1bd679de9180c96691439188b1ed5eb84b5cb66c9260f538afcc"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1c0d398820c2ffd6cb4f2472f8b3029f874546c0eb6648295699e23668a39b8d"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "c83d939543e903356e1179eb23ef05577fd9aa273323c51845b191c5a9f8b0c9"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "18a40e57196c60d1596993c55845010caf88ddb83d3b2642e57132ee639c3009"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "8a668558d84a81f34fdeaaebebc4149e5c4eb83c0ea95fa302793108160c4adf"
+    sha256 cellar: :any_skip_relocation, sonoma:        "3032bf14063310000b74c9a579e44579910cfc48d15913777618eb96c9cf2ee6"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "9ce6a57e4b23e4dd96abf74652ff7553e13157695e529e454e96831aea0a61ac"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7997372e6e874e609fa58344541bc74fd4b4a6fa62a4fc33b4c2ca24257cbb2e"
   end
 
   depends_on "automake" => :build
@@ -28,7 +28,6 @@ class Envoy < Formula
   # Starting with 1.21, envoy requires a full Xcode installation, not just
   # command-line tools. See envoyproxy/envoy#16482
   depends_on xcode: :build
-  depends_on macos: :catalina
 
   uses_from_macos "llvm" => :build
   uses_from_macos "python" => :build
@@ -53,25 +52,24 @@ class Envoy < Formula
       --verbose_failures
       --action_env=PATH=#{env_path}
       --host_action_env=PATH=#{env_path}
-      --define=wasm=disabled
+      --define=wasm=wamr
     ]
 
     if OS.linux?
       # GCC/ld.gold had some issues while building envoy so use clang/lld instead
-      args << "--config=clang"
+      args << "--config=clang-common"
 
-      # clang 18 introduced stricter thread safety analysis. Remove once release that supports clang 18
-      # https://github.com/envoyproxy/envoy/issues/37911
-      args << "--copt=-Wno-thread-safety-reference-return"
+      # Workaround to build with Clang 20 until envoy uses newer dd-trace-cpp (with newer nlohmann-json)
+      # https://github.com/DataDog/dd-trace-cpp/commit/a7d71b5e0599125d5957f7b8d3d56f0bcc6ae485
+      args << "--copt=-Wno-deprecated-literal-operator"
 
-      # Workaround to build with Clang 19 until envoy uses newer tcmalloc
-      # https://github.com/google/tcmalloc/commit/a37da0243b83bd2a7b1b53c187efd4fbf46e6e38
-      args << "--copt=-Wno-unused-but-set-variable"
-
-      # Workaround to build with Clang 19 until envoy uses newer grpc
-      # https://github.com/grpc/grpc/commit/e55f69cedd0ef7344e0bcb64b5ec9205e6aa4f04
-      args << "--copt=-Wno-missing-template-arg-list-after-template-kw"
+      # Workaround to build with Clang 21, upstream also ignores this warning
+      # https://github.com/google/cel-cpp/blob/439003a0016ed7ace068cffdf494357a3f75e3b2/common/values/value_variant.h#L735-L743
+      args << "--copt=-Wno-nontrivial-memcall"
     end
+
+    # Workaround to build with Xcode 16.3 / Clang 19
+    args << "--copt=-Wno-nullability-completeness" if OS.linux? || DevelopmentTools.clang_build_version >= 1700
 
     # Write the current version SOURCE_VERSION.
     system "python3", "tools/github/write_current_source_version.py", "--skip_error_in_git"

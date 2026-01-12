@@ -1,8 +1,8 @@
 class Goctl < Formula
   desc "Generates server-side and client-side code for web and RPC services"
   homepage "https://go-zero.dev"
-  url "https://github.com/zeromicro/go-zero/archive/refs/tags/tools/goctl/v1.8.5.tar.gz"
-  sha256 "ec9871cdcdb9fa7c3e7663bdeb226a38e907e8e889f26951dd6cd635c7bc6982"
+  url "https://github.com/zeromicro/go-zero/archive/refs/tags/tools/goctl/v1.9.2.tar.gz"
+  sha256 "457383a21822a3cab1ad78f6fdfb9435bf4dc00217b018ff1b66fa4b0715d6b6"
   license "MIT"
   head "https://github.com/zeromicro/go-zero.git", branch: "master"
 
@@ -12,12 +12,13 @@ class Goctl < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "564901215889c1f79ef3712dbad56a0fdede3c35a5fcb5acb8a3bca4107229ec"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "7962eb703b8f487542b15b51d3de6b3183d68bb710d55b0ee64369930ccf4a4d"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "367ad2f1c5fb1e9aa5ef8cf6dd1ed1780a6588a488beb6e9064ce54fa02a50b4"
-    sha256 cellar: :any_skip_relocation, sonoma:        "0bc09452891c4f0c5795a8bede3e452fffb7022c465d5ed824c5a6d56512c558"
-    sha256 cellar: :any_skip_relocation, ventura:       "8b95bb69ce1c31cc83243bc2e7ed45715a2355570381bc8b63a7ff06b3e75ef9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "96ec3bcf70ee9021867597df1e27b16a4427196f61432a0fa4675a85ebccf5ec"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "f92baefb245bc91e0969717c9287bd7232dc0e462e1cb1e9aa1d73ac4fc678a5"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "189cc40e086e1b53c2d55ba333e64cd1635505f7685121f8e40afb7b9f8aa7be"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "85fbf31610463cee666590d696d65e7c248c3d9c5ce2fcbddaa88b51808fd75a"
+    sha256 cellar: :any_skip_relocation, sonoma:        "6e385d6f6556e5b1ab81d604dd9eeae09d155efb9648a0ce138c698f729ab05d"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "6dd434282a87ae5f1cf26ed71d5bdc6a62b43f99e2112469aedcbd1d70d9e414"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "86f49e389dc0ca241113685d8b465fd3b392601624efbcdffcd585d459a2988b"
   end
 
   depends_on "go" => :build
@@ -27,7 +28,7 @@ class Goctl < Formula
       system "go", "build", *std_go_args(ldflags: "-s -w"), "goctl.go"
     end
 
-    generate_completions_from_executable(bin/"goctl", "completion")
+    generate_completions_from_executable(bin/"goctl", shell_parameter_format: :cobra)
   end
 
   test do

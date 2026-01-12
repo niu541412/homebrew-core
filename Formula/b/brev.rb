@@ -1,8 +1,8 @@
 class Brev < Formula
   desc "CLI tool for managing workspaces provided by brev.dev"
   homepage "https://developer.nvidia.com/brev"
-  url "https://github.com/brevdev/brev-cli/archive/refs/tags/v0.6.312.tar.gz"
-  sha256 "265ef0698aa8d6b9fd7311b5aa16e2e0a2274dd4a2f3f01f1a035250825b8724"
+  url "https://github.com/brevdev/brev-cli/archive/refs/tags/v0.6.316.tar.gz"
+  sha256 "095452684cb08ffc3b94d1415c17ba9ef25f1355d4d3105645bdc6ad498e2278"
   license "MIT"
   head "https://github.com/brevdev/brev-cli.git", branch: "main"
 
@@ -15,12 +15,12 @@ class Brev < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "be87f2ce1494f50d2f9ecac1f20920ef84b40ee920661fe5940f181160d7da6f"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "be87f2ce1494f50d2f9ecac1f20920ef84b40ee920661fe5940f181160d7da6f"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "be87f2ce1494f50d2f9ecac1f20920ef84b40ee920661fe5940f181160d7da6f"
-    sha256 cellar: :any_skip_relocation, sonoma:        "a932f914bef72b4ef07d01b69e78301baa69f289b5314aa12cf3b3833e86e8b2"
-    sha256 cellar: :any_skip_relocation, ventura:       "a932f914bef72b4ef07d01b69e78301baa69f289b5314aa12cf3b3833e86e8b2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6fb93d0a68df56c167438925321d0005a0b8ba67ef5684ffe9e5076431b8faa6"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "b03e0c6f35cee6c9429546caa7f234cf4d81823e9b9d7b3c70a7904202d63831"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "b03e0c6f35cee6c9429546caa7f234cf4d81823e9b9d7b3c70a7904202d63831"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "b03e0c6f35cee6c9429546caa7f234cf4d81823e9b9d7b3c70a7904202d63831"
+    sha256 cellar: :any_skip_relocation, sonoma:        "8dc968faad45671c0aa786fba01ba18098901495150a287e24db32e12e4744f2"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "51b6a9d8acc2a759a774bd5d4355f92e724dddb71296c371ef545bd49378e04c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1731517e837c3949ca6ebe97b97e9adfe50090cde7dd6b96190064ee5a44e5dc"
   end
 
   depends_on "go" => :build
@@ -29,7 +29,7 @@ class Brev < Formula
     ldflags = "-s -w -X github.com/brevdev/brev-cli/pkg/cmd/version.Version=v#{version}"
     system "go", "build", *std_go_args(ldflags:)
 
-    generate_completions_from_executable(bin/"brev", "completion")
+    generate_completions_from_executable(bin/"brev", shell_parameter_format: :cobra)
   end
 
   test do

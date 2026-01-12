@@ -1,9 +1,9 @@
 class TclTk < Formula
   desc "Tool Command Language"
   homepage "https://www.tcl-lang.org"
-  url "https://downloads.sourceforge.net/project/tcl/Tcl/9.0.2/tcl9.0.2-src.tar.gz"
-  mirror "https://fossies.org/linux/misc/tcl9.0.2-src.tar.gz"
-  sha256 "e074c6a8d9ba2cddf914ba97b6677a552d7a52a3ca102924389a05ccb249b520"
+  url "https://downloads.sourceforge.net/project/tcl/Tcl/9.0.3/tcl9.0.3-src.tar.gz"
+  mirror "https://fossies.org/linux/misc/tcl9.0.3-src.tar.gz"
+  sha256 "2537ba0c86112c8c953f7c09d33f134dd45c0fb3a71f2d7f7691fd301d2c33a6"
   license "TCL"
 
   livecheck do
@@ -12,13 +12,12 @@ class TclTk < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "72c31e0a6820dab140ba8bafa5dc350d29f8fdc19bcf490a8c9f79544874d4c6"
-    sha256 arm64_sonoma:  "8eb159e282bd32415b42a9ad939163059595c5fc8e118c0ce1758ddffab874ce"
-    sha256 arm64_ventura: "54c63389b8a52a06b8075c7af193f4572a9c3f0407b1259dc9a2fa22ec10261e"
-    sha256 sonoma:        "ea60c10f5881f0f203ea6c0120cc693a52e2074bb5914ef0efff9e6945a3a55a"
-    sha256 ventura:       "6b189f88e2517390a8fd27f0c8ff9bf3a3785c03a66fe1ebd2460942cabd59d3"
-    sha256 arm64_linux:   "12d8e9847602cda7f87c3f64bf0f775c8b0a5b3c88f881c3a4089648207096ee"
-    sha256 x86_64_linux:  "d3807fe005678195a32af543a1e97de858a242b082749548411b904c1b0cfd24"
+    sha256 arm64_tahoe:   "2932f581d51e82b77a24d330c6943aaf8014026b10c64ece0382e742c2bcfd18"
+    sha256 arm64_sequoia: "02bcb6d65d5e7975771dcfed9fbc5b6a96c3885602e9d649242554cc040c319e"
+    sha256 arm64_sonoma:  "306b1721101fe8026b5db1c441235c4f781189e8589042151e3d00c3b318cc1c"
+    sha256 sonoma:        "7b9a8bb4ee8f4b0019dcfa7366b20180e2cfcce8a15a29e70b1fd16542108f78"
+    sha256 arm64_linux:   "91a52c6e39e7c6cf960a8ffdef66cf74a76a9b6027de1481702d701f72536a25"
+    sha256 x86_64_linux:  "dfd7b56503cf9a306f03b354d869995073218da58eb5a332eaf0104c57a01e60"
   end
 
   depends_on "libtommath"
@@ -50,19 +49,20 @@ class TclTk < Formula
     sha256 "642c2c679c9017ab6fded03324e4ce9b5f4292473b62520e82aacebb63c0ce20"
   end
 
-  # There is no tcltls release compatible with TCL 9 so using latest
-  # check-in at https://core.tcl-lang.org/tcltls/timeline
+  # There is no tcltls release compatible with TCL 9 and upstream Fossil repo
+  # added bot check that breaks download so instead track the Debian version.
+  # TODO: Track official versions once available
   # Ref: https://core.tcl-lang.org/tcltls/tktview/f5a0fe8ddf
   # Ref: https://sourceforge.net/p/tcl/mailman/tcl-core/thread/eab3a8bf-b846-45ef-a80c-6bc94d6dfe91@elmicron.de/
   resource "tcltls" do
-    url "https://core.tcl-lang.org/tcltls/tarball/e03e54ee87/tcltls-e03e54ee87.tar.gz"
-    sha256 "db473afa98924c0a2b44ecacea35bb2609e6810de1df389ad55bb3688023f8d1"
+    url "https://deb.debian.org/debian/pool/main/t/tcltls/tcltls_1.8.0.orig.tar.gz"
+    sha256 "720a9e0bed3ba41b1ad141443c8651b7d0dc8fc9087f2077accb1ba9a5736489"
   end
 
   resource "tk" do
-    url "https://downloads.sourceforge.net/project/tcl/Tcl/9.0.2/tk9.0.2-src.tar.gz"
-    mirror "https://fossies.org/linux/misc/tk9.0.2-src.tar.gz"
-    sha256 "76fb852b2f167592fe8b41aa6549ce4e486dbf3b259a269646600e3894517c76"
+    url "https://downloads.sourceforge.net/project/tcl/Tcl/9.0.3/tk9.0.3-src.tar.gz"
+    mirror "https://fossies.org/linux/misc/tk9.0.3-src.tar.gz"
+    sha256 "bf344efadb618babb7933f69275620f72454d1c8220130da93e3f7feb0efbf9b"
 
     livecheck do
       formula :parent
@@ -136,6 +136,9 @@ class TclTk < Formula
     resource("tcltls").stage do
       system "./configure", "--with-openssl-dir=#{Formula["openssl@3"].opt_prefix}",
                             "--prefix=#{prefix}",
+                            "--with-tcl=#{lib}",
+                            "--with-tclinclude=#{include}/tcl-tk",
+                            "--includedir=#{include}/tcl-tk",
                             "--mandir=#{man}"
       system "make", "install"
     end

@@ -1,18 +1,17 @@
 class AwsCAuth < Formula
   desc "C99 library implementation of AWS client-side authentication"
   homepage "https://github.com/awslabs/aws-c-auth"
-  url "https://github.com/awslabs/aws-c-auth/archive/refs/tags/v0.9.0.tar.gz"
-  sha256 "aa6e98864fefb95c249c100da4ae7aed36ba13a8a91415791ec6fad20bec0427"
+  url "https://github.com/awslabs/aws-c-auth/archive/refs/tags/v0.9.5.tar.gz"
+  sha256 "39000bff55fe8c82265b9044a966ab37da5c192a775e1b68b6fcba7e7f9882fb"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "06df88080fcfaf6fe91a2c540b871a0c77a141ae1dbe8b73668e03eb55d0b67e"
-    sha256 cellar: :any,                 arm64_sonoma:  "0c3c13ae6687460c5f29617c7c486260d3bc39cc7a496cde5daa2f3c36e42dd4"
-    sha256 cellar: :any,                 arm64_ventura: "cf5e60be0f03a5525711c583ffd9c493a04a98e4826761cfd5ff14545ab8b69e"
-    sha256 cellar: :any,                 sonoma:        "49dfff5ac5771443df5b68926932e75f0a40a16843b4178ffcbac5112321142c"
-    sha256 cellar: :any,                 ventura:       "c317c5c9f21dfac42f85f26189bae9b63dc40930e013c18a56eb9b50318ce2b6"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "75e6ac9faec17da32024b9facb7f1ff8ab418e069d3657ee98c3e73a96202384"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0ad423d2062cee09491d1c0fcdbf1f9699bdaa65ec2072552108fa0ce2070f3f"
+    sha256 cellar: :any,                 arm64_tahoe:   "e7c45b978984d2885f3a4713805f0984fa63aedaf6269f1d3cf3577a7780fcde"
+    sha256 cellar: :any,                 arm64_sequoia: "cc69a9d3a4c795384e3cda5592831a75ee0acd7f18d104c181687da0db91dfe4"
+    sha256 cellar: :any,                 arm64_sonoma:  "9aa91b0fb70bae7f1a285d1e1d01330cd0a7116504f1659af81710142ed98dfd"
+    sha256 cellar: :any,                 sonoma:        "03a4e33c9ed6f5ea5b4df0574b82ea0809db86f9b0a29319110da128d2570ad4"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "cf900bd6b2c495756fca082104170fb537d2d78b20ee37d62af3b95e6452bb3d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6f551712e1ecb0eb3cc43e23c7c77956f0373d5be1840372641a8195aacd24ec"
   end
 
   depends_on "cmake" => :build

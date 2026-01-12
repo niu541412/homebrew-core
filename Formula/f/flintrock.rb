@@ -6,27 +6,31 @@ class Flintrock < Formula
   url "https://files.pythonhosted.org/packages/e9/3b/810c7757f6abb0a73a50c2da6da2dacb5af85a04b056aef81323b2b6a082/Flintrock-2.1.0.tar.gz"
   sha256 "dde4032630ad44c374c2a9b12f0d97db87fa5117995f1c7dd0f70b631f47a035"
   license "Apache-2.0"
+  revision 1
 
   bottle do
-    rebuild 5
-    sha256 cellar: :any,                 arm64_sequoia: "74a8a662dc4aee333db1b838cc7f62681b0d3a9fc6e8f8205e20d80d4c2527b1"
-    sha256 cellar: :any,                 arm64_sonoma:  "fe7ad09c56f48d70f3e01b5cd140bb549efbb9853d5563a646a7dd903fe6f59c"
-    sha256 cellar: :any,                 arm64_ventura: "6410fd282b7957ac56b1cfc1af125e719da2cf0abaf0910a3d2de375b17d2b34"
-    sha256 cellar: :any,                 sonoma:        "7cb921528a346d5644a3eabea2ae4e05acb08b03b9f30aa83075c925dbced21c"
-    sha256 cellar: :any,                 ventura:       "138d6d702cd47fb30d49fdb48058c740ac01accac3bb644cc040dbd6542556be"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "ab3e830362e5e1eb5f548506b5ad07f35aa30811715865c2eb084ff5d81b157e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8cb71305e97a64921e0676e6be13283a65e4ffe809bf62c1cc31b339396a8bd0"
+    sha256 cellar: :any,                 arm64_tahoe:   "1561728f5ee680f1cf1f42eef3667cdddba8800903c8b9a68c1d8f341d2a8c0f"
+    sha256 cellar: :any,                 arm64_sequoia: "3189349906f04737772d0b1acb6f4a523b5430b65271626778f07e1d8d9c94f6"
+    sha256 cellar: :any,                 arm64_sonoma:  "148986f12dd15e824c46d2251521e19b6a5e19d9ee0eadf027ab692fb3f5183b"
+    sha256 cellar: :any,                 sonoma:        "e5d6aff8a0895ff834f6e74bbb1ef9166120566d264166fa339a1d6ef2d11f90"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "c57d22478c82da7ea46b9b3f7b11315a9f7decb7862e557bb24214efe141ec45"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "17ac5368bc13e842cb4b2649cf2872c3d75a7c2c47e3f29c3db2c8cd63cb7416"
   end
 
   depends_on "rust" => :build # for bcrypt
-  depends_on "cryptography"
+  depends_on "cryptography" => :no_linkage
   depends_on "libsodium" # for pynacl
   depends_on "libyaml"
-  depends_on "python@3.13"
+  depends_on "python@3.14"
+
+  # `pyyaml` is manually updated to support Python 3.14
+  # Issue ref: https://github.com/nchammas/flintrock/issues/385
+
+  pypi_packages exclude_packages: "cryptography"
 
   resource "bcrypt" do
-    url "https://files.pythonhosted.org/packages/e4/7e/d95e7d96d4828e965891af92e43b52a4cd3395dc1c1ef4ee62748d0471d0/bcrypt-4.2.0.tar.gz"
-    sha256 "cf69eaf5185fd58f268f805b505ce31f9b9fc2d64b376642164e9244540c1221"
+    url "https://files.pythonhosted.org/packages/d4/36/3329e2518d70ad8e2e5817d5a4cac6bba05a47767ec416c7d020a965f408/bcrypt-5.0.0.tar.gz"
+    sha256 "f748f7c2d6fd375cc93d3fba7ef4a9e3a092421b8dbf34d8d4dc06be9492dfdd"
   end
 
   resource "boto3" do
@@ -55,8 +59,8 @@ class Flintrock < Formula
   end
 
   resource "pynacl" do
-    url "https://files.pythonhosted.org/packages/a7/22/27582568be639dfe22ddb3902225f91f2f17ceff88ce80e4db396c8986da/PyNaCl-1.5.0.tar.gz"
-    sha256 "8ac7448f09ab85811607bdd21ec2464495ac8b7c66d146bf545b0f08fb9220ba"
+    url "https://files.pythonhosted.org/packages/d9/9a/4019b524b03a13438637b11538c82781a5eda427394380381af8f04f467a/pynacl-1.6.2.tar.gz"
+    sha256 "018494d6d696ae03c7e656e5e74cdfd8ea1326962cc401bcf018f1ed8436811c"
   end
 
   resource "python-dateutil" do
@@ -65,8 +69,8 @@ class Flintrock < Formula
   end
 
   resource "pyyaml" do
-    url "https://files.pythonhosted.org/packages/54/ed/79a089b6be93607fa5cdaedf301d7dfb23af5f25c398d5ead2525b063e17/pyyaml-6.0.2.tar.gz"
-    sha256 "d584d9ec91ad65861cc08d42e834324ef890a082e591037abe114850ff7bbc3e"
+    url "https://files.pythonhosted.org/packages/05/8e/961c0007c59b8dd7729d542c61a4d537767a59645b82a0b521206e1e25c2/pyyaml-6.0.3.tar.gz"
+    sha256 "d76623373421df22fb4cf8817020cbb7ef15c725b9d5e45f17e189bfc384190f"
   end
 
   resource "s3transfer" do
@@ -75,17 +79,14 @@ class Flintrock < Formula
   end
 
   resource "six" do
-    url "https://files.pythonhosted.org/packages/71/39/171f1c67cd00715f190ba0b100d606d440a28c93c7714febeca8b79af85e/six-1.16.0.tar.gz"
-    sha256 "1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"
+    url "https://files.pythonhosted.org/packages/94/e7/b2c673351809dca68a0e064b6af791aa332cf192da575fd474ed7d6f16a2/six-1.17.0.tar.gz"
+    sha256 "ff70335d468e7eb6ec65b95b99d3a2836546063f63acc5171de367e834932a81"
   end
 
   resource "urllib3" do
     url "https://files.pythonhosted.org/packages/af/47/b215df9f71b4fdba1025fc05a77db2ad243fa0926755a52c5e71659f4e3c/urllib3-2.0.7.tar.gz"
     sha256 "c97dfde1f7bd43a71c8d2a58e369e9b2bf692d1334ea9f9cae55add7d0dd0f84"
   end
-
-  # patch to update pyyaml to build with py3.13, upstream pr ref, https://github.com/nchammas/flintrock/pull/380
-  patch :DATA
 
   def install
     virtualenv_install_with_resources
@@ -100,18 +101,3 @@ class Flintrock < Formula
     assert_match "could not find your AWS credentials", msg
   end
 end
-
-__END__
-diff --git a/setup.py b/setup.py
-index e95a10e..02925e7 100644
---- a/setup.py
-+++ b/setup.py
-@@ -53,7 +53,7 @@ setuptools.setup(
-         'botocore == 1.32.4',
-         'click == 8.1.7',
-         'paramiko == 3.3.1',
--        'PyYAML == 6.0.1',
-+        'PyYAML == 6.0.2',
-     ],
-
-     entry_points={

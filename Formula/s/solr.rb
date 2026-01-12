@@ -1,13 +1,14 @@
 class Solr < Formula
   desc "Enterprise search platform from the Apache Lucene project"
   homepage "https://solr.apache.org/"
-  url "https://dlcdn.apache.org/solr/solr/9.9.0/solr-9.9.0.tgz"
-  mirror "https://archive.apache.org/dist/solr/solr/9.9.0/solr-9.9.0.tgz"
-  sha256 "eb4a888593a58c8415ed959148dd70ae7379a14199195f9bb3743a5bb10a9169"
+  url "https://dlcdn.apache.org/solr/solr/9.10.0/solr-9.10.0.tgz"
+  mirror "https://archive.apache.org/dist/solr/solr/9.10.0/solr-9.10.0.tgz"
+  sha256 "e33507231e7192753b13b8d11a5b7a6e0b7a0a6d2e1f53df4c8d4e20f0fb7da4"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "8b84655f53aa8dde2b606f93d4a70ad64e86c40abe7d4ac8f2be1c90b218d986"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, all: "592f957bb34ffc18114c262953a7d74870b82ac414951c48d3b2d4f64507aadd"
   end
 
   # Can be updated after https://github.com/apache/solr/pull/3153
@@ -16,6 +17,8 @@ class Solr < Formula
   def install
     pkgshare.install "bin/solr.in.sh"
     (var/"lib/solr").install "server/solr/README.md", "server/solr/solr.xml", "server/solr/zoo.cfg"
+    (var/"log/solr").mkpath
+    (var/"run/solr").mkpath
     prefix.install "licenses", "modules", "server"
     bin.install "bin/solr", "bin/post"
 
@@ -26,11 +29,6 @@ class Solr < Formula
     bin.env_script_all_files libexec, env
 
     inreplace libexec/"solr", "/usr/local/share/solr", pkgshare
-  end
-
-  def post_install
-    (var/"run/solr").mkpath
-    (var/"log/solr").mkpath
   end
 
   service do

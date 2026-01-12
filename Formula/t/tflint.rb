@@ -1,20 +1,20 @@
 class Tflint < Formula
   desc "Linter for Terraform files"
   homepage "https://github.com/terraform-linters/tflint"
-  url "https://github.com/terraform-linters/tflint/archive/refs/tags/v0.58.1.tar.gz"
-  sha256 "2099bef1b47dc995ae531ebcc92a9e272206976740095b1cc897b3185ecd82bf"
+  url "https://github.com/terraform-linters/tflint/archive/refs/tags/v0.60.0.tar.gz"
+  sha256 "4a0c84fc4052de551f97e5c4b0b81f869e3ec708e4f27eff5157813c8b46fea3"
   license "MPL-2.0"
   head "https://github.com/terraform-linters/tflint.git", branch: "master"
 
-  no_autobump! because: :requires_manual_review
+  no_autobump! because: :bumped_by_upstream
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "24339a7eb6991d6fbe6109fc1e92db9228d2519a2f72c1bb621bc841557cdffd"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "24339a7eb6991d6fbe6109fc1e92db9228d2519a2f72c1bb621bc841557cdffd"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "24339a7eb6991d6fbe6109fc1e92db9228d2519a2f72c1bb621bc841557cdffd"
-    sha256 cellar: :any_skip_relocation, sonoma:        "a48a5b625e1089a2a982ba9fc78f486bb7c6c4868c10deb103f0dfe0c9e8f790"
-    sha256 cellar: :any_skip_relocation, ventura:       "73a38207dc2e8397cc59971e5533a3237cdda184e5ff6c24cb9a7a7747f69f54"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0a71d83a6b89aae23bdee2f4b0b295d0e9eb26a5f319afff8479558300aba75c"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "3faf7bf7be0821fd55f469752e001280c2d7458054a4097a5407c48b328e36c2"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "3faf7bf7be0821fd55f469752e001280c2d7458054a4097a5407c48b328e36c2"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "3faf7bf7be0821fd55f469752e001280c2d7458054a4097a5407c48b328e36c2"
+    sha256 cellar: :any_skip_relocation, sonoma:        "dd9145ca48e62e51327adbda4292eb8e57d2abe8f006ead9e84fc53019e627ad"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "2cac89f92f1b28e12254875907f90181b10ee783abc47575c8ea395dbe0258fc"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "9d92809ea4c977848d7c3d4f4130e2d4d9efb9ba52f46ad5d6f70811853cec6d"
   end
 
   depends_on "go" => :build

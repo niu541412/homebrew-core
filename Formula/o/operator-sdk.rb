@@ -2,8 +2,8 @@ class OperatorSdk < Formula
   desc "SDK for building Kubernetes applications"
   homepage "https://sdk.operatorframework.io/"
   url "https://github.com/operator-framework/operator-sdk.git",
-      tag:      "v1.41.1",
-      revision: "69ee6d4077ff769a8513571343a96f3cb8ca35ef"
+      tag:      "v1.42.0",
+      revision: "ab5563df5499cafa4ea9d40d4b36b51899a4718e"
   license "Apache-2.0"
   head "https://github.com/operator-framework/operator-sdk.git", branch: "master"
 
@@ -13,13 +13,13 @@ class OperatorSdk < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "7af87d45d23a38bdd577d79113fec7e13ed85659b08370840cc4330e9a1f522c"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "3a56c33d80094de249513a5357106cfc05f171c4a9fcbd9d716958c025b3af00"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "71366694c1096f6f371093719fba04b8169c048c38255c1ef28aefba17de03d3"
-    sha256 cellar: :any_skip_relocation, sonoma:        "5f8c7d8a716e12d7cedc8da2b7803618f54b4178dd6bc3db1a5409f5084d996e"
-    sha256 cellar: :any_skip_relocation, ventura:       "17a5045f3c546d858044a904d97af2275f0a15f5069342430f71f4bcb9450dc0"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "f7d5e4e0838f3ae5941a419343a3076d0ba2e37d8f579fc365cdb36aafc76529"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "570ebcf4795769e4865155dc8500b15c4862535e0249f51396bc2234051ab532"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "292910e2303b1807abfd2e15f36239768aa14aeecc57e8c344f1d3d0225aebfa"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "9016d1b8781a29b78156109cfcdd9455e8a462d73f96384dccca321e19e80023"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "2c80acbf5c023e2d17554f9a07388ab69c1c488763734cf06662b238a18a0804"
+    sha256 cellar: :any_skip_relocation, sonoma:        "ada13ce55cc3cb321c796b393a29e2d102c4da57bc1878d96b7b9c1f2c272090"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "fe49bb3277029444d2a654cb0672c70718c4bff9439e27f87b7b95a96ff51b4e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5cb1e0336db204954dacbf3fef72dd6b586ec7b23e024632686815e4ce59c810"
   end
 
   depends_on "pkgconf" => :build
@@ -32,7 +32,7 @@ class OperatorSdk < Formula
     ENV["GOBIN"] = bin
     system "make", "install", "CGO_ENABLED=1"
 
-    generate_completions_from_executable(bin/"operator-sdk", "completion")
+    generate_completions_from_executable(bin/"operator-sdk", shell_parameter_format: :cobra)
   end
 
   test do

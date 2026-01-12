@@ -1,25 +1,19 @@
 class Solhint < Formula
   desc "Linter for Solidity code"
   homepage "https://protofire.github.io/solhint/"
-  url "https://registry.npmjs.org/solhint/-/solhint-6.0.0.tgz"
-  sha256 "ac11b20749ee0fe428fbfe0078c1e652b3d038b8b7e8881d50c04dbfd1a2e27f"
+  url "https://registry.npmjs.org/solhint/-/solhint-6.0.2.tgz"
+  sha256 "1d7983da28faab309cc1f0c7e298b2479c68c36f2d0cd885b04a5f1e568438e6"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "cbd67f8b667451be10b15f86007454dcea3d5e456f6e0772b712b7e021b9fb3a"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "cbd67f8b667451be10b15f86007454dcea3d5e456f6e0772b712b7e021b9fb3a"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "cbd67f8b667451be10b15f86007454dcea3d5e456f6e0772b712b7e021b9fb3a"
-    sha256 cellar: :any_skip_relocation, sonoma:        "f3a2bff5ddfb6e5c7e1844b8b9aacf39a2c8c9438f4d652f5b09dffb70d687e8"
-    sha256 cellar: :any_skip_relocation, ventura:       "f3a2bff5ddfb6e5c7e1844b8b9aacf39a2c8c9438f4d652f5b09dffb70d687e8"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "cbd67f8b667451be10b15f86007454dcea3d5e456f6e0772b712b7e021b9fb3a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "cbd67f8b667451be10b15f86007454dcea3d5e456f6e0772b712b7e021b9fb3a"
+    sha256 cellar: :any_skip_relocation, all: "bbc21f1e81b664c8c06767a4c5c31064b89458f226ba387b6e7dd602de2b40f3"
   end
 
   depends_on "node"
 
   def install
     system "npm", "install", *std_npm_args
-    bin.install_symlink Dir["#{libexec}/bin/*"]
+    bin.install_symlink libexec.glob("bin/*")
   end
 
   test do

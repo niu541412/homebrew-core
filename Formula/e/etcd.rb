@@ -2,19 +2,18 @@ class Etcd < Formula
   desc "Key value store for shared configuration and service discovery"
   homepage "https://github.com/etcd-io/etcd"
   url "https://github.com/etcd-io/etcd.git",
-      tag:      "v3.6.4",
-      revision: "5400cdc39b829ee5dadacb77002256cf86357da1"
+      tag:      "v3.6.7",
+      revision: "e838ef116fc368b321ddf2e424167b15174fb80d"
   license "Apache-2.0"
   head "https://github.com/etcd-io/etcd.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "08a2472f8be75f7a366c3cb5152b5c7851baf1500025cc63da143a120fa7e313"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "08a2472f8be75f7a366c3cb5152b5c7851baf1500025cc63da143a120fa7e313"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "08a2472f8be75f7a366c3cb5152b5c7851baf1500025cc63da143a120fa7e313"
-    sha256 cellar: :any_skip_relocation, sonoma:        "d3cb603edd8c51b88965799e288f4f2b13a5474d783a492026cc89455ada0424"
-    sha256 cellar: :any_skip_relocation, ventura:       "d3cb603edd8c51b88965799e288f4f2b13a5474d783a492026cc89455ada0424"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "24dd085dc7b8d7fb59409d80ded252887c9d85f28a8ac8287d4e9ecd7e525434"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "53a7c85c5a5ded8f6093aa0318508032035c49dbd83987e1423d241ec84709c9"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "c879b6050f7e12878c631b9da99b17edad39975c2aff760dc76bda2f49a489e4"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "c879b6050f7e12878c631b9da99b17edad39975c2aff760dc76bda2f49a489e4"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "c879b6050f7e12878c631b9da99b17edad39975c2aff760dc76bda2f49a489e4"
+    sha256 cellar: :any_skip_relocation, sonoma:        "a0c4f4f57d43149049f2b8e4d7b60b20a83d188297d880f40a8d011d196a1fc6"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "328ad1a54c6b66d1bef7103c3e28da79668d3a340fb698d4cd682fa401fb35c8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "86571662143deb43fddcec3a6dc12cba0e8184df711e356d607284f15c0b2d6b"
   end
 
   depends_on "go" => :build
@@ -34,14 +33,7 @@ class Etcd < Formula
 
   test do
     test_string = "Hello from brew test!"
-    etcd_pid = fork do
-      exec bin/"etcd",
-           "--force-new-cluster",
-           "--logger=zap",
-           "--data-dir=#{testpath}"
-    end
-
-    # Wait a bit for etcd to initialize
+    etcd_pid = spawn bin/"etcd", "--force-new-cluster", "--logger=zap", "--data-dir=#{testpath}"
     sleep 10
 
     key_base64 = Base64.strict_encode64("brew_test")

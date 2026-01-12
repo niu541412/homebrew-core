@@ -1,18 +1,17 @@
 class Pgrx < Formula
   desc "Build Postgres Extensions with Rust"
   homepage "https://github.com/pgcentralfoundation/pgrx"
-  url "https://github.com/pgcentralfoundation/pgrx/archive/refs/tags/v0.15.0.tar.gz"
-  sha256 "56df0ac710d405cf5cd0eb5323c3e5aa3fbad21790c89489b6a165156b4bc149"
+  url "https://github.com/pgcentralfoundation/pgrx/archive/refs/tags/v0.16.1.tar.gz"
+  sha256 "8638d911003b93e8a73ad86e3cfa807165d2d3e69fce45dff98b19838ca66d13"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "9f2c50d5570f451038259800b05950d742a1a6533b2aef9034ff7fd375982ace"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "035466530f2602de6007796a208969e5965eeb08ea25dda724c4679b8efae359"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "19728769518bbe1076f357829ccff126bfe611bff45e761fd6becd80a53b62ac"
-    sha256 cellar: :any_skip_relocation, sonoma:        "cb2cf896e76f7acd252ba16b7b755e59b81264e92c5d9ca40a3edd30556ca06d"
-    sha256 cellar: :any_skip_relocation, ventura:       "399b1a9e40ad38e9c91d1ef15f0acbc86f780dd42524e438aa94a5485c2ffda7"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "5eeced03f6c07f86be460e1ee1093dae326f5d81d855d6db13dae0bdd2c87c57"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "62b9f2c624f60093fba7942436ee21104d1816996139bdb08632c31f9c0e5852"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "18ec52d8f23536e3d83cae766791ce71909ea1ecfe8d8825ca08c28900e6e360"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "0635a05b7737daf0b4920af5d82304362ac2bd68af62bbeef539b0701ff445fb"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "8a81c4f856715e16bac6cc47e06db980bff34ea6a7e0305ee62922381e2c1b88"
+    sha256 cellar: :any_skip_relocation, sonoma:        "f51e9c9b42b10de08a5d03be749a015981b0e71863de04c1924868d763743628"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "c6f41bedbb746bf6b0cb10f431ea03da30c7f2c174685871ff9a48f18e30190a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c6c3c8f45df8886bdf8f9a9a5065c66217b06b22af1722ef2fb233f44f5c5bb0"
   end
 
   depends_on "pkgconf" => :build

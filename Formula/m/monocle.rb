@@ -1,20 +1,19 @@
 class Monocle < Formula
   desc "See through all BGP data with a monocle"
   homepage "https://github.com/bgpkit/monocle"
-  url "https://github.com/bgpkit/monocle/archive/refs/tags/v0.8.0.tar.gz"
-  sha256 "571f53116c345f1f8279a07e1aaaee3850ceb0fc01ba9c5cef3f393fbefa4a6c"
+  url "https://github.com/bgpkit/monocle/archive/refs/tags/v1.0.2.tar.gz"
+  sha256 "e827a2de78b90b9c91eafc5973e4eb20b87ef9d294892b78c73926951cd5af1f"
   license "MIT"
 
-  no_autobump! because: :requires_manual_review
+  no_autobump! because: :bumped_by_upstream
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "90179dc8e760a4a85ad5e03a25f8512295fc528a0f2eed38cc756a8c8a6edc61"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "62f25e9b9ac204329a2d3452c1e98de2f64e63f6ae3d40e0d1c896d61c679e1a"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "3e631476b096bdd088521de3c2ae615874cc20c82a890216a79a82896951e078"
-    sha256 cellar: :any_skip_relocation, sonoma:        "a7d4adb1ef908b164dac34ec908485d2af8c2928eb49b6fede7ccedc1b357471"
-    sha256 cellar: :any_skip_relocation, ventura:       "b3675f8eb3b4217d5289474d6d420d1fd78598a00d339a3813e826d27d416d5a"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "429f56dfb8e38b70ddeeded089aa85d2b1cde684c350d369493526d672d7305c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "75afdf472f8f6e0978c755ee28f683f52f2025645fe14165ca189b43caacd0f5"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "63e58c4157712d0b296b034e0289318e99b31691ecbab5e46f052de1d18f863f"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "04a61ddafea4e0c23b576c69af0876f1e435e8b49924a434b778707d2f27d951"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "3801c2a6a6df3665f71c0a115b38555c7732f1bc1267c6698fbdf9891cce2ef1"
+    sha256 cellar: :any_skip_relocation, sonoma:        "f1f9ec02dc3b36272e1b653a992b84dda0ee0bdc0a08be735e00544b076850a3"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "7dd563f1351120db9c81d90e546ce8bb54a4dfb30dadbe114f680dfce0d0a5b8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "68dab29920495954fc1769b523a4be4eadefa0b53e0fee77ecbf93b9b23433cc"
   end
 
   depends_on "rust" => :build

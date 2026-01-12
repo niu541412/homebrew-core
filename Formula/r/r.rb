@@ -1,9 +1,10 @@
 class R < Formula
   desc "Software environment for statistical computing"
   homepage "https://www.r-project.org/"
-  url "https://cran.r-project.org/src/base/R-4/R-4.5.1.tar.gz"
-  sha256 "b42a7921400386645b10105b91c68728787db5c4c83c9f6c30acdce632e1bb70"
+  url "https://cran.r-project.org/src/base/R-4/R-4.5.2.tar.gz"
+  sha256 "87a41ce9b50e096dd2c4282f48efea30c9916fcb7b167fa2bc988c9cf3cb6642"
   license "GPL-2.0-or-later"
+  revision 1
 
   livecheck do
     url "https://cran.rstudio.com/banner.shtml"
@@ -11,13 +12,12 @@ class R < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "d753abe587df5c9500f56f3a589462ed11b86cd6284081c0c98faf24b217836f"
-    sha256 arm64_sonoma:  "127a83c5bf25c9de162fcc812a7e66ce8d128a419ecca454059fb79cec83128b"
-    sha256 arm64_ventura: "3ebe453a6028dc839b9b2e318011ae5c3e3c602ab7672edcc0fbf1a59019db73"
-    sha256 sonoma:        "9c0ad635c88d8eabe6489e6a515ad9789a16bc08b8b3cc2f85a029a2c62f52ad"
-    sha256 ventura:       "a8a79876ee7c1db3b26018beb389237410c3f78a48c3dd7b0441365abc10d3b1"
-    sha256 arm64_linux:   "281413b2064577687bf51a4e51f8bc74e1dd70ab457081478d6d94c1556981cf"
-    sha256 x86_64_linux:  "f54b8ce1a0b25f071d97ad12bf0d6bc2f0152b26f67cdfbf20cb1fddd6efbfdd"
+    sha256 arm64_tahoe:   "07e479b7f8297bc4149646b412a57dff589f55d500b2949505ef0e0c280869e5"
+    sha256 arm64_sequoia: "12f81758f59c0752462640f86030664aae22fe92f0c9ee484ed3134165571fb1"
+    sha256 arm64_sonoma:  "cffb5c40a7e38c485df712a74c27f50c9cc85f414fb392594941edf7eeaa3986"
+    sha256 sonoma:        "9ba7fd1de76c5c0f910c68ece11b18298100c01225cacc3a2095c3a4ae41e9a2"
+    sha256 arm64_linux:   "bb318a83d2bb9854ccabb52af2315138199c771a2a5cde91b40d8a79503d308e"
+    sha256 x86_64_linux:  "9cd4b3c692a957f501ebb0f89ceab1f2d05e3c416f992accedd5d95f49529a38"
   end
 
   depends_on "pkgconf" => :build
@@ -30,13 +30,13 @@ class R < Formula
   depends_on "openblas"
   depends_on "pcre2"
   depends_on "readline"
-  depends_on "tcl-tk@8"
+  depends_on "tcl-tk"
   depends_on "xz"
   depends_on "zstd"
 
   uses_from_macos "bzip2"
   uses_from_macos "curl"
-  uses_from_macos "libffi", since: :catalina
+  uses_from_macos "libffi"
   uses_from_macos "zlib"
 
   on_macos do
@@ -53,7 +53,7 @@ class R < Formula
   on_linux do
     depends_on "glib"
     depends_on "harfbuzz"
-    depends_on "icu4c@77"
+    depends_on "icu4c@78"
     depends_on "libice"
     depends_on "libsm"
     depends_on "libtirpc"
@@ -73,8 +73,8 @@ class R < Formula
     args = [
       "--prefix=#{prefix}",
       "--enable-memory-profiling",
-      "--with-tcl-config=#{Formula["tcl-tk@8"].opt_lib}/tclConfig.sh",
-      "--with-tk-config=#{Formula["tcl-tk@8"].opt_lib}/tkConfig.sh",
+      "--with-tcl-config=#{Formula["tcl-tk"].opt_lib}/tclConfig.sh",
+      "--with-tk-config=#{Formula["tcl-tk"].opt_lib}/tkConfig.sh",
       "--with-blas=-L#{Formula["openblas"].opt_lib} -lopenblas",
       "--enable-R-shlib",
       "--disable-java",

@@ -4,18 +4,18 @@ class ClangIncludeGraph < Formula
   url "https://github.com/bkryza/clang-include-graph/archive/refs/tags/0.2.0.tar.gz"
   sha256 "174bbf961a2426030102bcf444eb2ca4ac10c05cfd5b993fef24bf4d492c420c"
   license "Apache-2.0"
+  revision 2
   head "https://github.com/bkryza/clang-include-graph.git", branch: "main"
 
   no_autobump! because: :requires_manual_review
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "3480c320bbd4af88fc4d12d612c55f4b5f79a9cf4e2479dcc4d9d38ca483acc4"
-    sha256 cellar: :any,                 arm64_sonoma:  "2906d24fb1455310992f9003714951dcd9cf2a4f82bdad3bbe454e6e57807fd1"
-    sha256 cellar: :any,                 arm64_ventura: "7f7c3547adc92cfc57c56aa46b50a6cf87986a8be3abae841bdf90859aeb7f49"
-    sha256 cellar: :any,                 sonoma:        "86d64bd1b27888c88d760ed89e10c061a4b7438d5df5482aedbf249f8f2259f2"
-    sha256 cellar: :any,                 ventura:       "5078292a72af6763ea2f6e0cbca879024344a533f4490f19d69ea4b36214168f"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "43c607758cca6ab5d1842cdf9bb39bc05ea422c2e73c1441f3029ca2e70bbf97"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7b0b5b89b771bd9d1007e5be39a77f527e7c34be2fa66dc86d1cf1b618487f02"
+    sha256 cellar: :any,                 arm64_tahoe:   "b91cadc2503430beeeb5007a71b88e6876f847f4498f7a03cb73ad4f9108de5f"
+    sha256 cellar: :any,                 arm64_sequoia: "53c10e1ad6a3dfdf71cb4c8076f86feb3dadb35167c4dc6f522a32296ffd093b"
+    sha256 cellar: :any,                 arm64_sonoma:  "b91fd2b8751569ebc551ff314ed1c4add18570652f6f771f3ea7ee396e1cd876"
+    sha256 cellar: :any,                 sonoma:        "189c2348eb50bd617bd426baee9d24c82027f0c84fe014de6be1d1d1a4293030"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "52658f4d4518c469688b333c5214393ef52853becbd85756d8a833c7c627bbe3"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d2fd912046181d18a635eac4bf5e1b44071ac369cf2acc9f84986e347ae47353"
   end
 
   depends_on "cmake" => [:build, :test]

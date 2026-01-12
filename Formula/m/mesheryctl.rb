@@ -2,27 +2,26 @@ class Mesheryctl < Formula
   desc "Command-line utility for Meshery, the cloud native management plane"
   homepage "https://meshery.io"
   url "https://github.com/meshery/meshery.git",
-      tag:      "v0.8.123",
-      revision: "ba761472b7577a78deebeaa6e4d14ed97e3aaecd"
+      tag:      "v0.8.196",
+      revision: "a432fe8a42b375971fbba4b747f9332bc9861c01"
   license "Apache-2.0"
   head "https://github.com/meshery/meshery.git", branch: "master"
 
   no_autobump! because: :bumped_by_upstream
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "1ffaa1e5b0accbd1461ec84420fd112d1d7c4b07d5cb2594eebc1269eae86ca6"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "1ffaa1e5b0accbd1461ec84420fd112d1d7c4b07d5cb2594eebc1269eae86ca6"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "1ffaa1e5b0accbd1461ec84420fd112d1d7c4b07d5cb2594eebc1269eae86ca6"
-    sha256 cellar: :any_skip_relocation, sonoma:        "034da9cbe387ce592cd81c526fc18a871baa8f76210a8d6a81a19f48fd9e890b"
-    sha256 cellar: :any_skip_relocation, ventura:       "034da9cbe387ce592cd81c526fc18a871baa8f76210a8d6a81a19f48fd9e890b"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "6e3641fcc45ab1c8d31fde092d663de2e0e0a379451f24de24a19fd10dee2228"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "17c481258cb0a906c1f951b4f63267e7783a18f64494dc9424fa659d6e7a19b6"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "21d4b50cbbc009506831d236fcfb1c6f8d8912b4ead938f03cd1d8abf214a0e5"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "b667e129d20e42526bbeee2194c1c06eb31aa74f9e6134ea72c2bd20f83cefe6"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "c924706d7f5817825717b55924466d3a9078cbabb3414f4f8cac35c719ce53ab"
+    sha256 cellar: :any_skip_relocation, sonoma:        "7a21f9763b27d10754dd348f17db1262e372751f27016d58e14546a623339393"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "3783a37f3b27c3f9f5b8749ecd93fc83a15f995de780d478f1195686d09e69b5"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "094e3d92fe956b6909b1b275c329f3106362b4b5dc6469d6f5ed01fb445f4f06"
   end
 
   depends_on "go" => :build
 
   def install
-    ENV["CGO_ENABLED"] = "0"
+    ENV["CGO_ENABLED"] = "0" if OS.linux?
 
     ldflags = %W[
       -s -w

@@ -1,18 +1,19 @@
 class Pulumictl < Formula
   desc "Swiss army knife for Pulumi development"
   homepage "https://github.com/pulumi/pulumictl"
-  url "https://github.com/pulumi/pulumictl/archive/refs/tags/v0.0.49.tar.gz"
-  sha256 "36af696d99adfa8ca5941780ad12f13116178f252fe47e24a70be0a2f771b0d0"
+  url "https://github.com/pulumi/pulumictl/archive/refs/tags/v0.0.50.tar.gz"
+  sha256 "5950c1e147480068cf292f0e6d68bdf38a31be971ec8dad2f6052963d3fe5eb2"
   license "Apache-2.0"
   head "https://github.com/pulumi/pulumictl.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "2f84623a5d8e33cde3da4a009de0aa603d0c0418e411d04a33f6bee024b3465d"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "2f84623a5d8e33cde3da4a009de0aa603d0c0418e411d04a33f6bee024b3465d"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "2f84623a5d8e33cde3da4a009de0aa603d0c0418e411d04a33f6bee024b3465d"
-    sha256 cellar: :any_skip_relocation, sonoma:        "85d43a6077e2debce71dbd7dfcc917768d0d51599f5c528c906070931280fb64"
-    sha256 cellar: :any_skip_relocation, ventura:       "85d43a6077e2debce71dbd7dfcc917768d0d51599f5c528c906070931280fb64"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7aa43bcca9b9a843c80b09f04f0ab34391ca358f036c5649f87e15ce7ff760b8"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "f16c5f57ad6bc4f89f15f468b9330118ab430700aba5d8277fb1c39afbd700ef"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "f16c5f57ad6bc4f89f15f468b9330118ab430700aba5d8277fb1c39afbd700ef"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "f16c5f57ad6bc4f89f15f468b9330118ab430700aba5d8277fb1c39afbd700ef"
+    sha256 cellar: :any_skip_relocation, sonoma:        "c7775fe4816a00fe38c48a7f90cfb3a96c620175dbb79b9e982384858144e848"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "cc8ec7a5704c20da306196d68524fb2a13956b225b43dcab8c947da99acf22ec"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a1424eb7c55b6b704f81424e95bb63a3042fe458cc9cb9cfbd78442932bd545f"
   end
 
   depends_on "go" => :build
@@ -21,7 +22,7 @@ class Pulumictl < Formula
     ldflags = "-s -w -X github.com/pulumi/pulumictl/pkg/version.Version=#{version}"
     system "go", "build", *std_go_args(ldflags:), "./cmd/pulumictl"
 
-    generate_completions_from_executable(bin/"pulumictl", "completion")
+    generate_completions_from_executable(bin/"pulumictl", shell_parameter_format: :cobra)
   end
 
   test do

@@ -1,8 +1,8 @@
 class Glslang < Formula
   desc "OpenGL and OpenGL ES reference compiler for shading languages"
-  homepage "https://www.khronos.org/opengles/sdk/tools/Reference-Compiler/"
-  url "https://github.com/KhronosGroup/glslang/archive/refs/tags/15.4.0.tar.gz"
-  sha256 "b16c78e7604b9be9f546ee35ad8b6db6f39bbbbfb19e8d038b6fe2ea5bba4ff4"
+  homepage "https://www.khronos.org/opengles/sdk/Reference-Compiler/"
+  url "https://github.com/KhronosGroup/glslang/archive/refs/tags/16.1.0.tar.gz"
+  sha256 "32c605822ed63a0cdc2d24f318c3d912fa14e58573aff1d8eac0cf69f1a6b6d2"
   license all_of: ["BSD-3-Clause", "GPL-3.0-or-later", "MIT", "Apache-2.0"]
   head "https://github.com/KhronosGroup/glslang.git", branch: "main"
 
@@ -12,13 +12,12 @@ class Glslang < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "8f68fc42dc59b27e10719ad0e7f31db2dfb0d99ce978fbd6fc269e3a73f47364"
-    sha256 cellar: :any,                 arm64_sonoma:  "5b2251ec02401af96b5bd227c76d0e84e72fd75d0ba7102ca8cdfa48339863c1"
-    sha256 cellar: :any,                 arm64_ventura: "75ae8371498091fc7437550e3b91c1cba6aa6d324ff727041570e7fc3fd2b7a5"
-    sha256 cellar: :any,                 sonoma:        "3e2fff0dd0173fdcc036c314c070fd6d0cb8579a012c4a72eda25d57c03423a6"
-    sha256 cellar: :any,                 ventura:       "f4be96a9b630d5e03e7def69c991030bd94348e38aaf5045ee63f2c1030829ab"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "9e2ee1cfd6730d4ffaa9366623ee56fdbdabb781482c49ea454563f31fab74c2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "dab4c1c989d7a85aa4b2a0fe98d32952bc132d054aacc6d3d6be5c69334a288c"
+    sha256 cellar: :any,                 arm64_tahoe:   "9ace6b0757373221b39fd4ed33a2bec87fea5899cbee01ff04382f40f1c3de7a"
+    sha256 cellar: :any,                 arm64_sequoia: "8042f23fc01d8e37fe3ac7e750fc1758a62a59016b2dc6599e855d92e50d6049"
+    sha256 cellar: :any,                 arm64_sonoma:  "9ebf5c788cac2ab25c3e50d08504aea2813d326eed8581d11725699df40c2459"
+    sha256 cellar: :any,                 sonoma:        "7b99203d1734e67d201f01117b7791aa5ced7f7beadec704d3c62442b2e45332"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "2fada9479d1c406eb4b41acd1fe9186ba6c46655a257d5842e305964a410c408"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7d50d575173774c951769a49d28d497d313bc372b34cc761f5d089f9ccb29cf6"
   end
 
   depends_on "cmake" => :build

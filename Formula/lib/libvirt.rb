@@ -1,8 +1,8 @@
 class Libvirt < Formula
   desc "C virtualization API"
   homepage "https://libvirt.org/"
-  url "https://download.libvirt.org/libvirt-11.5.0.tar.xz"
-  sha256 "2b63b9d60538e1e2fa4e3f6d836409e6ff705249c79001914ac3400859d72423"
+  url "https://download.libvirt.org/libvirt-11.10.0.tar.xz"
+  sha256 "66154fee836235678b712676b2589c45f66e3d6a8721ee0697c9f20a66cad0d8"
   license all_of: ["LGPL-2.1-or-later", "GPL-2.0-or-later"]
   head "https://gitlab.com/libvirt/libvirt.git", branch: "master"
 
@@ -12,13 +12,12 @@ class Libvirt < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "292f617b69de702861fd90bccf2da9ecd1f4cbe51c129b3007062175ec3cf08c"
-    sha256 arm64_sonoma:  "1c3908a7838582dc8dfda6994f95812ad360292419aff052a2269b48228df625"
-    sha256 arm64_ventura: "d0cf4eb8c624c979a4d838b116621c140cd5974079ac78f6339d307c56936713"
-    sha256 sonoma:        "251cdb13ea5a8e321321516af4ea350653f61cd08ea078736594061c56a3e470"
-    sha256 ventura:       "213c9eb2b72ee620c78eb513e3f4f400dfd5b69818d907fa5db7d112b0a5335b"
-    sha256 arm64_linux:   "2df68423fb62a6c682761072e417ac4878f319d0cf3e3161f765e8ebd5ecbfe7"
-    sha256 x86_64_linux:  "fde0dcbf018f1f3b07a9fef099ba16d00ccf3f07619f2583502fbc06d3f15769"
+    sha256 arm64_tahoe:   "d9a3a6eff482497615ff9563ca04cb33a1bcc0c3b1181ab4157a01b5fed74674"
+    sha256 arm64_sequoia: "4ee2fdb66753b200d128e045cf6f0b919df62682195bcd00735e32a9e56e491b"
+    sha256 arm64_sonoma:  "e50dc20c7f39ab7ed714f34ae273e604d22f82a3d37c447dee7783f77df9acfc"
+    sha256 sonoma:        "710cc28a5836cd9b947d2a571941e267ce54dc8b6666ec25c48d9480d7b16c41"
+    sha256 arm64_linux:   "682f89989f94446da0cf6fcb23a25f0980af1973b36f2247c5b447456105f012"
+    sha256 x86_64_linux:  "8cbd53c67b20a32b295d02cfd8c08fc9d17834fa712baec2ae1538ea2136922f"
   end
 
   depends_on "docutils" => :build
@@ -30,16 +29,14 @@ class Libvirt < Formula
   depends_on "glib"
   depends_on "gnutls"
   depends_on "json-c"
-  depends_on "libgcrypt"
   depends_on "libiscsi"
   depends_on "libssh2"
   depends_on "readline" # Possible opportunistic linkage. TODO: Check if this can be removed.
-  depends_on "yajl"
 
+  uses_from_macos "libxslt" => :build
   uses_from_macos "perl" => :build
   uses_from_macos "curl"
   uses_from_macos "libxml2"
-  uses_from_macos "libxslt"
 
   on_macos do
     depends_on "gettext"
@@ -47,6 +44,7 @@ class Libvirt < Formula
 
   on_linux do
     depends_on "acl"
+    depends_on "cyrus-sasl"
     depends_on "libnl"
     depends_on "libtirpc"
     depends_on "util-linux"

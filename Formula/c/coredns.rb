@@ -1,8 +1,8 @@
 class Coredns < Formula
   desc "DNS server that chains plugins"
   homepage "https://coredns.io/"
-  url "https://github.com/coredns/coredns/archive/refs/tags/v1.12.2.tar.gz"
-  sha256 "72599bcd11ec1fea7521f829d4b431144eb41112d145ce9805ef659e105c4195"
+  url "https://github.com/coredns/coredns/archive/refs/tags/v1.14.0.tar.gz"
+  sha256 "97fa2dda2fbb7f9756cfe4062a6a70edfe6471f120f980e86326ddce06995a77"
   license "Apache-2.0"
   head "https://github.com/coredns/coredns.git", branch: "master"
 
@@ -12,13 +12,12 @@ class Coredns < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "2d985b8bc038800b2f9ac5d07c89bdfdf0b718ccea50a214927f0585f30f02c6"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "e9ae4a56dcf6ac34ae6e2bd66233ac372ac79a9e13716c5583e6394e3f0857de"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "c23deef6517e1719b89c2537866ab5fc76c0fc0276f16e527aa40bf339712548"
-    sha256 cellar: :any_skip_relocation, sonoma:        "e8dc8864cb4352dda93a7e67f2a5affed7c71a3fb5ef2bb174e60042fd71159b"
-    sha256 cellar: :any_skip_relocation, ventura:       "fed71f0e5c8a0a2f65b51777e462c462ae9831db780939c466510c35377fed42"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "d947de41aacc6b0f2b202cfacf156c0440472ff3e3fbf6130e602b5cace8379b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a76a4f4ae8b22c549b0a64b027de0cb3b5a46cafbff8dc324cf664cd111c3abb"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "2e4cb85034347f4c96bf8383de6a3d5438cb3127d7d184e9b31ac84530e451a9"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "6235fc2882eca8ff0090ca0fcf401f34cc90d6aa0dbcf3efbf64b9bed9065918"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "0d7146ce0e7dd70a33f65b483cd3e83524dfe6b8bac913850b5dbbd58b16ab4e"
+    sha256 cellar: :any_skip_relocation, sonoma:        "bba87bb5ba4f32b2eb4c40adecd2a5148ad6f260425252552981b957dcdc4a73"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "c7d76b4b4c4628e8b470113a7c97b3eac43977c7ddb4eeb3157b82759b1ae161"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "17868c996d118e5ce635933751b8374a99df9dee46912fcfca28dfd436abbd38"
   end
 
   depends_on "go" => :build
@@ -43,9 +42,7 @@ class Coredns < Formula
 
   test do
     port = free_port
-    fork do
-      exec bin/"coredns", "-dns.port=#{port}"
-    end
+    spawn bin/"coredns", "-dns.port=#{port}"
     sleep(2)
     output = shell_output("dig @127.0.0.1 -p #{port} example.com.")
     assert_match(/example\.com\.\t\t0\tIN\tA\t127\.0\.0\.1\n/, output)

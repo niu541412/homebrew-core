@@ -1,8 +1,8 @@
 class Widelands < Formula
   desc "Free real-time strategy game like Settlers II"
   homepage "https://www.widelands.org/"
-  url "https://github.com/widelands/widelands/archive/refs/tags/v1.2.1.tar.gz"
-  sha256 "799bfd32048ef20118c48e21f3fc843ae0451c42bb8bf2eabcb9b26bf6fe54b4"
+  url "https://github.com/widelands/widelands/archive/refs/tags/v1.3.tar.gz"
+  sha256 "8468b6bc0ddb70749c09c5603109ceeb79b95f3602d3aa55ecfad84f8ea82571"
   license "GPL-2.0-or-later"
   revision 1
   version_scheme 1
@@ -13,13 +13,12 @@ class Widelands < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "4579bc3c41f00266fe1e3a50b4f23febf356ffe7e658becd1340a9c9fb9c2b9f"
-    sha256 arm64_sonoma:  "d795ec6cfe18efe730a1ee729d28ce329f03905c5e476fa56d01545bbc324d86"
-    sha256 arm64_ventura: "cc89f8628d9dbc446a7a5d4f65269eb2e720c4b0f69a922fc05f62532f8a2e04"
-    sha256 sonoma:        "f6572c7feb4e4713414d27692883553a637aadf95ed03958f27a10bf5d0625fd"
-    sha256 ventura:       "181a93b0acd13093356cf0d919a013dbe4ffc00019f8f3e6ae1772d5c5a24749"
-    sha256 arm64_linux:   "6dc0a351fdca77d0ad76a78519f0582a2d452dabef0d20569daa98a420101585"
-    sha256 x86_64_linux:  "f2d1782fc0592643d470a43c5f269bc3172e5faa05f9f83bf97e609cb6ef8e57"
+    sha256 arm64_tahoe:   "3a62a862ea1cf6d5f34619afd4c0b80b0ef433848ded0d103af4bb24b302fbcb"
+    sha256 arm64_sequoia: "0dc37d35152b9d92f8b2a1989e5d83a8d7c15456f070390e720b25396a6cca57"
+    sha256 arm64_sonoma:  "a671a12752fb6378b4afcf4609f8b80301f24c6bb0a32c6b69c8e836e4f935c7"
+    sha256 sonoma:        "e75054b0b228da298b0f20e2c513caa9cbd25504e186c57f637d2c21544727cf"
+    sha256 arm64_linux:   "e1e5ad56b87f7e520ab0ecb4eabc565cbe772e4ea1042eb927a26e7fbea3484b"
+    sha256 x86_64_linux:  "b9c9ed74ec42f56a34fe2fd7a75f28e7877c9ca4d27c17f9d69d856a2391aec2"
   end
 
   depends_on "asio" => :build
@@ -29,7 +28,7 @@ class Widelands < Formula
   depends_on "pkgconf" => :build
 
   depends_on "glew"
-  depends_on "icu4c@77"
+  depends_on "icu4c@78"
   depends_on "libpng"
   depends_on "lua"
   depends_on "minizip"
@@ -57,7 +56,7 @@ class Widelands < Formula
                     "-DOPTION_BUILD_CODECHECK=OFF",
                     "-DOPTION_BUILD_TESTS=OFF",
                     "-DOPTION_BUILD_WEBSITE_TOOLS=OFF",
-                    "-DPYTHON_EXECUTABLE=#{which("python3") || which("python")}",
+                    "-DPYTHON_EXECUTABLE=#{which("python3")}",
                     *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"

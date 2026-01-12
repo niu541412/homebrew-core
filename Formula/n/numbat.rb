@@ -1,19 +1,18 @@
 class Numbat < Formula
   desc "Statically typed programming language for scientific computations"
   homepage "https://numbat.dev/"
-  url "https://github.com/sharkdp/numbat/archive/refs/tags/v1.16.0.tar.gz"
-  sha256 "33f3744a31f62f7ebd985c6b3ec3c6a6d6f897527e8db5bc2de48dd299a63cdd"
+  url "https://github.com/sharkdp/numbat/archive/refs/tags/v1.18.0.tar.gz"
+  sha256 "29ebaf622dfb0c1ed142572f4a0a9a5a546b9b2d51149260ff64078ed4c233cb"
   license any_of: ["Apache-2.0", "MIT"]
-  head "https://github.com/sharkdp/numbat.git", branch: "master"
+  head "https://github.com/sharkdp/numbat.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "487fd2bfbd8ac5b590386c8686b32335c475a4aa49fe7e5a58e5a4e6e3dd44dd"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "d23f0227df669a913c50a2a48b6be6ee98ca4375bf554cd443547e8ffa76b237"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "0415e2b39effbd9843b5454705d157f76a842fa8c6c4399a78af8edf45e56bbb"
-    sha256 cellar: :any_skip_relocation, sonoma:        "f45d7ee45e0db01d8ff53ff4d6eb96157d4d5a1cc707d5f7b56de73659fe2cb6"
-    sha256 cellar: :any_skip_relocation, ventura:       "ac553d4a9495b73b7a6bb60d24e997c77efc41c61d25f338cff93b4ab5f747f1"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "510a56a4eac2d79df0ff557d3c38695f9a8434a88ee2f4ebb587647a1e686cf5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "45335ba3caf2597ba12c9ee5f1a942f488c015bcd6b4b204ba0151ec056e5d07"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "a24e0446d31527147843c8519c2a7aaf08f4b5aa3436eb83a5a49366669ca383"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "e88cba40fb772b90c266d5881e561c262891f2fac8bbe7069bdd6f03179a7ed9"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "80bf230294811f6a84a670c639514d4606111ee8fbd5a1e54c8da80ed776b7c2"
+    sha256 cellar: :any_skip_relocation, sonoma:        "1b48ee3f8c49eb9d651ad7a1edbd80a9868c1a12a7e2b0828d4f19c86be079d1"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "975409f76fb5c1c48697b7c591322f94391d4468c822776dee537ac8f2b55b7c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "155f80625888847e6936e44ffaa8270bee0f3c2117fc4c3b3b03c829dc432853"
   end
 
   depends_on "rust" => :build

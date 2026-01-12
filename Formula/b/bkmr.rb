@@ -1,19 +1,23 @@
 class Bkmr < Formula
   desc "Unified CLI Tool for Bookmark, Snippet, and Knowledge Management"
   homepage "https://github.com/sysid/bkmr"
-  url "https://github.com/sysid/bkmr/archive/refs/tags/v4.28.5.tar.gz"
-  sha256 "515f00bd9895a9dc1222f59b2f41f8f68290f2f03c73cf207ba783a870f44a84"
+  url "https://github.com/sysid/bkmr/archive/refs/tags/v6.4.1.tar.gz"
+  sha256 "074bc7e4ce20c0e1fcfec41eb5f1ac0687cee762ff952b3ed524a17fc92b0174"
   license "BSD-3-Clause"
   head "https://github.com/sysid/bkmr.git", branch: "main"
 
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
+
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "b7e12266ddbf834d7ac32d060348606176880bcef075a3f121b16fb7b21d8cb7"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "6543c62678cab9dd0787ed14e32ffc06964c1565389fc1ebd7b3f9b61ad02e6e"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "79b7240540f8c21a43068e9a4f13f78d172a2823d78a4f2e0e1a03b80ce0f0c5"
-    sha256 cellar: :any_skip_relocation, sonoma:        "1fb86a634164793d6ccfa5da2bbf5632d0f07fd1f118fe4ae8bbeaeb272a913b"
-    sha256 cellar: :any_skip_relocation, ventura:       "fc2c950e48636c476c1398bcfac23fbafde98ab6ddd88b51e7d9dd4bbcd26ee9"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "12fd3e79db46d9afed087812052f09c0273c0b055604af9a017dda220b538e36"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f9e62c94a52ae11d6bccc4c46f6342ad5f8e1f85b462960ff1cb201c6d3ee32b"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "5839233c8bf049bed7c316b0d8102274bd0731179a36608f7d71aaee83b1e128"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "e9a65832f70d1a5fc007d13b0ec8e08e41676e023a16ae93cfffdc58cea5cb00"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "1565be26645a68f285ea8e649ce484e01eda17baef9fe58aaff1b67bf496c1be"
+    sha256 cellar: :any_skip_relocation, sonoma:        "830f535f9fc7f2372ebe907bc662b4d0dae498c472e99b0b98db35c686e90f6e"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "abdb8e51604cb4176af23bf3dbd6a440a027255ad696a9ea6e9f86c3547fa919"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "861a84d444b5c355b2129d65d8ea25f7c195685d6e4f5569fd277130938877f3"
   end
 
   depends_on "rust" => :build
@@ -36,8 +40,7 @@ class Bkmr < Formula
   test do
     assert_match version.to_s, shell_output("#{bin}/bkmr --version")
 
-    output = shell_output("#{bin}/bkmr info")
-    assert_match "Database URL: #{testpath}/.config/bkmr/bkmr.db", output
-    assert_match "Database Statistics", output
+    expected_output = "The configured database does not exist"
+    assert_match expected_output, shell_output("#{bin}/bkmr info 2>&1", 1)
   end
 end

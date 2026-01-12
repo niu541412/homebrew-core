@@ -3,8 +3,8 @@ class Suricata < Formula
 
   desc "Network IDS, IPS, and security monitoring engine"
   homepage "https://suricata.io"
-  url "https://www.openinfosecfoundation.org/download/suricata-8.0.0.tar.gz"
-  sha256 "51f36ef492cbee8779d6018e4f18b98a08e677525851251279c1f851654f451f"
+  url "https://www.openinfosecfoundation.org/download/suricata-8.0.2.tar.gz"
+  sha256 "9d450ca2cadbe101993e99033a62349d2bda9dfd90a6acc1bcb6cc6db76eb551"
   license "GPL-2.0-only"
 
   livecheck do
@@ -13,13 +13,12 @@ class Suricata < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "7c3a14be3af141a9303682f679f81ca93b4e6d1772801ac9a586f7aa422f82e7"
-    sha256 arm64_sonoma:  "71c19995eae7b175fb7c74c9f0e23849cd1d04011ff822ca4f9227fb7610b5ed"
-    sha256 arm64_ventura: "80166ade36c563eaa7448acc9497d2be26e313c5a7e43f9f240c9ac5b1efc390"
-    sha256 sonoma:        "6692b891697359e22bf5835c6d888d90bedea9baabb0bcef33667b813dcd3d55"
-    sha256 ventura:       "091f75f41bc6e826551d369aaeba3d7260d86a7785086a045aff2d369ccdf1fa"
-    sha256 arm64_linux:   "1d2817d8fcb15e0bc04d99ad575baeecac428714ff19fd5d26cde59cc40b1e91"
-    sha256 x86_64_linux:  "ae7c5a295334a1a1c535020276e14219f422add4f3ba38d791ad6f12829aeab4"
+    sha256 arm64_tahoe:   "52c1d56c421aecfb8a8c41a18c62e53901e422189833e596fc11cd7b6697cc57"
+    sha256 arm64_sequoia: "24ecdd6469206cf05ea5d4e4856941528b8193dd9b6f9c80a4f9677966ec10be"
+    sha256 arm64_sonoma:  "f5f0ed7f68c5276d930aab785684cb956f96f74e6dee3e5d590c671d22ab9055"
+    sha256 sonoma:        "b58fc241a1dbf007ccddf10abf16f29a6bbebefb2bbe0850b99ffbf9af578c5d"
+    sha256 arm64_linux:   "80de0f3c5127c7f676fd9e61361627bfd6bc847de0d0942a30891f2bdd4887af"
+    sha256 x86_64_linux:  "57ddb4dd53c6fba079ed022d7559b0e248401a0bed22ca12a9256d2ab718be1f"
   end
 
   depends_on "pkgconf" => :build
@@ -30,18 +29,18 @@ class Suricata < Formula
   depends_on "libyaml"
   depends_on "lz4"
   depends_on "pcre2"
-  depends_on "python@3.13"
+  depends_on "python@3.14"
 
   uses_from_macos "libpcap"
   uses_from_macos "zlib"
 
   resource "pyyaml" do
-    url "https://files.pythonhosted.org/packages/54/ed/79a089b6be93607fa5cdaedf301d7dfb23af5f25c398d5ead2525b063e17/pyyaml-6.0.2.tar.gz"
-    sha256 "d584d9ec91ad65861cc08d42e834324ef890a082e591037abe114850ff7bbc3e"
+    url "https://files.pythonhosted.org/packages/05/8e/961c0007c59b8dd7729d542c61a4d537767a59645b82a0b521206e1e25c2/pyyaml-6.0.3.tar.gz"
+    sha256 "d76623373421df22fb4cf8817020cbb7ef15c725b9d5e45f17e189bfc384190f"
   end
 
   def python3
-    "python3.13"
+    "python3.14"
   end
 
   def install

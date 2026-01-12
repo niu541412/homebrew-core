@@ -1,17 +1,19 @@
 class Ignite < Formula
   desc "Build, launch, and maintain any crypto application with Ignite CLI"
   homepage "https://docs.ignite.com/"
-  url "https://github.com/ignite/cli/archive/refs/tags/v29.2.0.tar.gz"
-  sha256 "7c9e5d0c6ae32549ac32d6f4aae5f53f6116ceacca707e06e8bcf3786d125053"
+  url "https://github.com/ignite/cli/archive/refs/tags/v29.6.0.tar.gz"
+  sha256 "aa84aefcd349d32bf30e12f2a1c4e9caa83f0c9066e9899439ba5e0080d9be38"
   license "Apache-2.0"
   head "https://github.com/ignite/cli.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "a64e3e4067a95dced9fbe72c7176032ff88eba40cf56cf0dc43cc826cd8d380d"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "0d84f14a8a74811f755cec414833145c970c07cd311e8046c52ace27f56f12c9"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "a594ec537694b56734a37b1a9bc1ca596a0f14e180a1d645ff4267024de21a55"
-    sha256 cellar: :any_skip_relocation, sonoma:        "60831e7176d00195caf2dfbecf8514171c2f8d1e242d069a736ce5751ab692b3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "472af9c323bb64d1e7f9722680ae29ca63a83805654c0e0b9fc2ea6353671b3f"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "72751fd958825f28c4d2bba5bcc840924ec639f17df361e030fd79deebfd901c"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "e6687f7e0ab0f33a839a8aeeb6a7e2b4fd1130c83e13bb8ee0243ce8dbe131e6"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "c68f2d8fb05aef5232916cdd7b4bd787c634eac3283dfb30dc990f6d31e243cc"
+    sha256 cellar: :any_skip_relocation, sonoma:        "73c6262cffd76ad28581146870fe3c23c8ead7b5ed62621087ecbc9295201e0d"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "8b98f9e3a20ea8f0a52819f66bc96adfb92d060729f562a252648b332a93cc40"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8420c8c0bb06b71be99ee8c9b02fb78eaedeca876f6b2ed1cc30d7fc73165d86"
   end
 
   depends_on "go"
@@ -24,8 +26,8 @@ class Ignite < Formula
   test do
     ENV["DO_NOT_TRACK"] = "1"
     system bin/"ignite", "s", "chain", "mars"
-    sleep 2
-    sleep 2 if OS.mac? && Hardware::CPU.intel?
+    sleep 5
+    sleep 10 if OS.mac? && Hardware::CPU.intel?
     assert_path_exists testpath/"mars/go.mod"
   end
 end

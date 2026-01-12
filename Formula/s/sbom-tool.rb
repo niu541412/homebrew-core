@@ -1,8 +1,8 @@
 class SbomTool < Formula
   desc "Scalable and enterprise ready tool to create SBOMs for any variety of artifacts"
   homepage "https://github.com/microsoft/sbom-tool"
-  url "https://github.com/microsoft/sbom-tool/archive/refs/tags/v4.1.0.tar.gz"
-  sha256 "8f54fbcb463011633009f436e13f07e03423b2009b01d45fd6d6053459e37eea"
+  url "https://github.com/microsoft/sbom-tool/archive/refs/tags/v4.1.5.tar.gz"
+  sha256 "512d884ce8689026f45b54a1c2a242e66f7d570e7d9a1a590d88733cc3e1a108"
   license "MIT"
   head "https://github.com/microsoft/sbom-tool.git", branch: "main"
 
@@ -15,12 +15,11 @@ class SbomTool < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "1897251a06b7c0fcd5e022522e93f088a454a627ff88fc6c2f2271076311b536"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "2592ca0021350c5d24225ecc77a8433c12da71272d6ff37ad1c1a7d5e7ec6dc8"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "16bcc02d61099859ce9339b80075415c0a5cddfe87d0089f3031aa5013e79d42"
-    sha256 cellar: :any_skip_relocation, ventura:       "f4cde79fc411ef2da5fea8f23d1ff0cc1064dc183db9e39c8384e2d619bf1645"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "4774825ad211c3b780607e93c1f39a1d017fe9ea49dbcfbd4a27ebf237a7b7d0"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e371252465a8e724e31df8caccede4144bb9745e7c992627aa03c3fae1bfc902"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "6c31aad15124b2f83da7a0ed010a2716e9aedf4bc851d59693111bb23b2393bd"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "1d1227a118a8789126adca3b5cf9c8b13e44d7024853929570161d26cd019929"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "976cfb7dd806d4171e91e5940ea94c3f5210e756bb327858446550fcffc4bade"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "9c682d73f2274bc7f6d54c81d7e47ad00ac384a54d166d5a297a8b209aa6ae2a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1a1d920bb9f3bdcbc323879069b0e2027ac898c4ccdb2c336ac1f97e99afa1e4"
   end
 
   depends_on "dotnet@8"

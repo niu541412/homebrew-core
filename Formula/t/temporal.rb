@@ -1,8 +1,8 @@
 class Temporal < Formula
   desc "Command-line interface for running and interacting with Temporal Server and UI"
   homepage "https://temporal.io/"
-  url "https://github.com/temporalio/cli/archive/refs/tags/v1.4.1.tar.gz"
-  sha256 "fcfe2e857b4e03fad8e63f239df03a21685427f88e0a627c8ac5050ea5908974"
+  url "https://github.com/temporalio/cli/archive/refs/tags/v1.5.1.tar.gz"
+  sha256 "7f0e9ac007df107f6efc05e8ac257642956ec0e04d565bf800ccc3ce62cf70dd"
   license "MIT"
   head "https://github.com/temporalio/cli.git", branch: "main"
 
@@ -12,12 +12,13 @@ class Temporal < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "a3ab6a979ccbecc4d70b4f992c21d26f98ee4735fe6f4d2fcc31243d60fe8fb4"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "2aa480c69ecd97cb57d503b66f06194927ec57d26c6a31c1ff21fdd7c3beedad"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "2ee908edeb7247b254f6180eb6f5e874c8d1a823dd4d229ec8e7ad88da73bc66"
-    sha256 cellar: :any_skip_relocation, sonoma:        "f2ae710e94a4cf9d7411aa998c9eaab2616887d4d3006b603e0838734a5e1ec3"
-    sha256 cellar: :any_skip_relocation, ventura:       "82442ed6e1f331be954ec61bd2ed6654d606d03b0349794cdbed4e087256dd2a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "cd506c2296ee2d9dc1030d994bfc6614362eea028ca02d52245831f62042d409"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "82c0f26acd6a4c6385fa3549d872f61a956401ccc7ddaa939dcc9e4f665669cc"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "2adb78c9fea26d55e865e8004a2765fd4526b442f76f9d6489ebbd405e9dac21"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "6d9175db0088a135048c8cc63517f8af8cf50cd59a2cf8b955b56d59d1cdfb73"
+    sha256 cellar: :any_skip_relocation, sonoma:        "03587c99c54be762b89e4e9bb0db4a16536fb4126cb1baa34cdc1c79fd526189"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "43eb2efae26665e68b1c7dfc266ed7734fe42ca68b8cf47c3b721815e462401a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6d9933fe62ca6bd26fdf1a136fd30a2bcd0620ce582869a5e5475158a22c3c3d"
   end
 
   depends_on "go" => :build
@@ -25,7 +26,8 @@ class Temporal < Formula
   def install
     ldflags = "-s -w -X github.com/temporalio/cli/temporalcli.Version=#{version}"
     system "go", "build", *std_go_args(ldflags:), "./cmd/temporal"
-    generate_completions_from_executable bin/"temporal", "completion"
+
+    generate_completions_from_executable(bin/"temporal", shell_parameter_format: :cobra)
   end
 
   service do

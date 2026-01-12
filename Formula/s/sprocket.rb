@@ -1,19 +1,25 @@
 class Sprocket < Formula
   desc "Bioinformatics workflow engine built on the Workflow Description Language (WDL)"
   homepage "https://sprocket.bio"
-  url "https://github.com/stjude-rust-labs/sprocket/archive/refs/tags/v0.14.1.tar.gz"
-  sha256 "8c68d5d1fc789734df08b398852e7178c20413d62a602d233d4022d6521bd153"
+  # pull from git tag to get submodules
+  url "https://github.com/stjude-rust-labs/sprocket.git",
+      tag:      "v0.19.0",
+      revision: "9b96d4f62e08c32bd4ba607fa2ce356a4748408a"
   license any_of: ["Apache-2.0", "MIT"]
   head "https://github.com/stjude-rust-labs/sprocket.git", branch: "main"
 
+  livecheck do
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
+
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "530168aed77c247727c34728972d69c819604480a19ebe8cb6593536bc40df7f"
-    sha256 cellar: :any,                 arm64_sonoma:  "b81af44813a3cabf7304397194df9b7e7df81a07819550e4be6d0853608eda82"
-    sha256 cellar: :any,                 arm64_ventura: "3be5c856d70f0baf63b5d5caf714a86f94dbb4e798f07ce6f4d207476c6d789d"
-    sha256 cellar: :any,                 sonoma:        "53b877a09c092d747f8aa4e65f34388fd69da5d8914edb8f356e3e1bb7ab5687"
-    sha256 cellar: :any,                 ventura:       "bd71b5e65705f0b95ae9f2b5d5d17b370ef97f4e07d545642912c59fae3fc583"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "cdd5a8ca51fde4d4fbcb72f9592d676bec5a476b4946a651d9ef1d203b6b114b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "068899014aece2cc8b386f16a4a85aa83139bae6eee63ea8976ebf5b470cfd6f"
+    sha256 cellar: :any,                 arm64_tahoe:   "6f3bc4b2da43f700dde84628949ba1bf80e51d061fd11b8e9faf510b6d15fd03"
+    sha256 cellar: :any,                 arm64_sequoia: "ecec9312863b3a93b683b59785eaf5fd16fa50cd14623c09db06afb357c4ede7"
+    sha256 cellar: :any,                 arm64_sonoma:  "d3b04b0e1f11a9b3c9b49e0facfde8235ea5baa0dd59f6af36958d7d86ad69bf"
+    sha256 cellar: :any,                 sonoma:        "1342f28157a7991ba1a508a4996d8ce68c0b7ccc1e22fef8e64d0ac6c7129e81"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "7d4577d496666cff0468ca0353a99f531dce5b4821f1b1c8add75c7bf228e924"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4ed50f47b1b7b9030d1af1a1fe0b4b58636c4c8ccac5a4becec2131036c74da2"
   end
 
   depends_on "pkgconf" => :build
@@ -53,8 +59,8 @@ class Sprocket < Formula
 
     expected = <<~JSON.strip
       {
-        "say_hello.greeting": "String",
-        "say_hello.name": "String"
+        "say_hello.greeting": "String <REQUIRED>",
+        "say_hello.name": "String <REQUIRED>"
       }
     JSON
 

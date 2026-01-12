@@ -1,9 +1,10 @@
 class Git < Formula
   desc "Distributed revision control system"
   homepage "https://git-scm.com"
-  url "https://mirrors.edge.kernel.org/pub/software/scm/git/git-2.50.1.tar.xz"
-  sha256 "7e3e6c36decbd8f1eedd14d42db6674be03671c2204864befa2a41756c5c8fc4"
+  url "https://mirrors.edge.kernel.org/pub/software/scm/git/git-2.52.0.tar.xz"
+  sha256 "3cd8fee86f69a949cb610fee8cd9264e6873d07fa58411f6060b3d62729ed7c5"
   license "GPL-2.0-only"
+  revision 1
   head "https://github.com/git/git.git", branch: "master"
 
   livecheck do
@@ -11,33 +12,39 @@ class Git < Formula
     regex(/href=.*?git[._-]v?(\d+(?:\.\d+)+)\.t/i)
   end
 
-  no_autobump! because: :requires_manual_review
-
   bottle do
-    sha256 arm64_sequoia: "1c52175eaa70bc52fb7e730d9239e88fb731dd709c29e6462790c6ad74811044"
-    sha256 arm64_sonoma:  "adbc479aaa2ab43064a7c125b060414285b9a1789e92733e8e1caac036749364"
-    sha256 arm64_ventura: "b8d2565fa29e83c34f10899bb3c2b63f22ef194cf931f993db53d1af72f56361"
-    sha256 sonoma:        "462adc8aa1717505e39c059a55ea5a9b6673241f538516cd8a3f929352b2df9a"
-    sha256 ventura:       "fe08a4ecfff5978a03eeb869dd322b8844d60dacf014b57720680da92d5e7f0d"
-    sha256 arm64_linux:   "fe864f7ef6f2ba237a8060a01907ae037469e3aa8c86006bad95841105f90385"
-    sha256 x86_64_linux:  "2ab95dd3fe1d07d3913e1d1051fdcb57d8e3a91f31f46fd2eb96a6c02d8f88c4"
+    rebuild 1
+    sha256 arm64_tahoe:   "b38e9da78154b13b32f1445f8547ac399f2b2e7141ad75b6629d24469e27c7ed"
+    sha256 arm64_sequoia: "c19806bab8c8059b2a01275670829864d4c4243042b6ed771e0cff2cfdc20e2d"
+    sha256 arm64_sonoma:  "44293f455b4c39f3e3466715be74aecd3995ed765163a5def0407dc6b6cdad17"
+    sha256 sonoma:        "4712f38cb96b889883b28adb93cfb06f489676f5e5ae9e7583098a93b9cdd862"
+    sha256 arm64_linux:   "567e3a8b79357b48b95a1d4c59f4c1e8f1e9e8fcd921104598f608960a15acab"
+    sha256 x86_64_linux:  "6fdac40b74282d1b5aa610a2ad05a7688c146acdec7bdb5004ee42ca25a705fe"
   end
 
   depends_on "gettext"
   depends_on "pcre2"
 
-  uses_from_macos "curl", since: :catalina # macOS < 10.15.6 has broken cert path logic
+  uses_from_macos "curl"
   uses_from_macos "expat"
-  uses_from_macos "zlib", since: :high_sierra
+  uses_from_macos "zlib"
+
+  on_macos do
+    depends_on "libiconv"
+  end
 
   on_linux do
-    depends_on "linux-headers@5.15" => :build
     depends_on "openssl@3" # Uses CommonCrypto on macOS
   end
 
+  resource "Authen::SASL" do
+    url "https://cpan.metacpan.org/authors/id/E/EH/EHUELS/Authen-SASL-2.1900.tar.gz"
+    sha256 "be3533a6891b2e677150b479c1a0d4bf11c8bbeebed3e7b8eba34053e93923b0"
+  end
+
   resource "html" do
-    url "https://mirrors.edge.kernel.org/pub/software/scm/git/git-htmldocs-2.50.1.tar.xz"
-    sha256 "d15ccd1518b822e317d14b63de4444bb288909294f117cbbfa385c60ab739bca"
+    url "https://mirrors.edge.kernel.org/pub/software/scm/git/git-htmldocs-2.52.0.tar.xz"
+    sha256 "e6efd0da47a15b6a59401c8c5c8944e4315b18a176b89bb57812778d6307be84"
 
     livecheck do
       formula :parent
@@ -45,8 +52,8 @@ class Git < Formula
   end
 
   resource "man" do
-    url "https://mirrors.edge.kernel.org/pub/software/scm/git/git-manpages-2.50.1.tar.xz"
-    sha256 "7dd86882bbc22bef8852924de96b9cb378aad8532089e301c82093da3e7c5478"
+    url "https://mirrors.edge.kernel.org/pub/software/scm/git/git-manpages-2.52.0.tar.xz"
+    sha256 "23186deddb3083bbaa9eb947cde26a5c7322d7fdb75bb4b3d60795db38221ac5"
 
     livecheck do
       formula :parent
@@ -75,6 +82,7 @@ class Git < Formula
     perl_version = Utils.safe_popen_read("perl", "--version")[/v(\d+\.\d+)(?:\.\d+)?/, 1]
 
     if OS.mac?
+      ENV["ICONVDIR"] = Formula["libiconv"].opt_prefix
       ENV["PERLLIB_EXTRA"] = %W[
         #{MacOS.active_developer_dir}
         /Library/Developer/CommandLineTools
@@ -161,9 +169,13 @@ class Git < Formula
     chmod 0644, Dir["#{share}/doc/git-doc/**/*.{html,txt}"]
     chmod 0755, Dir["#{share}/doc/git-doc/{RelNotes,howto,technical}"]
 
-    # git-send-email needs Net::SMTP::SSL or Net::SMTP >= 2.34
+    # git-send-email needs Net::SMTP::SSL or Net::SMTP >= 2.34 and Authen::SASL
     resource("Net::SMTP::SSL").stage do
       (share/"perl5").install "lib/Net"
+    end
+
+    resource("Authen::SASL").stage do
+      (share/"perl5").install "lib/Authen"
     end
 
     # This is only created when building against system Perl, but it isn't

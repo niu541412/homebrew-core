@@ -1,8 +1,8 @@
 class Tenv < Formula
   desc "OpenTofu / Terraform / Terragrunt / Terramate / Atmos version manager"
   homepage "https://tofuutils.github.io/tenv/"
-  url "https://github.com/tofuutils/tenv/archive/refs/tags/v4.7.6.tar.gz"
-  sha256 "006233f57c84f10d33716ffb192326c45460475de9bde6ea81acae1d42e8654b"
+  url "https://github.com/tofuutils/tenv/archive/refs/tags/v4.9.0.tar.gz"
+  sha256 "c8cb262f7e851ea70e083390928959ee85d1e5bdacabe255515b479044f21a77"
   license "Apache-2.0"
   head "https://github.com/tofuutils/tenv.git", branch: "main"
 
@@ -12,19 +12,18 @@ class Tenv < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "752a4df1d58c88788c9b699b6e94e32dc70b14b982dd77fcb0a7ab24c86c803f"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "752a4df1d58c88788c9b699b6e94e32dc70b14b982dd77fcb0a7ab24c86c803f"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "752a4df1d58c88788c9b699b6e94e32dc70b14b982dd77fcb0a7ab24c86c803f"
-    sha256 cellar: :any_skip_relocation, sonoma:        "4e3894c1e7d72e0533925c969de733619c393ef90ae278ab5f73f4c6d6f2ad6e"
-    sha256 cellar: :any_skip_relocation, ventura:       "4e3894c1e7d72e0533925c969de733619c393ef90ae278ab5f73f4c6d6f2ad6e"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "7845250cbeac9b570a6f5d02cc954bff0c97d23d50979d282409dde377e3833b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "9cfaab99d16ea83c4174600417d09d2bb7e1561b165a975419ec77c8c79cb913"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "ba012cb4aa497e16c74cedcdbc73985833b5b68e446359dc42c0818d92cadcb8"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "ba012cb4aa497e16c74cedcdbc73985833b5b68e446359dc42c0818d92cadcb8"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "ba012cb4aa497e16c74cedcdbc73985833b5b68e446359dc42c0818d92cadcb8"
+    sha256 cellar: :any_skip_relocation, sonoma:        "84279c6c46997ad972f50376d20af6caa7c8531a1a0160930fd29fe9573c4494"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "b62bd907c933a33db60ad630713b2341103a8370773274850403cd8df97a5a6e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b9a1c1fd851a368459edcf1a299713a1fac7260b09703159347bb3f989aa8b5f"
   end
 
   depends_on "go" => :build
 
   conflicts_with "opentofu", "tofuenv", because: "both install tofu binary"
-  conflicts_with "terraform", because: "both install terraform binary"
   conflicts_with "terragrunt", because: "both install terragrunt binary"
   conflicts_with "terramate", because: "both install terramate binary"
   conflicts_with "atmos", because: "both install atmos binary"
@@ -37,7 +36,7 @@ class Tenv < Formula
     %w[tenv terraform terragrunt terramate tf tofu atmos].each do |f|
       system "go", "build", *std_go_args(ldflags:, output: bin/f), "./cmd/#{f}"
     end
-    generate_completions_from_executable(bin/"tenv", "completion")
+    generate_completions_from_executable(bin/"tenv", shell_parameter_format: :cobra)
   end
 
   test do

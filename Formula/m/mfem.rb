@@ -1,24 +1,24 @@
 class Mfem < Formula
   desc "Free, lightweight, scalable C++ library for FEM"
   homepage "https://mfem.org/"
-  url "https://github.com/mfem/mfem/archive/refs/tags/v4.8.tar.gz"
-  sha256 "65472f732d273832c64b2c39460649dd862df674222c71bfa82cf2da76705052"
+  url "https://github.com/mfem/mfem/archive/refs/tags/v4.9.tar.gz"
+  sha256 "ea3ac13e182c09f05b414b03a9bef7a4da99d45d67ee409112b8f11058447a7c"
   license "BSD-3-Clause"
   head "https://github.com/mfem/mfem.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "3e9c3599701802b5f1fe3c2e8fcd933dbec04f03adc247b1f2e438545dac1e4c"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "66b1e7f21b8baa4524495b5fdd9418081f0db55d935697164e486ed0a730eb1a"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "8e1de7199a836c46ec439fc0f1d5617cfa2f760407c1c24ae87cd9a488c64367"
-    sha256 cellar: :any_skip_relocation, sonoma:        "89e928432924db722ffdf9662d6603529879e1c0772b5b732eae23da819abf56"
-    sha256 cellar: :any_skip_relocation, ventura:       "1e43c80cef99645d02450848774f812ba9978f72302b4eaa1c96d0adadf25a55"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "fd00cc4e92a1d4565fd1014d93d1fbff1405e381e7e308f9737cbfe05cdd7650"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c35e1927d2e7ebe08eab48bfe60551a05d4138b1d89d743269216ea304664674"
+    sha256 cellar: :any,                 arm64_tahoe:   "101c8e3e83b62c40a3899fd0d95f168b66e529da589924380c9607d7bfb0eca8"
+    sha256 cellar: :any,                 arm64_sequoia: "21aa4adadf52b13e960f25b7816426b47bc05284de39e32552332f5523a799b2"
+    sha256 cellar: :any,                 arm64_sonoma:  "61d6abd79f70c44c460f9ec3f5e411b498a3ea7f704493d76f14ba35e35d7672"
+    sha256 cellar: :any,                 sonoma:        "ad4157f0519685df404faa70e5ad4806761fcf8b2769e54d0c8a6ed6894123a7"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "657a88fa562547e991d66bd11e23dc25f432055f28d87884ea7cfe4b523161fa"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5c04f014021ebcd35574d4ba85e3a33932c4d48fb11eb4b863bcdf9fefe5ceb6"
   end
 
   depends_on "cmake" => :build
   depends_on "hypre"        # optional "mpi"
   depends_on "metis"        # optional "metis"
+  depends_on "open-mpi"
   depends_on "openblas"
   depends_on "suite-sparse"
 
@@ -31,6 +31,7 @@ class Mfem < Formula
     inreplace "config/config.mk.in", "@MFEM_HOST_CXX@", ENV.cxx
 
     args = [
+      "-DBUILD_SHARED_LIBS=ON",
       "-DCMAKE_INSTALL_RPATH=#{rpath}",
       "-DMFEM_USE_MPI=YES",
       "-DMFEM_USE_METIS_5=YES",

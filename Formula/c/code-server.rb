@@ -1,18 +1,17 @@
 class CodeServer < Formula
   desc "Access VS Code through the browser"
   homepage "https://github.com/coder/code-server"
-  url "https://registry.npmjs.org/code-server/-/code-server-4.102.2.tgz"
-  sha256 "5286d1ba8ac120d7d1939542ded5d7c37f891e3ba77711b1c7da749f5918cb43"
+  url "https://registry.npmjs.org/code-server/-/code-server-4.107.1.tgz"
+  sha256 "82df6b608d8dc6acd747bb6d6d60e4e80462f12d8d295b9c43bbbbdcf514c8c2"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "f9096cb4bee749664ee0bb9d77b815d9cfdd44bf7b3df7c7eeb95d2753a3500b"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "51bde9d35e3fda6ba43c1cd36985e03b42b6346fe59ffb96ac31e3065dcc4032"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "877007b00b30a87116c7f9174031d01b4421ac15434674fec301c3fe57a77849"
-    sha256 cellar: :any_skip_relocation, sonoma:        "4f6e39f03b571dcb9205a851865c06b94e31ff366263911eaa43c32ae1f0a842"
-    sha256 cellar: :any_skip_relocation, ventura:       "d56992a67fd0532ad07071290d0c9a4c9176571a19fc63a68e45c17ea969c878"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "1d7212ec44d9ba11b992d26d67dff1b15baed76d55f30fb0d2a143e485afad85"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b9f95c5ba26bea299ab2fb8d4c916ac574ed0c0da01798d06b525d46d3525f59"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "d54e0b951ad876e957af61208407c3677cfc533b70b4a69692740df14c76e7f5"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "d75494d3b96d980daf367e4fb772bf6d0deac3e0bf873e128f954b27fcb8acfd"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "704f46476ef33fb80e2cff90af80bb29456a6a8da612532e9eb1f0af2262a9d2"
+    sha256 cellar: :any_skip_relocation, sonoma:        "765648122f691255b3de6822cd250dda2fcf932a50676047f337024fef9feaec"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "c8e91c0171a35fb15bc3c8a0ac2489994e3364cf9a023e78ebe541aa3ddb29fc"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d2ec62bef70a731fae607386f984cd0f72f48cf588e864991e1ac93a56c6c1ae"
   end
 
   depends_on "pkgconf" => :build
@@ -30,21 +29,16 @@ class CodeServer < Formula
     # Fix broken node-addon-api: https://github.com/nodejs/node/issues/52229
     ENV.append "CXXFLAGS", "-DNODE_API_EXPERIMENTAL_NOGC_ENV_OPT_OUT"
 
-    system "npm", "install", *std_npm_args(prefix: false), "--unsafe-perm", "--omit", "dev"
+    system "npm", "install", *std_npm_args(ignore_scripts: false, prefix: false), "--unsafe-perm", "--omit", "dev"
 
     libexec.install Dir["*"]
     bin.install_symlink libexec/"out/node/entry.js" => "code-server"
 
-    # Remove incompatible pre-built binaries
-    os = OS.kernel_name.downcase
-    arch = Hardware::CPU.intel? ? "x64" : Hardware::CPU.arch.to_s
-    vscode = libexec/"lib/vscode/node_modules/@parcel"
-    permitted_dir = OS.linux? ? "watcher-#{os}-#{arch}-glibc" : "watcher-#{os}-#{arch}"
-    vscode.glob("watcher-*").each do |dir|
-      next unless (Pathname.new(dir)/"watcher.node").exist?
-
-      rm_r(dir) if permitted_dir != dir.basename.to_s
-    end
+    # Remove pre-built binaries where source in not available to allow compilation
+    # https://www.npmjs.com/package/@azure/msal-node-runtime
+    # https://github.com/AzureAD/microsoft-authentication-library-for-cpp
+    dist = libexec/"lib/vscode/extensions/microsoft-authentication/dist"
+    rm([dist/"libmsalruntime.so", dist/"msal-node-runtime.node"])
   end
 
   def caveats

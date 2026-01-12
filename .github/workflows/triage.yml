@@ -23,9 +23,9 @@ jobs:
     permissions:
       contents: read
     if: always() && github.repository_owner == 'Homebrew'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     steps:
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+      - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
           name: event_payload
           path: ${{ github.event_path }}
@@ -36,7 +36,7 @@ jobs:
       issues: write
       pull-requests: write
     if: always() && github.repository_owner == 'Homebrew' && github.actor != 'BrewTestBot'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     env:
       PR: ${{ github.event.number }}
     steps:
@@ -97,7 +97,6 @@ jobs:
         with:
           core: true
           cask: false
-          test-bot: false
 
       - name: Check that bottle block is not modified
         id: bottle-block
@@ -116,7 +115,7 @@ jobs:
         run: gh pr comment "${PR}" --body "${BODY}" --repo "${GITHUB_REPOSITORY}"
 
   triage:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     permissions:
       contents: read
       issues: write
@@ -171,13 +170,13 @@ jobs:
               path: Formula/.+@.+
               except:
                 - Formula/b/bash-completion@2.rb
-                - Formula/i/icu4c@77.rb
+                - Formula/i/icu4c@78.rb
                 - Formula/lib/libxml++@5.rb
                 - Formula/o/openssl@3.rb
-                - Formula/p/postgresql@17.rb
-                - Formula/p/python@3.13.rb
-                - Formula/p/python-gdbm@3.13.rb
-                - Formula/p/python-tk@3.13.rb
+                - Formula/p/postgresql@18.rb
+                - Formula/p/python@3.14.rb
+                - Formula/p/python-gdbm@3.14.rb
+                - Formula/p/python-tk@3.14.rb
 
             - label: missing license
               path: Formula/.+
@@ -276,7 +275,6 @@ jobs:
               path: "Formula/.+/(\
                 agda|\
                 apache-pulsar|\
-                arangodb|\
                 aws-sdk-cpp|\
                 cbmc|\
                 cp2k|\
@@ -303,10 +301,10 @@ jobs:
                 openfast|\
                 openvino|\
                 pcl|\
-                percona-server|\
                 ponyc|\
+                prowler|\
                 pytorch|\
-                qt|\
+                qtwebengine|\
                 root|\
                 rtabmap|\
                 rust|\
@@ -331,6 +329,7 @@ jobs:
                 cryptography|\
                 dav1d|\
                 freetype|\
+                frei0r|\
                 gcc|\
                 gettext|\
                 ghc|\
@@ -362,17 +361,18 @@ jobs:
                 numpy|\
                 openblas|\
                 openjpeg|\
+                openssl@3|\
                 p11-kit|\
                 pango|\
                 pcre2|\
-                python@3.13|\
+                python@3.14|\
                 rav1e|\
                 rust|\
                 sdl2|\
                 shared-mime-info|\
                 sqlite|\
                 suite-sparse|\
-                qt|\
+                qtbase|\
                 readline|\
                 unbound|\
                 xz|\
@@ -383,7 +383,7 @@ jobs:
 
             - label: CI-build-dependents-from-source
               path:
-                - 'Formula/.+/(cabal-install|docbook-xsl|emscripten|erlang|ocaml|ocaml-findlib|ocaml-num|openjdk|rust)\.rb'
+                - 'Formula/.+/(cabal-install|docbook-xsl|emscripten|erlang|ocaml|ocaml-findlib|ocaml-num|openjdk|pyqt-builder|rust)\.rb'
                 - 'Aliases/(ghc|go)(@[0-9.]+)?$'
               missing_content: '\n  revision [0-9]+\n'
               keep_if_no_match: true
@@ -397,6 +397,7 @@ jobs:
                 curl|\
                 gettext|\
                 glib|\
+                harfbuzz|\
                 openssl@3|\
                 wayland-protocols|\
                 sqlite|\
@@ -408,8 +409,11 @@ jobs:
             - label: CI-linux-self-hosted
               path: "Formula/.+/(\
                 dart-sdk|\
+                dotnet|\
                 envoy|\
-                qt(@5)?|\
+                qt@5|\
+                qtwebengine|\
+                sui|\
                 teleport|\
                 texlive\
                 ).rb"
@@ -423,12 +427,20 @@ jobs:
                 libcap|\
                 libva|\
                 libxml2|\
-                python@3.13|\
+                mesa|\
+                openssl@3|\
+                python@3.14|\
                 wayland-protocols|\
                 zlib|\
                 ).rb"
               keep_if_no_match: true
               allow_any_match: true
+
+            - label: CI-no-bottles
+              path: Formula/p/portable-.+
+              except:
+                - Formula/p/portable-ruby.rb
+              keep_if_no_match: true
 
             - label: bump-formula-pr
               pr_body_content: Created with `brew bump-formula-pr`
@@ -440,6 +452,10 @@ jobs:
               path: Aliases/.+
               allow_any_match: true
 
+            - label: shell-completion
+              path: Formula/.+
+              patch_content: (generate_completions_from_executable|bash_completion|zsh_completion|fish_completion|pwsh_completion)
+
   # Handle this separately since the `workflows` label affects bottle cache usage
   # and hardens us against cache poisoning attacks.
   workflows-label:
@@ -449,7 +465,7 @@ jobs:
       issues: write
       pull-requests: write
     if: always() && github.repository_owner == 'Homebrew'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     env:
       PR: ${{ github.event.number }}
     steps:
@@ -478,4 +494,3 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: gh pr edit --add-label workflows "$PR" --repo "$GITHUB_REPOSITORY"
-

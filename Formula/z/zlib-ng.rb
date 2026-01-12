@@ -1,8 +1,8 @@
 class ZlibNg < Formula
   desc "Zlib replacement with optimizations for next generation systems"
   homepage "https://github.com/zlib-ng/zlib-ng"
-  url "https://github.com/zlib-ng/zlib-ng/archive/refs/tags/2.2.4.tar.gz"
-  sha256 "a73343c3093e5cdc50d9377997c3815b878fd110bf6511c2c7759f2afb90f5a3"
+  url "https://github.com/zlib-ng/zlib-ng/archive/refs/tags/2.3.2.tar.gz"
+  sha256 "6a0561b50b8f5f6434a6a9e667a67026f2b2064a1ffa959c6b2dae320161c2a8"
   license "Zlib"
 
   # Upstream creates releases that use a stable tag (e.g., `v1.2.3`) but are
@@ -14,18 +14,20 @@ class ZlibNg < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "172d222f67bb93065376bb88e1d8beaa3ffd3eb9902f1884c552483b58a04a50"
-    sha256 cellar: :any,                 arm64_sonoma:  "f2306b42db96fa4ccbcfca1fe91b17fc1a90fb238c6493b1a92fa3dbba8bd972"
-    sha256 cellar: :any,                 arm64_ventura: "209912594fd67b36271207675293682db9dec087434b3a1bd0856cec80718eea"
-    sha256 cellar: :any,                 sonoma:        "fe0c7f653c0643174b97538d312383681a16c73ba02c01d20067277988b0015b"
-    sha256 cellar: :any,                 ventura:       "ca3d91daa5ab604935fea3632a76db372128ebeebd93939a95af3982e066c29b"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "3fce3abce4b3344c6d1c3d7385d64c0199b0b78a0e977972fcf7daea99d3405e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "067fda36b99d5dac97f99524fc362b5980ec06022037f1945377709b43f3c1b8"
+    sha256 cellar: :any,                 arm64_tahoe:   "eda237ebfd034c7529c24b4de24e796d4b9d949eba2fb8eca20aa17507c28269"
+    sha256 cellar: :any,                 arm64_sequoia: "46cbd9f86d8450a612ab4c72b7695011cd94dafadf762f09640ab2ddc0b4ceb0"
+    sha256 cellar: :any,                 arm64_sonoma:  "3cf5eb2ff042b02d37c46c23c816dd1c888e48ea457658aef4cbfff04f3b7e5d"
+    sha256 cellar: :any,                 sonoma:        "5adf8f11e1b810cd11336fba239ae24b95f5d9e1924df268282226d1bc640661"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "b2517bb59eeac0cc8653758f229b68c584ea743777c5109baa9d59aca8a312ed"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b6b881b00a10f68d4f0f735854135bd1a6b961f6f5f9e81079eb21cdf83df4d1"
   end
 
+  depends_on "cmake" => :build
+
   def install
-    system "./configure", "--prefix=#{prefix}"
-    system "make", "install"
+    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "--build", "build"
+    system "cmake", "--install", "build"
   end
 
   test do

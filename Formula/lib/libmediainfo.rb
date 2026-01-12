@@ -1,8 +1,8 @@
 class Libmediainfo < Formula
   desc "Shared library for mediainfo"
   homepage "https://mediaarea.net/en/MediaInfo"
-  url "https://mediaarea.net/download/source/libmediainfo/25.07/libmediainfo_25.07.tar.xz"
-  sha256 "58ece66eaebd9c2fa9b01143c594bce5d21489b8c1dde0dfd2bd13aa7f6266cc"
+  url "https://mediaarea.net/download/source/libmediainfo/25.10/libmediainfo_25.10.tar.xz"
+  sha256 "ad13d9797b046ce39d0c65a6f81d2aef2429734c21865a6a4c592c7c01f249dd"
   license "BSD-2-Clause"
   head "https://github.com/MediaArea/MediaInfoLib.git", branch: "master"
 
@@ -12,13 +12,12 @@ class Libmediainfo < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "b1ef7024b2b2848a888384c283b5229adba6997ad04f5a8eb1cde7f8a672dd2c"
-    sha256 cellar: :any,                 arm64_sonoma:  "585de1258b1d6f90589b59e6ef91bcfbe7fc8151a6d0d12b813784a182621a93"
-    sha256 cellar: :any,                 arm64_ventura: "36e51984dc329bef1ef295213739a685040bd2ab551f976ee08a835b2b0cb474"
-    sha256 cellar: :any,                 sonoma:        "56a4c93092d267ec52c7e3161eeac72c10fe13fdf989feaf14dc134a5cb634ee"
-    sha256 cellar: :any,                 ventura:       "5df400dcf45acf202efdaa225df74037181e9ee89f2180a7bc817e25788c9c79"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "21ae6e0afde69fd691c719668e95d4ef12c9529e6c6b8224136cd111059a2ffb"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "9a288448e00ad879e64554f64085f963d244af652a460b966468b20226d8124a"
+    sha256 cellar: :any,                 arm64_tahoe:   "5f831afa12538128e0b0d83004b2c9be0cef6eab30d6837118274699ac479c6e"
+    sha256 cellar: :any,                 arm64_sequoia: "10c35dbc3ecb48c922991992da22f27e507493dc9b441680f9f11ac53231dec9"
+    sha256 cellar: :any,                 arm64_sonoma:  "5185766284ec663705a0b2fbde6768b03dc0bf62bc8262a8ca224d27eced2e04"
+    sha256 cellar: :any,                 sonoma:        "5a1dd8c19958b0c50ead4cbf7630c19d972ae03ecf9802f50311c8bee2e679e4"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "43f271a81f778f1269ef811b2bc9cdae10505fee5f3c327dee222e8b3da860ba"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b995875f63d2c24e13cb5acb06ea0390d056babe9846e56d6ee9bc4251dbab16"
   end
 
   depends_on "cmake" => :build

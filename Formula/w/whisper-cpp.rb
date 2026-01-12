@@ -1,8 +1,8 @@
 class WhisperCpp < Formula
   desc "Port of OpenAI's Whisper model in C/C++"
   homepage "https://github.com/ggml-org/whisper.cpp"
-  url "https://github.com/ggml-org/whisper.cpp/archive/refs/tags/v1.7.6.tar.gz"
-  sha256 "166140e9a6d8a36f787a2bd77f8f44dd64874f12dd8359ff7c1f4f9acb86202e"
+  url "https://github.com/ggml-org/whisper.cpp/archive/refs/tags/v1.8.2.tar.gz"
+  sha256 "bcee25589bb8052d9e155369f6759a05729a2022d2a8085c1aa4345108523077"
   license "MIT"
   head "https://github.com/ggml-org/whisper.cpp.git", branch: "master"
 
@@ -12,43 +12,45 @@ class WhisperCpp < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "29883368e3c7eed0babb482ed2e01d39a92e563e36cd35f79330680df2e257ee"
-    sha256 cellar: :any,                 arm64_sonoma:  "78f3de18bc9b26525c423341487192458de6f6f7c1e0a3d8c0ad9aafe0b08f6a"
-    sha256 cellar: :any,                 arm64_ventura: "cbff2b56f8b93e037c155d8f5a564c6f8f19c8e3f73e499aadd320b76f14285f"
-    sha256 cellar: :any,                 sonoma:        "4a7b8c7e69d6c67d15141b6088a58c12b0437f710fbe62fa71b3eaa355201151"
-    sha256 cellar: :any,                 ventura:       "767a6156cfa00c09d1f0fa5dd23b4395526e248609fd3235f3d6f1d61d6976d5"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "29bbaf44240b251477cd81018e45f0c6abb0bc4df1191e67aceb6ca49028c19f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3f047b76ea1ad79bf18d9cd7c4535a4d8fc0379741db733f898e0564885d988f"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_tahoe:   "5ec488affdcc40b564a691636a7be9cb681984ef5327fbf2e837ed881cad0a92"
+    sha256 cellar: :any,                 arm64_sequoia: "98f80dcf49429a56812105b152e88d30681adbb2e567e0d1131658ae2ff42c67"
+    sha256 cellar: :any,                 arm64_sonoma:  "95cb0830bfa50cf10a9c97e98dbb079491cdd747fe8d186e9e30df8ffad3baee"
+    sha256 cellar: :any,                 sonoma:        "c1f87d684b2f7f559b098fa27945037f13c06ebef53960d55218edae5a3e7780"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "34200c0f5a102c0761f0f97ffee2e4a9488435d5cfe52619e38dafb9977e4caf"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4ad12253e983a1bc33cc52225651fe3d1907959cd81dbfd083a31f08cbac555b"
   end
 
   depends_on "cmake" => :build
+  depends_on "pkgconf" => :test
+  depends_on "sdl2"
 
   def install
     args = %W[
       -DBUILD_SHARED_LIBS=ON
-      -DCMAKE_INSTALL_RPATH=#{rpath(target: prefix/"libinternal")}
+      -DCMAKE_INSTALL_RPATH=#{rpath}
       -DGGML_METAL=#{(OS.mac? && !Hardware::CPU.intel?) ? "ON" : "OFF"}
       -DGGML_METAL_EMBED_LIBRARY=#{OS.mac? ? "ON" : "OFF"}
       -DGGML_NATIVE=#{build.bottle? ? "OFF" : "ON"}
+      -DWHISPER_SDL2=ON
       -DWHISPER_BUILD_EXAMPLES=ON
       -DWHISPER_BUILD_TESTS=OFF
       -DWHISPER_BUILD_SERVER=OFF
     ]
 
-    # avoid installing libggml libraries to "lib" since they would conflict with llama.cpp
-    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args(install_libdir: "libinternal")
+    # avoid installing into prefix as ggml libraries/headers would conflict with llama.cpp
+    # TODO: change this once ggml has releases, https://github.com/ggml-org/ggml/issues/1333
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args(install_prefix: libexec)
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
-    # avoid publishing header files since they will conflict with llama.cpp
-    rm_r include
 
-    # for backward compatibility with existing installs
-    (bin/"whisper-cpp").write <<~SHELL
-      #!/bin/bash
-      here="${BASH_SOURCE[0]}"
-      echo "${BASH_SOURCE[0]}: warning: whisper-cpp is deprecated. Use whisper-cli instead." >&2
-      exec "$(dirname "$here")/whisper-cli" "$@"
-    SHELL
+    # Expose executables and pkgconfig files
+    bin.install_symlink libexec.glob("bin/*")
+    (lib/"pkgconfig").install_symlink libexec.glob("lib/pkgconfig/*")
+
+    # Install whisper headers and libraries for opt paths
+    include.install_symlink libexec.glob("include/whisper.h")
+    lib.install_symlink libexec.glob("lib/libwhisper*")
 
     pkgshare.install "models/for-tests-ggml-tiny.bin", "samples/jfk.wav"
   end
@@ -67,5 +69,23 @@ class WhisperCpp < Formula
     model = pkgshare/"for-tests-ggml-tiny.bin"
     output = shell_output("#{bin}/whisper-cli --model #{model} #{pkgshare}/jfk.wav 2>&1")
     assert_match "processing '#{pkgshare}/jfk.wav' (176000 samples, 11.0 sec)", output
+
+    (testpath/"test.cpp").write <<~CPP
+      #include <whisper.h>
+      #include <cassert>
+      int main() {
+        ggml_backend_load_all();
+        struct whisper_context_params cparams = whisper_context_default_params();
+        struct whisper_context * ctx = whisper_init_from_file_with_params("#{model}", cparams);
+        assert(ctx != nullptr);
+        whisper_free(ctx);
+        return 0;
+      }
+    CPP
+
+    flags = shell_output("pkgconf --cflags --libs whisper").chomp.split
+    flags << "-Wl,-rpath,#{libexec}/lib" if OS.linux?
+    system ENV.cxx, "-std=c++11", "test.cpp", "-o", "test", *flags
+    system "./test"
   end
 end

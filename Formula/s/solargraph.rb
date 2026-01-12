@@ -3,23 +3,23 @@ class Solargraph < Formula
   homepage "https://solargraph.org"
   # Must be git, because solargraph.gemspec uses git ls-files
   url "https://github.com/castwide/solargraph.git",
-      tag:      "v0.56.2",
-      revision: "6d140fa9bb1c915879215220ecf2a3bcbb27a97d"
+      tag:      "v0.58.0",
+      revision: "d08a25d516bc62d3bbc0c26934a3dd2091a26b8d"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "2e779827d049ccd0077554f43eb9ff678b616320f7cbfd3557ad792f1d4c4306"
-    sha256 cellar: :any,                 arm64_sonoma:  "bfdc58ba6d89628279886bc20d392fc546cf8481caf0686ee5365b957c8d8ff2"
-    sha256 cellar: :any,                 arm64_ventura: "2a62c282b79cbbb41f30c0044f642f23ac11741eadeb2f1ac0e48bc49598b65a"
-    sha256 cellar: :any,                 sonoma:        "c698d4a7633a419d9416da5ded35bc81cb87a9ceefad3981babad359a0f93309"
-    sha256 cellar: :any,                 ventura:       "43a0b780c816ec3daa74a6547893215d63fb664b2feae64b6422c0799d26a09f"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "223f8527407b67d6f2279c5780f6148a2ef195aef478bcdf7a7d67da9424afa7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2b84213882cbb7330da497878d64527bcd2e51e26b37a8b87ccf08801154f931"
+    sha256 cellar: :any,                 arm64_tahoe:   "1d9b731624f489ba76c2e4bec7beb28f1ac61a41d7314cdeba10a54fb9b70a06"
+    sha256 cellar: :any,                 arm64_sequoia: "e737706a9fe627651f91c71c6efda3ee3dcd14ea3de7b870c464dcef186753a0"
+    sha256 cellar: :any,                 arm64_sonoma:  "bdd0c35eb0f1d07bde5cb7e5766d9efd3611464495343db2d016fdcd82cf46cf"
+    sha256 cellar: :any,                 sonoma:        "b703f1660d334e5a98a060ff2504b4602634e1f3b3c3db988ef1e03f6809e8b3"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "670de85319c83ff3e8ef57d54c1f3117fcd164a43babc246464f363b07e20cf6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4448991745fb6c75aaccf2403d84224ad41882bbcd9e675af4b87d6e4669b388"
   end
 
-  depends_on "ruby" # Requires >= Ruby 2.7
-
+  depends_on "ruby"
   depends_on "xz"
+
+  uses_from_macos "zlib"
 
   def install
     ENV["GEM_HOME"] = libexec

@@ -1,18 +1,18 @@
 class Httpx < Formula
   desc "Fast and multi-purpose HTTP toolkit"
   homepage "https://github.com/projectdiscovery/httpx"
-  url "https://github.com/projectdiscovery/httpx/archive/refs/tags/v1.7.1.tar.gz"
-  sha256 "e47e7643cf736d86769961865ca21e7f0a3269af5b00c534d3816eb04a60f7b7"
+  url "https://github.com/projectdiscovery/httpx/archive/refs/tags/v1.7.4.tar.gz"
+  sha256 "90f4132d017d3c7e2bf680fafe9175ce11af4874953c815879071d1c96927944"
   license "MIT"
-  head "https://github.com/projectdiscovery/httpx.git", branch: "master"
+  head "https://github.com/projectdiscovery/httpx.git", branch: "dev"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "fd5685d3504a26b6227f45ca1c0601e4e08624d6df776db4a3e2e0c47c5394ed"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "958c58b56e64ebc0d6986d02e062d07777e99affaecf6e29d5e30252c6aaa560"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "4757e8714859c18224b00fa223b0362cff43251f68ac69c4417ee102ff8a5a02"
-    sha256 cellar: :any_skip_relocation, sonoma:        "f479dec45d1193d11c410fe7b3c9258e35d584ca16d6a78f20db3dabd49a99c9"
-    sha256 cellar: :any_skip_relocation, ventura:       "22fbedf864cf9563c3b1d07ed3168dd84c5872ef9a08109661cb720aa431b180"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0a1c2d362d76c5d35361ac41fac8bbcefa94dfef18d158dbabd0c1ea484a3281"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "41f6f271c353137041556c5cfcf2f9438fcaca70ee24a0dec2ac31ffe4e98fa9"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "68f0f7c0ba12b0f459900fef23aa2cf757d9196b7702325678e335038a153e79"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "1ce9cf31d67fde15e665d48bb97a863fe8a93953fbd38f820d6c742b4c7b6fe7"
+    sha256 cellar: :any_skip_relocation, sonoma:        "f01dc6f1aa1071a5c442e7f9929eb5e6e817d0c34123205c86fec8faf5bb5dbd"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "b66e90c5ea5142481848d3a8cf517abb76d37a2b497b3cc052b806954b974454"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "dc375d408f24af36064ddde34e7e0d1fe2399346789b40148b8d7704f8937c1a"
   end
 
   depends_on "go" => :build

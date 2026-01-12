@@ -3,8 +3,8 @@
 class Mercurial < Formula
   desc "Scalable distributed version control system"
   homepage "https://mercurial-scm.org/"
-  url "https://www.mercurial-scm.org/release/mercurial-7.0.3.tar.gz"
-  sha256 "59fc84640524da6f1938ea7e4eb0cd579fc7fedaaf563a916cb4f9dac0eacf6c"
+  url "https://www.mercurial-scm.org/release/mercurial-7.1.2.tar.gz"
+  sha256 "ce27b9a4767cf2ea496b51468bae512fa6a6eaf0891e49f8961dc694b4dc81ca"
   license "GPL-2.0-or-later"
 
   livecheck do
@@ -13,19 +13,20 @@ class Mercurial < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "226367b9a5490c124494453efeff2afa583f6436d7a9bad75dd0ff3f811c2d9b"
-    sha256 arm64_sonoma:  "006178862cf68e0a06f07fa546254c0a878672ef8ac38d4cbeae56bf0681ca9a"
-    sha256 arm64_ventura: "5924c329544435d4e779ff8c8999d7416eb3c16ef7671ca2c86c07e3436a837f"
-    sha256 sonoma:        "4ab670a504fb5f26bd44257e94028192a59b24ef989ae639d07a49cb199423e6"
-    sha256 ventura:       "4f1d4209792f584ccf1c929c3ce4826fc40bd96f9c18516cec7ae84436cd9544"
-    sha256 arm64_linux:   "9f677326a8c0bdeaafc5e20f6fd5824e302b528e87eba8938e43dcfb780d5a12"
-    sha256 x86_64_linux:  "c1c9f4dedd67752544a56066845baf87a4b9067ac4473a6e2c5b6c1fbe27ff4b"
+    sha256 arm64_tahoe:   "e9317232e4d64a63fd18d1d57ff64bb72c86514cb91d47823e78996e317502d8"
+    sha256 arm64_sequoia: "5d06c3f6f5c8fe73397da5f6976aa2c85143362ba3da9887ed2ad26e91355fea"
+    sha256 arm64_sonoma:  "ae97183ee9cbae17551ac76ca2e8761ae2c55f82880b3e5b22bcf95dd08dcd8f"
+    sha256 tahoe:         "fdd91a61b1e6294d834fc23e7ebabada863f8e1580e5e4dc4df52f681e44f34c"
+    sha256 sequoia:       "42e620046194f67bc4c79e132cd13a2c028f48adb704a4ea73ef2ea0d6669294"
+    sha256 sonoma:        "8bd7368319b0c07882655a590d8ce824da1e4c96c2aba737b824d49091412de3"
+    sha256 arm64_linux:   "9693770c636081f6caa6e3886b5873d0cf80a6ac417d3190726c47bd79714a89"
+    sha256 x86_64_linux:  "867cf560617edbc930596f467e5be84fd735eacfe4fd263a65d1af51ef83dfe3"
   end
 
-  depends_on "python@3.13"
+  depends_on "python@3.14"
 
   def install
-    python3 = "python3.13"
+    python3 = "python3.14"
     system python3, "-m", "pip", "install", *std_pip_args(build_isolation: true), "."
 
     # Install chg (see https://www.mercurial-scm.org/wiki/CHg)

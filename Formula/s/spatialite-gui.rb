@@ -4,7 +4,7 @@ class SpatialiteGui < Formula
   url "https://www.gaia-gis.it/gaia-sins/spatialite-gui-sources/spatialite_gui-2.1.0-beta1.tar.gz"
   sha256 "ba48d96df18cebc3ff23f69797207ae1582cce62f4596b69bae300ca3c23db33"
   license "GPL-3.0-or-later"
-  revision 12
+  revision 14
 
   livecheck do
     url "https://www.gaia-gis.it/gaia-sins/spatialite-gui-sources/"
@@ -14,13 +14,12 @@ class SpatialiteGui < Formula
   no_autobump! because: :requires_manual_review
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "0729ab0ef78b34d21105dfa31efdb84466c3f1299a11cea3c039ff91725fa941"
-    sha256 cellar: :any,                 arm64_sonoma:  "024efe736240e668fb049f06eb744ed03223ca08edbb59e00e67dc67d9db1a1e"
-    sha256 cellar: :any,                 arm64_ventura: "9e2d9c4d64a8e60daa2420254efbf2495442d957ca58231ae474b4f927e396f0"
-    sha256 cellar: :any,                 sonoma:        "fe1ceda3cf1e7cde15a38279c2c78c73366bcf44f7f764aaa16d4ddece1c90fa"
-    sha256 cellar: :any,                 ventura:       "a384ed8c6464d25bdc0e308dec8e3fcafbe3a0ab3d2e051a393f827470a74452"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "5a6e1e70058432026f675c50dbdba7a5237357de31655d9fb0ba71d4cb86051e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2470cea3a02d2b41424b39e453d047412ecffda08a2aa73d8d10c68ccd9ff90f"
+    sha256 cellar: :any,                 arm64_tahoe:   "782748b1e6ece36b5560a2ffa6836b0da857043b4efcf082b584cd511cdd3a50"
+    sha256 cellar: :any,                 arm64_sequoia: "b92666f875dcc542493852bea5f97b7f648d464b1e90d8600981f357d015635d"
+    sha256 cellar: :any,                 arm64_sonoma:  "806b6c27347cdc00a4cff996cedbdb5a32ce7ee0b240ec16e52794bf02a9dbb5"
+    sha256 cellar: :any,                 sonoma:        "3e2f7422622873db4de5ce22db8b401687d818b6b290fb1bfdebc1d2e16f0887"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "3e83802a531c27070cbc1efc71269720d4959e996902f69de9cc89d236c69a33"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f4806bbbd650761eeaced5a47e7648e452585ad5a361fb0f7023e5df17177bff"
   end
 
   depends_on "pkgconf" => :build

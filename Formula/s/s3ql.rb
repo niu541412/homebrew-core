@@ -3,8 +3,8 @@ class S3ql < Formula
 
   desc "POSIX-compliant FUSE filesystem using object store as block storage"
   homepage "https://github.com/s3ql/s3ql"
-  url "https://github.com/s3ql/s3ql/releases/download/s3ql-5.3.0/s3ql-5.3.0.tar.gz"
-  sha256 "f16e3aa218de86a7ec48002bbcb75c857f72f63d86e5e3c891b31a78c138d13c"
+  url "https://github.com/s3ql/s3ql/releases/download/s3ql-5.4.2/s3ql-5.4.2.tar.gz"
+  sha256 "3ec2e183d2c9a3eb46be9eb43a12866ad8e2640e3d7ad023431de5f406a605d0"
   license "GPL-3.0-only"
 
   livecheck do
@@ -13,21 +13,23 @@ class S3ql < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_linux:  "2d116d2bed3369e6530af6411882b54809681562ce62ad7832ccec6abfa5ff3e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "6e371a9c17d44c7564e8776152225425762e47f9b6deba93c495829d82531bde"
+    sha256 cellar: :any_skip_relocation, arm64_linux:  "4ff4a28eb98644bb95f7442973e9205ee81b8002d3b203a2a83d48edc9b48e85"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "97a2c2e352bcdc4b105ff19edaa7c417c75c700881e4f32c6eb530eb23c40831"
   end
 
   depends_on "pkgconf" => :build
 
-  depends_on "cryptography"
+  depends_on "cryptography" => :no_linkage
   depends_on "libffi"
   depends_on "libfuse"
   depends_on :linux # on macOS, requires closed-source macFUSE
-  depends_on "python@3.13"
+  depends_on "python@3.14"
+
+  pypi_packages exclude_packages: "cryptography"
 
   resource "apsw" do
-    url "https://files.pythonhosted.org/packages/5b/c4/fcac432cb1aea5a1e7611e2ae927352232aec5c1546f10dece754279c4b9/apsw-3.49.2.0.tar.gz"
-    sha256 "04280710d01f918b96ec9067111b57ee70780388bbf83fd33fc15c43e82afd51"
+    url "https://files.pythonhosted.org/packages/23/f2/fa78ab7e35f1603805080c4c0c224bcf217f0958d245eb43f64425d97ca8/apsw-3.51.1.0.tar.gz"
+    sha256 "a3322d4f44b19693dc5e3d9b24339ecb2b5225e0ac8b00090b3c466d3c2e4dc6"
   end
 
   resource "async-generator" do
@@ -36,13 +38,8 @@ class S3ql < Formula
   end
 
   resource "attrs" do
-    url "https://files.pythonhosted.org/packages/5a/b0/1367933a8532ee6ff8d63537de4f1177af4bff9f3e829baf7331f595bb24/attrs-25.3.0.tar.gz"
-    sha256 "75d7cefc7fb576747b2c81b4442d4d4a1ce0900973527c011d1030fd3bf4af1b"
-  end
-
-  resource "cffi" do
-    url "https://files.pythonhosted.org/packages/fc/97/c783634659c2920c3fc70419e3af40972dbaf758daa229a7d6ea6135c90d/cffi-1.17.1.tar.gz"
-    sha256 "1c39c6016c32bc48dd54561950ebd6836e1670f2ae46128f67cf49e789c52824"
+    url "https://files.pythonhosted.org/packages/6b/5c/685e6633917e101e5dcb62b9dd76946cbb57c26e133bae9e0cd36033c0a9/attrs-25.4.0.tar.gz"
+    sha256 "16d5969b87f0859ef33a48b35d55ac1be6e42ae49d5e853b597db70c35c57e11"
   end
 
   resource "defusedxml" do
@@ -56,18 +53,18 @@ class S3ql < Formula
   end
 
   resource "google-auth" do
-    url "https://files.pythonhosted.org/packages/cb/8e/8f45c9a32f73e786e954b8f9761c61422955d23c45d1e8c347f9b4b59e8e/google_auth-2.39.0.tar.gz"
-    sha256 "73222d43cdc35a3aeacbfdcaf73142a97839f10de930550d89ebfe1d0a00cde7"
+    url "https://files.pythonhosted.org/packages/e5/00/3c794502a8b892c404b2dea5b3650eb21bfc7069612fbfd15c7f17c1cb0d/google_auth-2.45.0.tar.gz"
+    sha256 "90d3f41b6b72ea72dd9811e765699ee491ab24139f34ebf1ca2b9cc0c38708f3"
   end
 
   resource "google-auth-oauthlib" do
-    url "https://files.pythonhosted.org/packages/fb/87/e10bf24f7bcffc1421b84d6f9c3377c30ec305d082cd737ddaa6d8f77f7c/google_auth_oauthlib-1.2.2.tar.gz"
-    sha256 "11046fb8d3348b296302dd939ace8af0a724042e8029c1b872d87fabc9f41684"
+    url "https://files.pythonhosted.org/packages/86/a6/c6336a6ceb682709a4aa39e2e6b5754a458075ca92359512b6cbfcb25ae3/google_auth_oauthlib-1.2.3.tar.gz"
+    sha256 "eb09e450d3cc789ecbc2b3529cb94a713673fd5f7a22c718ad91cf75aedc2ea4"
   end
 
   resource "idna" do
-    url "https://files.pythonhosted.org/packages/f1/70/7703c29685631f5a7590aa73f1f1d3fa9a380e654b86af429e0934a32f7d/idna-3.10.tar.gz"
-    sha256 "12f65c9b470abda6dc35cf8e63cc574b1c52b11df2c86030af0ac09b01b13ea9"
+    url "https://files.pythonhosted.org/packages/6f/6d/0703ccc57f3a7233505399edb88de3cbd678da106337b9fcde432b65ed60/idna-3.11.tar.gz"
+    sha256 "795dafcc9c04ed0c1fb032c2aa73654d8e8c5023a7df64a53f39190ada629902"
   end
 
   resource "outcome" do
@@ -76,23 +73,23 @@ class S3ql < Formula
   end
 
   resource "pyfuse3" do
-    url "https://files.pythonhosted.org/packages/67/1e/0f8f285a65e2e64f2f0c4accce4ee67d9ac66ee9684492a4327e48d68d87/pyfuse3-3.4.0.tar.gz"
-    sha256 "793493f4d5e2b3bc10e13b3421d426a6e2e3365264c24376a50b8cbc69762d39"
+    url "https://files.pythonhosted.org/packages/9c/db/39003f19d6eb00fafc8210a8ee2703e58553c4c588f71ca413155fd43e32/pyfuse3-3.4.1.tar.gz"
+    sha256 "602f9c5f944bcdbd5e7f526c0e7f44af41970abedabc72d94ac16563e1b49209"
   end
 
   resource "requests" do
-    url "https://files.pythonhosted.org/packages/63/70/2bf7780ad2d390a8d301ad0b550f1581eadbd9a20f896afe06353c2a2913/requests-2.32.3.tar.gz"
-    sha256 "55365417734eb18255590a9ff9eb97e9e1da868d4ccd6402399eaf68af20a760"
+    url "https://files.pythonhosted.org/packages/c9/74/b3ff8e6c8446842c3f5c837e9c3dfcfe2018ea6ecef224c710c85ef728f4/requests-2.32.5.tar.gz"
+    sha256 "dbba0bac56e100853db0ea71b82b4dfd5fe2bf6d3754a8893c3af500cec7d7cf"
   end
 
   resource "setuptools" do
-    url "https://files.pythonhosted.org/packages/70/dc/3976b322de9d2e87ed0007cf04cc7553969b6c7b3f48a565d0333748fbcd/setuptools-80.3.1.tar.gz"
-    sha256 "31e2c58dbb67c99c289f51c16d899afedae292b978f8051efaf6262d8212f927"
+    url "https://files.pythonhosted.org/packages/18/5d/3bf57dcd21979b887f014ea83c24ae194cfcd12b9e0fda66b957c69d1fca/setuptools-80.9.0.tar.gz"
+    sha256 "f36b47402ecde768dbfafc46e8e4207b4360c654f1f3bb84475f0a28628fb19c"
   end
 
   resource "trio" do
-    url "https://files.pythonhosted.org/packages/01/c1/68d582b4d3a1c1f8118e18042464bb12a7c1b75d64d75111b297687041e3/trio-0.30.0.tar.gz"
-    sha256 "0781c857c0c81f8f51e0089929a26b5bb63d57f927728a5586f7e36171f064df"
+    url "https://files.pythonhosted.org/packages/d8/ce/0041ddd9160aac0031bcf5ab786c7640d795c797e67c438e15cfedf815c8/trio-0.32.0.tar.gz"
+    sha256 "150f29ec923bcd51231e1d4c71c7006e65247d68759dd1c19af4ea815a25806b"
   end
 
   resource "six" do
@@ -110,10 +107,6 @@ class S3ql < Formula
     sha256 "25caa5a06cc30b6b83d11423433f65d1f9d76c4c6a0c90e3379eaa43b9bfdb88"
   end
 
-  # Fix incompatability with build isolation, since `setup.py` imports `s3ql`
-  # Remove after https://github.com/s3ql/s3ql/pull/379
-  patch :DATA
-
   def install
     # The inreplace changes the name of the (fsck|mkfs|mount|umount).s3ql
     # utilities to use underscore (_) as a separator, which is consistent
@@ -125,45 +118,11 @@ class S3ql < Formula
   end
 
   test do
-    assert_match "S3QL ", shell_output(bin/"mount_s3ql --version")
+    assert_match "S3QL ", shell_output("#{bin}/mount_s3ql --version")
 
     # create a local filesystem, and run an fsck on it
-    assert_match "Creating metadata", shell_output(bin/"mkfs_s3ql --plain local://#{testpath} 2>&1")
+    assert_match "Creating metadata", shell_output("#{bin}/mkfs_s3ql --plain local://#{testpath} 2>&1")
     assert_match "s3ql_params", shell_output("ls s3ql_params")
     system bin/"fsck_s3ql", "local://#{testpath}"
   end
 end
-
-__END__
-diff --git a/setup.py b/setup.py
-index 00f6e9b..2b0a101 100755
---- a/setup.py
-+++ b/setup.py
-@@ -34,7 +34,6 @@ if DEVELOPER_MODE:
- # Add S3QL sources
- sys.path.insert(0, os.path.join(basedir, 'src'))
- sys.path.insert(0, os.path.join(basedir, 'util'))
--import s3ql
-
-
- class pytest(TestCommand):
-@@ -47,9 +46,6 @@ class pytest(TestCommand):
-
-
- def main():
--    with open(os.path.join(basedir, 'README.rst'), 'r') as fh:
--        long_desc = fh.read()
--
-     compile_args = ['-Wall', '-Wextra', '-Wconversion', '-Wsign-compare']
-
-     # Enable all fatal warnings only when compiling from Mercurial tip.
-@@ -88,9 +84,7 @@ def main():
-     setuptools.setup(
-         name='s3ql',
-         zip_safe=False,
--        version=s3ql.VERSION,
-         description='a full-featured file system for online data storage',
--        long_description=long_desc,
-         author='Nikolaus Rath',
-         author_email='Nikolaus@rath.org',
-         license='GPLv3',

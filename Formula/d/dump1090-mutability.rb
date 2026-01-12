@@ -1,15 +1,19 @@
 class Dump1090Mutability < Formula
   desc "ADS-B Ground Station System for RTL-SDR"
   homepage "https://packages.ubuntu.com/jammy/dump1090-mutability"
-  url "http://archive.ubuntu.com/ubuntu/pool/universe/d/dump1090-mutability/dump1090-mutability_1.15~20180310.4a16df3+dfsg.orig.tar.gz"
+  url "https://archive.ubuntu.com/ubuntu/pool/universe/d/dump1090-mutability/dump1090-mutability_1.15~20180310.4a16df3+dfsg.orig.tar.gz"
   version "1.15_20180310-4a16df3-dfsg"
   sha256 "778f389508eccbce6c90d7f56cd01568fad2aaa5618cb5e7c41640a2473905a6"
   license "GPL-2.0-or-later"
   revision 3
 
-  no_autobump! because: :requires_manual_review
+  livecheck do
+    url :homepage
+    regex(/href=.*?dump1090-mutability[._-]v?(\d+(?:\.\d+)+(?:~\d{8})?(?:\.\h+)?(?:\+\w+)?)\.orig\.t/i)
+  end
 
   bottle do
+    sha256 cellar: :any,                 arm64_tahoe:    "00215d003f5feb6d06804af98583d30188d88272597822635e40defb033f9655"
     sha256 cellar: :any,                 arm64_sequoia:  "efa32621a9a3d6334c711608e079d435f6af49eb4879442ab499cde1b6d3699d"
     sha256 cellar: :any,                 arm64_sonoma:   "e58f730410669a3d0cebde197feec0c661b6b868518f6bd503f8474fd507c180"
     sha256 cellar: :any,                 arm64_ventura:  "578b30fb22f49021afbf7828f9a470f2a51872afe33c20f66f4529c300420484"

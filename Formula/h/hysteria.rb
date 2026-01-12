@@ -1,18 +1,18 @@
 class Hysteria < Formula
   desc "Feature-packed proxy & relay tool optimized for lossy, unstable connections"
   homepage "https://hysteria.network/"
-  url "https://github.com/apernet/hysteria/archive/refs/tags/app/v2.6.2.tar.gz"
-  sha256 "4699431f0bc826da2bbd3939c0a78c4e7bfc02773fc3a62b24615c37ee89b266"
+  url "https://github.com/apernet/hysteria/archive/refs/tags/app/v2.7.0.tar.gz"
+  sha256 "3cac6adeccdac7cc8b353948e3cead1eb8606aa8ce74dac4853d821a22ceeba7"
   license "MIT"
   head "https://github.com/apernet/hysteria.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "13e48d57336bc8c4410a5620b8a1056ac0f448545a8c39c5ebe01b2149c3de48"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "13e48d57336bc8c4410a5620b8a1056ac0f448545a8c39c5ebe01b2149c3de48"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "13e48d57336bc8c4410a5620b8a1056ac0f448545a8c39c5ebe01b2149c3de48"
-    sha256 cellar: :any_skip_relocation, sonoma:        "b6839af9a06324ba41871ee52fb649158f7b424cf3357aaf485fb840bcba8158"
-    sha256 cellar: :any_skip_relocation, ventura:       "b6839af9a06324ba41871ee52fb649158f7b424cf3357aaf485fb840bcba8158"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7ff66a91a3e261ed5a1a8f6519e15e7b361a76f5bfc6a222165220a54a329f08"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "212021de2cbb445e550c1b63f7706ae018fba2c0a4da0949009ed2d6a29282a2"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "212021de2cbb445e550c1b63f7706ae018fba2c0a4da0949009ed2d6a29282a2"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "212021de2cbb445e550c1b63f7706ae018fba2c0a4da0949009ed2d6a29282a2"
+    sha256 cellar: :any_skip_relocation, sonoma:        "72ebbcc92fadeaa0b9987af7147e2be094dff091f3bff268ae4fe5f24ad73476"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "28473a3eee90b7c5ca903575402474d1132bb717cf0f978d90af5c06746579c7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "03c05735794695a334cf2ccf11472e371b8e7347262079ddd648370c4f003d7a"
   end
 
   depends_on "go" => :build
@@ -30,7 +30,7 @@ class Hysteria < Formula
     ]
     system "go", "build", *std_go_args(ldflags:), "./app"
 
-    generate_completions_from_executable(bin/"hysteria", "completion")
+    generate_completions_from_executable(bin/"hysteria", shell_parameter_format: :cobra)
   end
 
   service do

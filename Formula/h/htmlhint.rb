@@ -1,19 +1,19 @@
 class Htmlhint < Formula
   desc "Static code analysis tool you need for your HTML"
   homepage "https://github.com/htmlhint/HTMLHint"
-  url "https://registry.npmjs.org/htmlhint/-/htmlhint-1.6.3.tgz"
-  sha256 "2f525186e3d3066de002822a11672b98869b647be8de709c130861a60d245dec"
+  url "https://registry.npmjs.org/htmlhint/-/htmlhint-1.8.0.tgz"
+  sha256 "16e096ffc05118ba700494c79058dd3c9f7530a05426e28a1f7b878abc1afecb"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "beb428615aec8f7104f3cffd5a1eb2c016c5a58d911f8aef359063f90d677299"
+    sha256 cellar: :any_skip_relocation, all: "ef6d5e5087c7879fc0b7e4eba6f2c4cded6d2d531324daec59885c6f94556039"
   end
 
   depends_on "node"
 
   def install
     system "npm", "install", *std_npm_args
-    bin.install_symlink Dir["#{libexec}/bin/*"]
+    bin.install_symlink libexec.glob("bin/*")
   end
 
   test do

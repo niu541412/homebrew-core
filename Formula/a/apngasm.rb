@@ -4,33 +4,37 @@ class Apngasm < Formula
   url "https://github.com/apngasm/apngasm/archive/refs/tags/3.1.10.tar.gz"
   sha256 "8171e2c1d37ab231a2061320cb1e5d15cee37642e3ce78e8ab0b8dfc45b80f6c"
   license "Zlib"
-  revision 17
+  revision 20
   head "https://github.com/apngasm/apngasm.git", branch: "master"
 
   no_autobump! because: :requires_manual_review
 
   bottle do
-    sha256                               arm64_sequoia: "9f9562c52caf37166d3771a0e370250319750ce9fa016ca099ee231ba4ae88d3"
-    sha256                               arm64_sonoma:  "f0791efcfc25b7001706e2e2bdcb1f9120d8cf5fd1c34a1fefdfb09056b492dc"
-    sha256                               arm64_ventura: "3d82122ccb48a72935372aac4a7952a4a078b8e1918704e3f68ed4feb50bc225"
-    sha256                               sonoma:        "fc995725850b2752e9f442bf63eee3cffd43a4454a48429edd57cbeab2b4356c"
-    sha256                               ventura:       "c37625e57630e64210b78c4621173c635fc6fe567c2a334fcce25b5c0723017e"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "5b9da2361fb8475de751ce0eadc113311b992916637e11fd1e70c00d579b4ec9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7176fba311bf1861d06e2f5cab3172ec487c50aa1aaaa8ca84d7adf14d52f5cb"
+    sha256                               arm64_tahoe:   "06ad2cd58116c3c62a72870f7f1ef0a1b4116285eab42c085648dfac4926ffd4"
+    sha256                               arm64_sequoia: "7b80dcefcd186511ed93a327f44a794b779acb9ec5b7da9fe8100658dec1c2e3"
+    sha256                               arm64_sonoma:  "7d1cf69a6e05eedccc87ef7f878bce2d8d4f531607efa9565fc8fe27412d549a"
+    sha256                               sonoma:        "d0901f24ae3b9ea5d17ca77a012c05b2d2aa2ef546a63eb5fe6d42e5985ea596"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "19251d12f2388fde4d495dbfcbe72b3883ee24fabbf38dc0f077981636897ad1"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "11ae3807509bd5b7522d7fa850b52eff4b00b60ada10940fe16c5ab995d3ecec"
   end
 
   depends_on "cmake" => :build
   depends_on "boost"
-  depends_on "icu4c@77"
+  depends_on "icu4c@78"
   depends_on "libpng"
   depends_on "lzlib"
-  depends_on macos: :catalina
 
   uses_from_macos "zlib"
 
   fails_with :gcc do
     version "7"
     cause "Requires C++17 filesystem"
+  end
+
+  # Fix build with Boost 1.89.0, pr ref: https://github.com/apngasm/apngasm/pull/111
+  patch do
+    url "https://github.com/apngasm/apngasm/commit/7bf77bdefd348c629f650e2a5102a26ab6bee7b8.patch?full_index=1"
+    sha256 "cbb9d679c5d46424bb00962481903f12b8b0e943dfdc98910ad05af7c7dacf5b"
   end
 
   def install

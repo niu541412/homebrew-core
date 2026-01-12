@@ -1,19 +1,18 @@
 class Fb303 < Formula
   desc "Thrift functions for querying information from a service"
   homepage "https://github.com/facebook/fb303"
-  url "https://github.com/facebook/fb303/archive/refs/tags/v2025.07.28.00.tar.gz"
-  sha256 "7c12d68c1921ccfcab43ed9ae5dc465df92d115a28017c211097731f2618b057"
+  url "https://github.com/facebook/fb303/archive/refs/tags/v2026.01.05.00.tar.gz"
+  sha256 "467219abcfffa39bd50d2893ef0345c242b709a49782a5080ee933c6c652b5cb"
   license "Apache-2.0"
   head "https://github.com/facebook/fb303.git", branch: "main"
 
   bottle do
-    sha256                               arm64_sequoia: "2960a3d7ae2e8a6a39ae82c7b30c8f0dd237b00486ff92af0abc0edea4ca86bc"
-    sha256                               arm64_sonoma:  "d885ae34b38c7c6bf91bf2c5cda1ef0348508f6df2237d9862f61254ec8aad5d"
-    sha256                               arm64_ventura: "113fb262704a9d361c1c90cf05bc68a15addeb5a8846c4010ef7b4c80ecf887a"
-    sha256 cellar: :any,                 sonoma:        "09a9da05ac228adc5d369f12cdb32340d990dfc6c605e0e11d46964536362d78"
-    sha256 cellar: :any,                 ventura:       "5976442c26e1899d6c33d22231afa67d479e7eadf05f695d8f916f956cdde3ee"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "b35929424b36b62acc999f3ca7b853fa0f8e62b7b5ef4fecdda53a3f89430cfc"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4e10c692de3e68ec727eedfad369c4335644aba1fe7865268a63de8b55c3d932"
+    sha256                               arm64_tahoe:   "782cf36178ff286f635ced00d7b0631f8d2c1244d80542d0bfa19d4d3e84dbdc"
+    sha256                               arm64_sequoia: "526a3968425c50824d083213a13edd94c20ffc9c4ce49507390202a74d6dc675"
+    sha256                               arm64_sonoma:  "37fb156b2230f35b93497ce892b8dbb86917cf0e297b49821fe5cb75605c6aa7"
+    sha256 cellar: :any,                 sonoma:        "6769e492ca61575c5cba52601361cbe71b84d14b6a40e2b052f5f591f4596bc9"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "d5b3ed22afd92a2251af3a1eaabb98ca7ac49f120232cd67e10824ca596f0159"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4b90013661682e094a6ed3aa1e6e75d3ce5186f3507fe7dc32d293042998b860"
   end
 
   depends_on "cmake" => :build
@@ -51,14 +50,14 @@ class Fb303 < Formula
       ENV.append_to_cflags "-march=#{Hardware.oldest_cpu}" if Hardware::CPU.intel?
     end
 
-    ENV.append "CXXFLAGS", "-std=c++17"
+    ENV.append "CXXFLAGS", "-std=c++20"
     system ENV.cxx, *ENV.cxxflags.split, "test.cpp", "-o", "test",
                     "-I#{include}", "-I#{Formula["openssl@3"].opt_include}",
                     "-L#{lib}", "-lfb303_thrift_cpp",
                     "-L#{Formula["folly"].opt_lib}", "-lfolly",
                     "-L#{Formula["glog"].opt_lib}", "-lglog",
                     "-L#{Formula["fbthrift"].opt_lib}", "-lthriftprotocol", "-lthriftcpp2",
-                    "-ldl"
+                    "-lthriftmetadata", "-lthrifttyperep", "-ldl"
     assert_equal "BaseService", shell_output("./test").strip
   end
 end

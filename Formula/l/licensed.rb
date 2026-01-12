@@ -5,15 +5,15 @@ class Licensed < Formula
       tag:      "v5.0.4",
       revision: "6f7a4675fdf69647f524af3facd1d55f6f221d46"
   license "MIT"
+  revision 1
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "543bec232b40015977c4333399b598789a8f9ac60b7595ba6e7b807d03d81c67"
-    sha256 cellar: :any,                 arm64_sonoma:  "3467c73fc50b835d6b2b3796690358f82dc32f32cb62a1aadcf7efe457593151"
-    sha256 cellar: :any,                 arm64_ventura: "7682dce3e7873abeb6fac39d330cfbc31fa42f2624dd9f5ab61975aa593d15d1"
-    sha256 cellar: :any,                 sonoma:        "3e4f67c15d5a96ca3902b719b31fd71ffe667f73ff988a76dba79f3619ef8f78"
-    sha256 cellar: :any,                 ventura:       "0b4aa564d2e769211cd7cf49606b5742b31c518c2c4a4e70d00c683452e19dff"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "698bdaab6300aac978818d9eb3df3bf2572b6bc37d5406ff0c50a279de70e421"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1c9220f30c3818fae859fc15e013631c34d0fef0ea2bec69116b5bbc9d5eeffc"
+    sha256 cellar: :any,                 arm64_tahoe:   "ee35c122a511739e183c4ebde0df39dd1a11032b66ee5a4abe86be87c9d3959a"
+    sha256 cellar: :any,                 arm64_sequoia: "8372fdd8302b285179254b3375c6ccf0c3ba16a8c808cb78e851e707bfac7186"
+    sha256 cellar: :any,                 arm64_sonoma:  "63831487004179f5ad0fea2b90ffdfe21f10146ee1b672c1268dc2e9d6a19a11"
+    sha256 cellar: :any,                 sonoma:        "924c22137403515f8acf66c7c89a7bc47dde467d3a12d5a4c506cbe133c3327d"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "6abd7e8deaa295ec844a4396513cea608751b87d006c9929a68b4095465d7f0e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3af54f112e9c2cc79bcb1d0453f2cc01f1e34de59f021e65e2eecc1538a4424b"
   end
 
   depends_on "cmake" => :build
@@ -28,10 +28,11 @@ class Licensed < Formula
   end
 
   def install
+    ENV["BUNDLE_FORCE_RUBY_PLATFORM"] = "1"
     ENV["BUNDLE_VERSION"] = "system" # Avoid installing Bundler into the keg
+    ENV["BUNDLE_WITHOUT"] = "development test"
     ENV["GEM_HOME"] = libexec
 
-    system "bundle", "config", "set", "without", "development", "test"
     system "bundle", "install"
     system "gem", "build", "#{name}.gemspec"
     system "gem", "install", "#{name}-#{version}.gem"

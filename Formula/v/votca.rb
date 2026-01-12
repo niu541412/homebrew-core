@@ -1,24 +1,23 @@
 class Votca < Formula
   desc "Versatile Object-oriented Toolkit for Coarse-graining Applications"
   homepage "https://www.votca.org/"
-  url "https://github.com/votca/votca/archive/refs/tags/v2025.tar.gz"
-  sha256 "ee2ac59c858ee41ef3ecf636b263464cac5895c0ee9c8f97b1aafca4b8b76350"
+  url "https://github.com/votca/votca/archive/refs/tags/v2025.1.tar.gz"
+  sha256 "85b487d2b2a31f26869be422c98f816b95c88a4ab112ea4650cccd4c2706bdbf"
   license "Apache-2.0"
-  revision 1
+  revision 2
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "bd9cec0759bbce5f2a08aff4c75c3ee5179070cb057bb67509d73131c697f1b8"
-    sha256 cellar: :any,                 arm64_sonoma:  "46d73d6adc639afbe0ccf046f0ee04565c0fa8ece4f255dbcc3fd084cebc8ab6"
-    sha256 cellar: :any,                 arm64_ventura: "b626d60138ec38944c06be71c8dc60502b629fb1d59b719ac06e86037387f9b4"
-    sha256 cellar: :any,                 sonoma:        "376f6f16fbd2f983349e7f6f0261283cf003fce002bd7c8ab784d7267e7d544f"
-    sha256 cellar: :any,                 ventura:       "8869b98889a9da5d6f8c6977f99c48bdbc4766097fc22e57a67e3b4f931bc7c2"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "be3143dd3a32d31d35b23f21933ceb8fe084df5516a47bea702526baf4fd5322"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ac6c4ab8c106fd9ea90c590381a6c79d5fb0199569c9b442704782c534f42feb"
+    sha256 cellar: :any,                 arm64_tahoe:   "9083467e1a30e21f131314a426f6654540d04db6687629018552ebcf1de529b2"
+    sha256 cellar: :any,                 arm64_sequoia: "82ca8b75d12568511c38bba54efd2bf120489431187a9704791d14f429ef2ba1"
+    sha256 cellar: :any,                 arm64_sonoma:  "8ded162b5fbf26c6f586a6f973d1661317d238fba21fc7fbad0d3e1de4179341"
+    sha256 cellar: :any,                 sonoma:        "49c3aef63077a07399971c5cda155542ec2cc6799231f74152e283022da9522a"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "27cc5ddb6f732c334b6d6536fdc76dfbf1198a5405187b126b073721ac4a618f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "dfecc869d913c683b8c37710fa4d5342e6e595873542fa0553c5d743304169db"
   end
 
   depends_on "cmake" => :build
   depends_on "pkgconf" => :build
-  depends_on "python@3.13" => :build
+  depends_on "python@3.14" => :build
   depends_on "boost"
   depends_on "eigen"
   depends_on "fftw"
@@ -34,6 +33,13 @@ class Votca < Formula
     depends_on "libomp"
   end
 
+  # Apply open PR to support eigen 5.0.0
+  # PR ref: https://github.com/votca/votca/pull/1189
+  patch do
+    url "https://github.com/votca/votca/commit/cc581d91196c3505c649e35ba69bcc8ec33fa14b.patch?full_index=1"
+    sha256 "08da2d4fd694eb1b3909fe4ef452b042a0b0733ca5d8b68e0e655b09842cb069"
+  end
+
   def install
     args = [
       "-DINSTALL_RC_FILES=OFF",
@@ -43,7 +49,7 @@ class Votca < Formula
       "-DENABLE_RPATH_INJECT=ON",
       "-DPYrdkit_FOUND=OFF",
     ]
-    system "cmake", "-S", ".", "-B", "build", *std_cmake_args, *args
+    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
   end

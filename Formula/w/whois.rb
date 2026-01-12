@@ -1,19 +1,18 @@
 class Whois < Formula
   desc "Lookup tool for domain names and other internet resources"
   homepage "https://github.com/rfc1036/whois"
-  url "https://github.com/rfc1036/whois/archive/refs/tags/v5.6.3.tar.gz"
-  sha256 "5bdaf291465ef185384d9b5c4482f377a8040c008433b51d3cb8a4627f7aab14"
+  url "https://github.com/rfc1036/whois/archive/refs/tags/v5.6.5.tar.gz"
+  sha256 "99510048033408eae5cc3f1f421121a1f33147196b7017ebaace6e56352680f5"
   license "GPL-2.0-or-later"
   head "https://github.com/rfc1036/whois.git", branch: "next"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "79bc7ee8d13e233bf2c0ef7816d0ed2827b41a3e6c85ee21ec0eca8cc0b1b82f"
-    sha256 cellar: :any,                 arm64_sonoma:  "35fadb940b2dd257004747b51e08498f3139114e3ac962f75d599f00f67d2b90"
-    sha256 cellar: :any,                 arm64_ventura: "6c455212cf834f68f8ffd302adb9749e6afac6c2fe47c49daa17089154a200e0"
-    sha256 cellar: :any,                 sonoma:        "87305e85c2556cbe55957d7da430f56fdfeed7d40e5d5ac8a9208869be51a4df"
-    sha256 cellar: :any,                 ventura:       "c3e2c6c63e161ea6193de0999aa8935dcbf4ff7d75b308a205dbd266f81a8871"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "b9beb3e0f57be3f71e81942236c7cdf6f2c13983b7f1c88ab5d2d40febeafe96"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "75584d231d37a8b730bdae459bc63cff0c1164d12d9506dc25b07eccf000a1e2"
+    sha256 cellar: :any,                 arm64_tahoe:   "3f7eecdec4dc6dec07980e2908f451df7a3e778fab47785fc6615c7b8db3ea72"
+    sha256 cellar: :any,                 arm64_sequoia: "46f6549d331ea0d7b316d4bdee34afc953d3b7c9e3a35bece1089d63c767f4c7"
+    sha256 cellar: :any,                 arm64_sonoma:  "fdb9bc05c21e38b8121c7bb387cad4d2725f95d863b3dcbeef81d80a5ada58c9"
+    sha256 cellar: :any,                 sonoma:        "fdf27190150b9938875bb51cc555559b19581cf54852275f6c014de3e5ae3432"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "a2f57c068b7e808b997cfbad518cd35f9543908165a29212c9c1570e3eb58cdc"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a4337035ef19d8e7c73f9abb7f4bbb775e888a71ad08352bd7d9450dbdaaa155"
   end
 
   keg_only :provided_by_macos

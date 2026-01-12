@@ -1,19 +1,18 @@
 class Stu < Formula
   desc "TUI explorer application for Amazon S3 (AWS S3)"
   homepage "https://github.com/lusingander/stu"
-  url "https://github.com/lusingander/stu/archive/refs/tags/v0.7.3.tar.gz"
-  sha256 "61cd09c7ad12cc20ff0bd954d6a9f591c0e1dfca6b759dab2aa2c1b7d121c18d"
+  url "https://github.com/lusingander/stu/archive/refs/tags/v0.7.5.tar.gz"
+  sha256 "b37e3f241f224f76a35934649ea466bde9c069fbcb7c11dfcd67f42214c070ee"
   license "MIT"
   head "https://github.com/lusingander/stu.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "d728f1ea93624c0af13aa6087826f9463f4eb7287294925b60a10e6a53fd3c19"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "d1b8b3ed90a089fce6cc3757819ee75b4192b92bd1ea9f51813a111d3ba9c434"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "c54544ed4d9ebc82bf9107b9c6d6cb561a3abaf994cdfa28ea506439bdb14ac2"
-    sha256 cellar: :any_skip_relocation, sonoma:        "8c4bc78930d12cdc0e0ea6f22a4ad1dc09cac0516cf1adf4fda2907aa0b6136c"
-    sha256 cellar: :any_skip_relocation, ventura:       "f9e2a0932304f3e304e1940c7635a47070da2521c594e533cfb098282e5d56a9"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "08855c2c1c75850b31a195091d2c604f2631b615c1e090f609b2d7e9b051406a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c85289acaaffefc89cb0fb2c5f2f7149a191fd99decc6cf92f47bdf39788d3ae"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "37059ab0970c815b6e054bbd60fedabc0bf2195201e4370f792d20e36ba52439"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "c919d79d03b34ea3fc6c9ab6bf4a9f34cafbfeb15004a650bd1b56ed4dbfd35b"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "0f2ced87e55ac63fe2a6d170a1971573f2e2e153b4ecd188c3f2a8ff74c68c2d"
+    sha256 cellar: :any_skip_relocation, sonoma:        "14fa6797e6e10dc8976102b567734abb35495a069cdce7a3291e30a79bd255e9"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "ead74b7aa236fc2a96c9aa085ca9957743f5c10600d040c289f267e3c79e3181"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d35c96dcf427fedd0e171273dc5654f0abc41628e38f14320e93e07d9cd1a1b0"
   end
 
   depends_on "rust" => :build

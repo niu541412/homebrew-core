@@ -1,8 +1,8 @@
 class Di < Formula
   desc "Advanced df-like disk information utility"
   homepage "https://diskinfo-di.sourceforge.io/"
-  url "https://downloads.sourceforge.net/project/diskinfo-di/di-6.0.0.tar.gz"
-  sha256 "7b663e4db044b1fa4986bd018f827c18e96fe6d1f9a36732dcbb0450e7f518cb"
+  url "https://downloads.sourceforge.net/project/diskinfo-di/di-6.2.1.tar.gz"
+  sha256 "4003e359fa6baad4494118e91ae561e5475b7125001298f6b5552f5666c274a6"
   license "Zlib"
 
   # This only matches tarballs in the root directory, as a way of avoiding
@@ -13,13 +13,12 @@ class Di < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "adc88bc0093e025288c699f376e758089711a840792aea13c990fc379cee1ec8"
-    sha256 cellar: :any,                 arm64_sonoma:  "20416d442a7595dce7526c6ad3cf61fadf9fd75378aac82c1895c7ec17e81deb"
-    sha256 cellar: :any,                 arm64_ventura: "e00b6b7afc135ab8351c07cf4303540b4c533ca8ece84a4fe69acc13d87dae8f"
-    sha256 cellar: :any,                 sonoma:        "b6e072007fa6ef95194d50126986fcc614371e0b4d8724ca1ee5ef0ccd8596de"
-    sha256 cellar: :any,                 ventura:       "d17b37ed52039a49fc79fd6fae1e79dbfe3b2603806e105d3d53626af40c7a82"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "ddd98a7738b8cb9ff067db4103d93f96ee4c9517a800d41ee142ec6ee14084ba"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "9172a9b37e0d769eeab8e2bb77f2933b9f893652dbd1e49f9bc94569af9aa370"
+    sha256 cellar: :any,                 arm64_tahoe:   "30470c054214fd8911d5d67ae2b54f5355513dae7e1eea9cd831a63ee6f98d88"
+    sha256 cellar: :any,                 arm64_sequoia: "de867425bd6cce80299dbd1eee1560a59031a49da18c57cdc046426f8665d683"
+    sha256 cellar: :any,                 arm64_sonoma:  "917e4a7f601445b7d810ca00c4c489b70823ba7a04eeab3a3cf0da5c7cb01605"
+    sha256 cellar: :any,                 sonoma:        "941bb964945284a2de8f4149e5a91b6577ad166244353118627570c160ebda4f"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "4cf6b30585cc48fe7f80c4a393fe9f9d6dc9474699f61abb67a12e6c06a9e7ea"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "52778b2dc20e0488ee439520f56aaf414abdf9a67016b86a3519d0e3bbe41c06"
   end
 
   depends_on "cmake" => :build

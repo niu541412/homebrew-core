@@ -1,8 +1,8 @@
 class Foundry < Formula
   desc "Blazing fast, portable and modular toolkit for Ethereum application development"
   homepage "https://github.com/foundry-rs/foundry"
-  url "https://github.com/foundry-rs/foundry/archive/refs/tags/v1.2.3.tar.gz"
-  sha256 "856c8b5cab39f1e6dd27ee368a306add7604d1c720148763cfd599cce4e1a510"
+  url "https://github.com/foundry-rs/foundry/archive/refs/tags/v1.5.1.tar.gz"
+  sha256 "1c3aeaa2f34d812c598c3c5ea996be154bcf5604b9cbea0af0901b3dbe8e4600"
   license any_of: ["MIT", "Apache-2.0"]
   head "https://github.com/foundry-rs/foundry.git", branch: "master"
 
@@ -12,13 +12,12 @@ class Foundry < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "1b454bbd8373f55cfeef658fdbc4eacf914699b7a0c2a2fc50415b001b5abcd8"
-    sha256 cellar: :any,                 arm64_sonoma:  "32821e29862e266191f07a773c09b92c8d8c9650e93d4aad8e9df2873820fbc0"
-    sha256 cellar: :any,                 arm64_ventura: "19c07a7f6a649dd08a9dadb9fd9e610b72cd9a14537f05bdca0565d38e0096ac"
-    sha256 cellar: :any,                 sonoma:        "ca39ddcbf3b1a8fc9ac52c2fa8ff738f1df6b789c15348b0a3f6ccd245a197ab"
-    sha256 cellar: :any,                 ventura:       "211ac10d0440a54ef4e4d322804a438ff5a1bb7df5c54f7c1e7c8dba55bfcc2a"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "35eabf01a8bf421c25fc044e58544c958e5eec0980a569681e90e102b0d3e5c9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2d3886cc949dce5f70e29e93f0a33db11a342d2970250ad036561833d3a68224"
+    sha256 cellar: :any,                 arm64_tahoe:   "d10d6f1d4f608af12fee2b0d5acd0d46149ab171f9cc91e1ded7b52caa7a02ab"
+    sha256 cellar: :any,                 arm64_sequoia: "76424dd401bbb3e7d0f75196a378b7205d6b3c9416c319d46bf8a4cfea2372e3"
+    sha256 cellar: :any,                 arm64_sonoma:  "984213d2d0ff32a21fd0652a910e6574b0bc3f10d70fbdd7ea554d999e7f890d"
+    sha256 cellar: :any,                 sonoma:        "3fa93ea839450ffe3bdf5a2903ecc5c22d0ed28f805d9f82e21b35a06e9ece1d"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "c196da5a75be8eb147e84af7cd387d4207b597508016f53d291d25d11d2de869"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "453027b09191e33b00015be9a4b2c806d6bf626a2d223c08a10f03a23f3e0fd0"
   end
 
   depends_on "help2man" => :build
@@ -56,7 +55,7 @@ class Foundry < Formula
       assert_match "Suite result: ok.", shell_output("#{bin}/forge test")
     end
 
-    assert_match "Decimal: 2\n", pipe_output(bin/"chisel", "1+1")
+    assert_match "Decimal: 2\n", pipe_output("#{bin}/chisel", "1+1")
 
     anvil_port = free_port
     anvil = spawn bin/"anvil", "--port", anvil_port.to_s

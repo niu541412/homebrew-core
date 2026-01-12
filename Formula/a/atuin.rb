@@ -1,18 +1,18 @@
 class Atuin < Formula
   desc "Improved shell history for zsh, bash, fish and nushell"
   homepage "https://atuin.sh/"
-  url "https://github.com/atuinsh/atuin/archive/refs/tags/v18.7.1.tar.gz"
-  sha256 "8a3e9e80390a996688590e27c245d5ad5dccfc2a1aedd53bd1e50e24a776e8d0"
+  url "https://github.com/atuinsh/atuin/archive/refs/tags/v18.10.0.tar.gz"
+  sha256 "02228929976142f63b4464a35b8b29b29155e1814cf03e99c95381954c5d9e37"
   license "MIT"
+  head "https://github.com/atuinsh/atuin.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "33cb87eb764426649ec229f17d553ede55785acb573bd96f6a6e8ed90b350643"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "f6c098366627a94020870a808893138c9c303d759e8facdd27fa915ae20c88cd"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "29b6a31b8c8419e3c38faaea2adbf2b22884e50cfd51264a4608d854aca8e2d0"
-    sha256 cellar: :any_skip_relocation, sonoma:        "c9b821ec481dcf76f1d32c82002964bcfb64b5b685dddffa671754f060d84224"
-    sha256 cellar: :any_skip_relocation, ventura:       "5b86ba9a9aa4fffc55f8d67b80f7fee1deab417ee8951723a38a6faabd85f7e8"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "367ce0c1321338ce6ea4654ef524387595a2012a98c223a30023688ff0249893"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "fd8768a279baa3ca00fd39f29c1769b05e8b2533115e844ec025b3f61162abee"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "235d017cc3111495c86fbc1d312474ac34bef3b437f87d06f863e0c9958be678"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "1bd0573a397e6971a1425c76bf1704e32aa1236d573c0fe0af9ad864cd153aad"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "2291c61ea446650b01fa0ea5015f5d8b2552735fdba7613d032cfdde341e7078"
+    sha256 cellar: :any_skip_relocation, sonoma:        "be9b90ff44ced78f53e2365435c0f168d4aa2218b8da2146c4354a5049a9905e"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "b1f59232ac04c3d7be883f9d65f7100a2209fca0a5e7b99206a24b2aa949a54b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "82a016cbd0456b8af46f94f87e6e4ff178e5143363d4fb02958a83b110b8fbdd"
   end
 
   depends_on "protobuf" => :build

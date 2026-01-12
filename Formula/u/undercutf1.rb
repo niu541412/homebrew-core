@@ -1,24 +1,31 @@
 class Undercutf1 < Formula
   desc "F1 Live Timing TUI for all F1 sessions with variable delay to sync to your TV"
   homepage "https://github.com/JustAman62/undercut-f1"
-  url "https://github.com/JustAman62/undercut-f1/archive/refs/tags/v3.1.96.tar.gz"
-  sha256 "ff377e4bf8403510dcbe29dfbe6a9b2056234ca762dd96094943eba47618b744"
+  url "https://github.com/JustAman62/undercut-f1/archive/refs/tags/v3.4.32.tar.gz"
+  sha256 "3e90ccd0c7f02240c9ff8b175c84a37b62cb82774a62d46b44ee7103996dd30a"
   license "GPL-3.0-only"
+  revision 1
   head "https://github.com/JustAman62/undercut-f1.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "539fbd3440783df46b6619222491729137e8d3488094cd59ef7e0e35334011f7"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "487f2d6ee9da701aecb3d23b90875fec7f23e4c775667d210073daf3e056089c"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "f73cb7559c624e924bba7384c3bfdc2ec0648f0e9070ea83de2eacdbbc2f4e08"
-    sha256 cellar: :any_skip_relocation, ventura:       "7817cd318fff6fe788129fd6af7c922f5c826d806ce4e99928037861ad476fc8"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "4e43e3142b9893aa45bd62ed879d907481c4e6a64c320cafa76e329a6f87bf25"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "9ba9e0f377439c2d4832e6391783eb42943e1bcab85ec9d96fece3b42f05cd22"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "4fc68891a534638218604c7c01baec8acc61c581357e22715f12df0a9d393991"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "9e228fa87e578f3049427dfc59586e38b1f1d6cfca29169c1ee27fd03b0e3fda"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "e265140152d66e401b4ee41d7eda1756235cc341fd05cc3901e72a02375a0d77"
+    sha256 cellar: :any_skip_relocation, sonoma:        "943bacbb0c6d4ffed72770b51c8b5228ba735e1c8d2736f64be2f327e53c4f6a"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "8217e2a97d90119c30a47d8f8369fb7bf9c6d07401bf0f46be8deb94662b9018"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3674c96f9266e772f647e8bf73f47b6ae3622fc5b9042d1ffe1f5b12b3bd1451"
   end
 
   depends_on "dotnet"
   depends_on "ffmpeg"
   depends_on "fontconfig"
   depends_on "mpg123"
+
+  # Support dotnet 10 - remove in next release
+  patch do
+    url "https://github.com/JustAman62/undercut-f1/commit/2ae7e47daab9250d31878a92943864fabd04db59.patch?full_index=1"
+    sha256 "b51d288893a1ce6e5abfe759f498ce79d2ebcc5c17ab6b328c16d5ad8f2a1a06"
+  end
 
   def install
     ENV["DOTNET_CLI_TELEMETRY_OPTOUT"] = "1"

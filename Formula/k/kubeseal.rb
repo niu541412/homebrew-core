@@ -2,23 +2,23 @@ class Kubeseal < Formula
   desc "Kubernetes controller and tool for one-way encrypted Secrets"
   homepage "https://github.com/bitnami-labs/sealed-secrets"
   url "https://github.com/bitnami-labs/sealed-secrets.git",
-      tag:      "v0.30.0",
-      revision: "6e0beae85afcd1e981b4b56f22399ded6cbe6a88"
+      tag:      "v0.34.0",
+      revision: "fd30a3eb590170d99e5d62df254d097a2c131144"
   license "Apache-2.0"
   head "https://github.com/bitnami-labs/sealed-secrets.git", branch: "main"
 
   livecheck do
     url :stable
-    regex(/^v?(\d+(?:\.\d+)+)$/i)
+    strategy :github_latest
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "1f1998778a51c55251f10cdba515b19d19039ecb2c0bfe3125e82eae5a808d2e"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "8c6a879a779085d4da5f145ebcef73976245e4f2816f48bd7ec4a71e9dbfb149"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "38acdcf8cd85cbfd61f2bbb31d0f42fb7e6dcb086f2928a54ffbbdb36ea006c1"
-    sha256 cellar: :any_skip_relocation, sonoma:        "6afbe477c2f01c9877fbbe417dc1bbd13b62ef1d280107c66daeed1c6bc99297"
-    sha256 cellar: :any_skip_relocation, ventura:       "425c03a07b9d7d46dd9d41aa40bb7c464370df9a4c15bf1a25cbf4e01b9606d5"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "fd76936ebd3cfbeecf75897c71bc480728c544c5bd89344e9cef2d316d9f3118"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "604cbe5d08b9afbf9c09a4882f63694d1144f8a8c6bef59ecbf66ac14e34ea75"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "11bd120cf26cc38b4aaae8b486eb9cef9acbf73f354113cbc0db733bb45940c5"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "307f45164c03ffc648de6984e26d7d644c546691a0201747f00cf4d2f4c9f019"
+    sha256 cellar: :any_skip_relocation, sonoma:        "1e7735c6c2b2b2308852e77df34e9adf18d00b04380997c40b4511f1a29ede4a"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "a4abacd6515f600cdcd488b4495f6246df9003a52e65e652b219c5afbdcade7e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d07e2438865907dcc09fe6540f1b0c8b53694120baf39e8793c1e39abf280b45"
   end
 
   depends_on "go" => :build

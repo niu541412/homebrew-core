@@ -1,8 +1,8 @@
 class Questdb < Formula
   desc "Time Series Database"
   homepage "https://questdb.io"
-  url "https://github.com/questdb/questdb/releases/download/9.0.1/questdb-9.0.1-no-jre-bin.tar.gz"
-  sha256 "9e72107cad87fa38443979afa81a1b90ebbf458731adc5e72d7b6b4d4e6db2a7"
+  url "https://github.com/questdb/questdb/releases/download/9.3.0/questdb-9.3.0-no-jre-bin.tar.gz"
+  sha256 "5451af88db4c8ed9b72a5c7bdcf3e72221b53f854ca3189a169d4ca97a05d4fc"
   license "Apache-2.0"
 
   livecheck do
@@ -11,7 +11,7 @@ class Questdb < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "0894694a55beb7c61100f7840a4c1aaa4def4ce8e969b76799d015501371df6c"
+    sha256 cellar: :any_skip_relocation, all: "6ebace8a63115eff4e7ef931593f0f4420abde1347a949437501237e1047dac0"
   end
 
   depends_on "openjdk"
@@ -21,9 +21,7 @@ class Questdb < Formula
     libexec.install Dir["*"]
     (bin/"questdb").write_env_script libexec/"questdb.sh", Language::Java.overridable_java_home_env
     inreplace libexec/"questdb.sh", "/usr/local/var/questdb", var/"questdb"
-  end
 
-  def post_install
     # Make sure the var/questdb directory exists
     (var/"questdb").mkpath
   end
@@ -43,12 +41,8 @@ class Questdb < Formula
 
     mkdir_p testpath/"data"
     begin
-      fork do
-        exec bin/"questdb", "start", "-d", testpath/"data"
-      end
-      sleep 30
-      output = shell_output("curl -Is localhost:9000/index.html")
-      sleep 8
+      spawn bin/"questdb", "start", "-d", testpath/"data"
+      output = shell_output("curl --head --silent --retry 5 --retry-connrefused localhost:9000/index.html")
       assert_match "questDB", output
     ensure
       system bin/"questdb", "stop"

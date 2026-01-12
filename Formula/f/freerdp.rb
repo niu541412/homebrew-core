@@ -1,18 +1,17 @@
 class Freerdp < Formula
   desc "X11 implementation of the Remote Desktop Protocol (RDP)"
   homepage "https://www.freerdp.com/"
-  url "https://github.com/FreeRDP/FreeRDP/releases/download/3.16.0/freerdp-3.16.0.tar.gz"
-  sha256 "385af54245560493698730b688b5e6e5d56d5c7ecf2fa7c1d7cedfde8a4ba456"
+  url "https://github.com/FreeRDP/FreeRDP/releases/download/3.20.0/freerdp-3.20.0.tar.gz"
+  sha256 "96631873b00c8a872c9fe4e668957c3e4e0808f81ccb71f6ac028096a2682806"
   license "Apache-2.0"
 
   bottle do
-    sha256 arm64_sequoia: "3815dd2324a3b6b7e1aeec1f55bd7d2c1efb31c24e28cd18426157c635ee7213"
-    sha256 arm64_sonoma:  "107ab42c7e58c5542894dd5eb56a27aeb32853399467e0c30618b46718a0199d"
-    sha256 arm64_ventura: "8639f7bddaf41460005ac4be1a292105e47f253cebc91144e66f433900893e24"
-    sha256 sonoma:        "571deac2e8cd88b7aebba8c99f3e61ba98dafb36c6ece0380bf3b83e6e344cd9"
-    sha256 ventura:       "2a8e3b2ed4e24e35431e6b3615b9c11e9f5eb1b61d216be6795b38607d5c4b91"
-    sha256 arm64_linux:   "95bc249e76d351b4eae0b3e4ddc2ab3968f46017191bfbaf622b2c8d334e56d4"
-    sha256 x86_64_linux:  "7c888eefd0fcbace181dd04cf8acb1d30285e4a76a214fe643986a11d75bf970"
+    sha256 arm64_tahoe:   "f85ec9dae598d3ee40875f82cb3892ca200aa2636062f680eb3967de3513275d"
+    sha256 arm64_sequoia: "4e5a3226d25d8f5ce5fb75365ca5bf072d811b71cf3011f927eedd4f5e481971"
+    sha256 arm64_sonoma:  "534cebac60d04a8be786b6a724a4a196e269e47b6a381708e5ea61c09b0b9046"
+    sha256 sonoma:        "bf69732c48b791434b95b3d0af3d08dfb421c18e22743963d7463194715107b6"
+    sha256 arm64_linux:   "ca894e4afd8e81a2e023e1bc485af5ac304259cac836dd5b524f37ab19b3e14f"
+    sha256 x86_64_linux:  "bae5393b729238390464741a2feb631fa7913cc918203ec3542f41ae40c64867"
   end
 
   head do
@@ -46,7 +45,7 @@ class Freerdp < Formula
   on_linux do
     depends_on "alsa-lib"
     depends_on "glib"
-    depends_on "icu4c@77"
+    depends_on "icu4c@78"
     depends_on "krb5"
     depends_on "libfuse"
     depends_on "systemd"
@@ -99,8 +98,6 @@ class Freerdp < Formula
   end
 
   test do
-    return if OS.linux? && ENV["HOMEBREW_GITHUB_ACTIONS"]
-
     success = `#{bin}/xfreerdp --version` # not using system as expected non-zero exit code
     details = $CHILD_STATUS
     raise "Unexpected exit code #{$CHILD_STATUS} while running xfreerdp" if !success && details.exitstatus != 128

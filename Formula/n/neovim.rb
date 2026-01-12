@@ -2,15 +2,20 @@ class Neovim < Formula
   desc "Ambitious Vim-fork focused on extensibility and agility"
   homepage "https://neovim.io/"
   license "Apache-2.0"
-
-  head "https://github.com/neovim/neovim.git", branch: "master"
+  revision 1
 
   stable do
-    url "https://github.com/neovim/neovim/archive/refs/tags/v0.11.3.tar.gz"
-    sha256 "7f1ce3cc9fe6c93337e22a4bc16bee71e041218cc9177078bd288c4a435dbef0"
+    # TODO: Bump to use tree-sitter 0.26+ when new Neovim release supports it
+    # TODO: remove `head` block when stable supports tree-sitter 0.26+.
+    url "https://github.com/neovim/neovim/archive/refs/tags/v0.11.5.tar.gz"
+    sha256 "c63450dfb42bb0115cd5e959f81c77989e1c8fd020d5e3f1e6d897154ce8b771"
+
+    # TODO: Consider backporting for compatibility with 0.26
+    # https://github.com/neovim/neovim/commit/f4fc769c81af6f8d9235d59aec75cfe7c104b3ce
+    depends_on "tree-sitter@0.25"
 
     # Keep resources updated according to:
-    # https://github.com/neovim/neovim/blob/v#{version}/cmake.deps/CMakeLists.txt
+    # https://github.com/neovim/neovim/blob/v#{version}/cmake.deps/deps.txt
 
     # TODO: Consider shipping these as separate formulae instead. See discussion at
     #       https://github.com/orgs/Homebrew/discussions/3611
@@ -52,16 +57,19 @@ class Neovim < Formula
     regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
 
-  no_autobump! because: :requires_manual_review
-
   bottle do
-    sha256 arm64_sequoia: "cbd828c1c11e09c112bb018eae26474263c424c0dfd72c094f2e0b5ca6c187d6"
-    sha256 arm64_sonoma:  "71c55faddfc36df6aa443a370d60ca3a8adbceddafa8afaf82702203d9dfd121"
-    sha256 arm64_ventura: "ee4de96f49d2dd3427ae8d85778eb98dbd4b8d09c0b38b5673aa80d418fc22bf"
-    sha256 sonoma:        "4d9e24876991c1965e7f4ef7d9c79f476c2c9ee37ed0f8b1058543bd01a6fd75"
-    sha256 ventura:       "37e3d8b203907f97e9af3f620864fe2ac9e1ad75054d2b3ed9721ba0c966d7f8"
-    sha256 arm64_linux:   "d5f1ea4819bae3180e06c8f5182bf7b70ad5f10ba05d32f3280b91da4bd3d29f"
-    sha256 x86_64_linux:  "c4f073496d09437b7e7bf9cc21998bd1d22cd8f7511242e1105a73bbdcccfe0a"
+    sha256 arm64_tahoe:   "5444020bff8a2253e8760178e8be3bacf88bc755162ff5534539eb452385d8bb"
+    sha256 arm64_sequoia: "6ba0dc0368baeb5d53161f666092c933f81062ce7dbafe2903d2543b802cd9cb"
+    sha256 arm64_sonoma:  "8f5e68f365cf54244c24ca7552959cbeab809a7ad27d0065a1fe94e6d2c81eb4"
+    sha256 sonoma:        "f133d0f05bd0fedf628543328838a824b9b15bdd7bdaaf35553a524e746430f7"
+    sha256 arm64_linux:   "5e9c3847e51132f1e55d89d7f29bae30fcab992f4a2da7f4925fd3f0faadad0d"
+    sha256 x86_64_linux:  "caaa35a53bbd9771f295e2480cb3a9f506d50c6fc33bcc8dbdac67cd68b0f55a"
+  end
+
+  # TODO: remove `head` block when stable supports tree-sitter 0.26+.
+  head do
+    url "https://github.com/neovim/neovim.git", branch: "master"
+    depends_on "tree-sitter"
   end
 
   depends_on "cmake" => :build
@@ -70,7 +78,6 @@ class Neovim < Formula
   depends_on "lpeg"
   depends_on "luajit"
   depends_on "luv"
-  depends_on "tree-sitter"
   depends_on "unibilium"
   depends_on "utf8proc"
 

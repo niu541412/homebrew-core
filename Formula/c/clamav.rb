@@ -1,10 +1,11 @@
 class Clamav < Formula
   desc "Anti-virus software"
   homepage "https://www.clamav.net/"
-  url "https://github.com/Cisco-Talos/clamav/releases/download/clamav-1.4.3/clamav-1.4.3.tar.gz"
-  mirror "https://www.clamav.net/downloads/production/clamav-1.4.3.tar.gz"
-  sha256 "d874cabf3d4765b35b518ef535658a1e6ec74802006a1d613f9f124aa1343210"
+  url "https://github.com/Cisco-Talos/clamav/releases/download/clamav-1.5.1/clamav-1.5.1.tar.gz"
+  mirror "https://www.clamav.net/downloads/production/clamav-1.5.1.tar.gz"
+  sha256 "64fe4a16a5622c1d71efe9ed7f2c2fbd37f8f237da9f11ff66b73038df71db91"
   license "GPL-2.0-or-later"
+  revision 1
   head "https://github.com/Cisco-Talos/clamav.git", branch: "main"
 
   livecheck do
@@ -13,13 +14,13 @@ class Clamav < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "251bf418c7dc47d360294ce30fdc3ff488999350856fd7d2b5389fb763563c3d"
-    sha256 arm64_sonoma:  "527382622ca74f0c7e5510b14d76ba2f62dcf8eab59e557d4239d73c612520f8"
-    sha256 arm64_ventura: "f67aac9831164aa14f229686286fb5e539b3d6628bd0b19531f93fcb933a04e1"
-    sha256 sonoma:        "f87e21de03dd8e9f6d3d0f42f549c335096a990d716f6168a44f7d7f32095366"
-    sha256 ventura:       "8a708db9eb56b97e584fe54d252eff885c26d1055cc82fc882351845e213def4"
-    sha256 arm64_linux:   "e5a7e558c3d1120eb35c232371dfd79f3b63a2550ae17ef8ee875db8a64f43a0"
-    sha256 x86_64_linux:  "87e9d72cfd741c30f3098924b2c1f27ff56205449fbac34847e72af11e181447"
+    rebuild 1
+    sha256 arm64_tahoe:   "219df02b20bf1ab28fdc4a3b7b79708279992e921bcd40da94f90620e10b63b7"
+    sha256 arm64_sequoia: "94b255fa171b5e92b99986dd9b9f17773aa27f13bc0056c6b945728506b6ce6b"
+    sha256 arm64_sonoma:  "ddc866da4079b1cbccd104051c7d14d25f562a701e7d52c380b0d9f92191b7ff"
+    sha256 sonoma:        "b16dae0e12c7c0eb591dd75a2b262dff9dc2f1e93d5f62702dde7c4df2f5531d"
+    sha256 arm64_linux:   "2a910545e8050ba236ab3f1f5508b65b6a6f7daca9a2747ef304bd0b356663a3"
+    sha256 x86_64_linux:  "c9ff6614ebc2303d4546762ac6801e0485d94249e2bdffeb142369c8d242d9c6"
   end
 
   depends_on "cmake" => :build
@@ -40,7 +41,7 @@ class Clamav < Formula
 
   def install
     args = %W[
-      -DAPP_CONFIG_DIRECTORY=#{etc}/clamav
+      -DAPP_CONFIG_DIRECTORY=#{pkgetc}
       -DDATABASE_DIRECTORY=#{var}/lib/clamav
       -DENABLE_JSON_SHARED=ON
       -DENABLE_STATIC_LIB=ON
@@ -53,9 +54,7 @@ class Clamav < Formula
     system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
-  end
 
-  def post_install
     (var/"lib/clamav").mkpath
   end
 
@@ -68,7 +67,7 @@ class Clamav < Formula
   def caveats
     <<~EOS
       To finish installation & run clamav you will need to edit
-      the example conf files at #{etc}/clamav/
+      the example conf files at #{pkgetc}/
     EOS
   end
 

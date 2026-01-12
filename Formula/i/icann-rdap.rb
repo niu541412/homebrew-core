@@ -1,18 +1,17 @@
 class IcannRdap < Formula
   desc "Full-rich client for the Registry Data Access Protocol (RDAP) sponsored by ICANN"
   homepage "https://github.com/icann/icann-rdap/wiki"
-  url "https://github.com/icann/icann-rdap/archive/refs/tags/v0.0.22.tar.gz"
-  sha256 "42360a82605bf92891b4de0a133d43baabb041446b16063094c4abc94c531c30"
+  url "https://github.com/icann/icann-rdap/archive/refs/tags/v0.0.26.tar.gz"
+  sha256 "85150d97000e4457d1bc6b78c303bae4749a145eac5ded011e8b8af452ccb469"
   license any_of: ["Apache-2.0", "MIT"]
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "70a951b05788925c050650eaec31c3a7a0e26869d77701b190dfba2787a1d063"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "812554fed56276e8cf3e84147630a91f60a08a1c5a0b1f48802e4e35780f5e7a"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "f4f9f9c8d870740f0e2dbe9b89799fbb9c6e652eab49ee30828501dee2c86892"
-    sha256 cellar: :any_skip_relocation, sonoma:        "9c636a8333f3f570b08255835a91e4801d02c1f63790068bcb30e1c749a48f39"
-    sha256 cellar: :any_skip_relocation, ventura:       "fd38c0e06394376548163d27eec245846b5486cf6778ff08a7310e41f30d2970"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "e0c436e4857f837be3315250b81ae04f1971a07fc13b5eb2d0a6ac6bce427191"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "76d31f3744546c6f91b20c85bf371e1a3cf89eb0eef808c61fbef8e449302f4c"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "95bf2f9f197774f7462cd0e3e65987fdb531533dc1baeba4677a20414514ee4b"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "5f8b5cb14c28e0834571b9744ac48de90303179c2ee482cc1489301fe15bbfd7"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "c18799afc149073458e5be20bbe03ead3f1fb44763abb9a644036b4e34dbbc6f"
+    sha256 cellar: :any_skip_relocation, sonoma:        "019f022662393a0445c40b725dba87c1911b50f8f092ea7939f18e4a6334694b"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "e8abc9cf84e95435d39dc80e9ef6c43381442a44aede10dad69b5067ff42d847"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4fe3d7f7dede8e19fd26da70ac80fafe8598114442ab7152d5ce4959675b9859"
   end
 
   depends_on "pkgconf" => :build
@@ -27,18 +26,16 @@ class IcannRdap < Formula
   end
 
   test do
-    # check version of rdap
     assert_match "icann-rdap-cli #{version}", shell_output("#{bin}/rdap -V")
-
-    # check version of rdap-test
     assert_match "icann-rdap-cli #{version}", shell_output("#{bin}/rdap-test -V")
 
     # lookup com TLD at IANA with rdap
-    output = shell_output("#{bin}/rdap -O pretty-json https://rdap.iana.org/domain/com")
+    url = "https://rdap.iana.org/domain/com"
+    output = shell_output("#{bin}/rdap -O pretty-json #{url}")
     assert_match '"ldhName": "com"', output
 
     # test com TLD at IANA with rdap-test
-    output = shell_output("#{bin}/rdap-test -O pretty-json --skip-v6 -C icann-error https://rdap.iana.org/domain/com")
+    output = shell_output("#{bin}/rdap-test -O pretty-json --skip-v6 -C gtld-profile-error #{url}")
     assert_match '"status_code": 200', output
   end
 end

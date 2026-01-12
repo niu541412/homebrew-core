@@ -1,18 +1,17 @@
 class Rain < Formula
   desc "Command-line tool for working with AWS CloudFormation"
   homepage "https://github.com/aws-cloudformation/rain"
-  url "https://github.com/aws-cloudformation/rain/archive/refs/tags/v1.23.1.tar.gz"
-  sha256 "37fb974ee0eb36ceb80f38f13141883f3779a81c79562d0ad15afcd74753485e"
+  url "https://github.com/aws-cloudformation/rain/archive/refs/tags/v1.24.2.tar.gz"
+  sha256 "a49d6409eec1549c9990c5352b1fcf0f3276df7f1f10cf7686493c8be262840f"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "dd4c31e085d0107c25909db36c2c4df1bbfc21bcb3260d7478dc1324ac0995ae"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "15d05e072d423d6df23fadc7237e8607f17e749884ec656640571366f25dfdd0"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "1eedd4c33fdf1bffc2f1b3c8106a157174bfe7eb5bb3d5a8b32d837cededfaa1"
-    sha256 cellar: :any_skip_relocation, sonoma:        "a9953614985f14bf21b2b3b4ab88d179cda5da27e5e36a2d85a9a0115eb7c27f"
-    sha256 cellar: :any_skip_relocation, ventura:       "3cf376704499c3459de1d7e4f47713fe3006c0907f1bed480e1f0045dd6b2f06"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "32eebc8816cb5e77606f4ea200b634850bfd59c74e910feb91678b4f957f30b3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b9cd406c6cb1bfe9e46c928b7db5a478af2c510883145028d004d938ed4c1cd8"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "80cd0585efc6fff97ca4ca3c53d68fad49e18dbe5a50d005560920fd213d0335"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "d44a7cff01869e054cd413e350f324e1d953486ca66404a5a0402f860d42e9cf"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "6cbcd4ed0757dc5258b6f86625cc19c0e32abb064b3caea797df868dd84d8c8d"
+    sha256 cellar: :any_skip_relocation, sonoma:        "d0475b07e8dc5790aa2e28ccfe68fbf1b6f53375c2d0fb3842fbcff680998d93"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "88db63dbe8596d9878b94b867fab53ada875bd97258f2bfbb7b87313ce363ff4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "985ef13a7da3045a419eecdb1fa9252414d75222017c336c1bba98bd1de5a598"
   end
 
   depends_on "go" => :build

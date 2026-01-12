@@ -8,10 +8,9 @@ class Bind < Formula
   # "version_scheme" because someone upgraded to 9.15.0, and required a
   # downgrade.
 
-  url "https://downloads.isc.org/isc/bind9/9.20.11/bind-9.20.11.tar.xz"
-  sha256 "4da2d532e668bc21e883f6e6d9d3d81794d9ec60b181530385649a56f46ee17a"
+  url "https://downloads.isc.org/isc/bind9/9.20.17/bind-9.20.17.tar.xz"
+  sha256 "5cc89a09da0917eb1ddf640cc07c172ff44fa9bbf3a34ada4b6a2f7ee70ff1c8"
   license "MPL-2.0"
-  revision 1
   version_scheme 1
   head "https://gitlab.isc.org/isc-projects/bind9.git", branch: "main"
 
@@ -23,13 +22,12 @@ class Bind < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "ec86c918acab962d82267f20bf3b2baad077dacfbc2ce5968c4ec841dde34b89"
-    sha256 arm64_sonoma:  "736a239a4027b77698f52503a8103844702c51566eba9e628ea2aef528d4f34e"
-    sha256 arm64_ventura: "7a4119bce30046c23d032198dd165e3e16295308ddb2d28f8e86d6e2bcb864ec"
-    sha256 sonoma:        "2b6cddfc3f454c4b0e46ed80b05671d07b070de3b410b34173012a92f2b8600e"
-    sha256 ventura:       "d58dcf153aef18b184dab9e869da55b90ae111ee7e83ff803439ecfba367991d"
-    sha256 arm64_linux:   "07b07a13b4d712a1d4b5ee038a2634eab381dcae30a0964b0cb3357c4c3c1b4a"
-    sha256 x86_64_linux:  "1f4bbe94883a40c0ad6d5f7d8a74e190752a8d72b284742593d1fb0cda2bbd5b"
+    sha256 arm64_tahoe:   "dfee8be193c1b65d989b689180572ca395d877772676bf608f92f0ed1141668f"
+    sha256 arm64_sequoia: "d68c14b945894c8fc698224b1c40c5f50629cec9750368b917ec385f02fcf72d"
+    sha256 arm64_sonoma:  "983ddfb9cf1983411921bd19061fa478a5a8c53528a0ce90460c57ce3e8a12db"
+    sha256 sonoma:        "316a4e41dde4959a712db3012dba449733e9e2b890d431272178ef1a17a8974e"
+    sha256 arm64_linux:   "7870f520cb05c1f927bb6375ab7e121a0347275166861d2ecb031bb1d3e9afd4"
+    sha256 x86_64_linux:  "2f3e7999f3668a80447dca7057b4e11184a27c8926e27d38c4cf7292d48d81ab"
   end
 
   depends_on "pkgconf" => :build
@@ -57,7 +55,6 @@ class Bind < Formula
     ENV.append_to_cflags "-DLIBXML_HAS_DEPRECATED_MEMORY_ALLOCATION_FUNCTIONS" if OS.mac?
 
     args = [
-      "--prefix=#{prefix}",
       "--sysconfdir=#{pkgetc}",
       "--localstatedir=#{var}",
       "--with-json-c",
@@ -65,17 +62,15 @@ class Bind < Formula
       "--with-openssl=#{Formula["openssl@3"].opt_prefix}",
       "--without-lmdb",
     ]
-    system "./configure", *args
 
+    system "./configure", *args, *std_configure_args
     system "make"
     system "make", "install"
 
     (buildpath/"named.conf").write named_conf
-    system "#{sbin}/rndc-confgen", "-a", "-c", "#{buildpath}/rndc.key"
+    system sbin/"rndc-confgen", "-a", "-c", "#{buildpath}/rndc.key"
     pkgetc.install "named.conf", "rndc.key"
-  end
 
-  def post_install
     (var/"log/named").mkpath
     (var/"named").mkpath
   end

@@ -1,19 +1,18 @@
 class Sqruff < Formula
   desc "Fast SQL formatter/linter"
   homepage "https://github.com/quarylabs/sqruff"
-  url "https://github.com/quarylabs/sqruff/archive/refs/tags/v0.29.2.tar.gz"
-  sha256 "7eb9c1fb3a1bfa9116f89edcd4eca55138799561c5be2ed4f133682c2e6668d8"
+  url "https://github.com/quarylabs/sqruff/archive/refs/tags/v0.32.0.tar.gz"
+  sha256 "6a8859ac1ad6e453f24fd03e503a9c7b65a2a80bddf541b6970d07895ea58143"
   license "Apache-2.0"
   head "https://github.com/quarylabs/sqruff.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "55a28f920e478e130d5d7f42034ce0105e19c96e1993a56ed456e2d4cc302ee4"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "26e50a716eec79765ea36e0665569ae35bd09badd113eba50214dae2b94367c3"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "21ffa0505da0c4e0fdc474e4a16f84825ed574937863a7abd918e7d6f0ede4bf"
-    sha256 cellar: :any_skip_relocation, sonoma:        "a8bc3f15023cc3ef61505907588a192d4a62c1a6c95b8773842a3faa928a0218"
-    sha256 cellar: :any_skip_relocation, ventura:       "5b2318e0122b7beb421dd65ff90270ede24538aee7325970733a62448455de4c"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "1ae89d5a1aa8f4e338c4ca9b64969f85dce9f43c3de834bff44fb889c7c5821b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "31305f0ab845daa7864d6bc5ad2072ec2f1039a8f0103b31849b8c440ad3b529"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "1ea4798fc29738aaab18388a1ddc12d40392ed359199b0e719cb16ef74ef53e3"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "6891fc1624865c77286c54c160560c74dd606012c759a8ed448b460e750e966b"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "6260172935a9df28f39fc8caa2f829da27269a1b68d6f8a6940c64f4723b89bb"
+    sha256 cellar: :any_skip_relocation, sonoma:        "a73e3751f0c4069ba415b843e33dc8fce5d6f70019022cc31683b25cf3b6a3f7"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "31a86357e96ba1a4bca666fad40880e5a4d1a4aa6e82123ac93c48188c864afd"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "659774f303a132d9720f1d8280ceae36b020e85d09cc56b861eaedf303665326"
   end
 
   depends_on "rust" => :build

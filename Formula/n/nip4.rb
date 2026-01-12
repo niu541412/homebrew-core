@@ -1,19 +1,18 @@
 class Nip4 < Formula
   desc "Image processing spreadsheet"
   homepage "https://github.com/jcupitt/nip4"
-  url "https://github.com/jcupitt/nip4/releases/download/v9.0.11/nip4-9.0.11.tar.xz"
-  sha256 "6a4ea40987fbb79fe21207c0945114214d235995ed80d50ac54b479eaf0959e9"
+  url "https://github.com/jcupitt/nip4/releases/download/v9.0.15/nip4-9.0.15.tar.xz"
+  sha256 "25145902a5ef15ca1519c37556e2fb80c88b5b639a8656abfac3e17a62fafa22"
   license "GPL-2.0-or-later"
   head "https://github.com/jcupitt/nip4.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any, arm64_sequoia: "fc149174017606164f3dab6d255af7a454678ed999747a70aa28ae8a3b5320bb"
-    sha256 cellar: :any, arm64_sonoma:  "3fa690a5d0898a1e538f95b7fd9184c55209c800d17ce47e391d0aad51409851"
-    sha256 cellar: :any, arm64_ventura: "4ccc0df479205109fa0fa61e75ea89b52fb110dd5fea20055d55f7f41f24d8aa"
-    sha256 cellar: :any, sonoma:        "f2ce78882251acbf1e128dbeba300620fe08a53e8a5207ee34cdcc30d00e460e"
-    sha256 cellar: :any, ventura:       "d1954871ab4841ec490a77a7156cbcc894078ad0a4ea8c63dc91b2a380f80745"
-    sha256               arm64_linux:   "5a0751761c842f142161b51ff0d4651842434a822c18f9d02de2b8fb4916a1d6"
-    sha256               x86_64_linux:  "4e0f6dd4cf2b935a25e2182feb01efc43f092f3f21d9ec17337d51fce905591c"
+    sha256 cellar: :any, arm64_tahoe:   "e5008a8303028c2def9ab592f4b45345f5b6e777c7e8a8117b2c58efc25f49ac"
+    sha256 cellar: :any, arm64_sequoia: "f95cd85e09bfe12d81cc6054cee084e4886714b02f2597a986cee3e2afc40a8f"
+    sha256 cellar: :any, arm64_sonoma:  "0456a069cc8fd5ffafacd9a5d7926fd6fc27b3ab5aa5f86dae62493c2e1f50ee"
+    sha256 cellar: :any, sonoma:        "9709586e7fa074645b916aee3fb0dd970a2af51668969bfab45364a8b8132596"
+    sha256               arm64_linux:   "730edd5aaebd9e931ea587dcbd1c206d146586f580eec2d605f9103cc6456843"
+    sha256               x86_64_linux:  "6f46e8825435fb74b6b4796d4aaf51d297fb1a4f14fdda7e21fcddb8351a9333"
   end
 
   depends_on "bison" => :build
@@ -49,7 +48,7 @@ class Nip4 < Formula
   end
 
   test do
-    assert_match version.to_s, shell_output("#{bin}/nip4 --version")
+    assert_match version.major_minor_patch.to_s, shell_output("#{bin}/nip4 --version")
 
     # nip4 is a GUI application
     spawn bin/"nip4" do |_r, _w, pid|

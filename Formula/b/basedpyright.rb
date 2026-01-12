@@ -1,18 +1,12 @@
 class Basedpyright < Formula
   desc "Pyright fork with various improvements and built-in pylance features"
   homepage "https://github.com/DetachHead/basedpyright"
-  url "https://registry.npmjs.org/basedpyright/-/basedpyright-1.31.0.tgz"
-  sha256 "05391cdff033634b37234ecd8331ce238479f1c331afa95fa95bc494b104e432"
+  url "https://registry.npmjs.org/basedpyright/-/basedpyright-1.37.1.tgz"
+  sha256 "c702091f3e40cc426050b4f1605b942597f63600cd47405e14b774a64ce17de5"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "18e8de81c5058a34215e34a28489d9b2beaa91c94d8e5c0140553edf664d1efe"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "18e8de81c5058a34215e34a28489d9b2beaa91c94d8e5c0140553edf664d1efe"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "18e8de81c5058a34215e34a28489d9b2beaa91c94d8e5c0140553edf664d1efe"
-    sha256 cellar: :any_skip_relocation, sonoma:        "38cdc47202d9fba2aabdac40d3d662c6863fa5de6387fb0174d1d2d2eade025d"
-    sha256 cellar: :any_skip_relocation, ventura:       "38cdc47202d9fba2aabdac40d3d662c6863fa5de6387fb0174d1d2d2eade025d"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "18e8de81c5058a34215e34a28489d9b2beaa91c94d8e5c0140553edf664d1efe"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "18e8de81c5058a34215e34a28489d9b2beaa91c94d8e5c0140553edf664d1efe"
+    sha256 cellar: :any_skip_relocation, all: "8fa841d82205a96c88cc48621347ab11c0665d0065a2f8bb4c187127bde84422"
   end
 
   depends_on "node"
@@ -21,6 +15,9 @@ class Basedpyright < Formula
     system "npm", "install", *std_npm_args
     bin.install_symlink libexec/"bin/pyright" => "basedpyright"
     bin.install_symlink libexec/"bin/pyright-langserver" => "basedpyright-langserver"
+
+    # Remove empty folder to make :all bottle
+    rm_r libexec/"lib/node_modules/basedpyright/node_modules" if OS.mac?
   end
 
   test do

@@ -1,10 +1,9 @@
 class Poppler < Formula
   desc "PDF rendering library (based on the xpdf-3.0 code base)"
   homepage "https://poppler.freedesktop.org/"
-  url "https://poppler.freedesktop.org/poppler-25.07.0.tar.xz"
-  sha256 "c504a9066dbdfebe377ad53cec641fd971ee96c4e1e8ca74e6c9c03d46d817ae"
+  url "https://poppler.freedesktop.org/poppler-26.01.0.tar.xz"
+  sha256 "1cb944a4b88847f5fb6551683bc799db59f04990f5d8be07aba2acbf38601089"
   license "GPL-2.0-only"
-  revision 1
   head "https://gitlab.freedesktop.org/poppler/poppler.git", branch: "master"
 
   livecheck do
@@ -13,13 +12,12 @@ class Poppler < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "78e14ca4ae441658614d9e1872dff10f9ec738d87bdc6aaea75435ea61f3c499"
-    sha256 arm64_sonoma:  "4fce89c21a1e900a4bea0729d989a9f84a3133913f406307d9297ed145c2f85f"
-    sha256 arm64_ventura: "6913cc66910ec73d0940d7bf82cb66004711fffc25373049108cd4f8aa5ab8f6"
-    sha256 sonoma:        "729bdb5ab742bbfb1688cb80e7b23282c68b3702a642f9a0baf3d085291c96ad"
-    sha256 ventura:       "37fbe31a3ac15d3a74cf5d01190ebbdcdf8eb81d24546956bf81efbeb0be9242"
-    sha256 arm64_linux:   "69e369e04168369ef3a5c271d7dd9fa8baa8382b7cd00906f938d7954645054f"
-    sha256 x86_64_linux:  "8c409d945f3354ddac1664c501e176aad516908a6a65f00244a05dc43ea20877"
+    sha256 arm64_tahoe:   "57a966903b663f5b47749128bdcd304c22aeca7c3db75e6540c6085bebbce477"
+    sha256 arm64_sequoia: "e2474d533363fadc9339d87a0d77f2efbdf4f324d4877aacc42762d2f3ef45f0"
+    sha256 arm64_sonoma:  "3ee65abda97e1305b5246a403a6e4f5b3cccb897caf122e7a15e41c04d4bca58"
+    sha256 sonoma:        "bb57254c9ca1be2da1cf147400a0feaffbb86dae5427204f98c3786b522ead04"
+    sha256 arm64_linux:   "245e9cf20f41c3efb91abe96ad6e14248b47d1f92c00bf3639b85e792d353a7e"
+    sha256 x86_64_linux:  "d89f115bec425be0f1bee2edb5d405ca5c00998e9a23bff0f6dbbc2927ea9a49"
   end
 
   depends_on "cmake" => :build
@@ -64,9 +62,6 @@ class Poppler < Formula
 
   def install
     ENV.cxx11
-
-    # removes /usr/include from CFLAGS (not clear why)
-    ENV["PKG_CONFIG_SYSTEM_INCLUDE_PATH"] = "/usr/include" if OS.mac? && MacOS.version < :mojave
 
     args = std_cmake_args + %W[
       -DBUILD_GTK_TESTS=OFF

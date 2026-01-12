@@ -1,19 +1,18 @@
 class Veilid < Formula
   desc "Peer-to-peer network for easily sharing various kinds of data"
   homepage "https://veilid.com/"
-  url "https://gitlab.com/veilid/veilid/-/archive/v0.4.7/veilid-v0.4.7.tar.bz2"
-  sha256 "5df6b4d8978958990549315ae6ff2b336c9e9b0606ce316f42b5fc2b31fa07e5"
+  url "https://gitlab.com/veilid/veilid/-/archive/v0.5.1/veilid-v0.5.1.tar.bz2"
+  sha256 "c3efec86cd7358a214eedc648558e10433dcedd089dfa324f9dc5ceebf8bb50c"
   license "MPL-2.0"
   head "https://gitlab.com/veilid/veilid.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "32b2828d8b246267a4d35fb0aaf36f4f890edd6df535705753e08f7a2d48bafd"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "44c214b57c8b84bcbf2ac61d17529181ca9cb6c9969139c99f2f0fd424a08f00"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "c0b1bd89ac7a12c5141995f66923e4450aee26ee17f146d000de335081c716ab"
-    sha256 cellar: :any_skip_relocation, sonoma:        "bc4601ac764c6fb4ece4aac02f1790084a6394a5368219854a14950ca8c2146a"
-    sha256 cellar: :any_skip_relocation, ventura:       "f715e4fd93f6afbc3ded77efef8baf173610a148892bc7255ad7060bb11435d0"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "7c585f4fd38d6a3b511680ca4d2bbd43138b60d7d33a80a82768c501b3014cbe"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "20e5d7f32d54285919c50a51a32e5b87918bdbf6e0ded3d36437126efdeac78c"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "74458597efff1154af3aa7c9f0f4045b301c49bda29962c25096f28560d1fe3e"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "70abfc74d48e71bd1c784bc1ad8a76704bfe159c4a319ae4b18eb0345506d4fd"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "032fa0d35851ddfc8d78b56e72588fb519e43069c5dfb3469b9c3d4afaaeab11"
+    sha256 cellar: :any_skip_relocation, sonoma:        "1719f80e8e0d0abfdc05bb09c32b049c56d247d613aadb948b340b9e3cc67409"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "4785a646dc4ba4c88ed3a32fd3f0aa23538437a1169a025def1d20e2e61a3c9f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b2b6acd3f512b9e242364bf57712264eb55bc56827b3fd8b9140a83575ee8d34"
   end
 
   depends_on "cmake" => :build
@@ -21,7 +20,7 @@ class Veilid < Formula
 
   def install
     ENV["SDKROOT"] = MacOS.sdk_path if OS.mac?
-    ENV["RUSTFLAGS"] = "--cfg tokio_unstable"
+    ENV.append_to_rustflags "--cfg tokio_unstable"
     system "cargo", "install", *std_cargo_args(path: "veilid-cli")
     system "cargo", "install", *std_cargo_args(path: "veilid-server")
   end
@@ -31,6 +30,6 @@ class Veilid < Formula
     command = "#{bin}/veilid-server --set-config client_api.ipc_enabled=false --dump-config"
     server_config = YAML.load(shell_output(command))
     assert_match "server.crt", server_config["core"]["network"]["tls"]["certificate_path"]
-    assert_match "Invalid server address", shell_output(bin/"veilid-cli --address FOO 2>&1", 1)
+    assert_match "Invalid server address", shell_output("#{bin}/veilid-cli --address FOO 2>&1", 1)
   end
 end

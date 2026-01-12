@@ -1,8 +1,8 @@
 class Libxslt < Formula
   desc "C XSLT library for GNOME"
   homepage "http://xmlsoft.org/XSLT/"
-  url "https://download.gnome.org/sources/libxslt/1.1/libxslt-1.1.43.tar.xz"
-  sha256 "5a3d6b383ca5afc235b171118e90f5ff6aa27e9fea3303065231a6d403f0183a"
+  url "https://download.gnome.org/sources/libxslt/1.1/libxslt-1.1.45.tar.xz"
+  sha256 "9acfe68419c4d06a45c550321b3212762d92f41465062ca4ea19e632ee5d216e"
   license "X11"
 
   # We use a common regex because libxslt doesn't use GNOME's "even-numbered
@@ -13,13 +13,12 @@ class Libxslt < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "882f9071165800a694e3dc146e614c984b70d80cf8fa284cc78dd0f35f096a2f"
-    sha256 cellar: :any,                 arm64_sonoma:  "ba204e6736fe30b763bc9372a464f050daa8c5d66aebbff6c8659abbc796d4ae"
-    sha256 cellar: :any,                 arm64_ventura: "68fbcc1a39a1af56dda4c550816f0a4796ed8b70608518b184331f1e13a1ff1b"
-    sha256 cellar: :any,                 sonoma:        "c2432ea083f92c5d6ffd4968f7a0e3d675f7c2098f27e2742b607a9ba68d1f6d"
-    sha256 cellar: :any,                 ventura:       "96311a902a7c1ce991bfb90a01b11442d5ede675238afd8ed22980f7d91b415f"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "847d260b760e00468ab47ce7b72514ef3381622fdb396512926ef4c82d54d1cc"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "595b354dd8c9dc086224701709d5a471f7a916693ebf52e5d68eea1f454bd98d"
+    sha256 cellar: :any,                 arm64_tahoe:   "f84bd522d90559af9d166263695c0bdfb1dd99523b99c25a908f5dfeff0d2823"
+    sha256 cellar: :any,                 arm64_sequoia: "c6c94bfff23f4c1bd122badc497e6c5f9c0d3cbb764507bd75d30a680fe3ee67"
+    sha256 cellar: :any,                 arm64_sonoma:  "52285c023c4a4b8854cf02c732e29f87895b654ccf03d2f124ec51775dcdadc2"
+    sha256 cellar: :any,                 sonoma:        "97488beb7b0f8b4e85f82374abe0bc8b251c110ec12e2133251acef583e647d2"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "f92807009e5459c8402a6aa16b487ac01c753841eb37540ca80677979e31cc65"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b1682448b43ec04a0f79ee77fc8cc6bf65c04a279e5879d2ca19c894d27943c5"
   end
 
   head do

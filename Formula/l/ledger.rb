@@ -1,73 +1,24 @@
 class Ledger < Formula
   desc "Command-line, double-entry accounting tool"
   homepage "https://ledger-cli.org/"
+  url "https://github.com/ledger/ledger/archive/refs/tags/v3.4.1.tar.gz"
+  sha256 "1cf012cdc8445cab0efc445064ef9b2d3f46ed0165dae803c40fe3d2b23fdaad"
   license "BSD-3-Clause"
-  revision 9
+  revision 1
   head "https://github.com/ledger/ledger.git", branch: "master"
-
-  stable do
-    url "https://github.com/ledger/ledger/archive/refs/tags/v3.3.2.tar.gz"
-    sha256 "555296ee1e870ff04e2356676977dcf55ebab5ad79126667bc56464cb1142035"
-
-    # Support building with mandoc
-    # Remove with v3.4.x
-    patch do
-      url "https://github.com/ledger/ledger/commit/f40cee6c3af4c9cec05adf520fc7077a45060434.patch?full_index=1"
-      sha256 "d5be89dbadff7e564a750c10cdb04b83e875452071a2115dd70aae6e7a8ee76c"
-    end
-    patch do
-      url "https://github.com/ledger/ledger/commit/14b90d8d952b40e0a474223e7f74a1e6505d5450.patch?full_index=1"
-      sha256 "d250557e385163e3ad3002117ebe985af040d915aab49ae1ea342db82398aeda"
-    end
-
-    # Backport fix to build with `boost` 1.85.0
-    patch do
-      url "https://github.com/ledger/ledger/commit/46207852174feb5c76c7ab894bc13b4f388bf501.patch?full_index=1"
-      sha256 "8aaf8daf4748f359946c64488c96345f4a4bdf928f6ec7a1003610174428599f"
-    end
-
-    # Backport fixes to build with `boost` 1.86.0
-    # Ref: https://github.com/ledger/ledger/pull/2381
-    patch do
-      url "https://github.com/ledger/ledger/commit/ad93c185644cfcb14fe4a673e74a0cb5c954a4b4.patch?full_index=1"
-      sha256 "3d2db6b116cd7e8a1051ac7f92853f72c145ff0487f2f4e12e650ee7ec9e67b0"
-    end
-    patch do
-      url "https://github.com/ledger/ledger/commit/4f4cc1688a8e8a7c03f18603cc5a4159d9c89ca3.patch?full_index=1"
-      sha256 "938d62974ee507b851239b6525c98c8cb1c81e24e8ae2939d4675d97a8ec8f67"
-    end
-    patch do
-      url "https://github.com/ledger/ledger/commit/5320c9f719a309ddacdbe77181cabeb351949013.patch?full_index=1"
-      sha256 "9794113b28eabdcfc8b900eafc8dc2c0698409c0b3d856083ed5e38818289ba1"
-    end
-
-    # CMakeLists.txt update for use of `CMAKE_CXX_STANDARD`
-    # It is set to 17 but we have to use 14 for compatibility issue with other sources
-    patch do
-      url "https://github.com/ledger/ledger/commit/8e64a1cf7009bbe7b89dc8bcb7abd00e39815b0b.patch?full_index=1"
-      sha256 "116cc2c4d716df516c2ad89241bc9fed6943013aacdfcd03757745202416bc72"
-    end
-    patch do
-      url "https://github.com/ledger/ledger/commit/19b0553dfbcd65c3c601b89e7020bff8013cb461.patch?full_index=1"
-      sha256 "9f70e40ca3eec216959a02e7f4ea626d265957443c2ec5d5219977ed2e525332"
-    end
-  end
 
   livecheck do
     url :stable
     regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
 
-  no_autobump! because: :requires_manual_review
-
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "54988694adbadceb13c13156af0bed21ad9f15b3fa120ccb22894514cf9a5506"
-    sha256 cellar: :any,                 arm64_sonoma:  "77d3511a4314bfa674ed8228d630c38cbee2d0232d241d07fbba7fdbd4c7cd84"
-    sha256 cellar: :any,                 arm64_ventura: "68fa609eba85586c556d62db46585bf5c5447babffbc597e931cc8d788d4992a"
-    sha256 cellar: :any,                 sonoma:        "7eb65f0472a64ac1f08c97fee3af4024cd403107802b63d2a1af457eda0de180"
-    sha256 cellar: :any,                 ventura:       "a209aef25a18b73852e27582ecbca1af836ac1b70d8734751a3fdc804451272f"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "cd91a4adea0704c7a588299d9a1dc42aa8dba18c58327f9f1d0aa745330d780a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ed37e34cd74761ab49724546a6a83a5f59eb316ab2d76f03ab3ba95728e0b726"
+    sha256 cellar: :any,                 arm64_tahoe:   "afa0ba3d1ce8b6b36853e2f440429535dbdb0ca7c8a87802ebb4b43238291dc7"
+    sha256 cellar: :any,                 arm64_sequoia: "23780fbf483e4ba89a0639b27407207ea8134ce8e06e17ebf2d7130beda7da4c"
+    sha256 cellar: :any,                 arm64_sonoma:  "99bd6079ab40e3bc792762167c71ad8076fe61ca96ce8cfa0b1caf793ae68901"
+    sha256 cellar: :any,                 sonoma:        "2fea951eeccff3bc8ecde0a05f8583bab5d33fbfabf88040476cad0fe940465f"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "128c7d8d7ad3481d4f56dba950236df2433e2d07582fa1f0a0ac8e79dcd88543"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5520b6e7dec3bbb30c4962b507962dc0c0ea3fae89141d4e74497a169b0cf100"
   end
 
   depends_on "cmake" => :build
@@ -77,7 +28,7 @@ class Ledger < Formula
   depends_on "gpgme"
   depends_on "gpgmepp"
   depends_on "mpfr"
-  depends_on "python@3.13"
+  depends_on "python@3.14"
 
   uses_from_macos "mandoc" => :build
   uses_from_macos "libedit"
@@ -87,14 +38,7 @@ class Ledger < Formula
   end
 
   def install
-    # Workaround until next release as commit doesn't apply
-    # https://github.com/ledger/ledger/commit/956d8ea37247b34a5300c9d55abc7c75324fff33
-    if build.stable?
-      inreplace "CMakeLists.txt", "cmake_minimum_required(VERSION 3.0)",
-                                  "cmake_minimum_required(VERSION 3.5)"
-    end
-
-    ENV.prepend_path "PATH", Formula["python@3.13"].opt_libexec/"bin"
+    ENV.prepend_path "PATH", Formula["python@3.14"].opt_libexec/"bin"
 
     args = %W[
       --jobs=#{ENV.make_jobs}

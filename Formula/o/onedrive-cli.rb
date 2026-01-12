@@ -1,13 +1,13 @@
 class OnedriveCli < Formula
   desc "Folder synchronization with OneDrive"
   homepage "https://github.com/abraunegg/onedrive"
-  url "https://github.com/abraunegg/onedrive/archive/refs/tags/v2.5.6.tar.gz"
-  sha256 "dda49ae9d0c042205ae8f375704c154fc7a9fc88aa21e307e7d83aa1954ad57e"
+  url "https://github.com/abraunegg/onedrive/archive/refs/tags/v2.5.9.tar.gz"
+  sha256 "2a1d28343e4f8fefe0129a4e8480b09bab5aec2697046fb3d03f34e18c0be4ab"
   license "GPL-3.0-only"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_linux:  "2c54f494cf6d5a696591c48c47beec7c26eaee439339190903fe13a3a9bb5830"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "e724ac164f75c6bf48b24b288e135649c55f80bc732fcf2761e8cfb0ec0f33c0"
+    sha256 cellar: :any_skip_relocation, arm64_linux:  "577e3ed1302d2067ccfb821d3e8d158cd74b1a6e142a6e14f3aad8fa258e1ad4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "20dd338318165b4a44f7bc0e7511e0a58d6aabd407e7b32c962621dc854f8430"
   end
 
   depends_on "ldc" => :build
@@ -37,8 +37,8 @@ class OnedriveCli < Formula
   test do
     assert_match <<~EOS, pipe_output("#{bin}/onedrive 2>&1", "")
       Using IPv4 and IPv6 (if configured) for all network operations
-      Attempting to contact Microsoft OneDrive Login Service
-      Successfully reached Microsoft OneDrive Login Service
+      Attempting to contact the Microsoft OneDrive Service
+      Successfully reached the Microsoft OneDrive Service
     EOS
   end
 end

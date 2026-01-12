@@ -1,8 +1,8 @@
 class Squid < Formula
   desc "Advanced proxy caching server for HTTP, HTTPS, FTP, and Gopher"
   homepage "https://www.squid-cache.org/"
-  url "https://github.com/squid-cache/squid/releases/download/SQUID_7_1/squid-7.1.tar.bz2"
-  sha256 "77e81d107a8fc10ec08f2bc36b38c9aa3d49cfdfab3270d67e001028aa6d8a2a"
+  url "https://github.com/squid-cache/squid/releases/download/SQUID_7_3/squid-7.3.tar.bz2"
+  sha256 "af7d61cfe8e65a814491e974d3011e5349a208603f406ec069e70be977948437"
   license "GPL-2.0-or-later"
 
   # The Git repository contains tags for a higher major version that isn't the
@@ -15,17 +15,16 @@ class Squid < Formula
   no_autobump! because: :incompatible_version_format
 
   bottle do
-    sha256 arm64_sequoia: "e5d41da43546f29e8d716313d9da5cc75b8b2a583b04176c6152a8713d4635cd"
-    sha256 arm64_sonoma:  "5fb6f6f02bb7f4b9df597b999dd854c864ed7e1de1972c92ea5a222904febb80"
-    sha256 arm64_ventura: "597b0aa9dd16fa1785d004269695362c5099ce58cf7a77a9a1538e7aa543d880"
-    sha256 sonoma:        "ea431f4e87332de47fa00a5b01a1c1d16cfe209801560d4c6d40e9d33c6257b7"
-    sha256 ventura:       "7c034b109868873e123437ac3d036889f5aee7142852f950b3bd972333fab6d1"
-    sha256 arm64_linux:   "c67bd9de94046f89e8bc9eea23f75ca56bc4d0d7ea81ba4cc8676e4da9b4e171"
-    sha256 x86_64_linux:  "b3f81a1434e3532567287e32d2fcc561502724e94bcb5715ff419d9c8d0cae1a"
+    sha256 arm64_tahoe:   "9bbca04a45b49503c0f9b936aab993fd17a00213a4e76649ec5ddc2316042922"
+    sha256 arm64_sequoia: "49501db2c4b7921131f37025d26513dec1ba817407184a61a077dff8c8310143"
+    sha256 arm64_sonoma:  "1faee147f4720de4c88fec34f73fb4e1468c8f24794ef893eada83c0d33ae090"
+    sha256 sonoma:        "b57c7f8e1a09663f5b560c9e41b797107932bf9918a850cfd6280ce7a260f8fa"
+    sha256 arm64_linux:   "2e61d953c90f9093df8db0a5f1f3289955ea9212194948cbc081d4a8a6fb2670"
+    sha256 x86_64_linux:  "ce7f04ed768aaf3696bba47d0062e1a828ae4ebe550b5f88487c0e70aa0d1687"
   end
 
   head do
-    url "https://github.com/squid-cache/squid.git", branch: "v6"
+    url "https://github.com/squid-cache/squid.git", branch: "master"
 
     depends_on "autoconf" => :build
     depends_on "automake" => :build
@@ -76,15 +75,13 @@ class Squid < Formula
   test do
     assert_match version.to_s, shell_output("#{sbin}/squid -v")
 
-    pid = fork do
-      exec "#{sbin}/squid"
-    end
-    sleep 2
+    pid = spawn "#{sbin}/squid"
 
     begin
-      system "#{sbin}/squid", "-k", "check"
+      sleep 2
+      system sbin/"squid", "-k", "check"
     ensure
-      exec "#{sbin}/squid -k interrupt"
+      system sbin/"squid", "-k", "interrupt"
       Process.wait(pid)
     end
   end

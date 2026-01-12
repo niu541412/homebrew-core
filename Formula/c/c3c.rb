@@ -1,8 +1,8 @@
 class C3c < Formula
   desc "Compiler for the C3 language"
   homepage "https://github.com/c3lang/c3c"
-  url "https://github.com/c3lang/c3c/archive/refs/tags/v0.7.3.tar.gz"
-  sha256 "ffa28a134fb21efd525387f430fbd01b8e3ed6ed08d8614e6561e73d3d63f512"
+  url "https://github.com/c3lang/c3c/archive/refs/tags/v0.7.8.tar.gz"
+  sha256 "f895f5b3b3f88dda14303b0436b151b417bfa027710d67f526eae9115046614a"
   license "LGPL-3.0-only"
   head "https://github.com/c3lang/c3c.git", branch: "master"
 
@@ -15,42 +15,39 @@ class C3c < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_sequoia: "511475782040020ee27088bed44afa2ba585569625d06143ccba6da09dc15045"
-    sha256 cellar: :any, arm64_sonoma:  "d212c0f23fc219c3721118c0ab0711a3e3d1ab937d655f9f37b5c75f79e34714"
-    sha256 cellar: :any, arm64_ventura: "0ae3821b441a73423284d818f329a98a4f7b7275bd6f770c87e02d7be7108c03"
-    sha256 cellar: :any, sonoma:        "67b495b99532212668a5a37c6a321f346afd399cfb1c2f3bd060cc06760183ae"
-    sha256 cellar: :any, ventura:       "f80485ccab05b74f736e570a3840cc2ad514bf4470b7b4c87e1d98002e1377c8"
-    sha256               arm64_linux:   "1080c7c0e6d3c63eed1e6b4483c9d14ced81fcaf0f5683b0fb4784d93f2d1261"
-    sha256               x86_64_linux:  "3509709b8b169122c4ce55626db3cfb8bf08844a7e55c6970100e2637687adc3"
+    sha256 cellar: :any,                 arm64_tahoe:   "8a53fc84ee0672666ca463283beb43618007d0f7fbc639553a0f42e0a7836ab1"
+    sha256 cellar: :any,                 arm64_sequoia: "67ecf90ea6051b518d6a033484ac270a6ef753284c467badc47eccdc856b799a"
+    sha256 cellar: :any,                 arm64_sonoma:  "0f8f3a925f05656bfb85ab53300c65496adce8a6da661ede690f49341c8f0d5b"
+    sha256 cellar: :any,                 sonoma:        "2cfae0a88d1f29e481e52b59a7800ceb21a8d315f7630180fc7a95c82a5e92e4"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "af92452adbc14680bec956d5a2921d99bf9dceccb8087d34b7b2de512ee57719"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "07e9cba603b25ad1f22eabab8a140102a6fd41de683aa3078bb91e77abf50880"
   end
 
   depends_on "cmake" => :build
   depends_on "lld"
   depends_on "llvm"
-  depends_on "zstd"
 
   uses_from_macos "curl"
-  uses_from_macos "zlib"
-
-  # Linking dynamically with LLVM fails with GCC.
-  fails_with :gcc
 
   def install
+    lld = Formula["lld"]
+    llvm = Formula["llvm"]
+
     args = [
       "-DC3_LINK_DYNAMIC=ON",
       "-DC3_USE_MIMALLOC=OFF",
       "-DC3_USE_TB=OFF",
       "-DCMAKE_POSITION_INDEPENDENT_CODE=ON",
-      "-DLLVM=#{Formula["llvm"].opt_lib/shared_library("libLLVM")}",
-      "-DLLD_COFF=#{Formula["lld"].opt_lib/shared_library("liblldCOFF")}",
-      "-DLLD_COMMON=#{Formula["lld"].opt_lib/shared_library("liblldCommon")}",
-      "-DLLD_ELF=#{Formula["lld"].opt_lib/shared_library("liblldELF")}",
-      "-DLLD_MACHO=#{Formula["lld"].opt_lib/shared_library("liblldMachO")}",
-      "-DLLD_MINGW=#{Formula["lld"].opt_lib/shared_library("liblldMinGW")}",
-      "-DLLD_WASM=#{Formula["lld"].opt_lib/shared_library("liblldWasm")}",
+      "-DLLVM=#{llvm.opt_lib/shared_library("libLLVM")}",
+      "-DLLD_COFF=#{lld.opt_lib/shared_library("liblldCOFF")}",
+      "-DLLD_COMMON=#{lld.opt_lib/shared_library("liblldCommon")}",
+      "-DLLD_ELF=#{lld.opt_lib/shared_library("liblldELF")}",
+      "-DLLD_MACHO=#{lld.opt_lib/shared_library("liblldMachO")}",
+      "-DLLD_MINGW=#{lld.opt_lib/shared_library("liblldMinGW")}",
+      "-DLLD_WASM=#{lld.opt_lib/shared_library("liblldWasm")}",
     ]
+    args << "-DCMAKE_BUILD_WITH_INSTALL_RPATH=ON" if OS.linux?
 
-    ENV.append "LDFLAGS", "-lzstd -lz"
     system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
@@ -62,7 +59,6 @@ class C3c < Formula
     libexec.install bin.children
     bin.install_symlink libexec.children.select { |child| child.file? && child.executable? }
     rm_r libexec/"c3c_rt"
-    llvm = Formula["llvm"]
     libexec.install_symlink llvm.opt_lib/"clang"/llvm.version.major/"lib/darwin" => "c3c_rt"
   end
 

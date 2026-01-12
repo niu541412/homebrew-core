@@ -1,18 +1,19 @@
 class Regclient < Formula
   desc "Docker and OCI Registry Client in Go and tooling using those libraries"
   homepage "https://regclient.org/"
-  url "https://github.com/regclient/regclient/archive/refs/tags/v0.9.0.tar.gz"
-  sha256 "3bd9e7ad3e3b99d9d11303597a1ce36f7c96d3c84562af47fa6ff552ed869b71"
+  url "https://github.com/regclient/regclient/archive/refs/tags/v0.11.1.tar.gz"
+  sha256 "e4e5a420d41feeb6e9cd1d2bd41d6d1935e37c17c880737aefe3f67ac48f3583"
   license "Apache-2.0"
   head "https://github.com/regclient/regclient.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "9fc5d037e9035ab926ddfa0425bb8de4c0f48fcf96dcdccff0bada55e21f2027"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "9fc5d037e9035ab926ddfa0425bb8de4c0f48fcf96dcdccff0bada55e21f2027"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "9fc5d037e9035ab926ddfa0425bb8de4c0f48fcf96dcdccff0bada55e21f2027"
-    sha256 cellar: :any_skip_relocation, sonoma:        "ea14585ddde60123b5c634acb37b2fecc04c686ed9fead97bba156bfcefa8339"
-    sha256 cellar: :any_skip_relocation, ventura:       "ea14585ddde60123b5c634acb37b2fecc04c686ed9fead97bba156bfcefa8339"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6f613a0c9047153a85f87499161081f49c83422ccc41dabcb6443e643a2bc391"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "7b0e28ade4c13dc0bebc51e032e6bd72525bd35f546e169187396893b04bc48e"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "7b0e28ade4c13dc0bebc51e032e6bd72525bd35f546e169187396893b04bc48e"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "7b0e28ade4c13dc0bebc51e032e6bd72525bd35f546e169187396893b04bc48e"
+    sha256 cellar: :any_skip_relocation, sonoma:        "803554b5897f50285af54d56768debc97acf497562eb79fbe7e492d2dfd39b15"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "07fadb96eb705a04d080dac7ca164d05d5b1e3f11584fa6b9c67d37a9c4e9938"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "39f22dcc005d4cdebbc8acc4047a8bcb1f1aeda086c58c27f3b7fd3d038b14a3"
   end
 
   depends_on "go" => :build
@@ -22,7 +23,7 @@ class Regclient < Formula
     ["regbot", "regctl", "regsync"].each do |f|
       system "go", "build", *std_go_args(ldflags:, output: bin/f), "./cmd/#{f}"
 
-      generate_completions_from_executable(bin/f, "completion")
+      generate_completions_from_executable(bin/f, shell_parameter_format: :cobra)
     end
   end
 

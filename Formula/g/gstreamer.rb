@@ -4,17 +4,23 @@ class Gstreamer < Formula
   license all_of: ["LGPL-2.0-or-later", "LGPL-2.1-or-later", "MIT"]
 
   stable do
-    url "https://gitlab.freedesktop.org/gstreamer/gstreamer/-/archive/1.26.4/gstreamer-1.26.4.tar.bz2"
-    sha256 "4852db9aad76a1a2622b7218731d9fa5539646fe4bb6483d6280f58cfe98da04"
+    url "https://gitlab.freedesktop.org/gstreamer/gstreamer/-/archive/1.26.10/gstreamer-1.26.10.tar.bz2"
+    sha256 "9cdda214b0b843780e180c624932d96e8e3101a870048f2f207ac70c7abec645"
 
     # When updating this resource, use the tag that matches the GStreamer version.
     resource "rs" do
-      url "https://gitlab.freedesktop.org/gstreamer/gst-plugins-rs/-/archive/gstreamer-1.26.4/gst-plugins-rs-gstreamer-1.26.4.tar.bz2"
-      sha256 "d756b61dd4ac2769f89b43aaa9f27099f4bf39a2cb23377795ddc39a55eac1c1"
+      url "https://gitlab.freedesktop.org/gstreamer/gst-plugins-rs/-/archive/gstreamer-1.26.10/gst-plugins-rs-gstreamer-1.26.10.tar.bz2"
+      sha256 "463abc9d388190c35c163e719d345198521078f7fd81585bfc3ead46d7e9cc60"
 
       livecheck do
         formula :parent
       end
+    end
+
+    # patch to use `typing.Self` from stdlib on Python 3.11+, upstream pr ref, https://gitlab.freedesktop.org/gstreamer/gstreamer/-/merge_requests/10452
+    patch do
+      url "https://gitlab.freedesktop.org/gstreamer/gstreamer/-/commit/a77a4f3f5388cde3c4592d1193ae82692fd2bdbb.diff"
+      sha256 "a874f85318ea56abdd19381b9ada24f93dfcc9ad4397e5591ca20e101152f0be"
     end
   end
 
@@ -24,13 +30,12 @@ class Gstreamer < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "fae174a77a436bd6e4fd0c882e83ee6eb298fb8946c8decbfe717c87516bfef2"
-    sha256 arm64_sonoma:  "bab4748662db4bd57e916f8177beb965dd5fadce1c90a183f9e46be628a07228"
-    sha256 arm64_ventura: "7f58b08d17ac09d5a847c24b552ded4d33d85ca1d6945a359ff41178ba7fc64a"
-    sha256 sonoma:        "345704df0d4df46b8f75cd6e155e2407ff33ed19ad3149f069435e5c9d990c54"
-    sha256 ventura:       "8f4f130886a7950621e016c941239f0997ebc95afaa4514a9ebf620d7bd8a32d"
-    sha256 arm64_linux:   "28f6ac4ff06179da6ce220d4825114f14c8e8b158332eae5da60af533efa6406"
-    sha256 x86_64_linux:  "ee18abd1145a004746cec22381807b017152095a009352e67b8947f438e8b786"
+    sha256 arm64_tahoe:   "a6501828af9ce32b2089e0793b106cde74fd6fbe1c855e6842a9a74748e84b90"
+    sha256 arm64_sequoia: "2daeef4894b2e1456f3446a326dd26008c3e387b8a1baa5f51a3489770825cbd"
+    sha256 arm64_sonoma:  "80779d46e04f90591cc18d18c653dd43acdd372896bd1b3ee4dde2be819b6ab1"
+    sha256 sonoma:        "f200824778c0dec095c2f8bab0ba62763aab85bb5cb0e4ec40e0a02bb191895c"
+    sha256 arm64_linux:   "cc45e957d12e8100e6876e98f32e77c96a0d1526efb841d18547d07c9b78aa43"
+    sha256 x86_64_linux:  "a0675faa09c52b3668004244682cf13432cfa56cd9c9880eb9047a8cdd77291c"
   end
 
   head do
@@ -71,10 +76,11 @@ class Gstreamer < Formula
   depends_on "libnice"
   depends_on "libogg"
   depends_on "libpng"
+  depends_on "librsvg"
   depends_on "libshout"
   depends_on "libsndfile"
   depends_on "libsodium"
-  depends_on "libsoup" # no linkage on Linux as dlopen'd
+  depends_on "libsoup" => :no_linkage # dlopen'd
   depends_on "libusrsctp"
   depends_on "libvorbis"
   depends_on "libvpx"
@@ -94,8 +100,8 @@ class Gstreamer < Formula
   depends_on "opus"
   depends_on "orc"
   depends_on "pango"
-  depends_on "pygobject3"
-  depends_on "python@3.13"
+  depends_on "pygobject3" => :no_linkage
+  depends_on "python@3.14"
   depends_on "rtmpdump"
   depends_on "speex"
   depends_on "srt"
@@ -123,6 +129,8 @@ class Gstreamer < Formula
 
   on_linux do
     depends_on "alsa-lib"
+    depends_on "fontconfig"
+    depends_on "freetype"
     depends_on "libdrm"
     depends_on "libva"
     depends_on "libxdamage"
@@ -133,13 +141,15 @@ class Gstreamer < Formula
   end
 
   def python3
-    which("python3.13")
+    which("python3.14")
   end
+
+  skip_clean "lib/gstreamer-1.0/libgstnice.dylib", "lib/gstreamer-1.0/libgstnice.so"
 
   # These paths used to live in various `gst-*` formulae.
   link_overwrite "bin/gst-*", "lib/ligst*", "lib/libges*", "lib/girepository-1.0/Gst*-1.0.typelib"
   link_overwrite "lib/girepository-1.0/GES-1.0.typelib", "lib/gst-validate-launcher/*", "lib/gstreamer-1.0/*"
-  link_overwrite "lib/pkgconfig/gst*.pc", "lib/python3.13/site-packages/gi/overrides/*", "include/gstreamer-1.0/*"
+  link_overwrite "lib/pkgconfig/gst*.pc", "lib/python3.14/site-packages/gi/overrides/*", "include/gstreamer-1.0/*"
   link_overwrite "share/gir-1.0/Gst*.gir", "share/gir-1.0/GES-1.0.gir", "share/gstreamer-1.0/*"
   link_overwrite "share/locale/*/LC_MESSAGES/gst-*.mo", "share/man/man1/g*"
 
@@ -200,9 +210,6 @@ class Gstreamer < Formula
       -Dgst-plugins-rs:sodium-source=system
     ]
 
-    # The apple media plug-in uses API that was added in Mojave
-    args << "-Dgst-plugins-bad:applemedia=disabled" if OS.mac? && MacOS.version <= :high_sierra
-
     # Ban trying to chown to root.
     # https://bugzilla.gnome.org/show_bug.cgi?id=750367
     args << "-Dgstreamer:ptp-helper-permissions=none"
@@ -214,21 +221,7 @@ class Gstreamer < Formula
     # https://gitlab.freedesktop.org/gstreamer/gst-plugins-rs/-/issues/279
     plugin_dir = lib/"gstreamer-1.0"
     rpath_args = [loader_path, rpath(source: plugin_dir)].map { |path| "-rpath,#{path}" }
-    ENV.append "RUSTFLAGS", "--codegen link-args=-Wl,#{rpath_args.join(",")}"
-
-    # On Linux, adjust processing of RUSTFLAGS to avoid using shlex, which may mangle our
-    # RPATH-related flags, due to the presence of `$` in $ORIGIN.
-    if OS.linux?
-      wrapper_files = %w[
-        subprojects/gst-plugins-rs/cargo_wrapper.py
-        subprojects/gst-devtools/dots-viewer/cargo_wrapper.py
-      ]
-      inreplace wrapper_files do |s|
-        s.gsub!(/shlex\.split\(env\.get\(("RUSTFLAGS"|'RUSTFLAGS'), (""|'')\)\)/,
-                "' '.split(env.get(\"RUSTFLAGS\", \"\"))")
-        s.gsub! "shlex_join(rust_flags)", "' '.join(rust_flags)"
-      end
-    end
+    ENV.append_to_rustflags "--codegen link-args=-Wl,#{rpath_args.join(",")}"
 
     # Make sure the `openssl-sys` crate uses our OpenSSL.
     ENV["OPENSSL_NO_VENDOR"] = "1"
@@ -237,11 +230,8 @@ class Gstreamer < Formula
     system "meson", "setup", "build", *args, *std_meson_args
     system "meson", "compile", "-C", "build", "--verbose"
     system "meson", "install", "-C", "build"
-  end
 
-  def post_install
     # Support finding the `libnice` plugin, which is in a separate formula.
-    # Needs to be done in `post_install`, since bottling prunes this symlink.
     libnice_gst_plugin = Formula["libnice-gstreamer"].opt_libexec/"gstreamer-1.0"/shared_library("libgstnice")
     gst_plugin_dir = lib/"gstreamer-1.0"
     ln_sf libnice_gst_plugin.relative_path_from(gst_plugin_dir), gst_plugin_dir

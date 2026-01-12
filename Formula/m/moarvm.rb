@@ -1,8 +1,8 @@
 class Moarvm < Formula
   desc "VM with adaptive optimization and JIT compilation, built for Rakudo"
   homepage "https://moarvm.org"
-  url "https://github.com/MoarVM/MoarVM/releases/download/2025.06/MoarVM-2025.06.tar.gz"
-  sha256 "e8d6b00cdb3f99022ade2a843a7a8ec87f66a38bb5655f85d50351c6b3b8d257"
+  url "https://github.com/MoarVM/MoarVM/releases/download/2025.12/MoarVM-2025.12.tar.gz"
+  sha256 "23291b5fa7557c80d4ad3254d8e8bd51b3380989a1575b3d264dbe72a1cad1c0"
   license "Artistic-2.0"
 
   livecheck do
@@ -11,13 +11,12 @@ class Moarvm < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "e68f258f6b06540bb00b0ca80fbc04b5d35cb2714474d167033e88b5d698a55e"
-    sha256 arm64_sonoma:  "4855c3e695fd3e8c0252135d6ea9955fd9a676ded4b7a31811e24cc567d09153"
-    sha256 arm64_ventura: "704d7e8dfcb368b7081b973051236b948b01d53ed3ddae09e9b26d3799440ee7"
-    sha256 sonoma:        "f7c8e1ed3ceb29a5b04b383149eb41926313a78f1b54e838ab4df538efd27d34"
-    sha256 ventura:       "616450c92fc9f35f6ee8529f8c30a0e9d777270205636572af916a43c33086b8"
-    sha256 arm64_linux:   "8a73637d85ffc1653e235a58ec065b3ffa231a8a52b266bb60f4b250e9f3076e"
-    sha256 x86_64_linux:  "587c91b3b7ce48129dedbc0cbb5db243037ee0cbaf88d7d4d7dd699c6e6077fa"
+    sha256 arm64_tahoe:   "b34284ac58b766be9d3fc80cd1106ba20d266690f3c9d3d898923597952eda62"
+    sha256 arm64_sequoia: "50416aa38770ec17a0a16d38a546bb18f851915b456d1c4cc94c7c63f8bb19c3"
+    sha256 arm64_sonoma:  "33a9ea6fa6a82111dfcd5b62ad7ae7fbdb8a33f6a5c89b6015bfac9bd94f50ad"
+    sha256 sonoma:        "2a9b57585df431899b5d5db1908fafd9e33415080743eea2632716de256a1123"
+    sha256 arm64_linux:   "1356f7a9422e54faa593d8c2cf44b9d11164545f4946a17aaa08789c7aa623ad"
+    sha256 x86_64_linux:  "522149d7eecf9291af7d95c896f005a35de3922cb332234ecd2ccbdde450dae5"
   end
 
   depends_on "pkgconf" => :build
@@ -32,12 +31,23 @@ class Moarvm < Formula
     depends_on "libuv"
   end
 
-  conflicts_with "moar", because: "both install `moar` binaries"
+  conflicts_with "moor", because: "both install `moar` binaries"
   conflicts_with "rakudo-star", because: "rakudo-star currently ships with moarvm included"
 
   resource "nqp" do
-    url "https://github.com/Raku/nqp/releases/download/2025.06/nqp-2025.06.tar.gz"
-    sha256 "cfb396d6d0114d00f0dc2de4cf5f424fa72968e53c9c7cb75690bcdfd45bfcc5"
+    url "https://github.com/Raku/nqp/releases/download/2025.12/nqp-2025.12.tar.gz"
+    sha256 "074147578bfc0d2f91a6702270517803ff4e960e9f175dfe14b00eee6febc0c6"
+
+    livecheck do
+      formula :parent
+    end
+  end
+
+  # Fix build with a system provided libuv
+  # PR Ref: https://github.com/MoarVM/MoarVM/pull/1981
+  patch do
+    url "https://github.com/MoarVM/MoarVM/commit/52a918c82bddeef58a842d112bcb42c6f33883ab.patch?full_index=1"
+    sha256 "91b77fb7a11bfa9711e48745c3056ed5beb783234ac4728c7081a32b42349fba"
   end
 
   def install

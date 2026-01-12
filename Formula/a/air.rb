@@ -1,18 +1,17 @@
 class Air < Formula
   desc "Fast and opinionated formatter for R code"
   homepage "https://github.com/posit-dev/air"
-  url "https://github.com/posit-dev/air/archive/refs/tags/0.7.0.tar.gz"
-  sha256 "f33fc7aae6829f8471ca3b9144b0a314137393dc5423e10fa313a43278ffc6eb"
+  url "https://github.com/posit-dev/air/archive/refs/tags/0.8.0.tar.gz"
+  sha256 "fbce4a9698c756dc4d65eb6cb845fcdd8bca952f25b988711037b6ff9b82a99c"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "95efa99526aeeb2732cbe5eb15f3ad9530a33f2c4493f20dc4c4e70157a50391"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "33808ce6534f9ad19a635fa8d8d16facb3e591759b919dc25304e05f88c4116d"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "aa9e723148a45dcc3c566241d4dbba0e504a9ad0506dd7fc022b7f2bda64073c"
-    sha256 cellar: :any_skip_relocation, sonoma:        "550dec31a71701f7a342dba827b5672f216d8a87a9bd1143e492afaaf5638892"
-    sha256 cellar: :any_skip_relocation, ventura:       "68de0b88299a6ca355cb1ec8103e20c043da1f954ae4b19f0c914794ec1c6b26"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "424eb95cbea40473e47489dc73e6fb78478e34a412c57150485cd709162fd69a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4d6d8c17739084e5fbb7aaf278adead841d7a66f8ca47b75f8bdd35b1a549755"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "22bfc11080f588ebe147ee1eff7e54c62f2c5fb0aa9334aa29041a1211ca2fea"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "6237dee64f4f22f034686e091ccdf7adca3452ff59118d6b9167eaef4ca06c62"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "41aafa386238de558ba5c1050c5931ebaae5372548ed6632340ebecc9c0e5324"
+    sha256 cellar: :any_skip_relocation, sonoma:        "4bfb9ac82a1d126386b1bb3dccb55cea3d4385d030f0c443eb7b578d30bef4dc"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "28d2350eb72cf1f61922bf5a32340fcd821a88d32995d2052e1d3513ed9fbb96"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c5b74bd49dfb4b972e2624a666f97c20611634bfe0990d516b1621ee1fab84c3"
   end
 
   depends_on "rust" => :build

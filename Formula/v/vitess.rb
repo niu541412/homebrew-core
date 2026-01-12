@@ -1,22 +1,29 @@
 class Vitess < Formula
   desc "Database clustering system for horizontal scaling of MySQL"
   homepage "https://vitess.io"
-  url "https://github.com/vitessio/vitess/archive/refs/tags/v22.0.1.tar.gz"
-  sha256 "0e6a985b8c5298265f5acc171af3436c9286ea2474d133e76fcf280179a18c38"
+  url "https://github.com/vitessio/vitess/archive/refs/tags/v23.0.0.tar.gz"
+  sha256 "4048df4344eeead97dbf6126e09b9ccb2c5d83258bda19028f641b9a9f4e0b07"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "db0a99f71fbd8574507c5ceb58d614c13ce4b9cf39f5e0413993fd6494f0cd93"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "fb64693b02895cc485400b2d025f64d40ede2d14fda76e32af1ffb935bd1e220"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "7ee3e21d62551620028558f157eba7520c9620588148cd417f98c9b6dd39ab80"
-    sha256 cellar: :any_skip_relocation, sonoma:        "e63c59146c04bbeb674cb0f3a535146b6d14d9d685d546e99c51e307e599b214"
-    sha256 cellar: :any_skip_relocation, ventura:       "508a2b5288196222786ac6772113f1b2df7df5c51589e594ccc4c19106ef8a06"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "a7b34cd6fa22c026e94a667a68e3598c251fcfb7fb8e7caf21bab546e842bb55"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "475acb3982bb4167e4019f3126c7ec1541a173b43ecea92af4ee6efaa63961a0"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "1e5062c627f55690c1d508ae83d4701108b622e8b98f246827c32d52cfaa890c"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "0c0e5aaa0998b48dbdefbbcf78b9c2bbf6cf757b66499635e3ed9424c5f7b76d"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "8a1e98fcb3238e8a6ccf7732856194c9d8b3d6c30cf2023e924ceb0160bd59ca"
+    sha256 cellar: :any_skip_relocation, sonoma:        "88bb197ebcebef61867972adbb702f6941d4d8b6e53473f6ec9eb09d248d32fb"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "54145d2a4da2451a4b059a59504b5b09eaa810e4cbe611466e5744a06a46a498"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "31f4388df79ec234090e71ecf2601620263156d0dc2e816d6f92736d9d912753"
   end
 
   depends_on "go" => :build
   depends_on "etcd"
+
+  # Support Go 1.26 and later with Swiss maps always enabled
+  # Upstream PR ref: https://github.com/vitessio/vitess/pull/19088
+  patch do
+    url "https://github.com/vitessio/vitess/commit/1e131ea41b87a047acff3b1977d9fece8e25bfff.patch?full_index=1"
+    sha256 "6dd13ffbde947a2c0d426c5a6361e3f0f708c9fc1bd1df7b000ad06fa8644a9c"
+  end
 
   def install
     # -buildvcs=false needed for build to succeed on Go 1.18.
@@ -31,17 +38,15 @@ class Vitess < Formula
     peer_port = free_port
     cell = "testcell"
 
-    fork do
-      exec Formula["etcd"].opt_bin/"etcd",
-           "--name=vitess_test",
-           "--data-dir=#{testpath}/etcd",
-           "--listen-client-urls=http://#{etcd_server}",
-           "--advertise-client-urls=http://#{etcd_server}",
-           "--listen-peer-urls=http://localhost:#{peer_port}",
-           "--initial-advertise-peer-urls=http://localhost:#{peer_port}",
-           "--initial-cluster=vitess_test=http://localhost:#{peer_port}",
-           "--auto-compaction-retention=1"
-    end
+    spawn Formula["etcd"].opt_bin/"etcd",
+          "--name=vitess_test",
+          "--data-dir=#{testpath}/etcd",
+          "--listen-client-urls=http://#{etcd_server}",
+          "--advertise-client-urls=http://#{etcd_server}",
+          "--listen-peer-urls=http://localhost:#{peer_port}",
+          "--initial-advertise-peer-urls=http://localhost:#{peer_port}",
+          "--initial-cluster=vitess_test=http://localhost:#{peer_port}",
+          "--auto-compaction-retention=1"
 
     sleep 3
 
@@ -56,27 +61,23 @@ class Vitess < Formula
            "put", "/vitess/#{cell}", ""
 
     # Run vtctl with etcd2 implementation but using etcd v3 API
-    fork do
-      exec bin/"vtctl", "--topo_implementation", "etcd2",
-                        "--topo_global_server_address", etcd_server,
-                        "--topo_global_root", testpath/"global",
-                        "VtctldCommand", "AddCellInfo",
-                        "--root", testpath/cell,
-                        "--server-address", etcd_server,
-                        cell
-    end
+    spawn bin/"vtctl", "--topo_implementation", "etcd2",
+                       "--topo_global_server_address", etcd_server,
+                       "--topo_global_root", testpath/"global",
+                       "VtctldCommand", "AddCellInfo",
+                       "--root", testpath/cell,
+                       "--server-address", etcd_server,
+                       cell
     sleep 1
 
     port = free_port
-    fork do
-      exec bin/"vtgate", "--topo_implementation", "etcd2",
-                         "--topo_global_server_address", etcd_server,
-                         "--topo_global_root", testpath/"global",
-                         "--tablet_types_to_wait", "PRIMARY,REPLICA",
-                         "--cell", cell,
-                         "--cells_to_watch", cell,
-                         "--port", port.to_s
-    end
+    spawn bin/"vtgate", "--topo_implementation", "etcd2",
+                        "--topo_global_server_address", etcd_server,
+                        "--topo_global_root", testpath/"global",
+                        "--tablet_types_to_wait", "PRIMARY,REPLICA",
+                        "--cell", cell,
+                        "--cells_to_watch", cell,
+                        "--port", port.to_s
     sleep 8
 
     output = shell_output("curl -s localhost:#{port}/debug/health")

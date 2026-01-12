@@ -1,8 +1,8 @@
 class Azcopy < Formula
   desc "Azure Storage data transfer utility"
   homepage "https://github.com/Azure/azure-storage-azcopy"
-  url "https://github.com/Azure/azure-storage-azcopy/archive/refs/tags/v10.29.1.tar.gz"
-  sha256 "b965c482f19e18d692392b8c622b5fc4041da7eb37c025ae8eb5083791c75006"
+  url "https://github.com/Azure/azure-storage-azcopy/archive/refs/tags/v10.31.1.tar.gz"
+  sha256 "22f875a6deebf344799ebf99b28e1a0b1d7315b025b0d5d5f17ed99b1bcdf408"
   license "MIT"
   head "https://github.com/Azure/azure-storage-azcopy.git", branch: "main"
 
@@ -12,13 +12,12 @@ class Azcopy < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "f2a2baa92616a2e5f0c6a1ee30107633a29ff05fb58f4cf2217a0001d8ff045e"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "aed5d21ff586e043b7c319a4a7234170ee35775ea573bd457f59d95ca2c58fdb"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "a679e832e080486707c19eaa87283573ca0b3dae40afba621a1c74adc98dabfc"
-    sha256 cellar: :any_skip_relocation, sonoma:        "9b559a91f0425626abbab4532506fb807fc8f979ba67e52c8c8a87952049e06f"
-    sha256 cellar: :any_skip_relocation, ventura:       "5ae7763a2891838873117208732371beaae889de30e9a20ad15658efa1882fe7"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "e78118f8459233c14428d8e3a400f95429f4eb1dc2399cb241fe99f6300dac04"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4ade0bdd8327ae7edf963b9798674ee3e49d8de95abaae11cbfb3d52625446d2"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "b7241199f66ef7d5429fe66c6a57d08505731ba12bf05ab5bed895915ed8888a"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "c0e8ddc95b273f7af862b3857b9056a5d88c6985a6755170f8f38fc0ac01a759"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "5ed99e4ba1d6f3abbb1f6d3234c25fed3fe18d5a86560d02286d6275a0a6a88f"
+    sha256 cellar: :any_skip_relocation, sonoma:        "055eccbee8426ddc55df940711de6229eb1c65e965539ae1fa32cad478e1577c"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "c44d3003e39ed3fb565e5f3f328e7d2f83e3678425f1c026de44fb2d1e850668"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5afa4a21789ad70b1c21c5f841afbd951f3a48dec484e38cf4c90f4aec5a8bdd"
   end
 
   depends_on "go" => :build
@@ -26,7 +25,7 @@ class Azcopy < Formula
   def install
     system "go", "build", *std_go_args(ldflags: "-s -w")
 
-    generate_completions_from_executable(bin/"azcopy", "completion")
+    generate_completions_from_executable(bin/"azcopy", shell_parameter_format: :cobra)
   end
 
   test do

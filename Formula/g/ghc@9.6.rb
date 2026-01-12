@@ -11,14 +11,12 @@ class GhcAT96 < Formula
   ]
 
   livecheck do
-    url "https://www.haskell.org/ghc/"
-    regex(/href=.*?download_ghc_(9_6_\d+)\.html/i)
-    strategy :page_match do |page, regex|
-      page.scan(regex).map { |match| match[0].tr("_", ".") }
-    end
+    url "https://gitlab.haskell.org/ghc/ghc/-/wikis/GHC%20Status#all-released-ghc-versions"
+    regex(/v?(9\.6(?:\.\d+)+)[._-]notes/i)
   end
 
   bottle do
+    sha256 cellar: :any,                 arm64_tahoe:   "dd60a4884f86dfbdaa5c449e491b881d6c2de4ceba80c3945fc153f5606e17b0"
     sha256 cellar: :any,                 arm64_sequoia: "4dcf5e47d790fe743ca3b5c071619ca00630900c269e7bb279ac69b7cf705bb3"
     sha256 cellar: :any,                 arm64_sonoma:  "846e69dce0f0c5163b0814e9bb3f0f2e0cd0d935095811f0d070e92564e6f2d2"
     sha256 cellar: :any,                 arm64_ventura: "bb1449611c052107ec0a6c4a9e883d8e5c79ab0116d36dd40074e7b5c918a7b5"
@@ -32,7 +30,7 @@ class GhcAT96 < Formula
 
   depends_on "autoconf" => :build
   depends_on "automake" => :build
-  depends_on "python@3.13" => :build
+  depends_on "python@3.14" => :build
   depends_on "sphinx-doc" => :build
 
   uses_from_macos "m4" => :build
@@ -112,7 +110,7 @@ class GhcAT96 < Formula
     ENV["CC"] = ENV["ac_cv_path_CC"] = OS.linux? ? "cc" : ENV.cc
     ENV["CXX"] = ENV["ac_cv_path_CXX"] = OS.linux? ? "c++" : ENV.cxx
     ENV["LD"] = "ld"
-    ENV["PYTHON"] = which("python3.13")
+    ENV["PYTHON"] = which("python3.14")
 
     binary = buildpath/"binary"
     resource("binary").stage do

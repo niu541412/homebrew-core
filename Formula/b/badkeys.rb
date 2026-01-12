@@ -3,30 +3,31 @@ class Badkeys < Formula
 
   desc "Tool to find common vulnerabilities in cryptographic public keys"
   homepage "https://badkeys.info"
-  url "https://files.pythonhosted.org/packages/8b/fe/01e4617b44bbb352023bc1ee7e2eef4358d59d0bab9677f52698dbff44b1/badkeys-0.0.13.tar.gz"
-  sha256 "6013a2496221993d726ab624170108b82ed188bf2b03eb032cfaaee17354530e"
+  url "https://files.pythonhosted.org/packages/57/7d/f74cca4803f32e3088ae24e5186693facff1fb9c9e3f81497c4fbde63591/badkeys-0.0.16.tar.gz"
+  sha256 "c9d292ea1c78f6076662b923d854620f08dce46df1d4c162185625c7bfe58030"
   license "MIT"
   head "https://github.com/badkeys/badkeys.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "091903ae93eaf73bcd25d6af039458e5df16e2802638fdf8d40179f0b993a4ff"
-    sha256 cellar: :any,                 arm64_sonoma:  "f4d06958f60fdf734839d289015e378324dd38668446312437244db26db0e570"
-    sha256 cellar: :any,                 arm64_ventura: "b3e77db1e77edb273e6022bea8440e651fa300263c47b2f8d4045114ad658bfd"
-    sha256 cellar: :any,                 sonoma:        "4b23d32e958d853a341359f6c2627387e1628cbf72abf3f8edfe749976db58e8"
-    sha256 cellar: :any,                 ventura:       "71564d54d9739f33b60db86b68761a7f0414a2837df84f2ec8b62f1258701cf4"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "4bc3a6bf8c1a8cedf53f5725d98e84de9987494b1503f69f2fe18174458b2a1a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "336a1ff4d2f198153a7c2ebaea51bc0dc33cb651fff3cf60a36b235477990645"
+    sha256 cellar: :any,                 arm64_tahoe:   "d2c34e7ce3a7ad3b79e579fffa5d268e4666fff4ceecbf891751ec6756fd3829"
+    sha256 cellar: :any,                 arm64_sequoia: "21db3db1703244ecabc2c1e5b6930b06b795d19a4fe251bb0d65671efcbb74a5"
+    sha256 cellar: :any,                 arm64_sonoma:  "a110ae31d0a3982fbe4491469ed5355c255b78f415a11d87192965a76c555c62"
+    sha256 cellar: :any,                 sonoma:        "00f8b99d969e15b2c595d61da82a8032239753c981108930063a95be5ae4f98d"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "9c6f55b83a73a639171aec0c6903c45113bcb6410af62aabb7f5ee14f612d88f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7d9085c2391bf77d4762907efdeea82d5a03d647f496af0cdef479e415743b35"
   end
 
-  depends_on "cryptography"
+  depends_on "cryptography" => :no_linkage
   depends_on "gmp"
   depends_on "libmpc"
   depends_on "mpfr"
-  depends_on "python@3.13"
+  depends_on "python@3.14"
+
+  pypi_packages exclude_packages: "cryptography"
 
   resource "gmpy2" do
-    url "https://files.pythonhosted.org/packages/07/bd/c6c154ce734a3e6187871b323297d8e5f3bdf9feaafc5212381538bc19e4/gmpy2-2.2.1.tar.gz"
-    sha256 "e83e07567441b78cb87544910cb3cc4fe94e7da987e93ef7622e76fb96650432"
+    url "https://files.pythonhosted.org/packages/fa/58/aff69026cd43a284b979d6be8104a82bd2378ca8f1aaa036508dbee7f1d9/gmpy2-2.2.2.tar.gz"
+    sha256 "d9b8c81e0f5e1a3cabf1ea8d154b29b5ef6e33b8f4e4c37b3da957b2dd6a3fa8"
   end
 
   def install
@@ -49,7 +50,7 @@ class Badkeys < Formula
       -----END RSA PUBLIC KEY-----
     EOS
 
-    output = shell_output("#{bin}/badkeys #{testpath}/rsa-debianweak.key")
+    output = shell_output("#{bin}/badkeys #{testpath}/rsa-debianweak.key", 4)
     assert_match "blocklist/debianssl vulnerability, rsa[2048], #{testpath}/rsa-debianweak.key", output
   end
 end

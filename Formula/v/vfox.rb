@@ -1,8 +1,8 @@
 class Vfox < Formula
   desc "Version manager with support for Java, Node.js, Flutter, .NET & more"
   homepage "https://vfox.dev/"
-  url "https://github.com/version-fox/vfox/archive/refs/tags/v0.6.10.tar.gz"
-  sha256 "397c93d5bc8284128c1d8e7271c95cf7f15d0744f2886bd99ce39b1601257574"
+  url "https://github.com/version-fox/vfox/archive/refs/tags/v0.10.0.tar.gz"
+  sha256 "5c82575fd0ae78c2866862375861a7e69a92e1175d8f9bf89d48db14b993a4b7"
   license "Apache-2.0"
   head "https://github.com/version-fox/vfox.git", branch: "main"
 
@@ -12,12 +12,12 @@ class Vfox < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "ac7a526467aba9c94a9df7326186f0235878690ac1d1b1a5d9772091dfdcd1a2"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "14b8adf71ffb0325a6ef6534f10195425266d90e968ba58186fa8ff607f3e6d4"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "7ce85e7a6dcda29250e6cf585f7bc7f59d04e88edaa5b4011669278545c1582f"
-    sha256 cellar: :any_skip_relocation, sonoma:        "ed86405b888156e41eb62a72e417ecd9aba5b665ed4e2f792c7a083804d03c06"
-    sha256 cellar: :any_skip_relocation, ventura:       "6a62694771e5e7464706830449ec689f7e2e8fff9dbae05ed2e12c46836b343f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "37089fdad736c695de04ed6d7aadf8c1e21fc69b5f910ef7f3069b9c042bdf89"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "dee3e01bdcc226cd6fd5241c0c0966369cbe473b00574e042c981cc3e8a1d0ee"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "5053c020ad120834b7d0ce1e42da4d5cd001a4e2c79684a64dc91733367c9c73"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "6c3ad799784f955be767920bfbdc213aaf367aa88d7dfca90a7b6dc026491a0b"
+    sha256 cellar: :any_skip_relocation, sonoma:        "d56177cdc7c31af47b29f451d8878a753ab7c0e1fc7b28ec82760d32b01d5d12"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "2599e27bfc97c3da4470947714aafba0e0d5315f973cc699542e97e9c9674d6b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "029d6dcaa4c8738e4b7562acc9d877d423ebba69065f4fca471ec87430c6d1dd"
   end
 
   depends_on "go" => :build
@@ -33,7 +33,7 @@ class Vfox < Formula
     assert_match version.to_s, shell_output("#{bin}/vfox --version")
 
     system bin/"vfox", "add", "golang"
-    output = shell_output(bin/"vfox info golang")
+    output = shell_output("#{bin}/vfox info golang")
     assert_match "Golang plugin, https://go.dev/dl/", output
   end
 end

@@ -1,10 +1,10 @@
 class Tailwindcss < Formula
   desc "Utility-first CSS framework"
   homepage "https://tailwindcss.com"
-  url "https://registry.npmjs.org/@tailwindcss/cli/-/cli-4.1.11.tgz"
-  sha256 "d26ab44103a28804e1d1f4c280d8abaf6db7234c8d9eb940ec7dc435c5ad80df"
+  url "https://registry.npmjs.org/@tailwindcss/cli/-/cli-4.1.18.tgz"
+  sha256 "28a45ee98b595a457bb4d464739d40f656c5e46f15a203da543cbe046b6471c5"
   license "MIT"
-  head "https://github.com/tailwindlabs/tailwindcss.git", branch: "next"
+  head "https://github.com/tailwindlabs/tailwindcss.git", branch: "main"
 
   # There can be a notable gap between when a version is added to npm and the
   # GitHub release is created, so we check the "latest" release on GitHub
@@ -15,13 +15,12 @@ class Tailwindcss < Formula
   end
 
   bottle do
-    sha256                               arm64_sequoia: "2ccebd4786671ae09609ae61072d792ea9fb4f94540af032b2cf36e53de42d08"
-    sha256                               arm64_sonoma:  "81b52e5df136097b7cccb4c3d65cfcc17542dbece003c6aaa62d84102c09d4c0"
-    sha256                               arm64_ventura: "9f1770823cf7bd9e692c795bdfab79c0ed4639dfa0987a60b1795345895d8d3c"
-    sha256                               sonoma:        "43017fc345cd06e72ad007a7ddfbaf7b4d82721c47ba0efdd83360307549f84a"
-    sha256                               ventura:       "19c3bbcd7e9c85bfc9670e756c1e58a0586c2cbcc4825439f04080efa99586f3"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "f64042694901449e5baef9e43fc824a47d0a5b7311db4478470c4127c20b5de2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "bfe605ba512197f80afff1110f7e8e17b79d5592b0aa25494e06f9eafafa33fa"
+    sha256 cellar: :any,                 arm64_tahoe:   "1a45d44119d59586315ade4e6f7ee6e78640891d5773194ca017dcf97e292b43"
+    sha256 cellar: :any,                 arm64_sequoia: "bd56dcc43d610edff784ac11d3fdafb597d06b3c5c18f42df1360242946e9336"
+    sha256 cellar: :any,                 arm64_sonoma:  "bd56dcc43d610edff784ac11d3fdafb597d06b3c5c18f42df1360242946e9336"
+    sha256 cellar: :any,                 sonoma:        "98bb72e88d23c4bea6e3e63034115e82e3ceba9b82de7d973fc70bacb71b40dd"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "28eb748b81c60cb7b0bdac8f16eff575b564119171b2e6fc43fe140fb652fa23"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2401c8ee50faa4365f90e2043fa94ae33b5138d0e785edaaa571763f4a2c2676"
   end
 
   depends_on "node"
@@ -39,8 +38,8 @@ class Tailwindcss < Formula
   end
 
   resource "@tailwindcss/typography" do
-    url "https://registry.npmjs.org/@tailwindcss/typography/-/typography-0.5.16.tgz"
-    sha256 "41bb083cd966434072dd8a151c8989e1cfa574eb5ba580b719da013d32b6828e"
+    url "https://registry.npmjs.org/@tailwindcss/typography/-/typography-0.5.19.tgz"
+    sha256 "0490006975cde689af548a2755f9c263344b7896f7fcc1d6b6f6680b59af3465"
   end
 
   def install

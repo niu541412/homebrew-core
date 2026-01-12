@@ -3,22 +3,22 @@ class GitCola < Formula
 
   desc "Highly caffeinated git GUI"
   homepage "https://git-cola.github.io/"
-  url "https://files.pythonhosted.org/packages/4f/62/2a866a1570e677b55080d41056bad3234b17919c467d058a6f37489e3501/git_cola-4.13.0.tar.gz"
-  sha256 "b86d864ef8e12d51e4381e848ee3835002a7559d2b8435ab70feb9be8f3b2cff"
+  url "https://files.pythonhosted.org/packages/cf/7f/d6aeb557dd7284f1c9bf629fc7855b8718cbbcea80aa4fde83bf4dd6f9e6/git_cola-4.17.0.tar.gz"
+  sha256 "23da2c8d734df73e80d8d5b05d6265d4ab0436f654b509092b122a659d188bc9"
   license "GPL-2.0-or-later"
   head "https://github.com/git-cola/git-cola.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "49f8f56b4d1035b4f68ca5f1513bd1b6b472439909656cb42ac4953c95bdda4b"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "49f8f56b4d1035b4f68ca5f1513bd1b6b472439909656cb42ac4953c95bdda4b"
-    sha256 cellar: :any_skip_relocation, sonoma:        "94aa95d3358e77d93b041eacb290349adbe7e06ed9415da0d770cd7f41cf8391"
-    sha256 cellar: :any_skip_relocation, ventura:       "94aa95d3358e77d93b041eacb290349adbe7e06ed9415da0d770cd7f41cf8391"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "49f8f56b4d1035b4f68ca5f1513bd1b6b472439909656cb42ac4953c95bdda4b"
+    sha256 cellar: :any_skip_relocation, all: "61b07c21b3b3b632991e4a3b7ce45f3a7bdaeab57d56cecaba1e625f283a06b1"
   end
 
   depends_on "git-gui"
   depends_on "pyqt"
-  depends_on "python@3.13"
+  depends_on "python@3.14"
+
+  on_linux do
+    depends_on "qtwayland" => :no_linkage
+  end
 
   resource "packaging" do
     url "https://files.pythonhosted.org/packages/a1/d4/1fc4078c65507b51b96ca8f8c3ba19e6a61c8253c72794544580a7b6c24d/packaging-25.0.tar.gz"

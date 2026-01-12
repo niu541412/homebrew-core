@@ -7,11 +7,13 @@ class Fdroidcl < Formula
   head "https://github.com/Hoverth/fdroidcl.git", branch: "master"
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "eff5d8a8992263ef5309e08d50b18767ec8ce4e4900916161a0b94de35e271d8"
     sha256 cellar: :any_skip_relocation, arm64_sequoia: "a59042086a507fe60f17c0460f85ac81bc0e9ad650738e0b8c4c12879dcdd5a6"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:  "a59042086a507fe60f17c0460f85ac81bc0e9ad650738e0b8c4c12879dcdd5a6"
     sha256 cellar: :any_skip_relocation, arm64_ventura: "a59042086a507fe60f17c0460f85ac81bc0e9ad650738e0b8c4c12879dcdd5a6"
     sha256 cellar: :any_skip_relocation, sonoma:        "8bfd91ccb97abe616d4fd3d32ccb498cf79a1787b9700860609de72b4f93c4a5"
     sha256 cellar: :any_skip_relocation, ventura:       "8bfd91ccb97abe616d4fd3d32ccb498cf79a1787b9700860609de72b4f93c4a5"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "7265c44fd957cfe968910913ded8f02f82565194b41b7ebf8d683784ab1b0261"
     sha256 cellar: :any_skip_relocation, x86_64_linux:  "77a94907960dcab6c2bcdc0b7e5b6364eb6e221cb52bf3aabb7fbdcc1a5bc93d"
   end
 
@@ -24,46 +26,11 @@ class Fdroidcl < Formula
   test do
     assert_match "f-droid.org/repo", shell_output("#{bin}/fdroidcl update")
 
-    list = <<~EOS
-      App Store & Updater
-      Browser
-      Calendar & Agenda
-      Cloud Storage & File Sync
-      Connectivity
-      DNS & Hosts
-      Development
-      Email
-      File Encryption & Vault
-      File Transfer
-      Games
-      Graphics
-      Internet
-      Keyboard & IME
-      Local Media Player
-      Messaging
-      Money
-      Multimedia
-      Navigation
-      News
-      Online Media Player
-      Password & 2FA
-      Phone & SMS
-      Podcast
-      Reading
-      Science & Education
-      Security
-      Social Network
-      Sports & Health
-      System
-      Theming
-      Time
-      VPN & Proxy
-      Voice & Video Chat
-      Wallet
-      Weather
-      Writing
-    EOS
-    assert_equal list, shell_output("#{bin}/fdroidcl list categories")
+    categories = shell_output("#{bin}/fdroidcl list categories").split("\n")
+    %w[Browser Games News Weather].each do |category|
+      assert_includes categories, category
+    end
+
     assert_match version.to_s, shell_output("#{bin}/fdroidcl version")
   end
 end

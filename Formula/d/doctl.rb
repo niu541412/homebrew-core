@@ -1,18 +1,19 @@
 class Doctl < Formula
   desc "Command-line tool for DigitalOcean"
   homepage "https://github.com/digitalocean/doctl"
-  url "https://github.com/digitalocean/doctl/archive/refs/tags/v1.135.0.tar.gz"
-  sha256 "5effb6ef3ab5f4b6385833c87c8ffa5475ea2fe6094651c8356e72039f47a10c"
+  url "https://github.com/digitalocean/doctl/archive/refs/tags/v1.148.0.tar.gz"
+  sha256 "be347ed111b3e0a2987cb492e2bf1fb7ce8d06e215b6130797fd235934d21779"
   license "Apache-2.0"
   head "https://github.com/digitalocean/doctl.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "886f5a9595570abb1b31cb66c1dc4269988dca1db6212519cfa604bd0664cf27"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "886f5a9595570abb1b31cb66c1dc4269988dca1db6212519cfa604bd0664cf27"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "886f5a9595570abb1b31cb66c1dc4269988dca1db6212519cfa604bd0664cf27"
-    sha256 cellar: :any_skip_relocation, sonoma:        "f23fc84cef85304012c42c183ae974c1ad243dabab44aa76bdac93d65443aa44"
-    sha256 cellar: :any_skip_relocation, ventura:       "f23fc84cef85304012c42c183ae974c1ad243dabab44aa76bdac93d65443aa44"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "01d7aff45a5563ecd7e27ad87ee77f5110b809c984a44261e75fe18d7346cf48"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "a5a70e6d034e967e6350b4d24d9e6790c9958036b0edc7065e2a444dd0bda86d"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "a5a70e6d034e967e6350b4d24d9e6790c9958036b0edc7065e2a444dd0bda86d"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "a5a70e6d034e967e6350b4d24d9e6790c9958036b0edc7065e2a444dd0bda86d"
+    sha256 cellar: :any_skip_relocation, sonoma:        "01541e2955c37d7a5138aa01517bf8ab11693564ed1b917167103e2c9ae942b1"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "64c062bbbd379ad820c0d7ad500cd15b11fa63158928f491d28007c97878911b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "18eaa4dc522769603eb2132e19c604793db34e403702f611577ae3541669b3c8"
   end
 
   depends_on "go" => :build
@@ -28,7 +29,7 @@ class Doctl < Formula
 
     system "go", "build", *std_go_args(ldflags:), "./cmd/doctl"
 
-    generate_completions_from_executable(bin/"doctl", "completion")
+    generate_completions_from_executable(bin/"doctl", shell_parameter_format: :cobra)
   end
 
   test do

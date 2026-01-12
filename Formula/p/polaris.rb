@@ -1,26 +1,28 @@
 class Polaris < Formula
   desc "Validation of best practices in your Kubernetes clusters"
   homepage "https://www.fairwinds.com/polaris"
-  url "https://github.com/FairwindsOps/polaris/archive/refs/tags/10.0.0.tar.gz"
-  sha256 "b5ee1a9f31c11c44a11364d838f14c661c1af1c188c78ca431b66e5533df3aff"
+  url "https://github.com/FairwindsOps/polaris/archive/refs/tags/10.1.3.tar.gz"
+  sha256 "eaa15224739aea756f67ae84a2e086ec1f6716539245ed37572c064d3d598f46"
   license "Apache-2.0"
   head "https://github.com/FairwindsOps/polaris.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "e696df385c784b3d6ac01ff8bf8fb7d1ed7d567975187aa7ad9364ecfc83cb6b"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "da02d33e584b1ee3946761f0f2b04315e71d1bd52d1888575c7bf2856f37dabe"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "c80ba5163b2ff56d3a0e9c730f103d067fd258bc08ced16896fbeb8379161f02"
-    sha256 cellar: :any_skip_relocation, sonoma:        "4f3f67999e7d82d5f6077737cdf850ee678e93b87cbf263c9fe715cc7838ccbc"
-    sha256 cellar: :any_skip_relocation, ventura:       "2f9fde3a195c0bfd22202dc6747261465ee16ce437e9df4d3b965c5f2566b79d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5f9b4baaa20c4cb42dfc4c7fa9422ed5e46181ec35cdb9c5bb0148b93bfeb529"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "8e66e333ef34f15f0fac95c5cb9bfa7a9b8cb2c7db6863379a76ee9950016d2d"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "167814c97e317e1be2e5555d9db90903bc4834b1722c8e1de385860687560912"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "113274a42105d150669a2345d6b6a37df314a66220d5ed6464d4dbba907fc890"
+    sha256 cellar: :any_skip_relocation, sonoma:        "95e27f90794d815758125f73ab8502f228b8733627cd6089fb5955a3e7f2e891"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "beaed4cd959e08e554f1f5060e067b1f1c05908c7350c8fc0dd37a7d24589214"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "892f3ea7d3cb7143d9bfe8bf7aec1b3d2c6f2586cf4e64cbfd33513b30be562f"
   end
 
   depends_on "go" => :build
 
   def install
-    system "go", "build", *std_go_args(ldflags: "-s -w -X main.Version=#{version} -X main.Commit=#{tap.user}")
+    ldflags = "-s -w -X main.Version=#{version} -X main.Commit=#{tap.user}"
+    system "go", "build", *std_go_args(ldflags:)
 
-    generate_completions_from_executable(bin/"polaris", "completion")
+    generate_completions_from_executable(bin/"polaris", shell_parameter_format: :cobra)
   end
 
   test do

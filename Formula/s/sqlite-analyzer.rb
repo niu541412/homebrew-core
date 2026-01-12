@@ -1,9 +1,9 @@
 class SqliteAnalyzer < Formula
   desc "Analyze how space is allocated inside an SQLite file"
   homepage "https://www.sqlite.org/"
-  url "https://www.sqlite.org/2025/sqlite-src-3500300.zip"
-  version "3.50.3"
-  sha256 "119862654b36e252ac5f8add2b3d41ba03f4f387b48eb024956c36ea91012d3f"
+  url "https://sqlite.org/2026/sqlite-src-3510200.zip"
+  version "3.51.2"
+  sha256 "85110f762d5079414d99dd5d7917bc3ff7e05876e6ccbd13d8496a3817f20829"
   license "blessing"
 
   livecheck do
@@ -13,29 +13,23 @@ class SqliteAnalyzer < Formula
   no_autobump! because: :incompatible_version_format
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "ade8f24275e115ed7064de91acd1d0898c55fcf0427b669eaa30874093c6b620"
-    sha256 cellar: :any,                 arm64_sonoma:  "18e0cb91be041fa3e90d602a8ee50667d7940bbb06aa93e83613c044e99acf2b"
-    sha256 cellar: :any,                 arm64_ventura: "059c958395fa1b46480931107d371b4bca11f560b3802ec613e63e5db61b5aad"
-    sha256 cellar: :any,                 sequoia:       "0fe5ae5fb8ebce3c34fa3ec27c3d3be2cb9e9998c3155c4678aacb6854ecdee4"
-    sha256 cellar: :any,                 sonoma:        "1ad99fbd73f8e309138134c3d95283a0d898dc7a0978efd1e75b1bcd0fb2d217"
-    sha256 cellar: :any,                 ventura:       "4519eb1cb3a3266a6e3725bedb5dbefaf6cb3c5688a33379353b27dd70470eb9"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "2fc0a1bb43c7283ce4c4eb5bc0335792094f6f712be9203fd75a70b34867d8b7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6297a639ed4f5fd94416b28c6e2a6020708149719e3ddc547442e1e159f73bd2"
+    sha256 cellar: :any,                 arm64_tahoe:   "c1961bd266c144285f35703f3e5fcb678f5cb30eaf51345d859e50e36bfde998"
+    sha256 cellar: :any,                 arm64_sequoia: "f430a8de5bb07a2f6f2c01c35f9b03d63c5aaade23a5206df7803a074e3c986d"
+    sha256 cellar: :any,                 arm64_sonoma:  "29778806e69788fb48880f98b2b26ddade0da3b4649ca77be143c17f9594f283"
+    sha256 cellar: :any,                 sonoma:        "9a3b47f0a8ff07ba35e32a1a5bd947be494fe024a9826293505672ac87519106"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "2a312dea1a853e0e6a7a64abfc338194c4c73073c646e59939dfe42c32adca76"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d6d83419b804f025043ccabc72c8587fcd592e881cb793b16a753191bdbd33f1"
   end
 
+  depends_on "tcl-tk"
   uses_from_macos "sqlite" => :test
-  uses_from_macos "tcl-tk"
+
+  on_macos do
+    depends_on "libtommath"
+  end
 
   def install
-    tcl = if OS.mac?
-      MacOS.sdk_path/"System/Library/Frameworks/Tcl.framework"
-    else
-      Formula["tcl-tk"].opt_lib
-    end
-
-    system "./configure", "--disable-debug",
-                          "--with-tcl=#{tcl}",
-                          "--prefix=#{prefix}"
+    system "./configure", "--with-tcl=#{Formula["tcl-tk"].opt_lib}", *std_configure_args
     system "make", "sqlite3_analyzer"
     bin.install "sqlite3_analyzer"
   end

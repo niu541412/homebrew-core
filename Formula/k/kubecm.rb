@@ -1,18 +1,19 @@
 class Kubecm < Formula
   desc "KubeConfig Manager"
   homepage "https://kubecm.cloud"
-  url "https://github.com/sunny0826/kubecm/archive/refs/tags/v0.33.1.tar.gz"
-  sha256 "68bb4c60c4574309170db916af07e5b04df67afb3dd5e3d0d34d2f1a52196396"
+  url "https://github.com/sunny0826/kubecm/archive/refs/tags/v0.34.0.tar.gz"
+  sha256 "5ac6928cf87092a9ef6c5b620065b4da0fe981c716566e0aaa9959f007294362"
   license "Apache-2.0"
   head "https://github.com/sunny0826/kubecm.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "c51fbb3083b295f06961456070cbecb9e4bd98771ef175ee9146a6b5e97a6190"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "c51fbb3083b295f06961456070cbecb9e4bd98771ef175ee9146a6b5e97a6190"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "c51fbb3083b295f06961456070cbecb9e4bd98771ef175ee9146a6b5e97a6190"
-    sha256 cellar: :any_skip_relocation, sonoma:        "7d61ddf8bd9166e502ae088f4d0ac02f1f03498e529d5b01a8b1f9b0ac0ebd53"
-    sha256 cellar: :any_skip_relocation, ventura:       "7d61ddf8bd9166e502ae088f4d0ac02f1f03498e529d5b01a8b1f9b0ac0ebd53"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f411c58816d4ced391cec7df8677fd7e5415ff245d027330a3d2b64652a92fff"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "58bbfefd4f4690223bf8d9db1487904a6a3375ae4ea38ea3545bddeaa6f73b0b"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "58bbfefd4f4690223bf8d9db1487904a6a3375ae4ea38ea3545bddeaa6f73b0b"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "58bbfefd4f4690223bf8d9db1487904a6a3375ae4ea38ea3545bddeaa6f73b0b"
+    sha256 cellar: :any_skip_relocation, sonoma:        "8fa53bb01c1b646eca50397b1c85d747dbfc298bd01588806f5dc1d6375e514e"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "8ca5bf3f0bf2d59221a93d7214fc0fc49c1487a08c101b12a434f886271cc034"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "892a724104214e188c3b8459505d9078cd8c80d8ffc22895497f17fa83ad621f"
   end
 
   depends_on "go" => :build
@@ -21,7 +22,7 @@ class Kubecm < Formula
     ldflags = "-s -w -X github.com/sunny0826/kubecm/version.Version=#{version}"
     system "go", "build", *std_go_args(ldflags:)
 
-    generate_completions_from_executable(bin/"kubecm", "completion")
+    generate_completions_from_executable(bin/"kubecm", shell_parameter_format: :cobra)
   end
 
   test do

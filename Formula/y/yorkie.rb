@@ -1,8 +1,8 @@
 class Yorkie < Formula
   desc "Document store for collaborative applications"
   homepage "https://yorkie.dev/"
-  url "https://github.com/yorkie-team/yorkie/archive/refs/tags/v0.6.22.tar.gz"
-  sha256 "bc8cb4c56b02e262a70b1acdd9161c9c6079b91ad912b09d5980eb88ac1f03d4"
+  url "https://github.com/yorkie-team/yorkie/archive/refs/tags/v0.6.42.tar.gz"
+  sha256 "7446ad0ffbc08779d5033f968eabe6a93aa4bba9b6fd2942c7585100cf20c841"
   license "Apache-2.0"
   head "https://github.com/yorkie-team/yorkie.git", branch: "main"
 
@@ -12,12 +12,13 @@ class Yorkie < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "142932eed1e6a3da30a6cf36af6cbde487f3c7242517b241d4dbe30a6e63ecb1"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "7089e4e0ebbd695c18fb6d0f8f7baebf9f5490c9f1841319accac8e3772964b8"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "4944df782840236ca86d5cd0a98165c168c1ae7617d386d9edf4a59c1193b0ac"
-    sha256 cellar: :any_skip_relocation, sonoma:        "2962687a66098dec0d0f3259fe1353e8287dc9cd778c7c0b8ea24568f9c74bd5"
-    sha256 cellar: :any_skip_relocation, ventura:       "b07f1623168473e52dc2e722853a3408886b793deff652a63ef6d270cdc64d80"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d5b3a2b7442a28efc372b1e4827b265231ba81337edb6cee05198dc92cd47d05"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "9cb90f7876477356042b6aa484942d93437613e42d95183f6a27c6786bf7e289"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "82b434c7dcf0cc82f26893df4b7d97f9f5034459228fa169e6ae17c360831aa7"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "0e88bdbb152fb0a75ae94eb1f9b3ad623d7937a583af1b361558f9b90d6929ef"
+    sha256 cellar: :any_skip_relocation, sonoma:        "c12d0ebee18f4e5200938080f785414b86ad1a98dbe5cf950905e29eb05f6ccf"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "572471c63618e9cfc0813b1a51c4a9813c215df65dffc9d42cd25ce8e2373fd7"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c324125d91026045390e1a7a8702187c30678072190cce0f9ce2e689d18c8982"
   end
 
   depends_on "go" => :build
@@ -31,7 +32,7 @@ class Yorkie < Formula
 
     system "go", "build", *std_go_args(ldflags:), "./cmd/yorkie"
 
-    generate_completions_from_executable(bin/"yorkie", "completion")
+    generate_completions_from_executable(bin/"yorkie", shell_parameter_format: :cobra)
   end
 
   service do

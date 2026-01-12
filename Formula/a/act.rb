@@ -1,18 +1,18 @@
 class Act < Formula
   desc "Run your GitHub Actions locally"
   homepage "https://github.com/nektos/act"
-  url "https://github.com/nektos/act/archive/refs/tags/v0.2.79.tar.gz"
-  sha256 "0a161cdaa1088b46691434042b2d7d1cec0df168c3601070d562bfc639c0b801"
+  url "https://github.com/nektos/act/archive/refs/tags/v0.2.84.tar.gz"
+  sha256 "da58b74d03b2cd21df81aeb054c2792054d6cf9d4c3171e98440fde9becb01fa"
   license "MIT"
   head "https://github.com/nektos/act.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "f4900c53b1d7438e9288b0b3ce70c5655c1cd45de439dfe201400732b9e95407"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "8e2c24f634259a2a09aa8874519b838495f2c660c00c7e25740ea3741718b188"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "bed662ba4279e065633951498a8e99c6628bbd0177111fc2c87ecf04ff1f1ec6"
-    sha256 cellar: :any_skip_relocation, sonoma:        "4f68b23498e2fc37c38b8db855c30fb84a58ee75daef7f626558fe64efe40a0a"
-    sha256 cellar: :any_skip_relocation, ventura:       "e599ca5f75e7b2aa00a6d61f450501c558f10cf8f8815bf0181cccf4192055f3"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "acccdd4f4d42ee898282ed25f17f8ae921138ae4b5b75235e126c12c6ed36a6b"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "bd7f8f8ddd1c5ff74799385f0bbe6ba48dde0183c4efef4bc0db748b79b8a4fb"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "971f016d1664baae5e01f4cf121758d0ccdc38a850bbe4b383ecfe7a44e3631a"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "eda56bd1346ef6f88ccc863828fb2f3ae603cda56674cfdc2113317f66e9adeb"
+    sha256 cellar: :any_skip_relocation, sonoma:        "b950139f4318116a06c34001d465644ea1c295a383e90eb8100d5a0f701b9066"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "e9be487dafffc4992bd017d7952416e843ec7d12e2221947f7b7d5bb3135c963"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "879e746d6d78f4fb9e2cf53a4e9def25ee25f7339344bc1bef5d30a979b623aa"
   end
 
   depends_on "go" => :build
@@ -20,6 +20,8 @@ class Act < Formula
   def install
     system "make", "build", "VERSION=#{version}"
     bin.install "dist/local/act"
+
+    generate_completions_from_executable(bin/"act", shell_parameter_format: :cobra)
   end
 
   test do

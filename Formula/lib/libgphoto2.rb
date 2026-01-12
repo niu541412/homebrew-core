@@ -1,25 +1,23 @@
 class Libgphoto2 < Formula
   desc "Gphoto2 digital camera library"
   homepage "http://www.gphoto.org/proj/libgphoto2/"
-  url "https://downloads.sourceforge.net/project/gphoto/libgphoto/2.5.32/libgphoto2-2.5.32.tar.bz2"
-  sha256 "02b29ab0bcfceda1c7f81c75ec7cb5e64d329cf4b8fd0fcd5bc5a89ff09561bc"
+  url "https://downloads.sourceforge.net/project/gphoto/libgphoto/2.5.33/libgphoto2-2.5.33.tar.bz2"
+  sha256 "c55504e725cf44b6ca67e1cd7504ad36dc98d7a0469a9e8d627fd0fb3848aa1d"
   license "LGPL-2.1-or-later"
+  revision 1
 
   livecheck do
     url :stable
     regex(%r{url=.*?/libgphoto2[._-]v?(\d+(?:\.\d+)+)\.t}i)
   end
 
-  no_autobump! because: :requires_manual_review
-
   bottle do
-    sha256 arm64_sequoia: "7b1623d4b3344b30dfc4ad0d367aea6723c66885c7de2b8a90396592b2782553"
-    sha256 arm64_sonoma:  "1d8ebf1c8da4b2faaa3ebae9db25ec16f0d7009ecfa375357559779e9e5c1b85"
-    sha256 arm64_ventura: "633b4bf8082baa3098da2912e448b8b20a6f7002270e40fef9638823c8a3dd0c"
-    sha256 sonoma:        "58a05c5466d4648e7378e92367daef9dc8f7610b3e491d7961923880b0e62230"
-    sha256 ventura:       "ef675c4400ad1f1121922f3559667dc914923cef9c3b9138f26ce3babcd67bcc"
-    sha256 arm64_linux:   "869891754e3bd0c041ed5b5bc70830e5d93f38fd7b5ecf87d622e59d05ccd3c2"
-    sha256 x86_64_linux:  "bcf2a78a43ec66f4dd69664c3b96ef61c6bb2dfed8db64c2de573e0ad3530506"
+    sha256 arm64_tahoe:   "4787debd14a4f061a5b1dfdb313268a6e03abe10dc39343e135da821f41a6f88"
+    sha256 arm64_sequoia: "761131f6530a6f51e1d9d1492af5232cb1217128e3bf73fa235d0d03a3da2118"
+    sha256 arm64_sonoma:  "631cdc3341dfc5907fa83887dc913311aa36a0c219261ef9fd7f46cf8037cda8"
+    sha256 sonoma:        "2de747a420398a3a4e7b5cb01cec1511e37d7fbe534895f6a76fd9fac18fdc0e"
+    sha256 arm64_linux:   "4af836cfd70a87e5927caf8cf9934b3c633f92234a3c369eeff623f6a1e53993"
+    sha256 x86_64_linux:  "6c59a4f801f570abede5df74fa27c3fbcd5f9a4c850a3a7be0143cbd51787b32"
   end
 
   head do

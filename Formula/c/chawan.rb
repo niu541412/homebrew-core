@@ -1,19 +1,18 @@
 class Chawan < Formula
   desc "TUI web browser with CSS, inline image and JavaScript support"
   homepage "https://sr.ht/~bptato/chawan/"
-  url "https://git.sr.ht/~bptato/chawan/archive/v0.2.2.tar.gz"
-  sha256 "30b4108247244f6b0721d44f84ba90cebf8ce5892ed9502d7e7c3fed92f65489"
+  url "https://git.sr.ht/~bptato/chawan/archive/v0.3.2.tar.gz"
+  sha256 "08f98ddf0040d0bf25dce62eac86d3ec5d2f11b2bc471213eb9c4c861a8d321a"
   license "Unlicense"
   head "https://git.sr.ht/~bptato/chawan", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "b9be1da4b16cde2ad0788b0e0bf4ba6bd49129abff764b306be0cfe945de0fa5"
-    sha256 cellar: :any,                 arm64_sonoma:  "bf1828157ded27c5ab4b92b37cdc856f3423c935effb72ac4e935f0d3e7a00d8"
-    sha256 cellar: :any,                 arm64_ventura: "c5390f8597c1de9aa5ebd4883878dd0472b1f051e1a917c5098878fc3e411c20"
-    sha256 cellar: :any,                 sonoma:        "d7ca58a40cac91a237133c3a60e909e23e2cc2eca528eef93ed214df0b061cd7"
-    sha256 cellar: :any,                 ventura:       "2d1ba741fd41220c65b43c3f5c885fb18731aff4ccaead85032241e926a783b7"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "9f5c33dd69d3e449674adddb59224ebfcada16aaca4c8b02fa6ce77198e420b7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "28de6c68815eced2c3d09e239e8ef11d8e0ea36a23385752a9067b8da71738d3"
+    sha256 cellar: :any,                 arm64_tahoe:   "db9f8bd2ce7b8b69d8e88bdf33fa3192b756d64e96dc9e8c9dcafaaab31d6c0e"
+    sha256 cellar: :any,                 arm64_sequoia: "3b94dd2fe4c7f4728c1aca6840ade71392fc2e111a65557efaea7183fc209e5c"
+    sha256 cellar: :any,                 arm64_sonoma:  "84454a6d35fab701b0164106ac3f986154247dec3847da4ec2f943a5ba970127"
+    sha256 cellar: :any,                 sonoma:        "640c06003a621dbd1eb0392484cb84b863a40376f31c37899f56fd287061df48"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "8ca1c358adbd75dffaa42e264b765682da060209ca77731fb9085697f3d03ec2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "218b8a05150c5aae3239d57dfb610bf1543be63ca3ee9c32da93e7da23a15c7b"
   end
 
   depends_on "nim" => :build

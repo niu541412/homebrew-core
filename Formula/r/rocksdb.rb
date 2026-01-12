@@ -1,19 +1,18 @@
 class Rocksdb < Formula
   desc "Embeddable, persistent key-value store for fast storage"
   homepage "https://rocksdb.org/"
-  url "https://github.com/facebook/rocksdb/archive/refs/tags/v10.4.2.tar.gz"
-  sha256 "afccfab496556904900afacf7d99887f1d50cb893e5d2288bd502db233adacac"
+  url "https://github.com/facebook/rocksdb/archive/refs/tags/v10.9.1.tar.gz"
+  sha256 "e2e2e0254ddcb5338a58ba0723c90e792dbdca10aec520f7186e7b3a3e1c5223"
   license any_of: ["GPL-2.0-only", "Apache-2.0"]
   head "https://github.com/facebook/rocksdb.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "e0945f3ee6d982ec7175cc92967ac76e808af1e7527fc06b5e3b2b7b9d6280bc"
-    sha256 cellar: :any,                 arm64_sonoma:  "8a23611664e85ce5829f19a57cedce7711011f6a99f1c4d5f7e79acb0adb8b4d"
-    sha256 cellar: :any,                 arm64_ventura: "7cf063c38c34c99fcf0a7316438623ef461f57a2d8370108560e4dbf7bd08144"
-    sha256 cellar: :any,                 sonoma:        "a9c004296e66dfa385e558499ff14fffbfb5421b37adbd73c3ea77b58c6ed47f"
-    sha256 cellar: :any,                 ventura:       "eb74aa8746bd34991cebd04a5db3119d9904d483c934304b856d83f73aebd568"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "79207bcfffe6ea2250257fa72a6c228e52690a2859b5a9bee176d6f3aee9047d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d33227080193e308d8376f322c06d735bee7138be1c25b016436f7f780077abd"
+    sha256 cellar: :any,                 arm64_tahoe:   "dd00d7770a374158743cd7399ddeec1fe94618a007ba5351bb792e2010a39f50"
+    sha256 cellar: :any,                 arm64_sequoia: "7947b1d48a759bdfb0de8a2458f36fafbef36f0a214befdb742d8c6e36068845"
+    sha256 cellar: :any,                 arm64_sonoma:  "41781d8a0e694872f8d51621e759e186b02364ce02ae04036206a1dbab1fa1e0"
+    sha256 cellar: :any,                 sonoma:        "6657587c8b405070a10e3b149e98f65d1ee1bc98a6f2fcc36052f89bb1d66745"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "74c1d8587d8170f5d2c35820d51ecee1003e4f59bc862c54d023ee757a1b6029"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3b26f4114494c9edf4d773e1d46f1ad8cfdd6e7c880d80c8858aa1ac27c2df10"
   end
 
   depends_on "cmake" => :build
@@ -73,7 +72,7 @@ class Rocksdb < Formula
       extra_args << "-lstdc++"
     end
     system ENV.cxx, "test.cpp", "-o", "db_test", "-v",
-                                "-std=c++17",
+                                "-std=c++20",
                                 *extra_args,
                                 "-lz", "-lbz2",
                                 "-L#{lib}", "-lrocksdb",
@@ -82,7 +81,7 @@ class Rocksdb < Formula
                                 "-L#{Formula["zstd"].opt_lib}", "-lzstd"
     system "./db_test"
 
-    assert_match "sst_dump --file=", shell_output("#{bin}/rocksdb_sst_dump --help 2>&1")
+    assert_match "sst_dump <db_dirs_OR_sst_files...>", shell_output("#{bin}/rocksdb_sst_dump --help 2>&1")
     assert_match "rocksdb_sanity_test <path>", shell_output("#{bin}/rocksdb_sanity_test --help 2>&1", 1)
     assert_match "rocksdb_stress [OPTIONS]...", shell_output("#{bin}/rocksdb_stress --help 2>&1", 1)
     assert_match "rocksdb_write_stress [OPTIONS]...", shell_output("#{bin}/rocksdb_write_stress --help 2>&1", 1)

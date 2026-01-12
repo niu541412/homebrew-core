@@ -1,24 +1,25 @@
 class Kiota < Formula
   desc "OpenAPI based HTTP Client code generator"
   homepage "https://aka.ms/kiota/docs"
-  url "https://github.com/microsoft/kiota/archive/refs/tags/v1.28.0.tar.gz"
-  sha256 "22ae2c86276a4fadb8fbffa956a9a36dbb2afe7af3e988858a53e3c7b0b9d6fb"
+  # Try upgrade to latest `dotnet` on next release
+  url "https://github.com/microsoft/kiota/archive/refs/tags/v1.29.0.tar.gz"
+  sha256 "8d75ae103efc94edc0615b1a7427ce6ef970fde389f3f4de5722eec97bcb4860"
   license "MIT"
   head "https://github.com/microsoft/kiota.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "1e9c66c91f5ef2b18e89aa4ccec8417711a7fbf6485fd0585c59d19112a21743"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "c038fe33ad77501ad5f09c7a7bb86194e51fb98b42086ff0b5ec20fd98b018a4"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "a2c910e355a8f1c101c4f91f7ec31d86270722e121090a5e1bbe1e48dc421c87"
-    sha256 cellar: :any_skip_relocation, ventura:       "a50a83adf8b4341e334b1990e18bec48b52d7cdb679974a2f2ad434452ff0421"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "47b04dd0b5ae4f5d4bacbbe17b03d58b74cb60a2145acab83ab6da7872a2cc8c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2b82c113a8953e61716bf2a301a62ffcf68eed59f8b2c3d88edf53d6edaf3186"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "3ca572635df3058ea0bbb1cdb82421564caac65be8c8b1e61cc854e1b6338943"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "a9c3b9ca9829ab90cc7b8597d8b340d9dcb1aecb27770250ec0d971da9eb505f"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "68c6c9518430f0f768efeb287f540888ad7bbaa68cb92b9a1f646d768ded09a2"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "171b247625f3c1bded7586c9837fff00d2439d52d61fd0f83a04dfd53916c30f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4f916084cae0e42d83e4db30186631bb3572f1a6f35e314efff6ab48180306b2"
   end
 
-  depends_on "dotnet"
+  depends_on "dotnet@9"
 
   def install
-    dotnet = Formula["dotnet"]
+    dotnet = Formula["dotnet@9"]
 
     args = %W[
       --configuration Release

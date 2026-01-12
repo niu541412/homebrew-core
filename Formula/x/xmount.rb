@@ -1,14 +1,13 @@
 class Xmount < Formula
   desc "Convert between multiple input & output disk image types"
   homepage "https://www.sits.lu/xmount"
-  url "https://code.sits.lu/foss/xmount/-/archive/1.2.0/xmount-1.2.0.tar.bz2"
-  sha256 "07c261e54e1e4cbcd4f7eaaf4f62efcbbbc68c76797ddca704592d99ebed3d10"
+  url "https://code.sits.lu/foss/xmount/-/archive/1.3.0/xmount-1.3.0.tar.bz2"
+  sha256 "cc5bc2ac00c734f5a9f7fadce48c9a22d9923d363d782374a9b747f52f271555"
   license "GPL-3.0-or-later"
-  revision 1
 
   bottle do
-    sha256 arm64_linux:  "1de5d61365c208673d84f059724faff5d1930c9807579ac6b05627546717bc8f"
-    sha256 x86_64_linux: "1b6e3ef254b9fb27d176d6af4ecebda6c9b44f3b02244e543295a03d20831d97"
+    sha256 arm64_linux:  "4c74f5c52e9062ee34d3159d35725a808a084a350eaaccb3584dacd8ec91edc3"
+    sha256 x86_64_linux: "769d0e284fe04e47c8074df8cff9b31fd5781055b0397dd35fa6aba6e9db5cc8"
   end
 
   depends_on "cmake" => :build

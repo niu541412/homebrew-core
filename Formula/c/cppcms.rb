@@ -3,51 +3,40 @@ class Cppcms < Formula
 
   desc "Free High Performance Web Development Framework"
   homepage "http://cppcms.com/wikipp/en/page/main"
-  url "https://downloads.sourceforge.net/project/cppcms/cppcms/1.2.1/cppcms-1.2.1.tar.bz2"
-  sha256 "10fec7710409c949a229b9019ea065e25ff5687103037551b6f05716bf6cac52"
+  url "https://github.com/artyom-beilis/cppcms/archive/refs/tags/v2.0.1.tar.gz"
+  sha256 "4a7a2217b3fa59384650912a7000e016c308b4fa986a3d2562002691e5a9d6e7"
   license "MIT"
-  revision 1
-
-  livecheck do
-    url :stable
-    regex(%r{url=.*?/cppcms[._-]v?(\d+(?:\.\d+)+)\.t}i)
-  end
-
-  no_autobump! because: :requires_manual_review
 
   bottle do
-    rebuild 2
-    sha256 cellar: :any,                 arm64_sequoia: "15a16c5b5f573a43871ff8c74cc01c314fb0e4972d4c70ca7f168c662bf20ef5"
-    sha256 cellar: :any,                 arm64_sonoma:  "40b9a78d35c4a82ca461589a699a578b9af04a2db0bd04e996585bd4caab6b00"
-    sha256 cellar: :any,                 arm64_ventura: "fd4431e3606205326aec8f484f3244201795ac5d23343489bcbebcee30dab312"
-    sha256 cellar: :any,                 sonoma:        "fa701ccf8fdb79cdef8b0a690ef5f77f167d63568349aefaca9ede863a3b16f1"
-    sha256 cellar: :any,                 ventura:       "adc2a352809a202ca39cfa42ca5674512311d7e58a13bb1a4db8e844bfb7b310"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "1e32e87d6fd92a34b980782479476ec19d5c7e153cc81f5c002d0ce578f9ac35"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1882da73e8db41b00a7fa01095d3d59314814cbaeb351e8cb7ca6611d44c02c2"
+    sha256 cellar: :any,                 arm64_tahoe:   "5900ff545cb23a62aeee87f0298f708dea78f5276f18a26f26ca25af67dc32f7"
+    sha256 cellar: :any,                 arm64_sequoia: "e0c6465ebda4259d556b40968bd23dc813d9767f67726a65c2830c3c3ba2e232"
+    sha256 cellar: :any,                 arm64_sonoma:  "81bab19d59c5e6892944778302cbb0e78d04a8c36b20aecf02e59d9c7b655d78"
+    sha256 cellar: :any,                 sonoma:        "72d3733bbf759cb8886a96b97046c50f48ec5589ff14c1fb2b17316dd789a1cb"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "26ff565057fd36a3c9f7f834764447a9442789580dd13c3a0689a0df31610f3a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a43f290fed874f7b5e88c3727f084ffb4332662a5534abc8b610a2c11b9b9d81"
   end
 
   depends_on "cmake" => :build
   depends_on "openssl@3"
-  depends_on "pcre"
-  depends_on "python@3.13"
 
+  uses_from_macos "python"
   uses_from_macos "zlib"
 
+  # Backport support for CMake 4
+  patch do
+    url "https://github.com/artyom-beilis/cppcms/commit/92164714273bddfc032d930d3d89f78428110939.patch?full_index=1"
+    sha256 "7934a74f9b39d2108944895f826d960ee34d4b88f52f2482a683f15d395fd74a"
+  end
+
   def install
-    ENV.cxx11
+    rewrite_shebang detected_python_shebang(use_python_from_path: true), "bin/cppcms_tmpl_cc"
 
-    # Look explicitly for python3 and ignore python2
-    inreplace "CMakeLists.txt", "find_program(PYTHON NAMES python2 python)", "find_program(PYTHON NAMES python3)"
-
-    # Adjust cppcms_tmpl_cc for Python 3 compatibility (and rewrite shebang to use brewed Python)
-    rewrite_shebang detected_python_shebang, "bin/cppcms_tmpl_cc"
-    inreplace "bin/cppcms_tmpl_cc" do |s|
-      s.gsub! "import StringIO", "import io"
-      s.gsub! "StringIO.StringIO()", "io.StringIO()"
-      s.gsub! "md5(header_define)", "md5(header_define.encode('utf-8'))"
-    end
-
-    system "cmake", "-S", ".", "-B", "build", *std_cmake_args
+    system "cmake", "-S", ".", "-B", "build",
+                    "-DCMAKE_CXX_STANDARD=11",
+                    "-DCMAKE_INSTALL_RPATH=#{rpath}",
+                    "-DDISABLE_PCRE=ON",
+                    "-DPYTHON=#{which("python3")}",
+                    *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"
   end
@@ -113,8 +102,8 @@ class Cppcms < Formula
     system ENV.cxx, "hello.cpp", "-std=c++11", "-L#{lib}", "-lcppcms", "-o", "hello"
     pid = spawn "./hello", "-c", "config.json"
 
-    sleep 5 # grace time for server start
     begin
+      sleep 5 # grace time for server start
       assert_match "Hello World", shell_output("curl http://127.0.0.1:#{port}/hello")
     ensure
       Process.kill "SIGTERM", pid

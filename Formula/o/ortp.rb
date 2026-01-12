@@ -1,80 +1,64 @@
 class Ortp < Formula
   desc "Real-time transport protocol (RTP, RFC3550) library"
   homepage "https://linphone.org/"
-  license "GPL-3.0-or-later"
-
-  stable do
-    url "https://gitlab.linphone.org/BC/public/ortp/-/archive/5.4.30/ortp-5.4.30.tar.bz2"
-    sha256 "5bab3d0a575eb5d97f7c67e19ab7aaa6dbbf69dd6bd91a50018633ce67fdfd59"
-
-    # bctoolbox appears to follow ortp's version. This can be verified at the GitHub mirror:
-    # https://github.com/BelledonneCommunications/bctoolbox
-    resource "bctoolbox" do
-      url "https://gitlab.linphone.org/BC/public/bctoolbox/-/archive/5.4.30/bctoolbox-5.4.30.tar.bz2"
-      sha256 "1a40f3eb2aad71760ebdb26626c8443d7f495e729d3598c7bd709faeb9aa4ab1"
-
-      livecheck do
-        formula :parent
-      end
-
-      patch :DATA
-    end
-  end
-
-  no_autobump! because: "resources cannot be updated automatically"
+  # TODO: Switch to monorepo in 5.5.x
+  url "https://gitlab.linphone.org/BC/public/ortp/-/archive/5.4.73/ortp-5.4.73.tar.bz2"
+  sha256 "10834ec5e2f47cc4c4ae32fef9378de2e159260be29aeb0fe7ef3d7895e36ae6"
+  license all_of: ["AGPL-3.0-or-later", "GPL-3.0-or-later"]
+  head "https://gitlab.linphone.org/BC/public/linphone-sdk.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "6594788ad492d1210cd710e5eabaeebd521c812a73c60efc3a714dd5eacecf67"
-    sha256 cellar: :any,                 arm64_sonoma:  "fc807026ddc0cfa3d26689027bf56236259a45bfe9c3052cd2270ce0967c8578"
-    sha256 cellar: :any,                 arm64_ventura: "d848e996b8d82014947c782a5764015f84614148cd9d9302c1d922983650a77c"
-    sha256 cellar: :any,                 sonoma:        "af9c86bb6aa7292537721ca6606c02c13a36c113ec16b4999ae5063be232b68e"
-    sha256 cellar: :any,                 ventura:       "dfee07a16a0edfa9ead2d56e05ca2c7f8503a2bd39d55da9eaa084b6e27b91c9"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "eae96de6a4f4aa6ba81cd5142c4e91549a62507b05687fba2b2298b1032714ac"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "03fbfad73da144a3fb3d94945b797fbaf59374b79894862a4692f4e9224d5097"
-  end
-
-  head do
-    url "https://gitlab.linphone.org/BC/public/ortp.git", branch: "master"
-
-    resource "bctoolbox" do
-      url "https://gitlab.linphone.org/BC/public/bctoolbox.git", branch: "master"
-    end
+    sha256 cellar: :any,                 arm64_tahoe:   "6019fbcd78169ec4482720b33a1a3b3143b04e29edf1f1b2d462a1b51d651b17"
+    sha256 cellar: :any,                 arm64_sequoia: "0db116bd53165a806abc18b1965ce00bc985e7b579dca6953f766d764a8c1150"
+    sha256 cellar: :any,                 arm64_sonoma:  "29d09d83d1c2b51a01900e96c440cf710ba93e3183c648c0ff0f93f9029dc34c"
+    sha256 cellar: :any,                 sonoma:        "6a43e3d21700424d06c9cce17cf462da5e912b235e802eb8cd4f45ac21566d87"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "80b6b2c99b9424041d9616b6d3d660a9f16b0b26de1985eda00f746c97bc54ea"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b0ac2088140bfa251fd8f693cb57cb7a51bfde3c45e95756088a358976857b20"
   end
 
   depends_on "cmake" => :build
   depends_on "pkgconf" => :build
-  depends_on "mbedtls"
+  depends_on "openssl@3"
+
+  resource "bctoolbox" do
+    url "https://gitlab.linphone.org/BC/public/bctoolbox/-/archive/5.4.73/bctoolbox-5.4.73.tar.bz2"
+    sha256 "b39da7109fc25f7d0e0e03aedddbf0a374207367f884ee07ab41851b9949ecd4"
+
+    livecheck do
+      formula :parent
+    end
+  end
 
   def install
-    odie "bctoolbox resource needs to be updated" if build.stable? && version != resource("bctoolbox").version
-
-    resource("bctoolbox").stage do
-      args = %w[
-        -DENABLE_TESTS_COMPONENT=OFF
-        -DBUILD_SHARED_LIBS=ON
-        -DENABLE_MBEDTLS=ON
-      ]
-
-      system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args(install_prefix: libexec)
-      system "cmake", "--build", "build"
-      system "cmake", "--install", "build"
+    if build.stable?
+      odie "bctoolbox resource needs to be updated" if version != resource("bctoolbox").version
+      (buildpath/"bctoolbox").install resource("bctoolbox")
+    else
+      rm_r("external")
     end
 
-    ENV.prepend_path "PKG_CONFIG_PATH", libexec/"lib/pkgconfig"
-    ENV.append "LDFLAGS", "-Wl,-rpath,#{libexec}/lib" if OS.linux?
-    ENV.append_to_cflags "-I#{libexec}/include"
-
-    args = %W[
-      -DCMAKE_PREFIX_PATH=#{libexec}
+    args = %w[
       -DBUILD_SHARED_LIBS=ON
-      -DENABLE_DOC=NO
-      -DENABLE_UNIT_TESTS=NO
+      -DENABLE_MBEDTLS=OFF
+      -DENABLE_OPENSSL=ON
+      -DENABLE_TESTS_COMPONENT=OFF
     ]
-    args << "-DCMAKE_INSTALL_RPATH=#{libexec}/Frameworks" if OS.mac?
 
-    system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
-    system "cmake", "--build", "build"
-    system "cmake", "--install", "build"
+    system "cmake", "-S", "bctoolbox", "-B", "build_bctoolbox", *args, *std_cmake_args
+    system "cmake", "--build", "build_bctoolbox"
+    system "cmake", "--install", "build_bctoolbox"
+    prefix.install "bctoolbox/LICENSE.txt" => "LICENSE-bctoolbox.txt"
+
+    args = %w[
+      -DBUILD_SHARED_LIBS=ON
+      -DENABLE_DOC=OFF
+      -DENABLE_UNIT_TESTS=OFF
+    ]
+    args << "-DCMAKE_INSTALL_RPATH=#{frameworks}" if OS.mac?
+
+    system "cmake", "-S", (build.head? ? "ortp" : "."), "-B", "build_ortp", *args, *std_cmake_args
+    system "cmake", "--build", "build_ortp"
+    system "cmake", "--install", "build_ortp"
   end
 
   test do
@@ -89,30 +73,7 @@ class Ortp < Formula
       }
     C
     linker_flags = OS.mac? ? %W[-F#{frameworks} -framework ortp] : %W[-L#{lib} -lortp]
-    system ENV.cc, "test.c", "-o", "test", "-I#{include}", "-I#{libexec}/include", *linker_flags
+    system ENV.cc, "test.c", "-o", "test", "-I#{include}", *linker_flags
     system "./test"
   end
 end
-
-__END__
-diff --git a/src/crypto/mbedtls.cc b/src/crypto/mbedtls.cc
-index cf146fd..8886b2d 100644
---- a/src/crypto/mbedtls.cc
-+++ b/src/crypto/mbedtls.cc
-@@ -80,8 +80,6 @@ public:
- 
- 	std::unique_ptr<RNG> sRNG;
- 	mbedtlsStaticContexts() {
--		mbedtls_threading_set_alt(threading_mutex_init_cpp, threading_mutex_free_cpp, threading_mutex_lock_cpp,
--		                          threading_mutex_unlock_cpp);
- 		if (psa_crypto_init() != PSA_SUCCESS) {
- 			bctbx_error("MbedTLS PSA init fail");
- 		}
-@@ -92,7 +90,6 @@ public:
- 		// before destroying mbedtls internal context, destroy the static RNG
- 		sRNG = nullptr;
- 		mbedtls_psa_crypto_free();
--		mbedtls_threading_free_alt();
- 	}
- };
- static const auto mbedtlsStaticContextsInstance = std::make_unique<mbedtlsStaticContexts>();

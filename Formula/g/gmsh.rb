@@ -1,8 +1,8 @@
 class Gmsh < Formula
   desc "3D finite element grid generator with CAD engine"
   homepage "https://gmsh.info/"
-  url "https://gmsh.info/src/gmsh-4.14.0-source.tgz"
-  sha256 "db4d7da2062e9a4356a820832138ab99f97af6388bfeb21599a2eadfb0b76a28"
+  url "https://gmsh.info/src/gmsh-4.15.0-source.tgz"
+  sha256 "abb2632715bd7d0130ded7144fd6263635cd7dea883b8df61ba4da58ce6a1dfe"
   license "GPL-2.0-or-later"
   head "https://gitlab.onelab.info/gmsh/gmsh.git", branch: "master"
 
@@ -12,12 +12,12 @@ class Gmsh < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "8c50799466377882e5045b15f4c23a8a4c1040dfbe955489788a6a2b31a8779e"
-    sha256 cellar: :any,                 arm64_sonoma:  "32e4da3c38f226be85aa36455b2d92e306c32260098c18c2bb7e0d1b87bb67f4"
-    sha256 cellar: :any,                 arm64_ventura: "1fc4a3ef69f860ac4a91bd1051cc36ec129a969d6f1329c4c91c68e9464c453f"
-    sha256 cellar: :any,                 sonoma:        "96ca92471114ec67e694440cc3a8be930de5bdabf52c69c596f29e28e11de7e7"
-    sha256 cellar: :any,                 ventura:       "0f618c7b6204e38f549ced91f1dca50eb1d77dd214e8bea4f59bac29c28c8dce"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f4d2413693690bbe55855c96c8c2e05c7e66424f8c5b7bb3fc77dfda659be007"
+    sha256 cellar: :any,                 arm64_tahoe:   "8eb04e36c3e44e8ec280b2e1350be62739d51d49dabb65af74ccae48bb624d05"
+    sha256 cellar: :any,                 arm64_sequoia: "07b486a223634ff27f6e1c8b5a1e38de0f0a5b5b6e535f4cbdb9b3079501c940"
+    sha256 cellar: :any,                 arm64_sonoma:  "bec50ecb00386ad83d5b9a281e908fd157808432d8c578e190a2fea05c6252ca"
+    sha256 cellar: :any,                 sonoma:        "c605fa873208382553ebdff480e0c42cc903e1bf7c0317205b9aae924547c0d4"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "352639817aa70df6abffe79e1b60fbb571a1c9241fd7455ef398fcf1150e9859"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "53ce511f367d4f8650bdbb7070088952ff3e5e6f9424a7a7502e8ac95d485041"
   end
 
   depends_on "cmake" => :build

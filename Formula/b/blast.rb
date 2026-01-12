@@ -1,10 +1,11 @@
 class Blast < Formula
   desc "Basic Local Alignment Search Tool"
   homepage "https://blast.ncbi.nlm.nih.gov/"
-  url "https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/2.16.0/ncbi-blast-2.16.0+-src.tar.gz"
-  version "2.16.0"
-  sha256 "17c93cf009721023e5aecf5753f9c6a255d157561638b91b3ad7276fd6950c2b"
+  url "https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/2.17.0/ncbi-blast-2.17.0+-src.tar.gz"
+  version "2.17.0"
+  sha256 "502057a88e9990e34e62758be21ea474cc0ad68d6a63a2e37b2372af1e5ea147"
   license :public_domain
+  revision 1
 
   livecheck do
     url "https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/VERSION"
@@ -12,18 +13,18 @@ class Blast < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia:  "b5317b48fe420d58afd074b19f0d36380788ef46a4a75593b9ed1b2cb397de90"
-    sha256 arm64_sonoma:   "8e77abd1cdf1e35d25d701327042d1e33902f968cc34ed36951c6b784fd12f7d"
-    sha256 arm64_ventura:  "7a33345e002e745fe513ee84e81074259e3225e9e45fdec0531feb9af097f76e"
-    sha256 arm64_monterey: "2ea7535bc0267077b6afdd622a1860a50509a1d3c3cb9d91df9b8a3b5fe4de7c"
-    sha256 sonoma:         "c11dfa24a469e44b56cd270a532f8a5e341f02b9a41aa07b112d48054d76d901"
-    sha256 ventura:        "3aa4433e3e7235441f8418f97c9bac09cbb98f569c008922a0d732344fd95017"
-    sha256 monterey:       "946e1a0a2892aea9e93441a147355baa9d3e87626c052f847c7cf37c397e2fb4"
-    sha256 arm64_linux:    "c07e41c4822efda75a3ec410aacc1aac239ed58cf1aec77fb8c410cc46ff3867"
-    sha256 x86_64_linux:   "a9fb9b0ec8fdfe89cf32b175ff180d160134d99e542f0329466cf9f7a545139b"
+    rebuild 1
+    sha256 arm64_tahoe:   "2256a8f9c1ad1d1d30b130f3fac419318960808a6f8eeb5006dacaa02c244f45"
+    sha256 arm64_sequoia: "d50a891f6c0ae6fe37df0f6481f5a78f812763aa4fd6f39197f3084891c895a5"
+    sha256 arm64_sonoma:  "9f648acc80960502a9e501814236ec24b8954d926449273a9d393bf8c59c5975"
+    sha256 sonoma:        "5c735e79ad0138e48d87459f2cb52be1f54684a3f03bb4b225a6ffc9c4e4beec"
+    sha256 arm64_linux:   "6f913987e18636b0fe5bd74e964eeb50c113f07c89df72681d449f2a8449adf1"
+    sha256 x86_64_linux:  "7bbf1d59756daaf6a6dc1c07d01a2238b73760fad9cadcd4181f292a69b1c940"
   end
 
   depends_on "lmdb"
+  depends_on "mbedtls@3"
+  depends_on "pcre2"
 
   uses_from_macos "cpio" => :build
   uses_from_macos "bzip2"
@@ -38,20 +39,41 @@ class Blast < Formula
 
   def install
     cd "c++" do
+      # Remove bundled libraries to make sure the brew/system libraries are used
+      %w[compress/bzip2 compress/zlib lmdb regexp].each do |lib_subdir|
+        rm_r("include/util/#{lib_subdir}") if lib_subdir != "regexp"
+        rm_r("src/util/#{lib_subdir}")
+      end
+      rm_r(Dir["include/util/regexp/*"] - ["include/util/regexp/ctre"])
+
+      # Remove Cloudflare zlib on arm64 linux as it requires a minimum of armv8-a+crc
+      # TODO: re-enable if we increase our minimum march to require crc
+      if Hardware::CPU.arm? && OS.linux?
+        rm_r("include/util/compress/zlib_cloudflare")
+        rm_r("src/util/compress/zlib_cloudflare")
+
+        zcf_files = ["src/build-system/Makefile.mk.in", "src/util/compress/api/Makefile.compress.lib"]
+        inreplace zcf_files, /(=.*) zcf(\s)/, "\\1\\2"
+      end
+
       # Boost is only used for unit tests.
       args = %W[
         --prefix=#{prefix}
         --with-bin-release
+        --with-dll
+        --with-mbedtls=#{Formula["mbedtls@3"].opt_prefix}
         --with-mt
+        --with-pcre2=#{Formula["pcre2"].opt_prefix}
         --without-strip
         --with-experimental=Int8GI
         --without-debug
         --without-boost
+        --without-internal
       ]
 
       if OS.mac?
         # Allow SSE4.2 on some platforms. The --with-bin-release sets --without-sse42
-        args << "--with-sse42" if Hardware::CPU.intel? && OS.mac? && MacOS.version.requires_sse42?
+        args << "--with-sse42" if Hardware::CPU.intel? && MacOS.version.requires_sse42?
         args += ["OPENMP_FLAGS=-Xpreprocessor -fopenmp",
                  "LDFLAGS=-lomp"]
       end

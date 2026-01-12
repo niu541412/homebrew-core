@@ -1,17 +1,18 @@
 class Rabbitmq < Formula
   desc "Messaging and streaming broker"
   homepage "https://www.rabbitmq.com"
-  url "https://github.com/rabbitmq/rabbitmq-server/releases/download/v4.1.2/rabbitmq-server-generic-unix-4.1.2.tar.xz"
-  sha256 "640e5b6f5696040e3ed1546aa55ee462ad97082dea24d318035d8b0c6fef40a7"
+  url "https://github.com/rabbitmq/rabbitmq-server/releases/download/v4.2.2/rabbitmq-server-generic-unix-4.2.2.tar.xz"
+  sha256 "441e35f9c5204407e332a4dc94170751bacd9eb73f37c83425a99a28ea49a02f"
   license "MPL-2.0"
 
   livecheck do
     url :stable
     regex(/^v?(\d+(?:\.\d+)+)$/i)
+    strategy :github_latest
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "d62fc8586728b33561350702c7436a661df881d8ed00ee177e1d956b2ce87a33"
+    sha256 cellar: :any_skip_relocation, all: "050adad3dc2609fdebe1ff3b3e010b86d86809c4cc8bd8483d01870c0930f313"
   end
 
   depends_on "erlang"
@@ -90,7 +91,7 @@ class Rabbitmq < Formula
 
   test do
     ENV["RABBITMQ_MNESIA_BASE"] = testpath/"var/lib/rabbitmq/mnesia"
-    pid = fork { exec sbin/"rabbitmq-server" }
+    pid = spawn sbin/"rabbitmq-server"
     system sbin/"rabbitmq-diagnostics", "wait", "--pid", pid
     system sbin/"rabbitmqctl", "status"
     system sbin/"rabbitmqctl", "stop"

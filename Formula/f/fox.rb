@@ -1,7 +1,8 @@
 class Fox < Formula
   desc "Toolkit for developing Graphical User Interfaces easily"
   homepage "http://fox-toolkit.org/"
-  url "http://fox-toolkit.org/ftp/fox-1.6.59.tar.gz"
+  url "https://distfiles.macports.org/fox/fox-1.6.59.tar.gz"
+  mirror "http://fox-toolkit.org/ftp/fox-1.6.59.tar.gz"
   sha256 "48f33d2dd5371c2d48f6518297f0ef5bbf3fcd37719e99f815dc6fc6e0f928ae"
   license "LGPL-2.1-or-later"
 
@@ -15,6 +16,7 @@ class Fox < Formula
   end
 
   bottle do
+    sha256 cellar: :any,                 arm64_tahoe:   "27bc2f3e4a29b1b19bef2074fd9664b17d42a73f84ccefd593d0dd4ed3bc2a6b"
     sha256 cellar: :any,                 arm64_sequoia: "9c2013438ee383a44ff0b074698e0525e723eaea322745da017f9a18e254c55d"
     sha256 cellar: :any,                 arm64_sonoma:  "680d4ca9e11e09ae8022d3e66d38df4ca5c7aa3c9178d9768d7968e89c8afa8b"
     sha256 cellar: :any,                 arm64_ventura: "913fd94fc1d4051b12d88df4659942892cf9c3e05fd4ad582c2a2fc38efe0def"
@@ -48,7 +50,7 @@ class Fox < Formula
 
   # Fix -flat_namespace being used on Big Sur and later.
   patch do
-    url "https://raw.githubusercontent.com/Homebrew/formula-patches/03cf8088210822aa2c1ab544ed58ea04c897d9c4/libtool/configure-big_sur.diff"
+    url "https://raw.githubusercontent.com/Homebrew/homebrew-core/1cf441a0/Patches/libtool/configure-big_sur.diff"
     sha256 "35acd6aebc19843f1a2b3a63e880baceb0f5278ab1ace661e57a502d9d78c93c"
   end
 

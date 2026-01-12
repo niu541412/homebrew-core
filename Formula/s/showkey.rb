@@ -1,17 +1,23 @@
 class Showkey < Formula
   desc "Simple keystroke visualizer"
   homepage "http://www.catb.org/~esr/showkey/"
-  url "http://www.catb.org/~esr/showkey/showkey-1.9.tar.gz"
-  sha256 "7230aed91f9a510ae5d234a32ba88402eb6c39431ad8175e78035f9d9b6a8f6e"
+  url "https://gitlab.com/esr/showkey/-/archive/1.9/showkey-1.9.tar.bz2"
+  sha256 "dc4c9e5ccb1054a7135861ff01e1ff4c07ef8b23712686e918e5b0602a87191d"
   license "MIT"
   head "https://gitlab.com/esr/showkey.git", branch: "master"
 
+  # The homepage links to the `stable` tarball but it can take longer than the
+  # ten second livecheck timeout, so we check the Git tags as a workaround.
   livecheck do
-    url :homepage
-    regex(/showkey[._-]v?(\d+(?:\.\d+)+)/i)
+    url :head
+    regex(/^v?(\d+(?:[.-]\d+)+)$/i)
+    strategy :git do |tags, regex|
+      tags.filter_map { |tag| tag[regex, 1]&.tr("-", ".") }
+    end
   end
 
   bottle do
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:    "1c630fa31441f7dd28d2031d45523f39ea47e8fa55c8c9f8b2b35966690b7955"
     sha256 cellar: :any_skip_relocation, arm64_sequoia:  "b6d6a1358818a0884df47d8720be947074ba1e261f22856c546161ed620dafbb"
     sha256 cellar: :any_skip_relocation, arm64_sonoma:   "40f2d4aa914a8823995425bbae6f33e4e8a8a3c2c0bc406e7bf4e0299b52cbca"
     sha256 cellar: :any_skip_relocation, arm64_ventura:  "ff8fa9772d85597f5c8caaf9642f3ad0e8f622de71080cb6a29089bb47445b66"
@@ -23,10 +29,9 @@ class Showkey < Formula
     sha256 cellar: :any_skip_relocation, x86_64_linux:   "7921d9e1728c1576d6659fb218eabc169ae70c9fbe9396609b6e862145b0ad47"
   end
 
-  depends_on "xmlto" => :build
+  depends_on "asciidoctor" => :build
 
   def install
-    ENV["XML_CATALOG_FILES"] = etc/"xml/catalog"
     system "make", "showkey", "showkey.1"
     bin.install "showkey"
     man1.install "showkey.1"

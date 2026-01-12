@@ -1,24 +1,24 @@
 class Lazydocker < Formula
   desc "Lazier way to manage everything docker"
   homepage "https://github.com/jesseduffield/lazydocker"
-  url "https://github.com/jesseduffield/lazydocker/archive/refs/tags/v0.24.1.tar.gz"
-  sha256 "f54197d333a28e658d2eb4d9b22461ae73721ec9e4106ba23ed177fc530c21f4"
+  url "https://github.com/jesseduffield/lazydocker/archive/refs/tags/v0.24.3.tar.gz"
+  sha256 "d6676b678105517a183d878180b041f186cd45a5591a2a7f25f30d5c0ee17670"
   license "MIT"
   head "https://github.com/jesseduffield/lazydocker.git", branch: "master"
 
   bottle do
-    rebuild 2
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "d56e3e9243fcce363bcc3af848e66be911f855a1b00c52cfdfe6dce245a7c60e"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "d56e3e9243fcce363bcc3af848e66be911f855a1b00c52cfdfe6dce245a7c60e"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "d56e3e9243fcce363bcc3af848e66be911f855a1b00c52cfdfe6dce245a7c60e"
-    sha256 cellar: :any_skip_relocation, sonoma:        "223526b606bffcc7ff56767b65e135fdc82b6df8575a8c21897a7ec4608404c8"
-    sha256 cellar: :any_skip_relocation, ventura:       "223526b606bffcc7ff56767b65e135fdc82b6df8575a8c21897a7ec4608404c8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "43b3ee2215c9e3f64e30c9a06037fbac3cf78c58e9cb150ff1e3e42f657a67bf"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "f08ff43b5b54ae4e15ccfe3dc5dbe003f3b2b05b0ba8f648ea672a7485295bae"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "f08ff43b5b54ae4e15ccfe3dc5dbe003f3b2b05b0ba8f648ea672a7485295bae"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "f08ff43b5b54ae4e15ccfe3dc5dbe003f3b2b05b0ba8f648ea672a7485295bae"
+    sha256 cellar: :any_skip_relocation, sonoma:        "4358fd692caa32ac34dfdaf2162d5a63083064537ead64ba6084bba8ff435874"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "637990e75e234a1873b974e67fa00032c0278202e3fbeb2608d75bf9ecb98b92"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "08db4039c4df13fc5fb5ac4d048f1ef3703b48a7bb81b6337af91398e7fedc5f"
   end
 
   depends_on "go" => :build
 
   def install
+    ENV["CGO_ENABLED"] = OS.mac? ? "1" : "0"
     ldflags = "-s -w -X main.version=#{version} -X main.date=#{time.iso8601} -X main.buildSource=#{tap.user}"
     system "go", "build", "-mod=vendor", *std_go_args(ldflags:)
   end

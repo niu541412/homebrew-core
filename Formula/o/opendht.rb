@@ -1,8 +1,8 @@
 class Opendht < Formula
   desc "C++17 Distributed Hash Table implementation"
   homepage "https://github.com/savoirfairelinux/opendht"
-  url "https://github.com/savoirfairelinux/opendht/archive/refs/tags/v3.4.0.tar.gz"
-  sha256 "965732ac3c2bce767bb543b8b033c29979ef5357c9a0003e3631dcb15f5a457c"
+  url "https://github.com/savoirfairelinux/opendht/archive/refs/tags/v3.6.0.tar.gz"
+  sha256 "b02de211123191a53ad680226bc2f33145ee24f276a37cd7bbc64d0b7d2d4651"
   license "GPL-3.0-or-later"
 
   # There can be a notable gap between when a version is tagged and a
@@ -14,13 +14,12 @@ class Opendht < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "f0fce58b69f3a0256353e9e94263d95e85d3f3c6c631df43cbfb065550094d4c"
-    sha256 cellar: :any,                 arm64_sonoma:  "1ac4353285336d77796d28f3fab3e2aad82c37c3e8da551c40f4dad3b07fb9a8"
-    sha256 cellar: :any,                 arm64_ventura: "5d65f6e8b450895d7fc89531962e4bd3a1f2acaa4330805940f007ecbd9a6679"
-    sha256 cellar: :any,                 sonoma:        "5c5ba2014078ed164d48c5f5bedc3f4ea3bc9a47e0805367e70d596fe46ea9af"
-    sha256 cellar: :any,                 ventura:       "d39b5e11f01b22c79084670b3e8cb8d30e6a5b28678cdca61bd9eb91b908b40b"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "3837910fb890af95200347d60d6f0065cbe75de4f5aeec8ad4756ee0bcba5ec0"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "beae52025cdd96c5eea51ca72fafc5a1b2e2772739c246523e4381c288d7358c"
+    sha256 cellar: :any,                 arm64_tahoe:   "22cd8912a51484ce9923c18769b5c44b20c29f783a9f40055aba2262a2b19669"
+    sha256 cellar: :any,                 arm64_sequoia: "0281e1768df938d3b88e00617196eb9dcd10d63da475f338574673fd5575885c"
+    sha256 cellar: :any,                 arm64_sonoma:  "a496f6a54f21405c3d3775bc1508cd990226f736e4e47a4cb22a7eb0d9fd6bc4"
+    sha256 cellar: :any,                 sonoma:        "f521ae539b881d60096ba21b53eb23d9f84d09f1e34f306253cc06c8a8c27d89"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "dd19b1d153f02943ff203cff27dfc83e195c05de6abc28966b1399c968772d5b"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e0e36fec6dc58426cd26b211204c0d7e3355decdb3d3d2abbb8e14953a75af18"
   end
 
   depends_on "cmake" => :build

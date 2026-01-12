@@ -1,12 +1,13 @@
 class Gdbm < Formula
   desc "GNU database manager"
   homepage "https://www.gnu.org.ua/software/gdbm/"
-  url "https://ftp.gnu.org/gnu/gdbm/gdbm-1.26.tar.gz"
-  mirror "https://ftpmirror.gnu.org/gdbm/gdbm-1.26.tar.gz"
+  url "https://ftpmirror.gnu.org/gnu/gdbm/gdbm-1.26.tar.gz"
+  mirror "https://ftp.gnu.org/gnu/gdbm/gdbm-1.26.tar.gz"
   sha256 "6a24504a14de4a744103dcb936be976df6fbe88ccff26065e54c1c47946f4a5e"
   license "GPL-3.0-or-later"
 
   bottle do
+    sha256 cellar: :any, arm64_tahoe:   "665930fdbccbaf710705195a7ee89f3b3e04122e11d585f6a50cac2ff2595296"
     sha256 cellar: :any, arm64_sequoia: "1843430b18014e91e8ad64b5ff33bef23e44350d75c6cdfa2d640f32511cc5a4"
     sha256 cellar: :any, arm64_sonoma:  "9308eb5eec8ac7b9186357ea3bc654be370735614b03c79ef4ffb8c55a5ea3a4"
     sha256 cellar: :any, arm64_ventura: "cc827cc1644fa67d7b5d56de24707e45844dce0764a911265c82982674b32ba0"

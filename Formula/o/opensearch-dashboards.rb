@@ -1,9 +1,9 @@
 class OpensearchDashboards < Formula
   desc "Open source visualization dashboards for OpenSearch"
-  homepage "https://opensearch.org/docs/dashboards/index/"
+  homepage "https://docs.opensearch.org/latest/dashboards/"
   url "https://github.com/opensearch-project/OpenSearch-Dashboards.git",
-      tag:      "3.1.0",
-      revision: "1feb86934e7f2d5fae58baebf1b98c5c0825bc3f"
+      tag:      "3.4.0",
+      revision: "c1d92e84395038f5f99e64e27b00c00fbabcd075"
   license "Apache-2.0"
 
   livecheck do
@@ -12,14 +12,15 @@ class OpensearchDashboards < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "cb0fcdde72e24e76dd676077a64875e9dde50091399cecbde3e3df2c68bd918d"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "cb0fcdde72e24e76dd676077a64875e9dde50091399cecbde3e3df2c68bd918d"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "cb0fcdde72e24e76dd676077a64875e9dde50091399cecbde3e3df2c68bd918d"
-    sha256 cellar: :any_skip_relocation, sonoma:        "19f06681277c94e58c55a50d289a5434d7dc7975dca38b1f57d07152f7d8db80"
-    sha256 cellar: :any_skip_relocation, ventura:       "19f06681277c94e58c55a50d289a5434d7dc7975dca38b1f57d07152f7d8db80"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "fe2a3710e463941979bb74cc4e61ccc77462e353d0f130e7729f8aca8408b07a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e40ee780ce2d4bfaa91cef6cedbfae558695354f60846dfa045d338448fc5aa8"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "92dd911bf3b2cdbf80fad0f6962b5c4e81a4e5d914c2b5c66a50a282818e10ce"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "88374c70d2e31bc95fb61eefbe4ed41dea31e9b3100673e5bb9df8a593c00386"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "6fe3e0328b09cc8c2aaaebf25a8d537de8215011d4a734d00a8a5aac04c02f71"
+    sha256 cellar: :any_skip_relocation, sonoma:        "4c72e84afece9a7eb093fbedd72ea1c7b67ffd00f5a87532a1ca9853478f45a5"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "5e49fb1dcddbf39dad87d408d1196dbac1e88fe5d42bf05c9016092ed684271a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "be1827491f85dbe9d072cb1578821be0ded5e5940051afa5ca2380e7c554200d"
   end
+
+  deprecate! date: "2025-10-28", because: "uses deprecated node@20"
 
   depends_on "yarn" => :build
   depends_on "opensearch" => :test
@@ -83,11 +84,9 @@ class OpensearchDashboards < Formula
     os_port = free_port
     (testpath/"data").mkdir
     (testpath/"logs").mkdir
-    fork do
-      exec Formula["opensearch"].bin/"opensearch", "-Ehttp.port=#{os_port}",
-                                                   "-Epath.data=#{testpath}/data",
-                                                   "-Epath.logs=#{testpath}/logs"
-    end
+    os_pid = spawn Formula["opensearch"].bin/"opensearch", "-Ehttp.port=#{os_port}",
+                                                           "-Epath.data=#{testpath}/data",
+                                                           "-Epath.logs=#{testpath}/logs"
 
     (testpath/"config.yml").write <<~YAML
       server.host: "127.0.0.1"
@@ -96,7 +95,7 @@ class OpensearchDashboards < Formula
     YAML
 
     osd_port = free_port
-    fork { exec bin/"opensearch-dashboards", "-p", osd_port.to_s, "-c", testpath/"config.yml" }
+    osd_pid = spawn bin/"opensearch-dashboards", "-p", osd_port.to_s, "-c", testpath/"config.yml"
 
     output = nil
 
@@ -114,6 +113,11 @@ class OpensearchDashboards < Formula
     end
 
     assert_includes output, "<title>OpenSearch Dashboards</title>"
+  ensure
+    Process.kill("TERM", osd_pid)
+    Process.wait(osd_pid)
+    Process.kill("TERM", os_pid)
+    Process.wait(os_pid)
   end
 end
 

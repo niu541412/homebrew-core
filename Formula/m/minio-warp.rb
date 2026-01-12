@@ -1,18 +1,18 @@
 class MinioWarp < Formula
   desc "S3 benchmarking tool"
   homepage "https://github.com/minio/warp"
-  url "https://github.com/minio/warp/archive/refs/tags/v1.2.0.tar.gz"
-  sha256 "af2d45bae9702aa2291bb5183e90b9ded9f0dda4cb3d28e182793a95ae54b145"
+  url "https://github.com/minio/warp/archive/refs/tags/v1.3.1.tar.gz"
+  sha256 "8e10189adf0d6984d638a9229ba1cb3aee26f76db02ff476e0ee60604c8159af"
   license "AGPL-3.0-or-later"
   head "https://github.com/minio/warp.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "9dd1d3d49a56a45b6f73348dbc3dcbcdfe6b67f6f5dd99ab3024b0e8bce3f5ff"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "e91a3b0d726c974c310b937a846d68af030a4f4610968581b3d51f8df0d20a63"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "7adb07c58e1c0671b9f8b058bcf1bada704defdb004208198c012cf894b16001"
-    sha256 cellar: :any_skip_relocation, sonoma:        "5fe51d1410b98d2ce1f5f0ca81233010afb3d7851424fedacdc747907189644b"
-    sha256 cellar: :any_skip_relocation, ventura:       "fafed33b02def77f260aaa271b7e112606471668fecdbff538dc751f2c43e596"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d049fff00909fa91e1abbac74e134d3f494944a18f84e888425f61885fcb0f6b"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "cd2053fe0224ec3ba2544f631756abf3b51cc793dc35bc956c3cb5e2ca5f9860"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "a3c820dcc736b88ebd17347eb2393af80ff197f9fa403a4de297d25b60294753"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "356785da8dba392263a2a83bab320fd2a8e0d97d30ea60895adfdafb647e0994"
+    sha256 cellar: :any_skip_relocation, sonoma:        "459c539513ea80d970b710ea13a9a9874fdde2b49748b453d48d2e979b21306a"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "1c6b83176740286daf8482caddce4475a505aab38b70e5aa7a0b4e27752b422f"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "60bdd722bfd7f92382a9fb25e15e7cc3520cbdbacba38ba77c2a6b02be133d29"
   end
 
   depends_on "go" => :build

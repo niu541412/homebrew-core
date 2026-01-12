@@ -1,19 +1,18 @@
 class Envd < Formula
   desc "Reproducible development environment for AI/ML"
   homepage "https://envd.tensorchord.ai"
-  url "https://github.com/tensorchord/envd/archive/refs/tags/v1.2.1.tar.gz"
-  sha256 "73d6436a8df10ca5bc00b66a56f3302c138098485808b70d39151d44f6fa10d2"
+  url "https://github.com/tensorchord/envd/archive/refs/tags/v1.3.3.tar.gz"
+  sha256 "9e196849812db7c6c595beb802d634f34a2ae257e01229340ff5d97560206b5d"
   license "Apache-2.0"
   head "https://github.com/tensorchord/envd.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "93e372b202790cd34623e587848c48257170114e33293c3c5277b7e7cccb2644"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "8f1e4ca522ed6a99f4d53df01eeef5890ab22f1d360386c462aa096ca4d56e57"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "5feda6607ecd5d84090dcbbaba5a954b4740c5ac8babe3ee3b287922d5e896b5"
-    sha256 cellar: :any_skip_relocation, sonoma:        "76f1266d539145c1097a8e14b909d332f68c912b1722e4fa339fbd50ebc035fd"
-    sha256 cellar: :any_skip_relocation, ventura:       "e7e108e8a58d98b96021fc0b22e1642a386d485d3a9b8c88de77eb078d9d7cc7"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "f29e31de1d57d37393cff6c9b1b03151352a424ac1dac1997ff04491ead5abef"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "4bbac6f74c72d1a7c4d117f19efb362e8f99b97bf6bc1196fd69415bc26d9a75"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "fc68905745e52ef132d265500363b7a4239f8cd288946249939193fc6cadd5e7"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "aaaadd48d15929ac92b9ada1f83b8fd729ed25a942cd17845e79f2cbd720ab99"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "103789ee3be36b997a2b804f3e23a34912cb8526729201a7216996682721605d"
+    sha256 cellar: :any_skip_relocation, sonoma:        "5194cc15667fbab79622043d401d583344956b0133d4d82689980fe7f5a6f218"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "3d6781b5c9f848b62937169d2ce77246b75ca3bb35524332cff19f31af390b2e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "277ec1330bfaa444052bb214e1b4d08a28f7b8a881b10a4e531f494511b07406"
   end
 
   depends_on "go" => :build

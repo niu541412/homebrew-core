@@ -1,21 +1,21 @@
 class Teslamate < Formula
   desc "Self-hosted data logger for your Tesla"
   homepage "https://docs.teslamate.org"
-  url "https://github.com/teslamate-org/teslamate/archive/refs/tags/v2.1.0.tar.gz"
-  sha256 "22f3cfa93815ba273799394301ef4fe8e8ae48301cadf2c81f65f93f58df7035"
+  url "https://github.com/teslamate-org/teslamate/archive/refs/tags/v2.2.0.tar.gz"
+  sha256 "9e2b9fca03186ecd2e303d01b4f3810c5e5518d6110ab6f786c60590d4ae1f91"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "ce3f6017e0a0537c5801ed887b998e7bed3dd1a3bbd7a6cb548ed63b0fd6e792"
-    sha256 cellar: :any,                 arm64_sonoma:  "97c0ab2872b943876fba78f682b939cbab9f0e4cfd689922e9c02b479a0d1e08"
-    sha256 cellar: :any,                 arm64_ventura: "5cc37a2bda595b98b49bc07ed237ffbd3f6dbce691f29874dedc540a7d2125da"
-    sha256 cellar: :any,                 sonoma:        "d9b28fb1c5ddad726ad2a61988e9bb9d3fbe702f02e55a4490cfe9e8b5bbd817"
-    sha256 cellar: :any,                 ventura:       "dd555075f03e603eb0eb03e37aa4a7a06a47f5f9f51d9f68a4e0fd8d56e651c7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "9dd9b1363b6426ccafe231ed85c2a6d90636ada3dfb8866c5e110d64ce06a33a"
+    sha256 cellar: :any,                 arm64_tahoe:   "0b01215e824d4a8866a07ea09c5308489e65842d792da53f59b87afcc98e5e1d"
+    sha256 cellar: :any,                 arm64_sequoia: "b94d509d6c488f4c044a2fbd5236537f55e9dc2581a5d3643fc07e5edce4314a"
+    sha256 cellar: :any,                 arm64_sonoma:  "3ffde8c26b73d64523ae3e901bf0eb93c8420cf25be593338e924700dbde55c8"
+    sha256 cellar: :any,                 sonoma:        "d0c89dbeb138c6c2ad08754f0eaa57b038c34421529454a229c1e0e915724933"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "78526f3d68585af73ca35ded354e6149530c3278ec580bdab83bdce36ba10d2c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "119b4f77cb931120ebf507f578f75bcd5a3b529df3db7ca9c4cb88425804350d"
   end
 
   depends_on "node" => :build
-  depends_on "postgresql@17" => :test
+  depends_on "postgresql@18" => :test
   depends_on "elixir"
   depends_on "erlang"
   depends_on "openssl@3"
@@ -62,7 +62,7 @@ class Teslamate < Formula
     ENV["LC_ALL"] = "C"
 
     pg_port = free_port
-    pg_bin = Formula["postgresql@17"].opt_bin
+    pg_bin = Formula["postgresql@18"].opt_bin
     pg_ctl = pg_bin/"pg_ctl"
     datadir = testpath/"postgres"
     system pg_ctl, "init", "-D", datadir

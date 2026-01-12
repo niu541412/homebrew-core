@@ -1,18 +1,17 @@
 class Wait4x < Formula
   desc "Wait for a port or a service to enter the requested state"
   homepage "https://wait4x.dev"
-  url "https://github.com/wait4x/wait4x/archive/refs/tags/v3.5.0.tar.gz"
-  sha256 "0c97d72d415b5969472225e0c75218cf505b49ad48a3204967a2483208b6d97e"
+  url "https://github.com/wait4x/wait4x/archive/refs/tags/v3.6.0.tar.gz"
+  sha256 "5b8e4ceaefd3902cda157aebd01dae76e29d7c93893fba7eacf7eb1a0ef17c27"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "a5fa66564d017b8e357122ff5009fd17fc0325475de239b9a8565bf76a2ff188"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "c1847049b24cc7c55b4c6d20db27709f0d6da1b726327a9133a44b74fc8d9623"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "605957867f49289476e840e6232f38878a1cc428cd64c7722af29b9a814e503b"
-    sha256 cellar: :any_skip_relocation, sonoma:        "c3c99e3882d0e538fc54b2480bda348bfdaf3b819e8be5176d3f8c0d79b7715e"
-    sha256 cellar: :any_skip_relocation, ventura:       "17794d3a852d8e2ff42afd5209919ed007d708a81645f4587ff206ac59bf6776"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "d71f9b7472396144ce818057aa2fda199b3971c1134b53245fed82996f03bfa9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ea2674b1e0a8f119d50e3c773096bff4136e253930829642e1371eca32328e22"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "873a4dbc6c0a3cba863b54345638cd99e42b94d4bf8f5f30f703872dfee6998a"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "904540878870a12881db9cd848237254e9088cef14488e8ff5dfae174387085a"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "d3532dfa326de95c1a6d622be47a3cf4ec83eac56a00894fb711b614b220d1f8"
+    sha256 cellar: :any_skip_relocation, sonoma:        "a2fb789e633fc517647f200b1b70a76947f44cd33ae7b3a204277442a0994122"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "07256649fd60fdac7e2aedceddb3805f7aeb5ef030014beaf9fa4ffbf0a36a4e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "50ac8efca6a7f91489119531764c7adb18f3b5e31770088fc79da375202b6986"
   end
 
   depends_on "go" => :build

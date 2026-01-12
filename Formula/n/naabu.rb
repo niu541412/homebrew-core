@@ -1,19 +1,18 @@
 class Naabu < Formula
   desc "Fast port scanner"
   homepage "https://docs.projectdiscovery.io/tools/naabu/overview"
-  url "https://github.com/projectdiscovery/naabu/archive/refs/tags/v2.3.5.tar.gz"
-  sha256 "6b754a7cb49e8cbc68b64ca7ed0130c2f6fe6436b4cf3d1acb8b62a5e83a56a3"
+  url "https://github.com/projectdiscovery/naabu/archive/refs/tags/v2.3.7.tar.gz"
+  sha256 "a6dee678235ee42bb874ef42d9f0c873062c85a35829ecfc9f204c0c654a3b44"
   license "MIT"
-  head "https://github.com/projectdiscovery/naabu.git", branch: "master"
+  head "https://github.com/projectdiscovery/naabu.git", branch: "dev"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "e8555f19b0ece4d28bede4c65bc0dacf9d45c10506ecafaa58ee2ab8945665e3"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "3843a160c6ed12a2e39664619aa947ed98a6de5b9630f0a3ce032423af9a806d"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "ce5bca033caa3bc9a1a6302927f394f278065c0602d291fddf1c69828a329896"
-    sha256 cellar: :any_skip_relocation, sonoma:        "669da278198ac01b56f2d21aec752e16ed89e0aff21ceb9ba8f0cf48eca3981e"
-    sha256 cellar: :any_skip_relocation, ventura:       "775a53f96a8c848c2740de35f262c6da866329fe61dc074757280f75a80f68cc"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "9c112b3262e6423754bf1f68990aabc2f7ea07edcbb0cf01abe2e0262be4c3b6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "91d01ff344133fe4d95196c6133f1d7416a5325f1c7db27b3e621b8262b6afcd"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "e4cd29c1aff268f682da3ae652fff806ccaa433c1740f4f4f949bff404c6c6c5"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "d59fb207f3d532fe02fedabe790f01d3d46b61bdabcebd21c53a93d7e13ec8ac"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "0f767ad436f3345273795a103b9647fe54d3b4fe79e276c7ff68f17aeeb7c48e"
+    sha256 cellar: :any_skip_relocation, sonoma:        "21ab98b9bb7c747b1d7db756354db7f3a2468509a5c78ed91b3bb366f82ff6e9"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "038a957b3ea8af0e777f7c31afb329bacff07be8a7543abf4aae12375aeab0f4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d3909df2136b4905f915935c59a5d9904742f079a8b3c810161a1095ec998af4"
   end
 
   depends_on "go" => :build
@@ -21,6 +20,8 @@ class Naabu < Formula
   uses_from_macos "libpcap"
 
   def install
+    ENV["CGO_ENABLED"] = "1" if OS.linux? && Hardware::CPU.arm?
+
     system "go", "build", *std_go_args(ldflags: "-s -w"), "./cmd/naabu"
   end
 

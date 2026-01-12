@@ -1,8 +1,8 @@
 class Metaproxy < Formula
   desc "Z39.50 proxy and router utilizing Yaz toolkit"
   homepage "https://www.indexdata.com/resources/software/metaproxy/"
-  url "https://ftp.indexdata.com/pub/metaproxy/metaproxy-1.22.1.tar.gz"
-  sha256 "d67a9f7fc9d36ccea8c4770c96c4ae2bc4250f484f941cbeec2a11695ec8d7b8"
+  url "https://ftp.indexdata.com/pub/metaproxy/metaproxy-1.22.2.tar.gz"
+  sha256 "7a48f3d7fd973b05205c1510a195cf5bb7a1de7b32feaeb51c36d29453cb8e76"
   license "GPL-2.0-or-later"
 
   # The homepage doesn't link to the latest source file, so we have to check
@@ -13,13 +13,12 @@ class Metaproxy < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "cc491840e22486538a41b371ddf6f4ccb8a5d979319fb5b80d8b135b20cef13d"
-    sha256 cellar: :any,                 arm64_sonoma:  "b6d34b512fbfde767f33c8f0481db3d9bce926b3fa8e243ddf33ddae776e1db2"
-    sha256 cellar: :any,                 arm64_ventura: "c4f1b360f83e40c4bddda2a33765cfa9a889fb15e604d02924edc4b1a6b0da28"
-    sha256 cellar: :any,                 sonoma:        "678f0f79e1f5c7b0dda4140c2e769b5ba31a7b409ef98ff042125794aee119ff"
-    sha256 cellar: :any,                 ventura:       "d419856bdf031a9d82300b4e1d07711a2716ad6cc4bf7cca8dba4f5c3381f347"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "84c0c0ccfd26ca56b7a4b07a2a593509ec3f3340e2d75e54e758df8c1d8af4a8"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f942530680f0423e8faa116c235631349055ba5afa9b021352b582caf593bf0e"
+    sha256 cellar: :any,                 arm64_tahoe:   "7a6da9596d210ec13c493238d6f79deabf95946a643b8b67056573e1fb038d17"
+    sha256 cellar: :any,                 arm64_sequoia: "f90b1024edd43e984f35b223e2f995df5ae36a4fe8e176b64f9c511c1b51418b"
+    sha256 cellar: :any,                 arm64_sonoma:  "6a808ab5b2d38bad82eb11591e60cf3c1e811a7d645625d12f76bde46c8f1a62"
+    sha256 cellar: :any,                 sonoma:        "51615017734d4d779e9c591ab5cf00904de1cfedea3b154a3cb60a6217007895"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "e045d3799327a186a6159a57aafbd97acb685b85176d4091fedd421fb9b04e8d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3e6fc83680b667e1444de569deb5f8456cbda0c033c2e9b2be749ad6b4703942"
   end
 
   depends_on "pkgconf" => :build

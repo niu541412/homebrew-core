@@ -1,23 +1,30 @@
 class Rqlite < Formula
   desc "Lightweight, distributed relational database built on SQLite"
   homepage "https://www.rqlite.io/"
-  url "https://github.com/rqlite/rqlite/archive/refs/tags/v8.42.0.tar.gz"
-  sha256 "75c09bebd165dc78a329968b2eed84de86e772780458898ef325f87619e7da5a"
+  url "https://github.com/rqlite/rqlite/archive/refs/tags/v9.3.14.tar.gz"
+  sha256 "e0ff8df4bc9db7604513de19b6f15e477f9e4a1627b298d90c165152658ff963"
   license "MIT"
   head "https://github.com/rqlite/rqlite.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "5ddec4ba9be9d9c2701f60e33964be357091c4dbbfdf11c186d908d5bd85cd6a"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "2058d61bc58e74bda444b61c719e00fd1faf3f314900fb990bd9c9f062335b34"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "554550d4314710b1f064d9ab24f7ba69711c8cbc04ba190cbaae7da70b42a87d"
-    sha256 cellar: :any_skip_relocation, sonoma:        "0a26f3b02660fb7d30849f6b33f8603e1b0156b3b0319d61d5ebd7d4df0f295d"
-    sha256 cellar: :any_skip_relocation, ventura:       "dd120af7e8b905d8c2fa4c67e3957a1f181f9dbef5ac79deaf84dc674122b6f9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "27e96b03b29ecefeea526f8a9004c0015cd28b2d68bae5caf8328d9328ecd1b2"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "b88ff46b78a784eb44e0d055cc7e97c55be267f44d8b7bc1ccd9c7cb6fcf0d18"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "cae5e8c7e2bd924a1ba3f33751bde7657b4946f0596c290c815a2b4d56d5ca76"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "e097dfe16f0296e069fb9aabf85b05639e0f2776cdffc7da6d0dd249549867e5"
+    sha256 cellar: :any_skip_relocation, sonoma:        "a4b40d4f450aabcdaf9cc8c8b14088fe79abeeca30d47a044626f7543d15cf91"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "6e6ea80342aae20825d2bd6d18140d7caf14df521f3a279902eac7fdf2139e18"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "197e3c148e221222f3b94a570bd3d5eed2da3502eabfee850d5fd853a6a48fb0"
   end
 
   depends_on "go" => :build
 
   def install
+    # Workaround to avoid patchelf corruption when cgo is required (for go-sqlite3)
+    if OS.linux? && Hardware::CPU.arch == :arm64
+      ENV["CGO_ENABLED"] = "1"
+      ENV["GO_EXTLINK_ENABLED"] = "1"
+      ENV.append "GOFLAGS", "-buildmode=pie"
+    end
+
     version_ldflag_prefix = "-X github.com/rqlite/rqlite/v#{version.major}"
     ldflags = %W[
       -s -w
@@ -33,24 +40,18 @@ class Rqlite < Formula
 
   test do
     port = free_port
-    fork do
-      exec bin/"rqlited", "-http-addr", "localhost:#{port}",
-                          "-raft-addr", "localhost:#{free_port}",
-                          testpath
-    end
-    sleep 5
-
-    (testpath/"test.sql").write <<~SQL
+    test_sql = <<~SQL
       CREATE TABLE foo (id INTEGER NOT NULL PRIMARY KEY, name TEXT)
       .schema
       quit
     SQL
-    output = shell_output("#{bin}/rqlite -p #{port} < test.sql")
-    assert_match "foo", output
 
-    output = shell_output("#{bin}/rqbench -a localhost:#{port} 'SELECT 1'")
-    assert_match "Statements/sec", output
-
+    spawn bin/"rqlited", "-http-addr", "localhost:#{port}",
+                         "-raft-addr", "localhost:#{free_port}",
+                         testpath
+    sleep 5
+    assert_match "foo", pipe_output("#{bin}/rqlite -p #{port}", test_sql, 0)
+    assert_match "Statements/sec", shell_output("#{bin}/rqbench -a localhost:#{port} 'SELECT 1'")
     assert_match "Version v#{version}", shell_output("#{bin}/rqlite -v")
   end
 end

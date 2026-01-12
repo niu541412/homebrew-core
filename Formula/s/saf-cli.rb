@@ -1,25 +1,27 @@
 class SafCli < Formula
   desc "CLI for the MITRE Security Automation Framework (SAF)"
   homepage "https://saf-cli.mitre.org"
-  url "https://registry.npmjs.org/@mitre/saf/-/saf-1.4.22.tgz"
-  sha256 "4686e49d17dc6c1a11160dd2ffb069cce80af44b518a77e1983ec8f009735b07"
+  url "https://registry.npmjs.org/@mitre/saf/-/saf-1.5.3.tgz"
+  sha256 "01c1098a8b1ecf5e417ea0fbc148df36c5bc5b57e7c7a8540e47ba54813b96a3"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "c6520a069786f4d6b8583a2738f1ded656a222a397a744c9c6557ddfb5ff31b4"
-    sha256 cellar: :any,                 arm64_sonoma:  "c6520a069786f4d6b8583a2738f1ded656a222a397a744c9c6557ddfb5ff31b4"
-    sha256 cellar: :any,                 arm64_ventura: "c6520a069786f4d6b8583a2738f1ded656a222a397a744c9c6557ddfb5ff31b4"
-    sha256 cellar: :any,                 sonoma:        "e47c9751091879c5e7cfffbea996ba3d54228adfa74c8bfa50793d97718bab92"
-    sha256 cellar: :any,                 ventura:       "e47c9751091879c5e7cfffbea996ba3d54228adfa74c8bfa50793d97718bab92"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "7ea58435d04be976f0d76850798d61a320532818fcc12b6a56925b093e584126"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "941541523dd33daab07bfd0470f08bada035552e525b89e67f22b3b46cb024b3"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "bb6a66dcd99c42f7a4b41b8ba29b0f238a8739fb97f274a928bab10f4e2b6330"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "015482e54ebcbb1c0170d99436c2881c98d6ebd1a257647f621d115c2ef81278"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "015482e54ebcbb1c0170d99436c2881c98d6ebd1a257647f621d115c2ef81278"
+    sha256 cellar: :any_skip_relocation, sonoma:        "df259efaedd70c8aad2f4688005ff323796cc8ed83040e1d6e0a83bb261231a8"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "ea21b9afc86a4951ec50b42930ae9aa472fecd2a899f1fb33e00a9255f962916"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ea21b9afc86a4951ec50b42930ae9aa472fecd2a899f1fb33e00a9255f962916"
   end
 
   depends_on "node"
 
   def install
     system "npm", "install", *std_npm_args
-    bin.install_symlink Dir["#{libexec}/bin/*"]
+    bin.install_symlink libexec.glob("bin/*")
+
+    node_modules = libexec/"lib/node_modules/@mitre/saf/node_modules"
+    deuniversalize_machos node_modules/"fsevents/fsevents.node" if OS.mac?
   end
 
   test do

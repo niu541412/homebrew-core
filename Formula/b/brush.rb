@@ -1,8 +1,8 @@
 class Brush < Formula
   desc "Bourne RUsty SHell (command interpreter)"
   homepage "https://github.com/reubeno/brush"
-  url "https://github.com/reubeno/brush/archive/refs/tags/brush-shell-v0.2.20.tar.gz"
-  sha256 "137e2df4dc752d4c2c393fa178005eaad6b691f6401e70897cbc6c4ac9fe8077"
+  url "https://github.com/reubeno/brush/archive/refs/tags/brush-shell-v0.3.0.tar.gz"
+  sha256 "a0dac5cf7e9d8bced9bf28ed400955750ed6b7320d1154522a14f4a74e75a056"
   license "MIT"
   head "https://github.com/reubeno/brush.git", branch: "main"
 
@@ -12,17 +12,15 @@ class Brush < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "8794d2936afc5d7ebbbf75ee50bfc4ccaa5f2c94117c460c1772932152a177d2"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "257a0e4dfdd157153d99a9e625500e53bb16e7b72ab7d492a59bc43f53ffd606"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "29b632465c3bbb57aa03c857a67fc6495a8293cb98daf15c9ca496a99a7cadd1"
-    sha256 cellar: :any_skip_relocation, sonoma:        "ca7987052c3be314b5dd960e5315179d57381dd58431ca88c15da3568d699de0"
-    sha256 cellar: :any_skip_relocation, ventura:       "89337cf3e9fe70ebf7ade3838cdc49687a7b46c6863d817cd6b926d57f7dd6fe"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "247f6a20f2802df922475d8ee124dffa1c62cba886a8222d4392401773294d39"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b639e0d9477f75a8af7819fe8fb4c03943b7104f91a9340f1f7e7066ba38b486"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "4d62172c2f07ead104359fb3485595bec113dabc2b05e9dded3c2fb0ab80df9a"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "4ae28a423a3690aab0f163f6de5ebf15652f12cf5e11b7662e7c24095b021efd"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "d8c2683da27ee0cbb7458651a9bd7b885650f8cf58d00e544b3b8f061f90f3b3"
+    sha256 cellar: :any_skip_relocation, sonoma:        "1734ad8babbaaca852bdc04f3abb8f1bc79fac949d57a2e1d695ba16542d712c"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "33cc6f3f71341f1e34d73019448cb5d91f2563abbfcdc1b057df46f7ce82cedd"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5ab23f77499e85c5fbe70aaeffcb521bda4f053c5be4f21cc653e5c182291909"
   end
 
   depends_on "rust" => :build
-
   def install
     system "cargo", "install", *std_cargo_args(path: "brush-shell")
   end

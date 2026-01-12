@@ -1,8 +1,8 @@
 class EcflowUi < Formula
   desc "User interface for client/server workflow package"
   homepage "https://confluence.ecmwf.int/display/ECFLOW"
-  url "https://confluence.ecmwf.int/download/attachments/8650755/ecFlow-5.14.1-Source.tar.gz"
-  sha256 "6c7b8aa89f8b12a786ba0a175d2b3abc8a524eb7e68b3bdf5a76a0e91a248412"
+  url "https://confluence.ecmwf.int/download/attachments/8650755/ecFlow-5.15.2-Source.tar.gz"
+  sha256 "6e4738167a17b7a8787e4084183b30bd7170a0d150e85eebedb0cfe46e87d856"
   license "Apache-2.0"
 
   livecheck do
@@ -11,19 +11,24 @@ class EcflowUi < Formula
   end
 
   bottle do
-    sha256                               arm64_sonoma:  "abe84ab9bd23b8d40f809b66d2c772059bffef65d045e4da3bba6c72e5ee2d64"
-    sha256                               arm64_ventura: "0748a2b33efe71d59065ac0dd9a324c8dba3c6782e1df88195afbd213d46d865"
-    sha256                               sonoma:        "63ea7094c1143922888259b352c45749dc4978cbe93c19aec878e439edf407f1"
-    sha256                               ventura:       "a9a9773aa61c7e91deceac2a01684d51e952d452e52a6a8b563c21445635b0bb"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b204d26b9127a65095262c473e9b5c23c05d70d6d3334d91932276c84263cb55"
+    sha256 arm64_tahoe:   "3a2d6944d14d35d8697c41b1896b47d1c92200d78635af09645bd08b9169c852"
+    sha256 arm64_sequoia: "c9e2e95dbac66a092105dc3a09e375b93878ac3fac6c63fb55dc2a18a9d94eec"
+    sha256 arm64_sonoma:  "299ff590bc226d95352ef2163348f8b79b0c6bdb96ac84fdff87d845f5dbfbf2"
+    sha256 sonoma:        "126a9c10588756a2eb999a2a7c52783076357132bcf96ebed3dca7ae7429c84f"
+    sha256 arm64_linux:   "65e8ff9d3e04469d9a42b54e0af1a8c6a94b527c307914d28da3ea11eec3cdba"
+    sha256 x86_64_linux:  "fd752424e0e1ba3c63117decd5bed7dceb3cf5f109f2efb71a4e6ba236aa34ce"
   end
 
   depends_on "boost" => :build
   depends_on "cmake" => :build
   depends_on "openssl@3"
-  depends_on "qt"
+  depends_on "qt5compat"
+  depends_on "qtbase"
+  depends_on "qtcharts"
+  depends_on "qtsvg"
 
   uses_from_macos "libxcrypt"
+  uses_from_macos "zlib"
 
   def install
     args = %w[

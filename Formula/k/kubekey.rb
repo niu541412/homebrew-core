@@ -2,10 +2,10 @@ class Kubekey < Formula
   desc "Installer for Kubernetes and / or KubeSphere, and related cloud-native add-ons"
   homepage "https://kubesphere.io"
   url "https://github.com/kubesphere/kubekey.git",
-      tag:      "v3.1.10",
-      revision: "cdc54e0986ed98997703b527a49f8bab2c0ee950"
+      tag:      "v4.0.2",
+      revision: "bd780ee397ff2abcc5d03975c32dae056ddb86c5"
   license "Apache-2.0"
-  head "https://github.com/kubesphere/kubekey.git", branch: "master"
+  head "https://github.com/kubesphere/kubekey.git", branch: "main"
 
   # Upstream creates releases that use a stable tag (e.g., `v1.2.3`) but are
   # labeled as "pre-release" on GitHub before the version is released, so it's
@@ -16,13 +16,13 @@ class Kubekey < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "8eb07536020c35c08b9c3c8e2e479a98860d19818f84ee0d4ec83aba64719486"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "5dad9250063d8f04935e649383714f46644ee5e87f729120174add2277275af1"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "c341287bdc7285f60693d50d01ae45071920ebf615478a4de70ac5670aba472a"
-    sha256 cellar: :any_skip_relocation, sonoma:        "7e8c0998ad6da1eb3e8be84c1daadbc8ca6a117f8c7d8ca88426903e56596fc2"
-    sha256 cellar: :any_skip_relocation, ventura:       "a7ce5d7d44e57ef773180018038a072c21a27e6bd9476a65ecbb8be9984ed273"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "1dd737394f7d4cf1284ff1ab707503e73d875cfe0863877f4d14a46a480da7c2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7e68af1256d23f755f6d7409e05288c1ac654ceef987c4afa13ec5bb6b53eebf"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "8ecca1ee4a5b9902714dfed90abc22bcdc8cdef71a95c6cbc211338c927a1f19"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "8ecca1ee4a5b9902714dfed90abc22bcdc8cdef71a95c6cbc211338c927a1f19"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "8ecca1ee4a5b9902714dfed90abc22bcdc8cdef71a95c6cbc211338c927a1f19"
+    sha256 cellar: :any_skip_relocation, sonoma:        "1f79e1a124c48c2cbc93eeffc0ff887b1025b05ca2f3d962c77a999535b696d4"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "a0bb9587e59c7e15cf59d844588b65fb110377a718769dae8f42f8a33be8bd16"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "af468947eef9b76fd53e7ae0475cf9831292a145465dc05a12960f05f1c065f7"
   end
 
   depends_on "go" => :build
@@ -35,8 +35,7 @@ class Kubekey < Formula
   end
 
   def install
-    tags = "exclude_graphdriver_devicemapper exclude_graphdriver_btrfs containers_image_openpgp"
-    project = "github.com/kubesphere/kubekey/v3"
+    project = "github.com/kubesphere/kubekey/v#{version.major}"
     ldflags = %W[
       -s -w
       -X #{project}/version.gitMajor=#{version.major}
@@ -46,17 +45,13 @@ class Kubekey < Formula
       -X #{project}/version.gitTreeState=clean
       -X #{project}/version.buildDate=#{time.iso8601}
     ]
-    system "go", "build", *std_go_args(ldflags:, tags:, output: bin/"kk"), "./cmd/kk"
+    system "go", "build", *std_go_args(ldflags:, tags: "builtin", output: bin/"kk"), "./cmd/kk"
 
-    generate_completions_from_executable(bin/"kk", "completion", "--type", shells: [:bash, :zsh])
+    generate_completions_from_executable(bin/"kk", shell_parameter_format: :cobra)
   end
 
   test do
-    version_output = shell_output(bin/"kk version")
-    assert_match "Version:\"v#{version}\"", version_output
-    assert_match "GitTreeState:\"clean\"", version_output
-
-    system bin/"kk", "create", "config", "-f", "homebrew.yaml"
-    assert_path_exists testpath/"homebrew.yaml"
+    assert_match version.to_s, shell_output("#{bin}/kk version 2>&1")
+    assert_match "apiVersion: kubekey.kubesphere.io/v1", shell_output("#{bin}/kk create config")
   end
 end

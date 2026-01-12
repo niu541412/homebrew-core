@@ -1,11 +1,25 @@
 class Supertux < Formula
   desc "Classic 2D jump'n run sidescroller game"
   homepage "https://www.supertux.org/"
-  url "https://github.com/SuperTux/supertux/releases/download/v0.6.3/SuperTux-v0.6.3-Source.tar.gz"
-  sha256 "f7940e6009c40226eb34ebab8ffb0e3a894892d891a07b35d0e5762dd41c79f6"
   license "GPL-3.0-or-later"
-  revision 11
-  head "https://github.com/SuperTux/supertux.git", branch: "master"
+  revision 14
+
+  stable do
+    url "https://github.com/SuperTux/supertux/releases/download/v0.6.3/SuperTux-v0.6.3-Source.tar.gz"
+    sha256 "f7940e6009c40226eb34ebab8ffb0e3a894892d891a07b35d0e5762dd41c79f6"
+
+    depends_on "boost"
+
+    # Backport fix for newer GCC
+    patch do
+      url "https://github.com/SuperTux/supertux/commit/81809dd5e6f611b1d64d952f6d96310bcc9c5fca.patch?full_index=1"
+      sha256 "cd251ef6831c482c32e5aa2c56422cad2898747493797b4018f02131ea19dc88"
+    end
+
+    # Workaround to build with Boost 1.89.0 until new release that drops Boost dependency
+    # https://github.com/SuperTux/supertux/commit/5333cebf629eb20621b284fc96b494257f3314bb
+    patch :DATA
+  end
 
   livecheck do
     url :stable
@@ -15,18 +29,23 @@ class Supertux < Formula
   no_autobump! because: :requires_manual_review
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "3f63bbb4a3eca63586e1bcb23482fdcdd91936e6b6bd181ca5b6d3f4b57c463e"
-    sha256 cellar: :any,                 arm64_sonoma:  "f44ec03e212e95daaa1cc85363c084e5dc545ac9be24812aa64f6d3a43046791"
-    sha256 cellar: :any,                 arm64_ventura: "06b04d4dd7d3d6b93267084773b6eef6bddf762a7ff8b6c648ed8d356341f959"
-    sha256 cellar: :any,                 sonoma:        "557c18f4f4c2dd4d3b1c987059690602188eda7e1418b7b8c01ccae52386d6d6"
-    sha256 cellar: :any,                 ventura:       "e73a70f1403a6bd2f577c98e400ede1038132bc060b2dbdb748bee766db53967"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "6f8daa7588e6d322264e298f32571ef9bce8fe2eb3c967440956cbed60c14668"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "22bdb84ff6294cb2c5bf52ca70ee7b98b5c463b33be62b8e5ef373f859df5729"
+    sha256 cellar: :any,                 arm64_tahoe:   "1c4701340b11843553f6922c167116e304e72d2434ee160e9ec896204951588e"
+    sha256 cellar: :any,                 arm64_sequoia: "0a12ac4b7ef4b2f7799067faeb3f6c3e4647750352475bf5ebc3be74222d04c5"
+    sha256 cellar: :any,                 arm64_sonoma:  "ec45a9f9e6f37817f2ba510d879e79b15983fad78faad793ae16334b726243ed"
+    sha256 cellar: :any,                 sonoma:        "c671a25824640dfe14b1a933e892ae05fde85fa3489aba663fe531726148eba8"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "ee5760b28a84c5527e010fe27b90b79de271f5543c8658313145be9973d6c7f4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3160e4e4d8ffd6fa679a9e79ca127e01e783d9863dba4ca6a8c2785bb6764209"
+  end
+
+  head do
+    url "https://github.com/SuperTux/supertux.git", branch: "master"
+
+    depends_on "fmt"
+    depends_on "openal-soft"
   end
 
   depends_on "cmake" => :build
   depends_on "pkgconf" => :build
-  depends_on "boost"
   depends_on "freetype"
   depends_on "glew"
   depends_on "glm"
@@ -55,6 +74,7 @@ class Supertux < Formula
       # Without the following option, Cmake intend to use the library of MONO framework.
       "-DPNG_PNG_INCLUDE_DIR=#{Formula["libpng"].opt_include}",
     ]
+    args << "-DCMAKE_INSTALL_RPATH=#{rpath}" if build.head?
 
     system "cmake", "-S", ".", "-B", "build", *args, *std_cmake_args
     system "cmake", "--build", "build"
@@ -71,3 +91,18 @@ class Supertux < Formula
     assert_equal "supertux2 v#{version}", shell_output("#{bin}/supertux2 --userdir #{testpath} --version").chomp
   end
 end
+
+__END__
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index b77029c0a..1842b4943 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -171,7 +171,7 @@ if(ENABLE_BOOST_STATIC_LIBS)
+ else(ENABLE_BOOST_STATIC_LIBS)
+   set(Boost_USE_STATIC_LIBS FALSE)
+ endif(ENABLE_BOOST_STATIC_LIBS)
+-find_package(Boost REQUIRED COMPONENTS filesystem system date_time locale)
++find_package(Boost REQUIRED COMPONENTS filesystem date_time locale)
+ include_directories(SYSTEM ${Boost_INCLUDE_DIR})
+ link_directories(${Boost_LIBRARY_DIRS})
+ 

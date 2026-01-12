@@ -4,22 +4,33 @@ class Pdftoipe < Formula
   url "https://github.com/otfried/ipe-tools/archive/refs/tags/v7.2.29.1.tar.gz"
   sha256 "604ef6e83ad8648fa09c41a788549db28193bb3638033d69cac2b0b3f33bd69b"
   license "GPL-2.0-or-later"
-  revision 8
+  revision 13
 
   no_autobump! because: :requires_manual_review
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "73ef0b93cb20c5a6f607856003175f96a3185859c409181709fb3e0d34cba4f8"
-    sha256 cellar: :any,                 arm64_sonoma:  "3c5c3ae4556a3dad3b1f891b325613edaaaf193474574295cf40d6dcf37651a3"
-    sha256 cellar: :any,                 arm64_ventura: "884f0b8f60c43651be7ae0a08873855b9aecc86ac4c58a72760fd7d11914b05e"
-    sha256 cellar: :any,                 sonoma:        "53fc4df76a9e88347b9a531d4e9f6f8272a76af2b021b700dfb32a82b3d12f72"
-    sha256 cellar: :any,                 ventura:       "482f5b67b34e9f392ede0a2a7d1670fea573f0c090d64923ce498e6fa1592ec4"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "9294b423b731fb9e82da7f949dde35f864d74a4040429459546d6fbac76a0a46"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "225dd057b1255d16f2d639f8b2457a7ee3a3a059b7e791c48a457c8043120d0e"
+    sha256 cellar: :any,                 arm64_tahoe:   "e458140ae6523ea3475820d032dd70f5a393a265888a8c1d3b7ff1973517d320"
+    sha256 cellar: :any,                 arm64_sequoia: "80eaeb8f45bbb3a96b00dd9987b0d4db8f4b6d4a4002225c801ccf7b999d39d3"
+    sha256 cellar: :any,                 arm64_sonoma:  "44bbb9e7b11499efa631d60cdd7e3547b92d75901549113b496707085d8fbd1f"
+    sha256 cellar: :any,                 sonoma:        "76fa0169012ab888fe0c67b3881dcdbb5698a600805f64223c8318c2be1a9763"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "267054e95a5198879301dfd50d7395fe431a993f6aa1f0c5e30981a6cca5262e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "81410873242c35cda5b1bc12c56a11ded781ef6c2947ef40b876286823ff3822"
   end
 
   depends_on "pkgconf" => :build
   depends_on "poppler"
+
+  # Backport fix for `poppler` 25+ compatibility
+  # PR ref: https://github.com/otfried/ipe-tools/pull/72
+  # PR ref: https://github.com/otfried/ipe-tools/pull/77
+  patch do
+    url "https://github.com/otfried/ipe-tools/commit/0da954e50fbdedf43796291853890fe36248bc16.patch?full_index=1"
+    sha256 "65f7010897fa4dd94cfa933d986cae6978ddd4e33e2aa1479ec7c11786e100c3"
+  end
+  patch do
+    url "https://github.com/otfried/ipe-tools/commit/2f59d3b747a23cd4b13b09ebee9f703b8129116c.patch?full_index=1"
+    sha256 "b1b48088c9dd4067d862d788643c750fc6981102cd85f62a85f898948ca33771"
+  end
 
   def install
     cd "pdftoipe" do

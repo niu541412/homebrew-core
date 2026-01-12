@@ -1,18 +1,18 @@
 class Fx < Formula
   desc "Terminal JSON viewer"
   homepage "https://fx.wtf"
-  url "https://github.com/antonmedv/fx/archive/refs/tags/38.0.0.tar.gz"
-  sha256 "b9c4b935852cb9c3bae39b1c1293a8bfb010c5d79ce71a1ea6197002a5291613"
+  url "https://github.com/antonmedv/fx/archive/refs/tags/39.2.0.tar.gz"
+  sha256 "cdb98177f956615c961bc615fab0b30e73167295152d4f2d4cb70b16cdf47d6e"
   license "MIT"
   head "https://github.com/antonmedv/fx.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "7e0696734b0012df06d5b7b62a8a3abfcc7ae5e6ffe746e714269adfec4cf998"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "7e0696734b0012df06d5b7b62a8a3abfcc7ae5e6ffe746e714269adfec4cf998"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "7e0696734b0012df06d5b7b62a8a3abfcc7ae5e6ffe746e714269adfec4cf998"
-    sha256 cellar: :any_skip_relocation, sonoma:        "c3d5cce5cf8b548e599f765d7595b05696167847285c45d6872028345e36e2b2"
-    sha256 cellar: :any_skip_relocation, ventura:       "c3d5cce5cf8b548e599f765d7595b05696167847285c45d6872028345e36e2b2"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f3a50578f55e250866a557a3ac77c5fa2925bb963513cedbf237c990262249b1"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "5f79f0091b2439d09a282e4731414ca240b479b9ee1dce7017808b3b793b53fe"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "5f79f0091b2439d09a282e4731414ca240b479b9ee1dce7017808b3b793b53fe"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "5f79f0091b2439d09a282e4731414ca240b479b9ee1dce7017808b3b793b53fe"
+    sha256 cellar: :any_skip_relocation, sonoma:        "3b489b6facee5fad90c296a0b9368296b41c592bea225f7da4806f077675954b"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "beedcca6635c1c157d142ec0728a1b4cf0e9dd60d933e59ad003d69120532643"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "323e237254fe3e24924684401b371bd6ec9a6eab779e0a0b8dcc6c7ed43b0c02"
   end
 
   depends_on "go" => :build

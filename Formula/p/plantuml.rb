@@ -1,8 +1,8 @@
 class Plantuml < Formula
   desc "Draw UML diagrams"
   homepage "https://plantuml.com/"
-  url "https://github.com/plantuml/plantuml/releases/download/v1.2025.4/plantuml-1.2025.4.jar"
-  sha256 "26518e14a3a04100cd76c0d96cab2d1171f36152215edd9790a28d20268200c1"
+  url "https://github.com/plantuml/plantuml/releases/download/v1.2026.0/plantuml-1.2026.0.jar"
+  sha256 "b3da2f352a835615ecb63eb754930f8aab57363d5fe1a0660bf2a12827b6b553"
   license "GPL-3.0-or-later"
   version_scheme 1
 
@@ -12,7 +12,7 @@ class Plantuml < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "e353eefa552f5bde5cf35cb8c94f914839fc17fcb77e177ce1652ab54ad1bac0"
+    sha256 cellar: :any_skip_relocation, all: "171d32b4081fb43d2e19be9ceb9109eebd06dd1a04bcd70ea74e7c4cd4038224"
   end
 
   depends_on "graphviz"

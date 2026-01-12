@@ -1,18 +1,17 @@
 class Easyengine < Formula
   desc "Command-line control panel to manage WordPress sites"
   homepage "https://easyengine.io/"
-  url "https://github.com/EasyEngine/easyengine/releases/download/v4.9.0/easyengine.phar"
-  sha256 "d59bfaaa42c5d51360d1194c1620ba2a2ac9611a95a7ff7c51f4afb66145bb26"
+  url "https://github.com/EasyEngine/easyengine/releases/download/v4.10.2/easyengine.phar"
+  sha256 "7fcf21ac7cb8ea42295fa4b9617436de40b2fbbe1202bdc001c0cf5d5af9fa1c"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "c6d7e03ccf108f057da5b3135be1bc522cd9c7725b09d47c20060a22341d3ba8"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "c6d7e03ccf108f057da5b3135be1bc522cd9c7725b09d47c20060a22341d3ba8"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "c6d7e03ccf108f057da5b3135be1bc522cd9c7725b09d47c20060a22341d3ba8"
-    sha256 cellar: :any_skip_relocation, sonoma:        "fe6fee62fefc97a888faaddbaf5b057087b69f790fb2af1659200d074fe70291"
-    sha256 cellar: :any_skip_relocation, ventura:       "fe6fee62fefc97a888faaddbaf5b057087b69f790fb2af1659200d074fe70291"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "b56027e5af76a364d550e33a20a9022a9e7052617d0933750cd6298166e9a4bb"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b56027e5af76a364d550e33a20a9022a9e7052617d0933750cd6298166e9a4bb"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "1f5cdff945a1a1f6eb20d56964a207870bbd9479d823162f5cd85765e5da2f8d"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "1f5cdff945a1a1f6eb20d56964a207870bbd9479d823162f5cd85765e5da2f8d"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "1f5cdff945a1a1f6eb20d56964a207870bbd9479d823162f5cd85765e5da2f8d"
+    sha256 cellar: :any_skip_relocation, sonoma:        "c8d35791db595e47d9df99820915b1e76e4e550d6e6af302b6138e4d36900e09"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "c8d35791db595e47d9df99820915b1e76e4e550d6e6af302b6138e4d36900e09"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c8d35791db595e47d9df99820915b1e76e4e550d6e6af302b6138e4d36900e09"
   end
 
   depends_on "dnsmasq"

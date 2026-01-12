@@ -2,35 +2,37 @@ class Sherlock < Formula
   include Language::Python::Virtualenv
 
   desc "Hunt down social media accounts by username"
-  homepage "https://sherlockproject.xyz/"
-  url "https://files.pythonhosted.org/packages/0a/95/b4f7a399c43d1d57a703ddf08513411bbb0bfc6bbaabab7ad4e2c534bba7/sherlock_project-0.15.0.tar.gz"
-  sha256 "1ae2ef98a0d482039ff00743e702f28ddf4a0d6260b0fbc2579d680469874910"
+  # TODO: check the original homepage "https://sherlockproject.xyz/" is back online
+  homepage "https://github.com/sherlock-project/sherlock"
+  url "https://files.pythonhosted.org/packages/76/17/d29f35df6ec6424ec15f273a31ad54ad314d1f9056321fb824bed4eda128/sherlock_project-0.16.0.tar.gz"
+  sha256 "fcc8f05fb6f55de30938cce5727249f70917b226918a71f6ed3f50d8a6467610"
   license "MIT"
   revision 2
   head "https://github.com/sherlock-project/sherlock.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "dd9a9a321ba763a03aa53add2b848e65b9b86e7f8d24230cdc510633eb45da39"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "8aa05aca8555b6956a6dcf9041d2a4f0b1a7a11f4a15aa2092df1b37daabaa0f"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "badc2b1c67f578be7384cd7d131b8f878e80197cbf5b8731078e6b9792ae8713"
-    sha256 cellar: :any_skip_relocation, sonoma:        "1e7dea47e37e50b18d20c2621b8248195b4b75bbb24b39dfb6f8d48b575bb2c8"
-    sha256 cellar: :any_skip_relocation, ventura:       "ee838adbb044201af8591c32ddbafb4a8751487ce107a35b072be5b334c36c95"
-    sha256                               arm64_linux:   "a58951491fdb00b3607578cfe9e73c02d60c79a9fbe305095c8bcff26c12fce7"
-    sha256                               x86_64_linux:  "243d2c0cf6bb97d5a0dc99b7a2e9df8f4e93fb14f07784d07118853e9e8b9e0b"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "172bfac00b591668aaadb6823c7f85246383069d6ef31db3a05f9ec17ae14144"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "262c372c24bc602b590a0fcece35b00dfefecf3c6a315e1f3a368f34628031b1"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "ce87d7bfed9e3311f89f150b1024d44ae06fe18e7fc8e970636cef21009d13e8"
+    sha256 cellar: :any_skip_relocation, sonoma:        "c8216dc7eaf85a508cc893f85bb68d6f72dc3dc6b4181bbe47287260631af63e"
+    sha256                               arm64_linux:   "efc7f912dfd3f1152ef8404ff9b1899ff330f81e75e8e5da600dc575787b1d70"
+    sha256                               x86_64_linux:  "4f6e377caf203851c7a283a02a8dfdc6dbd5fc9ee67c53eda37f6983ebca5d4b"
   end
 
   depends_on "cmake" => :build
-  depends_on "certifi"
+  depends_on "certifi" => :no_linkage
   depends_on "numpy"
-  depends_on "python@3.13"
+  depends_on "python@3.14"
 
   on_linux do
     depends_on "patchelf" => :build
   end
 
+  pypi_packages exclude_packages: %w[certifi numpy]
+
   resource "charset-normalizer" do
-    url "https://files.pythonhosted.org/packages/e4/33/89c2ced2b67d1c2a61c19c6751aa8902d46ce3dacb23600a283619f5a12d/charset_normalizer-3.4.2.tar.gz"
-    sha256 "5baececa9ecba31eff645232d59845c07aa030f0c81ee70184a90d35099a0e63"
+    url "https://files.pythonhosted.org/packages/13/69/33ddede1939fdd074bce5434295f38fae7136463422fe4fd3e0e89b98062/charset_normalizer-3.4.4.tar.gz"
+    sha256 "94537985111c35f28720e43603b8e7b43a6ecfb2ce1d3058bbe955b73404e21a"
   end
 
   resource "colorama" do
@@ -44,8 +46,8 @@ class Sherlock < Formula
   end
 
   resource "idna" do
-    url "https://files.pythonhosted.org/packages/f1/70/7703c29685631f5a7590aa73f1f1d3fa9a380e654b86af429e0934a32f7d/idna-3.10.tar.gz"
-    sha256 "12f65c9b470abda6dc35cf8e63cc574b1c52b11df2c86030af0ac09b01b13ea9"
+    url "https://files.pythonhosted.org/packages/6f/6d/0703ccc57f3a7233505399edb88de3cbd678da106337b9fcde432b65ed60/idna-3.11.tar.gz"
+    sha256 "795dafcc9c04ed0c1fb032c2aa73654d8e8c5023a7df64a53f39190ada629902"
   end
 
   resource "openpyxl" do
@@ -54,8 +56,8 @@ class Sherlock < Formula
   end
 
   resource "pandas" do
-    url "https://files.pythonhosted.org/packages/72/51/48f713c4c728d7c55ef7444ba5ea027c26998d96d1a40953b346438602fc/pandas-2.3.0.tar.gz"
-    sha256 "34600ab34ebf1131a7613a260a61dbe8b62c188ec0ea4c296da7c9a06b004133"
+    url "https://files.pythonhosted.org/packages/33/01/d40b85317f86cf08d853a4f495195c73815fdf205eef3993821720274518/pandas-2.3.3.tar.gz"
+    sha256 "e05e1af93b977f7eafa636d043f9f94c7ee3ac81af99c13508215942e64c993b"
   end
 
   resource "pysocks" do
@@ -74,8 +76,8 @@ class Sherlock < Formula
   end
 
   resource "requests" do
-    url "https://files.pythonhosted.org/packages/e1/0a/929373653770d8a0d7ea76c37de6e41f11eb07559b103b1c02cafb3f7cf8/requests-2.32.4.tar.gz"
-    sha256 "27d0316682c8a29834d3264820024b62a36942083d52caf2f14c0591336d3422"
+    url "https://files.pythonhosted.org/packages/c9/74/b3ff8e6c8446842c3f5c837e9c3dfcfe2018ea6ecef224c710c85ef728f4/requests-2.32.5.tar.gz"
+    sha256 "dbba0bac56e100853db0ea71b82b4dfd5fe2bf6d3754a8893c3af500cec7d7cf"
   end
 
   resource "requests-futures" do
@@ -94,22 +96,26 @@ class Sherlock < Formula
   end
 
   resource "tzdata" do
-    url "https://files.pythonhosted.org/packages/95/32/1a225d6164441be760d75c2c42e2780dc0873fe382da3e98a2e1e48361e5/tzdata-2025.2.tar.gz"
-    sha256 "b60a638fcc0daffadf82fe0f57e53d06bdec2f36c4df66280ae79bce6bd6f2b9"
+    url "https://files.pythonhosted.org/packages/5e/a7/c202b344c5ca7daf398f3b8a477eeb205cf3b6f32e7ec3a6bac0629ca975/tzdata-2025.3.tar.gz"
+    sha256 "de39c2ca5dc7b0344f2eba86f49d614019d29f060fc4ebc8a417896a620b56a7"
   end
 
   resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/15/22/9ee70a2574a4f4599c47dd506532914ce044817c7752a79b6a51286319bc/urllib3-2.5.0.tar.gz"
-    sha256 "3fc47733c7e419d4bc3f6b3dc2b4f890bb743906a30d56ba4a5bfa4bbff92760"
+    url "https://files.pythonhosted.org/packages/c7/24/5f1b3bdffd70275f6661c76461e25f024d5a38a46f04aaca912426a2b1d3/urllib3-2.6.3.tar.gz"
+    sha256 "1b62b6884944a57dbe321509ab94fd4d3b307075e0c2eae991ac71ee15ad38ed"
   end
 
   def install
+    # hatch does not support a SOURCE_DATE_EPOCH before 1980.
+    # Remove after https://github.com/pypa/hatch/pull/1999 is released.
+    ENV["SOURCE_DATE_EPOCH"] = "1451574000"
+
     virtualenv_install_with_resources
   end
 
   test do
-    assert_match version.to_s, shell_output(bin/"sherlock --version")
+    assert_match version.to_s, shell_output("#{bin}/sherlock --version")
 
-    assert_match "Search completed with 1 results", shell_output(bin/"sherlock --site github homebrew")
+    assert_match "Search completed with 1 results", shell_output("#{bin}/sherlock --site github homebrew")
   end
 end

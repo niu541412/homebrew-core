@@ -1,18 +1,17 @@
 class Ghex < Formula
   desc "GNOME hex editor"
   homepage "https://wiki.gnome.org/Apps/Ghex"
-  url "https://download.gnome.org/sources/ghex/46/ghex-46.3.tar.xz"
-  sha256 "ea16595dfba0a97b55dd106305d56ba2baee95de0b13b75e75966cc31f9b3ec9"
+  url "https://download.gnome.org/sources/ghex/48/ghex-48.3.tar.xz"
+  sha256 "cbc84427b2adea9403502a125f366b9f288813f72e81bf6b19154606f159dd39"
   license "GPL-2.0-or-later"
 
   bottle do
-    sha256 arm64_sequoia: "54e06c79c93adc5dde1d01e99e0507c63c8a3e703f0eb99aa27463f816236502"
-    sha256 arm64_sonoma:  "bd685310597542ea92a025b43dff448f0f88bd67da205abe838b0c1993f25b28"
-    sha256 arm64_ventura: "bf16d5c93b881c3dda405c4ab11d7f8f386d4a9528c875af98038408ccb8f333"
-    sha256 sonoma:        "5a441f2016c5199795123e536f90c6c2347d864cc93d6eb4e8daa1b22115c0dd"
-    sha256 ventura:       "74b18d5ad33151176c96441da1cf696ea1d14f65aee6070259db2c31eab3f3ba"
-    sha256 arm64_linux:   "5c50542bd5285c92ab1a791aaff23fb3a4807327e4b8e5c8241323762f0600ae"
-    sha256 x86_64_linux:  "ffe5201e2afd71f686268102c8cdbf5225bd5eecbb2e9a8253611d96ceba1134"
+    sha256 arm64_tahoe:   "28c03f317c94d3fa0f0d8fb4e83e71b9558b9d301d287b76a1590a5bbf499414"
+    sha256 arm64_sequoia: "29e87247e5434888b03fa07223c4df2414e2dd1dc4a10586d661eaf1c1befa2c"
+    sha256 arm64_sonoma:  "4e7a1d4c2c85ca5eefe98d25793f0bbd0e0a056926119051a36963773a428252"
+    sha256 sonoma:        "a54e12aff1120f1edf01d8179eec69aabd44b6fdacc3f8a4f94f30d66e9cf614"
+    sha256 arm64_linux:   "76d601774e3d566e5a44e9148e9cbe7621898508ea5b7cc5a45c879ea9509989"
+    sha256 x86_64_linux:  "90dea601a000ddab7edaf0fdc98abe0dffee0760e0995f5520f3bb7904d32c46"
   end
 
   depends_on "desktop-file-utils" => :build
@@ -53,9 +52,6 @@ class Ghex < Formula
   end
 
   test do
-    # (process:30744): Gtk-WARNING **: 06:38:39.728: cannot open display
-    return if OS.linux? && ENV["HOMEBREW_GITHUB_ACTIONS"]
-
     system bin/"ghex", "--help"
   end
 end

@@ -2,8 +2,8 @@ class K3sup < Formula
   desc "Utility to create k3s clusters on any local or remote VM"
   homepage "https://k3sup.dev"
   url "https://github.com/alexellis/k3sup.git",
-      tag:      "0.13.10",
-      revision: "5d97659e0d8bac3c3c497d4ff1d5d04a0c341b8b"
+      tag:      "0.13.11",
+      revision: "5e5228b9d25c8c3dd1bb82d0f78a3944933529ed"
   license "MIT"
   head "https://github.com/alexellis/k3sup.git", branch: "master"
 
@@ -13,12 +13,13 @@ class K3sup < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "417ff661cf30f1c1d103841d7941873ab4faf5ca47e3a31c89fe5572ccd60c6f"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "417ff661cf30f1c1d103841d7941873ab4faf5ca47e3a31c89fe5572ccd60c6f"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "417ff661cf30f1c1d103841d7941873ab4faf5ca47e3a31c89fe5572ccd60c6f"
-    sha256 cellar: :any_skip_relocation, sonoma:        "ce23b0e0b23d7d755e4c9530c15700b37741508de4ce7415ac537289538b2479"
-    sha256 cellar: :any_skip_relocation, ventura:       "ce23b0e0b23d7d755e4c9530c15700b37741508de4ce7415ac537289538b2479"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "79a72c2efdcb69a2a8dea4dcc39558c2099811fef9d1c480b19ef6bafa6f4eb7"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "d4836e183e365653092b8d6370886d71dd7102b865925232f57cf4d4ac1b1220"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "d4836e183e365653092b8d6370886d71dd7102b865925232f57cf4d4ac1b1220"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "d4836e183e365653092b8d6370886d71dd7102b865925232f57cf4d4ac1b1220"
+    sha256 cellar: :any_skip_relocation, sonoma:        "c1a76ab6743188fc8c6251f7b4204de39dd356cc2ae88b8ecb7a7f95525b2829"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "3e8052bd6c2f018a0736c17237ff0939d73fa2486abdb7af45760427c9afb8ae"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2ce6015bf494e8bd40cbe78779b01821b20e53b975cf3b4d30993d2183ca2bff"
   end
 
   depends_on "go" => :build
@@ -31,7 +32,7 @@ class K3sup < Formula
     ]
     system "go", "build", *std_go_args(ldflags:)
 
-    generate_completions_from_executable(bin/"k3sup", "completion")
+    generate_completions_from_executable(bin/"k3sup", shell_parameter_format: :cobra)
   end
 
   test do

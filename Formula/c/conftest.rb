@@ -1,18 +1,19 @@
 class Conftest < Formula
   desc "Test your configuration files using Open Policy Agent"
   homepage "https://www.conftest.dev/"
-  url "https://github.com/open-policy-agent/conftest/archive/refs/tags/v0.62.0.tar.gz"
-  sha256 "f9c441d5c36d70a4b2dfa1f5371b2ad442fa9c8343624998b952c5e9c3c4ee0e"
+  url "https://github.com/open-policy-agent/conftest/archive/refs/tags/v0.66.0.tar.gz"
+  sha256 "cf639c2efa2410699e294689f1115298aa9dbc6587f198a839f27a310c18c6c0"
   license "Apache-2.0"
   head "https://github.com/open-policy-agent/conftest.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "47cbe3ebf62c6ad40f940893a3967181be03597032d124c4f1313bcdb29dc399"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "75bacc23cf269f605f0fcc8791490ed8c08b7539be00297744447067eb50eab6"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "763f7e1ea5abe609469a11e34e688aa2dc332803ee55ed0a1202abac8decc468"
-    sha256 cellar: :any_skip_relocation, sonoma:        "e0be5e7fe6968c1de78669c6ced331aff08dbc7aceb07426fe8eb64701f5ebd1"
-    sha256 cellar: :any_skip_relocation, ventura:       "bb9e6ad54651357a90d9f07c8f105d818a0f1288d6b9ad0b3978b0d3af351d39"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a1b2d203c751c2e8f82da0e47cee7468048826b676643e65251d615d335a97d3"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "5dcad1365b01900bf73ccf60ff30e8aa514c17f57d593917b74bf80a110c6757"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "913647567d26c4cb0cac241c8a9a3c880322a73dbd4ec2416331e06a6aed61e9"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "19aa7682ffc4847dbed5d32b565412cd4155d9d7ee1c3d8acc0b15a2568eb62c"
+    sha256 cellar: :any_skip_relocation, sonoma:        "c3f059bd9b5adbd2a5b5b9bd6b049932c24c14a1de35df5d042cd7b6bfa30378"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "e83664bd32c398e990d83c893d262799f0369d688166f929189ea1d67da27986"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "fdcdb4b32b2dbd8c511ebc0ac072f242ace0d2620b43f79f6b31e2bbc657a97b"
   end
 
   depends_on "go" => :build
@@ -21,7 +22,7 @@ class Conftest < Formula
     ldflags = "-s -w -X github.com/open-policy-agent/conftest/internal/commands.version=#{version}"
     system "go", "build", *std_go_args(ldflags:)
 
-    generate_completions_from_executable(bin/"conftest", "completion")
+    generate_completions_from_executable(bin/"conftest", shell_parameter_format: :cobra)
   end
 
   test do

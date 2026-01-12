@@ -1,8 +1,8 @@
 class Maxima < Formula
   desc "Computer algebra system"
   homepage "https://maxima.sourceforge.io/"
-  url "https://downloads.sourceforge.net/project/maxima/Maxima-source/5.48.0-source/maxima-5.48.0.tar.gz"
-  sha256 "75af2bf1894df2a17aef8a5c378d72d4d53c669b9f47d60ec5ba8c8676c4aaab"
+  url "https://downloads.sourceforge.net/project/maxima/Maxima-source/5.49.0-source/maxima-5.49.0.tar.gz"
+  sha256 "6d401a4aa307cd3a5a9cadca4fa96c4ef0e24ff95a18bb6a8f803e3d2114adee"
   license "GPL-2.0-only"
 
   livecheck do
@@ -11,11 +11,12 @@ class Maxima < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "6f9fda5f15ea55a2f249045119c608e6575ed7ba3e52cb6b06f46f764abc906f"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "c3700df94389c71370ba84631894622dc44c007f751ea95c910ad02957b6edc8"
-    sha256 cellar: :any_skip_relocation, sonoma:        "8893c78aa849c460011c20e0eb237d3737f85437c8b361e202d1fdf123914bf0"
-    sha256 cellar: :any_skip_relocation, ventura:       "68c36cea4b1afc58b3957b89026d36b3cc03d107c6261a6d609b0b34f4bfc029"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b53439d2bb09d66e5666d62f602c39d73b8fb42028df8dd1773e846fb460d666"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "3d7bf2a990266ea2fde31474e26edf4395fefab4ebce73325c95dea132f7405c"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "24f589e4793c3aa8d0e4466dcfc753a85e226edaf655ff7c519daaa85481affd"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "8a9f3691840fda7fe562835c7e5a298a24c4c79e343d0528fed33ef1096269d6"
+    sha256 cellar: :any_skip_relocation, sonoma:        "e71d150124659cd5f91994def7fa8a5d811f4986c3334d5a240cdac67d043b86"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "641025dcff494229554d2407eceb5741eab795f9edcbe7f3fcbcbe863942ac5e"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "1c7062b3a7eecf64f6334f3543b74196a96c8aa8816b882a44b3746dc3ea51c6"
   end
 
   depends_on "gawk" => :build
@@ -29,14 +30,11 @@ class Maxima < Formula
 
   def install
     ENV["LANG"] = "C" # per build instructions
-    system "./configure",
-           "--disable-debug",
-           "--disable-dependency-tracking",
-           "--prefix=#{prefix}",
-           "--enable-gettext",
-           "--enable-sbcl",
-           "--with-emacs-prefix=#{share}/emacs/site-lisp/#{name}",
-           "--with-sbcl=#{Formula["sbcl"].opt_bin}/sbcl"
+    system "./configure", "--enable-gettext",
+                          "--enable-sbcl",
+                          "--with-emacs-prefix=#{elisp}",
+                          "--with-sbcl=#{Formula["sbcl"].opt_bin}/sbcl",
+                          *std_configure_args
     system "make"
     system "make", "install"
   end

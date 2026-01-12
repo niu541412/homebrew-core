@@ -1,12 +1,12 @@
 class Gitbucket < Formula
   desc "Git platform powered by Scala offering"
   homepage "https://gitbucket.github.io/"
-  url "https://github.com/gitbucket/gitbucket/releases/download/4.43.0/gitbucket.war"
-  sha256 "c613573af7fa6ecc9a4ee5b98c8aef4bcdde08f78131d704d0ed9048abab2245"
+  url "https://github.com/gitbucket/gitbucket/releases/download/4.45.0/gitbucket.war"
+  sha256 "6f27e0b1171a5a42496802d96f0a068d0e8b47620986ad6ebda4fa135ea38714"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "94affac815c4043fc76ae0b0fa2030adaad24c6e98409a27ba9084cf89d8a3cf"
+    sha256 cellar: :any_skip_relocation, all: "441280b3f4a15f5c6a7eab7de1d47093d7d43ff3822b2f3b7b7d0bfe2a48560a"
   end
 
   head do
@@ -43,6 +43,6 @@ class Gitbucket < Formula
       exec "#{java} -jar #{libexec}/gitbucket.war --port=#{free_port}"
     end
     sleep 12
-    File.read("output").exclude?("Exception")
+    refute_match "Exception", File.read("output")
   end
 end

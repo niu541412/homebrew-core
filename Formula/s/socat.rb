@@ -1,8 +1,9 @@
 class Socat < Formula
   desc "SOcket CAT: netcat on steroids"
   homepage "http://www.dest-unreach.org/socat/"
-  url "http://www.dest-unreach.org/socat/download/socat-1.8.0.3.tar.gz"
-  sha256 "a9f9eb6cfb9aa6b1b4b8fe260edbac3f2c743f294db1e362b932eb3feca37ba4"
+  url "https://distfiles.alpinelinux.org/distfiles/edge/socat-1.8.1.0.tar.gz"
+  mirror "http://www.dest-unreach.org/socat/download/socat-1.8.1.0.tar.gz"
+  sha256 "9a884880b1b00dfb2ffc6959197b1554b200af731018174cd048115dc28ef239"
   license "GPL-2.0-only"
 
   livecheck do
@@ -11,20 +12,20 @@ class Socat < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "2aaa10446c3d48a4abae274444c3ab9de518616dec42dde68146220d1cc58cf9"
-    sha256 cellar: :any,                 arm64_sonoma:  "137815efa3654ce88233eadb28d740d3fee351d89f2d65a31ae30d1fa32e77ed"
-    sha256 cellar: :any,                 arm64_ventura: "ed40e4fd40e2cf47cc732fbe1b188922e7b41d13df5917509fab2335f24f7398"
-    sha256 cellar: :any,                 sonoma:        "c418f4b948cc59f250fa1467eed47b1cf088d6a17ea8c94f6525348693af2339"
-    sha256 cellar: :any,                 ventura:       "5986bf1538a59cb4ee5d285f54d17f3ee893d993d174ee9ce2cedb2a2c567779"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "56e85c0167c53a685bb332c47a18e40fa0f6133783c70acc3db6a43189c8f98b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "90337fcfe325651b99280dcb87e3e9bdfc4ad25dfaf7a9fbb7227fac4ff68cad"
+    sha256 cellar: :any,                 arm64_tahoe:   "91543aa167477e8c387300658044d1bbe468f0be8e7163d4a5fa67c5f09e71a6"
+    sha256 cellar: :any,                 arm64_sequoia: "970538b7e516f15ebd996bb334fe6055a128274ad02670d73a39900f7dba4b7b"
+    sha256 cellar: :any,                 arm64_sonoma:  "4941aaa2611794ba979e67afa19627255574616331323073a153ccd0423e88a2"
+    sha256 cellar: :any,                 sonoma:        "89308a55b06e28349010a85de1d0951d31f2b3053c19d90af8d0811b43238609"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "6fd2104b6d8ceb9c5434de09a4d9ce4e1f3431439f5d8ac4c8429c6356c10a49"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b5b6e1c2042c826eb23d6c9c705db3d48325723e184bc20e233f384e52d0b5cd"
   end
 
   depends_on "openssl@3"
-  depends_on "readline"
 
   def install
-    system "./configure", *std_configure_args, "--mandir=#{man}"
+    # NOTE: readline must be disabled as the license is incompatible with GPL-2.0-only,
+    # https://www.gnu.org/licenses/gpl-faq.html#AllCompatibility
+    system "./configure", "--disable-readline", *std_configure_args
     system "make", "install"
   end
 

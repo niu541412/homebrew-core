@@ -1,18 +1,17 @@
 class Newsraft < Formula
   desc "Terminal feed reader"
   homepage "https://codeberg.org/newsraft/newsraft"
-  url "https://codeberg.org/newsraft/newsraft/archive/newsraft-0.32.tar.gz"
-  sha256 "a3b5f4935189316b5962658f29669472798a3e40d62b4f60d66644af3f04d2d3"
+  url "https://codeberg.org/newsraft/newsraft/archive/newsraft-0.35.tar.gz"
+  sha256 "6a87c8a9b8556650d18443baf827cf930aa4a5c5361a36397b95f275e28d540d"
   license "ISC"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "aef5996f4f43703a4bf853f3c1bfffac22c4f26adafb56fc60febe38560e25f1"
-    sha256 cellar: :any,                 arm64_sonoma:  "05376dd0ebeadf2d1be377c276e1b8239e2a6889c43a7cf111eea322a41575ee"
-    sha256 cellar: :any,                 arm64_ventura: "4e9037da7751f16b74832954eb41c79e14db50f600f9e49daf149dbea3873559"
-    sha256 cellar: :any,                 sonoma:        "6de16eff0be4e61a95f00f4cc819fe8f993ed8b6e38a8092ead3b1a35e31f213"
-    sha256 cellar: :any,                 ventura:       "48fc2089152a6b78f4db25853f4d2364b7ea62592012868704c00db86426843a"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "6782552248c2cc1e59435acaf74f63a2379fa5e88e5af8734d27e62544558a2d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d7235defd2c251363a8657498691f362540bacbf241b2ed8b32fb5b2c3427244"
+    sha256 cellar: :any,                 arm64_tahoe:   "3359d9c4fe6e8c481cb183cbf285db4dd79de23b3a62b3aaede24949673ec4a6"
+    sha256 cellar: :any,                 arm64_sequoia: "8a85c664f289e94a188da97781a5f8368a2d449086259ca9e2e24b5a44f9be5e"
+    sha256 cellar: :any,                 arm64_sonoma:  "f9f4da93f3a9b7cb74b657fb6b415c4f20b6c2d63745a145f5743f820159e0e6"
+    sha256 cellar: :any,                 sonoma:        "5099cad517f5cfd2705c0e91e8dff754fbc51026cb32a8a511fda6e986053bbd"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "a837f6a4e8dc1b0cda26326ed191c520c4c0007b4aa65a225dac0ffe241621b8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d188302de5fed681da52c266c876d425418c44435624dbd790b384f31b20f13e"
   end
 
   depends_on "scdoc" => :build
@@ -32,6 +31,9 @@ class Newsraft < Formula
   end
 
   test do
+    ENV["LANG"] = "en_US.UTF-8"
+    ENV["LC_ALL"] = "en_US.UTF-8"
+
     assert_match version.to_s, shell_output("#{bin}/newsraft -v 2>&1")
 
     system "#{bin}/newsraft -l test 2>&1 || :"

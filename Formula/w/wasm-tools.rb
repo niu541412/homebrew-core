@@ -1,8 +1,8 @@
 class WasmTools < Formula
   desc "Low level tooling for WebAssembly in Rust"
   homepage "https://github.com/bytecodealliance/wasm-tools"
-  url "https://github.com/bytecodealliance/wasm-tools/archive/refs/tags/v1.236.0.tar.gz"
-  sha256 "c4692ff747b4f3fac2094f1636c8f4bb86b64e7bbca9d0c402328bc7b736a9fe"
+  url "https://github.com/bytecodealliance/wasm-tools/archive/refs/tags/v1.244.0.tar.gz"
+  sha256 "405e19e651da2ffc5878b8ded2cfad357c8f9b069512470b17c4a6916249d185"
   license "Apache-2.0" => { with: "LLVM-exception" }
   head "https://github.com/bytecodealliance/wasm-tools.git", branch: "main"
 
@@ -12,19 +12,20 @@ class WasmTools < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "dc72b6c78ee2778961555df288c7eb92ea1bfde36e3ebacb1ea94062afa2fa3b"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "86b91e6b152d8575bd71db68631c7313a0400060a1f28b2c51604932472b6c09"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "1b0e5736697a637a0673d900149b11e9f2fde065eeadf47f3a4b91bcfade3daf"
-    sha256 cellar: :any_skip_relocation, sonoma:        "25a0e61c0fc02c6e88d0a1208124f539251558239a04a0a07a5fd16e6f8c55f9"
-    sha256 cellar: :any_skip_relocation, ventura:       "c4e730f10587030f179387c62f2a316999684bcd9e40e08ce400327f3604aba9"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "1d23489f3142a12695a9eb572244f376860c9b50eb2326ccebcc1df492331762"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "24b451a1c9d0ce5f9fd7f66292734375ea45b0590cf6c5effe4c9427fa9bea49"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "6d5b3c86faa3ac52b4d7dad2f1ebed3b7f7d2cd761cb0dee285ee9ccf19be974"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "b3bf38cdde1f9bc962bd3654068dc7516e96799c887eb512d3291189a328fd11"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "6871c87e7bfd908994ed60ef2624a1166e70c9bf33069d3ec615dc0bf522b248"
+    sha256 cellar: :any_skip_relocation, sonoma:        "91c862d54f506a66af68c8ac6a8c107ac98ab7dfa41da9e8757cb9c3e28487ab"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "a2f7c1cf784ef1861a7e4e9657848abe704518c8fce164d7e41e2e9d49e5e245"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "55d0ef5ca86de9409e80ac777b29f1b656ba201e44f31a9475a1cebc8b6a0241"
   end
 
   depends_on "rust" => :build
 
   def install
     system "cargo", "install", *std_cargo_args
+
+    generate_completions_from_executable(bin/"wasm-tools", "completion", shells: [:bash, :fish, :pwsh, :zsh])
   end
 
   test do

@@ -15,12 +15,13 @@ class SlsaVerifier < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "bcf61ec25f8d27700570040901164ae290b194cd0da63fa2e6468d45964d2774"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "bcf61ec25f8d27700570040901164ae290b194cd0da63fa2e6468d45964d2774"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "bcf61ec25f8d27700570040901164ae290b194cd0da63fa2e6468d45964d2774"
-    sha256 cellar: :any_skip_relocation, sonoma:        "61d1c99d4454cf0ef9ea24751e1eae302d84f59f4c094f326b0d2a6e2e225c2e"
-    sha256 cellar: :any_skip_relocation, ventura:       "8f635db74b4536deb743eda7c09aa6cf9982efdae9cc4faa48d8ddd5f6c59d99"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c83f420ac94e1c93f8ab68a0f831011f204bbe1b12774304dc01cca516bb1a1c"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "74a05f9a862de1e4b5ff0c5ec8a276684dddb282196ecb13010941960049274f"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "74a05f9a862de1e4b5ff0c5ec8a276684dddb282196ecb13010941960049274f"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "74a05f9a862de1e4b5ff0c5ec8a276684dddb282196ecb13010941960049274f"
+    sha256 cellar: :any_skip_relocation, sonoma:        "6af212bf84e8c9a121278554c084c8316cd360ecf3a29cbe0d9918b256e3f1dd"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "f211fb47549850522eb0187f98471eda17743dfc79c7572a6018aa282f141267"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e588593813873d0d0c768d1e85c38db2e6e1871cc567950fd7a2e053b4706841"
   end
 
   depends_on "go" => :build
@@ -29,14 +30,14 @@ class SlsaVerifier < Formula
     ldflags = %W[
       -s -w
       -X sigs.k8s.io/release-utils/version.gitVersion=#{version}
-      -X sigs.k8s.io/release-utils/version.gitCommit=brew
+      -X sigs.k8s.io/release-utils/version.gitCommit=#{tap.user}
       -X sigs.k8s.io/release-utils/version.gitTreeState=clean
       -X sigs.k8s.io/release-utils/version.buildDate=#{time.iso8601}
     ]
 
     system "go", "build", *std_go_args(ldflags:), "./cli/slsa-verifier"
 
-    generate_completions_from_executable(bin/"slsa-verifier", "completion")
+    generate_completions_from_executable(bin/"slsa-verifier", shell_parameter_format: :cobra)
   end
 
   test do
@@ -45,6 +46,6 @@ class SlsaVerifier < Formula
     expected_output = "FAILED: SLSA verification failed: the image is mutable: 'docker://alpine'"
     assert_match expected_output, output
 
-    assert_match version.to_s, shell_output("#{bin}/slsa-verifier version 2>&1")
+    assert_match version.to_s, shell_output("#{bin}/slsa-verifier version")
   end
 end

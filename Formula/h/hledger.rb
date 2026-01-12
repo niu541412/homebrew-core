@@ -1,8 +1,8 @@
 class Hledger < Formula
   desc "Easy plain text accounting with command-line, terminal and web UIs"
   homepage "https://hledger.org/"
-  url "https://github.com/simonmichael/hledger/archive/refs/tags/1.43.2.tar.gz"
-  sha256 "60b74c70ddfc6b84ca87debd2ac302aac754da3c0d9089821182e56796cb841e"
+  url "https://github.com/simonmichael/hledger/archive/refs/tags/1.51.2.tar.gz"
+  sha256 "0523c5b0a2014459364a997ad74aa8cad1a78d847c3ede6232d19636207aee48"
   license "GPL-3.0-or-later"
   head "https://github.com/simonmichael/hledger.git", branch: "master"
 
@@ -15,18 +15,19 @@ class Hledger < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "0b6e3bcce3266ea10bd6f1522525a9910c201236b6bea00b7b8d09d2681587cc"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "208bc36c3a713c4fb036b809023f7eefae3738730b7f8c499b8a3480dea1a469"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "a8fb2c0cf9dba252e438fa26641c6a1edfa86f54c362b98f315f24e73923286b"
-    sha256 cellar: :any_skip_relocation, sonoma:        "5189ae1e362f0a81d3e0fb156b70e005ef2254c1fbeb2beb1dbeafde971e2ca2"
-    sha256 cellar: :any_skip_relocation, ventura:       "1ca5a6647c6c594c04598c8d51f61f675fc00b0adf348ba7dd997b1a9965dd45"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "f53d2089b27417568385d2c453d039e964bc674d280e236cd45026eeb2a43678"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "75f0f602de7fd5edf198b5bdf7010c9a284a3200fc8d69968f9e594adc1460d1"
+    sha256 cellar: :any,                 arm64_tahoe:   "25b1afe20cd127c6254ac425978c081aed7a3f82d5e0ffa59d8429a77bef18e2"
+    sha256 cellar: :any,                 arm64_sequoia: "eb1f29d270f5f4911cac26bbbce2945f345b72746ba28896c0859e910aabdfdb"
+    sha256 cellar: :any,                 arm64_sonoma:  "8c69ef24ba81563121c82e59f50ba8ba43a0cc6a2feca19584e822790ced14bb"
+    sha256 cellar: :any,                 sonoma:        "5fbaa764c63753f15bc9d2187627480da5291ece0774a3733d57ad0810b286a3"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "f35009c7cf2cd47b059cdabfb1690347d77205ffeddf895e741fd7359ac2eef6"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f9d97cca9eb369c60dfdf2570b28c35a083b66dd8cc0c1bbb22dc92f7fa89f37"
   end
 
-  depends_on "ghc@9.10" => :build
+  depends_on "ghc" => :build
   depends_on "haskell-stack" => :build
+  depends_on "gmp"
 
+  uses_from_macos "libffi"
   uses_from_macos "ncurses"
   uses_from_macos "zlib"
 

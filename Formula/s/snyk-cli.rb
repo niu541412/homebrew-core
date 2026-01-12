@@ -1,25 +1,25 @@
 class SnykCli < Formula
   desc "Scans and monitors projects for security vulnerabilities"
   homepage "https://snyk.io"
-  url "https://registry.npmjs.org/snyk/-/snyk-1.1298.2.tgz"
-  sha256 "ac4387c3b83a4944eb711f1ebeacfd1f190dc08045caee053576e4c8a5160f98"
+  url "https://registry.npmjs.org/snyk/-/snyk-1.1301.2.tgz"
+  sha256 "fcf2788c40e074cedd9e989ab52e1d8637d487874855ec872aac09e4cc0c816d"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "ac610484fe6aebe1acc5499fb3eb0d96adf34960bc6a0177ad4597f50355a0b9"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "ac610484fe6aebe1acc5499fb3eb0d96adf34960bc6a0177ad4597f50355a0b9"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "ac610484fe6aebe1acc5499fb3eb0d96adf34960bc6a0177ad4597f50355a0b9"
-    sha256 cellar: :any_skip_relocation, sonoma:        "c177818255caadf5a451daea5f4b2edaa79f59d990b26e1464427d2962438534"
-    sha256 cellar: :any_skip_relocation, ventura:       "c177818255caadf5a451daea5f4b2edaa79f59d990b26e1464427d2962438534"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "73a73dde3570c1c683c948a21433ff87358afcb2432181ad68118c6408b3e2c6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ea611d03d31f77a5a8086b02eeab5f767a79e79ad2c830065cad660369ece465"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "e1cd7d27a33483726c630cc5b75084afb3417dcdbab9c963351a10bc6bc44b72"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "e1cd7d27a33483726c630cc5b75084afb3417dcdbab9c963351a10bc6bc44b72"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "e1cd7d27a33483726c630cc5b75084afb3417dcdbab9c963351a10bc6bc44b72"
+    sha256 cellar: :any_skip_relocation, sonoma:        "ea1f394aeb81bfb8b8949573c40d05effde8a5b3453d0d9cdd9da1dddc43172f"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "978a314cb85566ee1cf0d00ac3e85663c3b3b611a1319808b5807134fe750e39"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "9192271b9d0e33e0aeb78baf63057ea423f618b033e04dc2407aeb815a11f4b7"
   end
 
   depends_on "node"
 
   def install
-    system "npm", "install", *std_npm_args
-    bin.install_symlink Dir["#{libexec}/bin/*"]
+    # Highly dependents on npm scripts to install wrapper bin files
+    system "npm", "install", *std_npm_args(ignore_scripts: false)
+    bin.install_symlink libexec.glob("bin/*")
 
     # Remove x86-64 ELF binaries on incompatible platforms
     # TODO: Check if these should be built from source

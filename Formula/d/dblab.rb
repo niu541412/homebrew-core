@@ -1,19 +1,19 @@
 class Dblab < Formula
   desc "Database client every command-line junkie deserves"
-  homepage "https://dblab.danvergara.com/"
-  url "https://github.com/danvergara/dblab/archive/refs/tags/v0.33.0.tar.gz"
-  sha256 "9a2d664cfe8ae553aa71598bcaecbaff0ce554ad05d9f0cbd4f18b3e941c2273"
+  homepage "https://dblab.app/"
+  url "https://github.com/danvergara/dblab/archive/refs/tags/v0.34.2.tar.gz"
+  sha256 "fdcf88a1b4bbfea0d401a8ed13b930408e6fd85bde341565cb7a7a649a274d94"
   license "MIT"
   head "https://github.com/danvergara/dblab.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "416e983fac3e039383f7950d42d1bdd84b12c2e669e5cd32e590fc1152857c12"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "729de1720ba79ec58d9a0052dc9d9c0096b816804341a8570d34175fc95a9364"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "a20a58eba3ec1581daa3bc42be7288cfab33c85143cfd4b2e9c0a6cd9e8b82ec"
-    sha256 cellar: :any_skip_relocation, sonoma:        "41f961dcecc418e50d7f744f9146c116954b5fa399f903760bbfb5a5caced7c0"
-    sha256 cellar: :any_skip_relocation, ventura:       "7406d0b3781d164edbf0967e3acb211a17338df2d50bdbf6be37609ff18d1776"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "91df82a06089aa027df282cdb2d8a83ba93c1333a6bb7f201c6f4f000f0098ee"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "51f82c5141fe3a0456a4e2601aca1f9ad6e7310450a56541938c89ec1f1d6d58"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "d43adf54e6fbfe3f960a9bd4bf528858dffa1bb81a851b6a4ca5aef05ffc140c"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "cea1288d11278beda5ccc60f3a408bda994a6369419bbbec5a0d2c95f2e03db1"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "ecbc95d339025267a8542c8098302c605ff3321be1e589df9f9c965cfccbca2b"
+    sha256 cellar: :any_skip_relocation, sonoma:        "2e920c103d4854a1451be086592028bd97510f06ac1c8eac56d0cab17a9307ae"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "bd7b61a08cb70653413b4db05ebe47e49215bd2c23e8d23a3cc1a973e0ef2d40"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5737a66d22c3fb01cf61104de5d8addbf9935947cfd8fddfde71792fca629dc1"
   end
 
   depends_on "go" => :build
@@ -21,7 +21,7 @@ class Dblab < Formula
   def install
     system "go", "build", *std_go_args(ldflags: "-s -w -X main.version=#{version}")
 
-    generate_completions_from_executable(bin/"dblab", "completion")
+    generate_completions_from_executable(bin/"dblab", shell_parameter_format: :cobra)
   end
 
   test do

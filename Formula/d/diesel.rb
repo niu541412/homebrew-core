@@ -1,19 +1,18 @@
 class Diesel < Formula
   desc "Command-line tool for Rust ORM Diesel"
   homepage "https://diesel.rs"
-  url "https://github.com/diesel-rs/diesel/archive/refs/tags/v2.2.12.tar.gz"
-  sha256 "583f2d71a14b2bb318222474bd1f26f93e945a3e98dcf1b892c67463abe13897"
+  url "https://github.com/diesel-rs/diesel/archive/refs/tags/v2.3.5.tar.gz"
+  sha256 "a110b37436de725e59bb5b51c7343be93ca41426c0226a2cce5394b905016d3d"
   license any_of: ["Apache-2.0", "MIT"]
-  head "https://github.com/diesel-rs/diesel.git", branch: "master"
+  head "https://github.com/diesel-rs/diesel.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "c1d432e2906544eb1c778d7a600c648ac8bbe6f7d184552dfb1e5037483a808d"
-    sha256 cellar: :any,                 arm64_sonoma:  "ea7d5e7663e95e05fac2c0f9febb3f06c8d2ea6ae01c9e45e830422bc9518d3b"
-    sha256 cellar: :any,                 arm64_ventura: "4efdee80dc2786ae276f3942e0afd28956770721938fd40db4413e4b8cc28805"
-    sha256 cellar: :any,                 sonoma:        "38b3a3daf0c5aa396f2aff72d6c02f7a5a0ffcb6c3a690638a2369a664e48167"
-    sha256 cellar: :any,                 ventura:       "3493c9508d3fcf55e8f64242dd23843bb37837d89ff03eeb8f6b4363d2426640"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "54d452e7afae56304c1180ae1dec7de96569fdc26c53ee45f1fd9570cb4af62e"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2ff6d2f7204686a2c23d36b3ad64787a207c8a8885facc0e2cfb5a52b4dde446"
+    sha256 cellar: :any,                 arm64_tahoe:   "7f130eb77f7897087459e7871302b4052fe7d38ddb9dfc053bc3169a0e2b1137"
+    sha256 cellar: :any,                 arm64_sequoia: "5592ff19d5a03f57259fd03a84bb5a2ded571637de542f71a6fd11574fa92029"
+    sha256 cellar: :any,                 arm64_sonoma:  "b10aa7f7ef215c74e883b14c305635b48b372a9a61455b72dd4c354f7fa4877f"
+    sha256 cellar: :any,                 sonoma:        "ca9d0f22edd428675ef0c562b071d34a4260aed20a2912b66cb2a93999a138e2"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "5a9d580c9c92e1e6e07d3160764fbe08792998edc3576e6480a07819cc850ec0"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "52473287033fccecb3474101bc3b6842ab0a3c816f04b923831ca431d60593e9"
   end
 
   depends_on "rust" => [:build, :test]

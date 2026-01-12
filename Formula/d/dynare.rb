@@ -1,9 +1,10 @@
 class Dynare < Formula
   desc "Platform for economic models, particularly DSGE and OLG models"
   homepage "https://www.dynare.org/"
-  url "https://www.dynare.org/release/source/dynare-6.4.tar.xz"
-  sha256 "9865e2e7f6b3705155538d5fb1fb0b01bc9decf07250b3b054d3555d651c3843"
+  url "https://www.dynare.org/release/source/dynare-6.5.tar.xz"
+  sha256 "56a6f934f5d2ded57206d2f109975324b39586394f4e8ce23b3c72aadcd5cd4a"
   license "GPL-3.0-or-later"
+  revision 1
   head "https://git.dynare.org/Dynare/dynare.git", branch: "master"
 
   livecheck do
@@ -12,11 +13,12 @@ class Dynare < Formula
   end
 
   bottle do
-    sha256 cellar: :any, arm64_sonoma:  "bd336366a6d2fbf0876dcd623119954bebae19e74f5ae60111ca71ff71e7696d"
-    sha256 cellar: :any, arm64_ventura: "a88c061173833f4eb15b9a1659589115fddb5fd982aacf7c5e75aa2bfa70ed0c"
-    sha256 cellar: :any, sonoma:        "13400a53448afca9149b37214a84b4d38efc436d238d842e493617004c3f1fc9"
-    sha256 cellar: :any, ventura:       "1ec869d738eb08813f4fb125eaae9d2263fff067c4c92abffb79103187c8aa4c"
-    sha256               x86_64_linux:  "c6b2ed4430f6418cb9d5b70848a106617e3ab815f96a4606153f556ecb4bc3f4"
+    sha256 cellar: :any, arm64_tahoe:   "1bf69c806c2c1290531de6f8f0fcd71c410740c063f38376668104e6f6ad4eea"
+    sha256 cellar: :any, arm64_sequoia: "e39d637e33dc4d90102ce164f42f7e039c01ed2fb651ce99c8cba0defecea304"
+    sha256 cellar: :any, arm64_sonoma:  "2228a8d6fb4009ced166372f97cdf50de578bdca0ef9eb5a4e10f7c42098e5bc"
+    sha256 cellar: :any, sonoma:        "6d8285f8ce189ca8f7b79b8950e7384431ded27e1665b2b34dcfa4a7b3cd7ce3"
+    sha256               arm64_linux:   "ac3cde07a02a160d4487d727b8930f26105154c4bd590d7fec19f57fa104bf69"
+    sha256               x86_64_linux:  "59fe01949122963831745b16e44a75f4c2eb1b82c980cc7a1cc6436b3917a8ed"
   end
 
   depends_on "bison" => :build
@@ -26,14 +28,12 @@ class Dynare < Formula
   depends_on "meson" => :build
   depends_on "ninja" => :build
   depends_on "pkgconf" => :build
-  depends_on "fftw"
-  depends_on "gcc"
+  depends_on "gcc" # for gfortran
   depends_on "gsl"
-  depends_on "hdf5"
   depends_on "libmatio"
-  depends_on "metis"
   depends_on "octave"
   depends_on "openblas"
+  depends_on "slicot"
   depends_on "suite-sparse"
 
   fails_with :clang do
@@ -43,29 +43,14 @@ class Dynare < Formula
     EOS
   end
 
-  resource "slicot" do
-    url "https://deb.debian.org/debian/pool/main/s/slicot/slicot_5.0+20101122.orig.tar.gz"
-    sha256 "fa80f7c75dab6bfaca93c3b374c774fd87876f34fba969af9133eeaea5f39a3d"
-  end
-
   def install
-    resource("slicot").stage do
-      system "make", "lib", "OPTS=-fPIC", "SLICOTLIB=../libslicot_pic.a",
-             "FORTRAN=gfortran", "LOADER=gfortran"
-      system "make", "clean"
-      system "make", "lib", "OPTS=-fPIC -fdefault-integer-8",
-             "FORTRAN=gfortran", "LOADER=gfortran",
-             "SLICOTLIB=../libslicot64_pic.a"
-      (buildpath/"slicot/lib").install "libslicot_pic.a", "libslicot64_pic.a"
-    end
+    # This needs a bit of extra help in finding the Octave libraries on Linux.
+    octave = Formula["octave"]
+    ENV.append "LDFLAGS", "-Wl,-rpath,#{octave.opt_lib}/octave/#{octave.version.major_minor_patch}" if OS.linux?
 
-    # Work around used in upstream builds which helps avoid runtime preprocessor error.
-    # https://git.dynare.org/Dynare/dynare/-/blob/master/macOS/homebrew-native-arm64.ini
-    ENV.append "LDFLAGS", "-Wl,-ld_classic" if DevelopmentTools.clang_build_version >= 1500
-
-    # Help meson find `suite-sparse` and `slicot`
+    # Help meson find `boost` and `suite-sparse`
+    ENV["BOOST_ROOT"] = Formula["boost"].opt_prefix
     ENV.append_path "LIBRARY_PATH", Formula["suite-sparse"].opt_lib
-    ENV.append_path "LIBRARY_PATH", buildpath/"slicot/lib"
 
     system "meson", "setup", "build", "-Dbuild_for=octave", *std_meson_args
     system "meson", "compile", "-C", "build", "--verbose"
@@ -82,18 +67,12 @@ class Dynare < Formula
 
   test do
     resource "statistics" do
-      url "https://github.com/gnu-octave/statistics/archive/refs/tags/release-1.6.5.tar.gz", using: :nounzip
-      sha256 "0ea8258c92ce67e1bb75a9813b7ceb56fff1dacf6c47236d3da776e27b684cee"
+      url "https://github.com/gnu-octave/statistics/archive/refs/tags/release-1.7.3.tar.gz", using: :nounzip
+      sha256 "570d52af975ea9861a6fb024c23fc0f403199e4b56d7a883ee6ca17072e26990"
     end
 
-    ENV.cxx11
+    ENV.delete "CXX" # avoid overriding Octave flags
     ENV.delete "LDFLAGS" # avoid overriding Octave flags
-
-    # Work around Xcode 15.0 ld error with GCC: https://github.com/Homebrew/homebrew-core/issues/145991
-    if OS.mac? && (MacOS::Xcode.version.to_s.start_with?("15.0") || MacOS::CLT.version.to_s.start_with?("15.0"))
-      ENV["LDFLAGS"] = shell_output("#{Formula["octave"].opt_bin}/mkoctfile --print LDFLAGS").chomp
-      ENV.append "LDFLAGS", "-Wl,-ld_classic"
-    end
 
     statistics = resource("statistics")
     testpath.install statistics

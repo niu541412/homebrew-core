@@ -1,19 +1,18 @@
 class Portmidi < Formula
   desc "Cross-platform library for real-time MIDI I/O"
   homepage "https://github.com/PortMidi/portmidi"
-  url "https://github.com/PortMidi/portmidi/archive/refs/tags/v2.0.6.tar.gz"
-  sha256 "81d22b34051621cd56c8d5ef12908ef2a59764c9cdfba6dae47aabddb71ac914"
+  url "https://github.com/PortMidi/portmidi/archive/refs/tags/v2.0.8.tar.gz"
+  sha256 "f21201d4cc233638d7bb6ee29ee6dece54f6c9c1aeb7989bc978001caaf2f666"
   license "MIT"
   version_scheme 1
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "10ddde2d1f79d5af52f2efd790fa4a5bde8aa4d822c4bca874845abe3b7c0264"
-    sha256 cellar: :any,                 arm64_sonoma:  "34068c161cdd3b13603881e7567b929c832dbdb17957f1f49ff5e26b0af4a4df"
-    sha256 cellar: :any,                 arm64_ventura: "0aed6c8f284be50da5a5dcc5960871f503f7b275b02f3a855738dd67a23128e9"
-    sha256 cellar: :any,                 sonoma:        "a7fa48b88a0c8527e4cbe4d79de1204e97a2657660109c69822d94bf52f3156e"
-    sha256 cellar: :any,                 ventura:       "c3ede6d5e5911726971a35681b0852e26cdcd93799d7fbbda92b8ae73e9268d7"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "d00e36c34fb56e1333ade4cab1801852db7b5416c709354ad26ecc9bb44f2316"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "49b66f426a03a2fd27eca584c079b01e25b2cd23bb73f06cbc5fc3f187ddae90"
+    sha256 cellar: :any,                 arm64_tahoe:   "02be979b495e1a9e201b22e8e136c97a5c81930e169c1aa38b83b46dd82f73e2"
+    sha256 cellar: :any,                 arm64_sequoia: "68919e82b5dbbaf1150ab3f9c4b3d2a58a68836229ff1ae12a77319d020394fb"
+    sha256 cellar: :any,                 arm64_sonoma:  "0cd908e5699f31817715fbb60cbe8840198f615620f556c384ad21bdf38120a6"
+    sha256 cellar: :any,                 sonoma:        "8e95eab876a35c3d629c88ff159d05f0242083990586562a03f54bc9056f1be6"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "598ca599a4d47c9f106818c1593e52e26d7a512478d6fcee80dd26c6693d91c2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a66e2c410e774644f259314a481921b6ea633cc5fe7c610e2e703ce9b0ca572e"
   end
 
   depends_on "cmake" => :build
@@ -23,14 +22,6 @@ class Portmidi < Formula
   end
 
   def install
-    if OS.mac? && MacOS.version <= :sierra
-      # Fix "fatal error: 'os/availability.h' file not found" on 10.11 and
-      # "error: expected function body after function declarator" on 10.12
-      # Requires the CLT to be the active developer directory if Xcode is
-      # installed
-      ENV["SDKROOT"] = MacOS.sdk_path
-    end
-
     system "cmake", "-S", ".", "-B", "build", *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"

@@ -1,19 +1,18 @@
 class Syft < Formula
   desc "CLI for generating a Software Bill of Materials from container images"
   homepage "https://github.com/anchore/syft"
-  url "https://github.com/anchore/syft/archive/refs/tags/v1.29.1.tar.gz"
-  sha256 "a84d4cfbe2ec9c551e6ca68fbbc8889b2fa796e6b71936bee621fb0b654656dd"
+  url "https://github.com/anchore/syft/archive/refs/tags/v1.40.0.tar.gz"
+  sha256 "c43a75055ccc0bebc0e295653a884b57bbab2d14057eb9da2f58a83725a10f16"
   license "Apache-2.0"
   head "https://github.com/anchore/syft.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "554e90a7db017e885588752ba3ffe7ced4d649e3190ae62411602c46d863287a"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "f1978004e6f20a46849eaf1775f1e0031aa7037937deae9be2889e140d56b9f5"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "c733ca47528cd4fc890da21c23efb9eb398d7322a740d6f683e35dbf355ff69e"
-    sha256 cellar: :any_skip_relocation, sonoma:        "9ac4ce5178315fda15ccb4fa6509e21e8e9add8708731e212c74bb1edda72fd9"
-    sha256 cellar: :any_skip_relocation, ventura:       "d7ea1c00ec8f0b1e3b28393e41a9684a5b55c9816253feb24dd3e11a89b03979"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "9f6e8d74aec3bdac11255dcd1b622af79d6919bc5c83dcd24ab08373ba45a379"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "46f8ba9e24853672467449d360085ffec5360a757c52ece2255cb7e56c6f6646"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "0b69907286ac29af7539689f807b84a8007e949b29b78f187ea9aadfcf7f09c8"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "4983a7c0c5b1fa0fdcf9151eaddf90670fed08e829f9989be000796ca703ae0f"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "4903724c63c4f9daa5c86c6b240ef63ec69a37342a7b115194aeee7fe933c0c7"
+    sha256 cellar: :any_skip_relocation, sonoma:        "d42774399e2b2cc467abb29850e968a63bf5daee794dfb4419f1f5e4087ba94a"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "7b954b82aa93adf72da42aee2c20d78848efcd506a5d58ecbc4832de5b455bde"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "2f551ecb778088c643ad5eefe9ebb5a6102ec11e54a0e068670e1c211b23e68d"
   end
 
   depends_on "go" => :build
@@ -28,7 +27,7 @@ class Syft < Formula
 
     system "go", "build", *std_go_args(ldflags:), "./cmd/syft"
 
-    generate_completions_from_executable(bin/"syft", "completion")
+    generate_completions_from_executable(bin/"syft", shell_parameter_format: :cobra)
   end
 
   test do

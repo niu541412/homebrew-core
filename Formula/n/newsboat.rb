@@ -1,19 +1,18 @@
 class Newsboat < Formula
   desc "RSS/Atom feed reader for text terminals"
   homepage "https://newsboat.org/"
-  url "https://newsboat.org/releases/2.40/newsboat-2.40.tar.xz"
-  sha256 "1e656636009ffad3aeb87f8d0e4c36d2e913eac155b5f3ec85d00e8287b477c2"
+  url "https://newsboat.org/releases/2.42/newsboat-2.42.tar.xz"
+  sha256 "7fe56497f5368d7d5f9ab76e755e768c0e26605cc32d56b94d3133ee81d88e9b"
   license "MIT"
   head "https://github.com/newsboat/newsboat.git", branch: "master"
 
   bottle do
-    sha256 arm64_sequoia: "62beb795654ad0e034cae9415b3d9762037dd5b7a6b084195338d66dfe12e5d4"
-    sha256 arm64_sonoma:  "eaab1099251d9341a040788309e8de0cd3a2210eb45b8feaa15dd96303c3ad94"
-    sha256 arm64_ventura: "00456fdf96b6cf458a1ef3e68343ded5c41f4c41dea5af060c477c782b74e535"
-    sha256 sonoma:        "a1f9d6d589a29fcead823ff5598eac302898403c3faa4936eb946224fa05a16a"
-    sha256 ventura:       "c0f4e28fdd96b4e278f37f97ba42376a3fd896e938904e28e971d232c0663b5a"
-    sha256 arm64_linux:   "a00dbb6fe0ed510fd078d1690c6a64881f674ac2af943e944ca1895d3282246a"
-    sha256 x86_64_linux:  "c9ec61ffc627d29d3a32c984db34f6ae4cc641804b37aeb2b0b5918fb59aceec"
+    sha256 arm64_tahoe:   "b610948d104b7556fc62a95d0f9bf842e13ea0c6aeac3939af71a32e5a3dd22d"
+    sha256 arm64_sequoia: "7b1d62e63c130de7db559543124c5fc97dbffb4cda7091061374ea25c49238d8"
+    sha256 arm64_sonoma:  "9b62381e36cdc45c85b1bd4d490047c9bc3a5393b33cde0a44fe8b5a6b258cc6"
+    sha256 sonoma:        "b37943a296488d563127aea5a6d715f23b66164765cfbc0429c96cee6723109b"
+    sha256 arm64_linux:   "fa2284f76d28afb1a331ad5b65e98ea5048ae22ccd448ad67e1e350093fe0ae5"
+    sha256 x86_64_linux:  "ca54d697581473d3d2788b59cedda849e9c6f61f6d3f5d6a6cdf32706a2fdfdd"
   end
 
   depends_on "asciidoctor" => :build
@@ -31,6 +30,15 @@ class Newsboat < Formula
 
   on_macos do
     depends_on "make" => :build
+  end
+
+  on_tahoe do
+    depends_on "llvm" => :build if DevelopmentTools.clang_build_version == 1700
+
+    fails_with :clang do
+      build 1700
+      cause "https://github.com/llvm/llvm-project/issues/142118"
+    end
   end
 
   # Newsboat have their own libstfl fork. Upstream libsftl is gone:

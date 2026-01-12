@@ -1,8 +1,8 @@
 class Corsixth < Formula
   desc "Open source clone of Theme Hospital"
   homepage "https://github.com/CorsixTH/CorsixTH"
-  url "https://github.com/CorsixTH/CorsixTH/archive/refs/tags/v0.69.0.tar.gz"
-  sha256 "0f2dbdc2b8b6b2e4d5e80a6be02a72d586d0072efe867750a424746bd318f1f5"
+  url "https://github.com/CorsixTH/CorsixTH/archive/refs/tags/v0.69.2.tar.gz"
+  sha256 "cbad15f9a16edd4c068ce14fb17f39cdb811dab0135fca80fafffa9a45732aec"
   license "MIT"
   head "https://github.com/CorsixTH/CorsixTH.git", branch: "master"
 
@@ -15,13 +15,12 @@ class Corsixth < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "0decd168795988916b92e814d937027ff7999f75514e5b078fae4bef441f1d9c"
-    sha256 arm64_sonoma:  "cd96d54ceef6d14a32a76c33b4b7317865c0cb1e955ef68aafaa0cca59b90f8e"
-    sha256 arm64_ventura: "b26f4227f77757bc93023940afe00e05f91e7baeb30c3a0729d17f6df2f6946f"
-    sha256 sonoma:        "67a6adecbab18ae3bf3c641d16e5db95d8201c68ec1c531ad2f6f4d35bd20d46"
-    sha256 ventura:       "eba5905a0554c2c5afb557da9bdda642cae66f2d7ea603b189eedde5cf9188cd"
-    sha256 arm64_linux:   "4cd091ab208d3dde25ee05a1b2f6e534493eb1e7fc378417ff43c08239ffc456"
-    sha256 x86_64_linux:  "b0b9f5cd66ef36b1b733e3cd226d6e6e8f3722f71bacc1a7e1bb4f615ba74d0c"
+    sha256 arm64_tahoe:   "e4db49792837ef97ede9e390becba49c9ca4b5b74cdb65a3db2830a982245edc"
+    sha256 arm64_sequoia: "85f3c97033e315c7002e410857f2a896018fe5b93a446f95b83f0cdefd910f62"
+    sha256 arm64_sonoma:  "76d79a2109ccc63b17bd1a6f73af0f69d8d1df514f40b5bab953a8c19a20fde6"
+    sha256 sonoma:        "17ad046129a03c40a7cade3dd01425574eb4861068b463b55e9370e7b6e09ecd"
+    sha256 arm64_linux:   "133802d597b3c9ca344b8e70f79012380cb02d93eb76f8e97bd7ba742847da82"
+    sha256 x86_64_linux:  "b5b7c68918ad8a91cda1a2c1a1b56d6de38a9e238e2a2b8299f64824f3f4ecf0"
   end
 
   depends_on "cmake" => :build
@@ -40,8 +39,8 @@ class Corsixth < Formula
   end
 
   resource "luafilesystem" do
-    url "https://github.com/keplerproject/luafilesystem/archive/refs/tags/v1_8_0.tar.gz"
-    sha256 "16d17c788b8093f2047325343f5e9b74cccb1ea96001e45914a58bbae8932495"
+    url "https://github.com/keplerproject/luafilesystem/archive/refs/tags/v1_9_0.tar.gz"
+    sha256 "1142c1876e999b3e28d1c236bf21ffd9b023018e336ac25120fb5373aade1450"
   end
 
   def install
@@ -96,10 +95,10 @@ class Corsixth < Formula
 
   test do
     if OS.mac?
+      require "utils/linkage"
       lua = Formula["lua"]
-
       app = prefix/"CorsixTH.app/Contents/MacOS/CorsixTH"
-      assert_includes app.dynamically_linked_libraries, "#{lua.opt_lib}/liblua.dylib"
+      assert Utils.binary_linked_to_library?(app, lua.opt_lib/"liblua.dylib"), "No linkage with lua!"
     end
 
     PTY.spawn(bin/"CorsixTH") do |r, _w, pid|

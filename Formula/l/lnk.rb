@@ -1,17 +1,17 @@
 class Lnk < Formula
   desc "Git-native dotfiles management that doesn't suck"
   homepage "https://github.com/yarlson/lnk"
-  url "https://github.com/yarlson/lnk/archive/refs/tags/v0.5.0.tar.gz"
-  sha256 "18d9b61e558004073ba7f680fd575fd498dd0ef0c97c0487c93c7d5152856ca9"
+  url "https://github.com/yarlson/lnk/archive/refs/tags/v0.7.0.tar.gz"
+  sha256 "aeb60a34139af39fe9a495cf15b261e2c743dd757599737a1db36dd1ae997b96"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "49eafd220f623f245a17df428ae06faeb2cb1e38f20cd24fe455435865d2a4c0"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "49eafd220f623f245a17df428ae06faeb2cb1e38f20cd24fe455435865d2a4c0"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "49eafd220f623f245a17df428ae06faeb2cb1e38f20cd24fe455435865d2a4c0"
-    sha256 cellar: :any_skip_relocation, sonoma:        "5b7bc61412996f060c7484e4fbe1018f59cfe51f977429e928ba8ccdede555ca"
-    sha256 cellar: :any_skip_relocation, ventura:       "5b7bc61412996f060c7484e4fbe1018f59cfe51f977429e928ba8ccdede555ca"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b04dcd6d3af3210caf7e15324f54d67e571f71972fa2b84aa4d89eac3a630473"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "6bdfa814f7e2cb0beca968390b851594778eac8acbd4094d3b24c89ca2fa9079"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "6bdfa814f7e2cb0beca968390b851594778eac8acbd4094d3b24c89ca2fa9079"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "6bdfa814f7e2cb0beca968390b851594778eac8acbd4094d3b24c89ca2fa9079"
+    sha256 cellar: :any_skip_relocation, sonoma:        "57d415d120c7491ba3360354bdceab4017e3f4f15708f84bd7d620ca60f2f99e"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "e4a69b32d91349e951882b718b8df5efb2645ffbabaceafe676398eb970fe8e4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "76b53749911e3b1c28addc7e4588afbe0b9abfbaadc05fdc57b451db5ec6b0b4"
   end
 
   depends_on "go" => :build

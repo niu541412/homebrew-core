@@ -9,17 +9,14 @@ class Rbtools < Formula
   head "https://github.com/reviewboard/rbtools.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "9d1541193440801cfc7dfd429ccce3004ec1c059b5fe8734223a61b6929e8491"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "9d1541193440801cfc7dfd429ccce3004ec1c059b5fe8734223a61b6929e8491"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "9d1541193440801cfc7dfd429ccce3004ec1c059b5fe8734223a61b6929e8491"
-    sha256 cellar: :any_skip_relocation, sonoma:        "5e86ed43488d247a5ce2ca8c14827669605e5484fd80a50dc68315942869eb9f"
-    sha256 cellar: :any_skip_relocation, ventura:       "5e86ed43488d247a5ce2ca8c14827669605e5484fd80a50dc68315942869eb9f"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "9d1541193440801cfc7dfd429ccce3004ec1c059b5fe8734223a61b6929e8491"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "9d1541193440801cfc7dfd429ccce3004ec1c059b5fe8734223a61b6929e8491"
+    rebuild 2
+    sha256 cellar: :any_skip_relocation, all: "f6a0487b407bae3c316c0342ac52c6912e8dac8ec3c8ed37bd345fc3747dbdb6"
   end
 
-  depends_on "certifi"
-  depends_on "python@3.13"
+  depends_on "certifi" => :no_linkage
+  depends_on "python@3.14"
+
+  pypi_packages exclude_packages: "certifi"
 
   resource "colorama" do
     url "https://files.pythonhosted.org/packages/d8/53/6f443c9a4a8358a93a6792e2acffb9d9d5cb0a5cfd8802644b7b1c9a02e4/colorama-0.4.6.tar.gz"
@@ -75,8 +72,8 @@ class Rbtools < Formula
   end
 
   resource "typing-extensions" do
-    url "https://files.pythonhosted.org/packages/98/5a/da40306b885cc8c09109dc2e1abd358d5684b1425678151cdaed4731c822/typing_extensions-4.14.1.tar.gz"
-    sha256 "38b39f4aeeab64884ce9f74c94263ef78f3c22467c8724005483154c26648d36"
+    url "https://files.pythonhosted.org/packages/72/94/1a15dd82efb362ac84269196e94cf00f187f7ed21c242792a923cdb1c61f/typing_extensions-4.15.0.tar.gz"
+    sha256 "0cea48d173cc12fa28ecabc3b837ea3cf6f38c6d1136f85cbaaf598984861466"
   end
 
   resource "zipp" do
@@ -105,16 +102,16 @@ index ed91128..87edbc2 100755
 --- a/setup.py
 +++ b/setup.py
 @@ -8,7 +8,6 @@ import sys
- 
+
  from setuptools import setup, find_packages
- 
+
 -from pydiffx import get_package_version
- 
- 
+
+
  PACKAGE_NAME = 'pydiffx'
 @@ -36,7 +35,7 @@ with open('README.rst', 'r') as fp:
- 
- 
+
+
  setup(name=PACKAGE_NAME,
 -      version=get_package_version(),
 +      version='1.1',

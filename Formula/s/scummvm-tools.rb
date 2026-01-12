@@ -4,7 +4,7 @@ class ScummvmTools < Formula
   url "https://downloads.scummvm.org/frs/scummvm-tools/2.9.0/scummvm-tools-2.9.0.tar.xz"
   sha256 "1b4bbd7a7ccf4584bfc2c0142b7c1b4e5db97c39d8d214757c72d50e0905b71d"
   license "GPL-3.0-or-later"
-  revision 4
+  revision 6
   head "https://github.com/scummvm/scummvm-tools.git", branch: "master"
 
   livecheck do
@@ -13,13 +13,12 @@ class ScummvmTools < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "a8742385ef38f2c949961d1a4c41e7c13f55d07db59b06283ca949ec095bf916"
-    sha256 cellar: :any,                 arm64_sonoma:  "6ec40e4551d67af6dc48bee3b60d74e5cb3abcdaf1d29d7d674d9abaf6eba5aa"
-    sha256 cellar: :any,                 arm64_ventura: "95dc943e79e1884cd589fe1db27952724318081bf3c1685972e91c1ea2bf35bc"
-    sha256 cellar: :any,                 sonoma:        "8df1ef3d5334bcf8173480bd0fd7393045b78985447c558a979bd4e0a1a626b5"
-    sha256 cellar: :any,                 ventura:       "e52530e7a1069a23c57b0f2e51e847a72bcdc9474f4d9e4d2620443fe3f0bebd"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "dfba1b75ce550ef63b147a7a7a438fe7992b48de9d99310d1bdf9c1b78c24c1c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "24d27784dca224621fef8c52ae30d4f9014b5a0d38a3ba6817a64f4b36ff04da"
+    sha256 cellar: :any,                 arm64_tahoe:   "d0d9ce1db6aa5f90e5ab793a5735b72a539ec1ef17537c02923e95557a4d687c"
+    sha256 cellar: :any,                 arm64_sequoia: "98c8e8d7f906f5a137f252a3ae78bc3bcd17675feecad98e1716be21b41c07ef"
+    sha256 cellar: :any,                 arm64_sonoma:  "5b51e517b66e0cafa867418ed4e4556f38a5995f43341ce84e187d0b93b4c97a"
+    sha256 cellar: :any,                 sonoma:        "47767c0db65bd642dffbeacd583481a054347ac263743b7ce6ee2cc0117f1c5b"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "acd405eb41890990dfb3ccc1064d6e0ed64de62568e624a6bd09d56d1aec2034"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "9c0130120333cafa9ec0074e98057ec2d69539f74551cbbc63631c1fbd0b526e"
   end
 
   depends_on "boost"

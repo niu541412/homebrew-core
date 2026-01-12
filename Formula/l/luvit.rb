@@ -10,13 +10,13 @@ class Luvit < Formula
   no_autobump! because: :requires_manual_review
 
   bottle do
-    rebuild 2
-    sha256 cellar: :any,                 arm64_sequoia: "f004efa20e48708ea7d0a1ea8bfa25bbe3d799ee20984e44f961021364d1dd92"
-    sha256 cellar: :any,                 arm64_sonoma:  "cb68897cf4876b88d1d6f4145fc9ede06ef04f4b882c7eff6a9ca8a10e0eb668"
-    sha256 cellar: :any,                 arm64_ventura: "7cd6942821d45baa652c413d10d4ad521828d0a86ee581f0f72ff06098491c27"
-    sha256 cellar: :any,                 sonoma:        "6f261a667091381e962a5ff45a4080328c111bfe5883ec9d988b08b4eefaa8e5"
-    sha256 cellar: :any,                 ventura:       "c18b8fc2393a68b9b37f5ad5676fd619cca659348fb16938574a0a3b2731ce91"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "39109c056556f13c412c554fd1b421812b32e6d2bd01c4e103d71188612c21e9"
+    rebuild 4
+    sha256 cellar: :any,                 arm64_tahoe:   "d1e0e16c87a8b221d4408ff878ffa7389fa3f718073d29e2ca5159b48af6fe4b"
+    sha256 cellar: :any,                 arm64_sequoia: "d11505fcc3846d0e0a60eac5dd556f8ac586791ce7a4bb3110423bf2e4525e82"
+    sha256 cellar: :any,                 arm64_sonoma:  "bf5880e2bd02b7e42e13aa343eaa206e60bf56e3237d4d9756b7c95585d6eb7f"
+    sha256 cellar: :any,                 sonoma:        "9310c05dcfed32c3755617a078497e7bab9ff92185006867b2af25728aa565aa"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "f5532c8f6059d548a09b29be24f3f2da71a1e7ab3c4ed1c97a5dbeac5276bb54"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "519b09540eb5b7a824ac52135c5d82863ed0dc6e9e719c24867a0f4221f1ec44"
   end
 
   depends_on "cmake" => :build
@@ -25,7 +25,7 @@ class Luvit < Formula
   depends_on "luajit"
   # TODO: depends_on "luv"
   depends_on "openssl@3"
-  depends_on "pcre"
+  depends_on "pcre2"
 
   conflicts_with "lit", because: "both install `lit` binaries"
 
@@ -44,10 +44,10 @@ class Luvit < Formula
 
   # To update this resource, check LUVI_VERSION in
   # https://github.com/luvit/lit/raw/$(LIT_VERSION)/get-lit.sh
+  # NOTE: Moved up to 2.15.0 for pcre2 and openssl@3 support
   resource "luvi" do
-    url "https://github.com/luvit/luvi.git",
-        tag:      "v2.12.0",
-        revision: "5d1052f11e813ff9edc3ec75b5282b3e6cb0f3bf"
+    url "https://github.com/luvit/luvi/releases/download/v2.15.0/luvi-source.tar.gz"
+    sha256 "91f40fb6421888c2ee403de80248250c234f3bfb6dd1edbbc9188a89e4b9708a"
 
     livecheck do
       url "https://raw.githubusercontent.com/luvit/luvit/#{LATEST_VERSION}/Makefile"
@@ -64,47 +64,13 @@ class Luvit < Formula
         get_lit_page[:content][/LUVI_VERSION:-v?(\d+(?:\.\d+)+)/i, 1]
       end
     end
-
-    # Remove outdated linker flags that break the ARM build.
-    # https://github.com/luvit/luvi/pull/261
-    patch do
-      url "https://github.com/luvit/luvi/commit/b2e501deb407c44a9a3e7f4d8e4b5dc500e7a196.patch?full_index=1"
-      sha256 "be3315f7cf8a9e43f1db39d0ef55698f09e871bea0f508774d0135c6375f4291"
-    end
-  end
-
-  # Needed for OpenSSL 3 support. Remove when the `luvi`
-  # resource has a new enough version as a submodule.
-  resource "lua-openssl" do
-    url "https://github.com/zhaozg/lua-openssl/releases/download/0.8.3-1/openssl-0.8.3-1.tar.gz"
-    sha256 "d8c50601cb0a04e2dfbd8d8e57f4cf16a4fe59bdca8036deb8bc26f700f2eb8c"
   end
 
   def install
-    if DevelopmentTools.clang_build_version >= 1500
-      # Work around build error in current `lua-openssl` resource with newer Clang
-      ENV.append_to_cflags "-Wno-incompatible-function-pointer-types"
-      # Use ld_classic to work around 'ld: multiple errors: LINKEDIT overlap of start of
-      # LINKEDIT and symbol table in '.../jitted_tmp/src/lua/luvibundle.lua_luvi_generated.o'
-      ENV.append "LDFLAGS", "-Wl,-ld_classic"
-    end
-
     ENV["PREFIX"] = prefix
     luajit = Formula["luajit"]
 
     resource("luvi").stage do
-      # Build scripts set LUA_PATH before invoking LuaJIT, but that causes errors.
-      # Reported at https://github.com/luvit/luvi/issues/242
-      inreplace "cmake/Modules/LuaJITAddExecutable.cmake",
-                "COMMAND \"LUA_PATH=${LUA_PATH}\" luajit", "COMMAND luajit"
-
-      # Build scripts double the prefix of this directory, so we set it manually.
-      # Reported in the issue linked above.
-      ENV["LPEGLIB_DIR"] = "deps/lpeg"
-
-      rm_r "deps/lua-openssl"
-      Pathname("deps/lua-openssl").install resource("lua-openssl")
-
       # Build the bundled `luv` as `luvi` is not compatible with newer version.
       # We cannot use `-DWithSharedLibluv=OFF` as it will bundle `luajit` too.
       # TODO: Restore brew `luv` once support is available
@@ -123,29 +89,31 @@ class Luvit < Formula
       # CMake flags adapted from
       # https://github.com/luvit/luvi/blob/#{luvi_version}/Makefile#L73-L74
       luvi_args = %W[
-        -DCMAKE_POLICY_VERSION_MINIMUM=3.5
         -DWithOpenSSL=ON
         -DWithSharedOpenSSL=ON
-        -DWithPCRE=ON
+        -DWithPCRE2=ON
         -DWithLPEG=ON
-        -DWithSharedPCRE=ON
+        -DWithSharedPCRE2=ON
         -DWithSharedLibluv=ON
-        -DLIBLUV_INCLUDE_DIR=#{libexec}/include/luv
-        -DLIBLUV_LIBRARIES=#{libexec}/lib/#{shared_library("libluv")}
+        -DLUV_INCLUDE_DIR=#{libexec}/include/luv
+        -DLUV_LIBRARY=#{libexec}/lib/#{shared_library("libluv")}
         -DLUAJIT_INCLUDE_DIR=#{luajit.opt_include}/luajit-2.1
         -DLUAJIT_LIBRARIES=#{luajit.opt_lib/shared_library("libluajit")}
       ]
 
       system "cmake", "-S", ".", "-B", "build", *luvi_args, *std_cmake_args
       system "cmake", "--build", "build"
-      buildpath.install "build/luvi"
+      bin.install "build/luvi"
     end
+
+    # See "Sharing Luvi Across Apps": https://luvit.io/blog/alpine-luvi.html
+    (buildpath/"luvi").write "#!#{bin}/luvi --\n"
 
     resource("lit").stage do
-      system buildpath/"luvi", ".", "--", "make", ".", buildpath/"lit", buildpath/"luvi"
+      system bin/"luvi", ".", "--", "make", ".", bin/"lit", buildpath/"luvi"
     end
 
-    system "make", "install"
+    system bin/"lit", "make", ".", bin/"luvit", buildpath/"luvi"
   end
 
   test do

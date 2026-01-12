@@ -1,9 +1,9 @@
 class X8664ElfGdb < Formula
   desc "GNU debugger for x86_64-elf cross development"
   homepage "https://www.gnu.org/software/gdb/"
-  url "https://ftp.gnu.org/gnu/gdb/gdb-16.3.tar.xz"
-  mirror "https://ftpmirror.gnu.org/gdb/gdb-16.3.tar.xz"
-  sha256 "bcfcd095528a987917acf9fff3f1672181694926cc18d609c99d0042c00224c5"
+  url "https://ftpmirror.gnu.org/gnu/gdb/gdb-17.1.tar.xz"
+  mirror "https://ftp.gnu.org/gnu/gdb/gdb-17.1.tar.xz"
+  sha256 "14996f5f74c9f68f5a543fdc45bca7800207f91f92aeea6c2e791822c7c6d876"
   license "GPL-3.0-or-later"
   head "https://sourceware.org/git/binutils-gdb.git", branch: "master"
 
@@ -14,14 +14,12 @@ class X8664ElfGdb < Formula
   no_autobump! because: :requires_manual_review
 
   bottle do
-    rebuild 1
-    sha256 arm64_sequoia: "1a4c275dd54c82d2fb7565983fb7258ac7ef8d69f21e6d8a0c2c33b24f67e70f"
-    sha256 arm64_sonoma:  "06ec3ddcb48354b451944b928999451d75ce5fbea906257cd3181ccc9f18e090"
-    sha256 arm64_ventura: "921cea748af120a02e9feb5b9a2e13922171f1bf31607f8687c7fe5e761fe3e9"
-    sha256 sonoma:        "947637121994d679bc77abbb2ccaa676358b854ef6df40db771476b4ac0b5052"
-    sha256 ventura:       "38ce87c28c52fb3bc004059ebc8366e1dfdf24b56c44768aeade91b09fe17d21"
-    sha256 arm64_linux:   "f256c8f267620dc8139228e6fab3a955a07146fd378d6e0d6fd8f31363f2831d"
-    sha256 x86_64_linux:  "b498816b6889d583fa35ebb8cc38bcbf5138e47e3487a89c05650d87d578d1f8"
+    sha256 arm64_tahoe:   "2d92d3c7708d8cf17556c3748831eaea21894c809f39d24e6c1a855a96391f9a"
+    sha256 arm64_sequoia: "3c3cd7c5547c24c5477a5bfdf20070f20eb0c44719473104ab09cd7075aea216"
+    sha256 arm64_sonoma:  "8761611d1fb5160c0e64811c0b819730d3e4f5e406397cf1e6eea856521aafb8"
+    sha256 sonoma:        "46f0b82e3c175bfae670bd3f43832e90f5a965ed6b6cadc2840c67ab39931492"
+    sha256 arm64_linux:   "3e8484345406407e11b19520c89d9c6b487c7e5a66d0ceeda8d6461085e85228"
+    sha256 x86_64_linux:  "e574137ef92334df9b4a1b727ae414599c02c4d4969cf45a9fd3d3e6eee4d261"
   end
 
   depends_on "pkgconf" => :build
@@ -29,7 +27,7 @@ class X8664ElfGdb < Formula
   depends_on "gmp"
   depends_on "mpfr"
   depends_on "ncurses" # https://github.com/Homebrew/homebrew-core/issues/224294
-  depends_on "python@3.13"
+  depends_on "python@3.14"
   depends_on "readline"
   depends_on "xz" # required for lzma support
   depends_on "zstd"
@@ -62,7 +60,7 @@ class X8664ElfGdb < Formula
       --with-curses
       --with-expat
       --with-lzma
-      --with-python=#{which("python3.13")}
+      --with-python=#{which("python3.14")}
       --with-system-readline
       --with-system-zlib
       --with-zstd

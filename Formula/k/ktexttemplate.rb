@@ -1,22 +1,25 @@
 class Ktexttemplate < Formula
   desc "Libraries for text templating with Qt"
-  homepage "https://api.kde.org/frameworks/ktexttemplate/html/index.html"
-  url "https://download.kde.org/stable/frameworks/6.16/ktexttemplate-6.16.0.tar.xz"
-  sha256 "1880cf1a890031dc6172513d3dfe78f38d5726184978220ca7142a3a6e40f9b5"
+  homepage "https://api.kde.org/ktexttemplate-index.html"
+  url "https://download.kde.org/stable/frameworks/6.22/ktexttemplate-6.22.0.tar.xz"
+  sha256 "53038e8eedb91e0672bd52bd75b89d196821db3b9d30a0a802f4c964e68f1f7d"
   license "LGPL-2.1-or-later"
   head "https://invent.kde.org/frameworks/ktexttemplate.git", branch: "master"
 
   bottle do
-    sha256 arm64_sonoma:  "d7998a9c467088612784c9ed2d44ce8d5b81b94b9dd7596d5782b8fdac797f30"
-    sha256 arm64_ventura: "ea26cd88bc028d0bf7f03627b24691026e028eec6376f483ef225848c38a9348"
-    sha256 sonoma:        "748f862da053db58762e55d71fd09cdfa659ebc240c6023ac309b803a6956026"
-    sha256 ventura:       "5f6d4957a3718a9e6a1f442bcd610e103e2633bfac910ba43625d9ba1dc0dce8"
-    sha256 x86_64_linux:  "834c985fcbafb4aaff57752ae8fdd606bfe10a70e468f9370a03aa7dcedf8378"
+    sha256 arm64_tahoe:   "431f74be8f93e2fa064bbc9abf518ae47b601ad161048c88433a8ca7f286b8fd"
+    sha256 arm64_sequoia: "be262be047d5dbb9233ed725a96337939935e4facd8a4d78dee467bbb3ccada7"
+    sha256 arm64_sonoma:  "ef8fc89ecda259ab5bf3e97b24d6bfe7c721c43d411d4d1ef2de6730584b6e30"
+    sha256 sonoma:        "348c52e0ad9b90d555180cad95e58650d18b9980fa0bdcad8eb2285814f48a31"
+    sha256 arm64_linux:   "bb13612529ab33e142893ab6affddf68e23235fcb06be4a0855d8cfb34cbdeb6"
+    sha256 x86_64_linux:  "5b6bc39cb311eab46799bce89981af8f503cf6cfef7259f6af65e029e5c329fb"
   end
 
   depends_on "cmake" => [:build, :test]
   depends_on "extra-cmake-modules" => :build
-  depends_on "qt"
+  depends_on "qttools" => :build
+  depends_on "qtbase"
+  depends_on "qtdeclarative"
 
   def install
     system "cmake", "-S", ".", "-B", "build", *std_cmake_args

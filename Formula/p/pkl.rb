@@ -1,19 +1,17 @@
 class Pkl < Formula
   desc "CLI for the Pkl programming language"
   homepage "https://pkl-lang.org"
-  url "https://github.com/apple/pkl/archive/refs/tags/0.29.0.tar.gz"
-  sha256 "bbab5066f7d29187ac4fe48e935c96b2f27fc178d5d93193862dff7ac47896d9"
+  url "https://github.com/apple/pkl/archive/refs/tags/0.30.2.tar.gz"
+  sha256 "0b18b123286f4ccf8a063e3fa5129135c1289e5c5d0241afa03d0caa1e367a3a"
   license "Apache-2.0"
 
   bottle do
-    rebuild 1
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "cf6ce6ea80fab6b7c066e06e63613f4b53a2fef709ef7b8111a1e3cfad5f6ff8"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "9135ce3476dad9d55bb49f2dcaba2a27b810280a7107f22ab4191a3fac6ac2ad"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "66234b9765b70dc41eef01fb02af8275c7c80bc1d3825688e0574f248884ea31"
-    sha256 cellar: :any_skip_relocation, sonoma:        "cade7519cf009b3231cd8bc8305a48f17477742df0ed8057bca2e1c80dfe99db"
-    sha256 cellar: :any_skip_relocation, ventura:       "dd247654b3e03a76fa269bef790656edfad9d5e3cf976867b1eef47413a9d58b"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "e3d30d56d4754534faeecac8baee8da7046405d02d8080b7ed3ce8e0550f6f8b"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "38f4da375191a4cc760f33bdb269faf93052d2d6de4cd23734fa719c9fef9c8d"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "af246842685cab337e10b7afea41173572a72d1781600d631a22e5c452cb05f7"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "7cb3bb5ea5719324b9ca79d66e9dc01e44987903b57d7758a2e72c499d7ba9ae"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "9594370d739c0f619cc61e4b4eed44bf2d3b516d74c7213801836e72da37c94a"
+    sha256 cellar: :any_skip_relocation, sonoma:        "acbfe35c05d623e0afe70785c64b6a0338d44e88c5cb43535efad4a19259504e"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "25cb1950d7573395bebbe04df35dfa6c5c26bb5b257a7c838dc42a65d3a2cef8"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "981c15e7cf826e119d999507b35b854a50447a6c6e55369f27841fdb9575a087"
   end
 
   depends_on "gradle" => :build

@@ -1,8 +1,8 @@
 class DosboxX < Formula
   desc "DOSBox with accurate emulation and wide testing"
   homepage "https://dosbox-x.com/"
-  url "https://github.com/joncampbell123/dosbox-x/archive/refs/tags/dosbox-x-v2025.05.03.tar.gz"
-  sha256 "b29a2c9c38bfe1d1c1f2420d546b8c2456ae2ddce4c1f6b4d19f258841ce1581"
+  url "https://github.com/joncampbell123/dosbox-x/archive/refs/tags/dosbox-x-v2026.01.02.tar.gz"
+  sha256 "191e5de64f19b26f5a78a05b70e3216d62f3eaf2d0495f6258a12213a3d691c9"
   license "GPL-2.0-or-later"
   version_scheme 1
   head "https://github.com/joncampbell123/dosbox-x.git", branch: "master"
@@ -19,14 +19,12 @@ class DosboxX < Formula
   end
 
   bottle do
-    rebuild 1
-    sha256 arm64_sequoia: "b3831fa8f34f93d0947d5b6f784553a26efc62fdfa7899333688a3bd106b2715"
-    sha256 arm64_sonoma:  "3f335d476fb1ae9890c156ed2755643b57caa2f0c7f0be693beebd87a8436268"
-    sha256 arm64_ventura: "bf746bc868a57ce1b6a790b5a07decea4cb49d5a9681c198cfcca74ce2abad08"
-    sha256 sonoma:        "f5e3d6df263e52c29acf741903088ed5a1f9c24c10de0bbf35352b8c36da1483"
-    sha256 ventura:       "e7e366991faff23c2d558f8b6e609ea167c51f0ae9da3f6af96e47983d7cd896"
-    sha256 arm64_linux:   "91d2cd8eb95c2dcfea89654e27709650bffc25588754f97cb869e34e94cbdf18"
-    sha256 x86_64_linux:  "cc28152648d5a5891bb4817e9c0e26895181b902ebf4c87b92dbaf74f2e74072"
+    sha256                               arm64_tahoe:   "7d44cb98ab9706fb3cd2565d04e52810e75d725ce8c89b304844019593b8069d"
+    sha256                               arm64_sequoia: "17b050b27100667a068c451eb00e425a6b44a7a81ba71e2315788d16ba430989"
+    sha256                               arm64_sonoma:  "8af02abe6bb49f4aa92cd414a768cdc3d526bab3616441ddd637b7021e518cef"
+    sha256                               sonoma:        "b50881cddb629a6d20515fe8d0fac8e1dd6291c1b035bf49ec1d5329d9b2ab43"
+    sha256                               arm64_linux:   "729937ce051cef8686d3832e67010cb4ee848431ca2a1933b5883006fd711344"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "056fab36f82ab74ca4083422af5766006491ee2e45836508085d3f8258cb9d17"
   end
 
   depends_on "autoconf" => :build
@@ -37,7 +35,6 @@ class DosboxX < Formula
   depends_on "freetype"
   depends_on "libpng"
   depends_on "libslirp"
-  depends_on macos: :high_sierra # needs futimens
   depends_on "sdl2"
 
   uses_from_macos "ncurses"
@@ -49,7 +46,6 @@ class DosboxX < Formula
   end
 
   on_linux do
-    depends_on "linux-headers@5.15" => :build
     depends_on "alsa-lib"
     depends_on "libx11"
     depends_on "libxrandr"

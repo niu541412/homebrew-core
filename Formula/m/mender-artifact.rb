@@ -1,8 +1,8 @@
 class MenderArtifact < Formula
   desc "CLI tool for managing Mender artifact files"
   homepage "https://mender.io"
-  url "https://github.com/mendersoftware/mender-artifact/archive/refs/tags/4.1.0.tar.gz"
-  sha256 "d82cd2f802033d53f2e947ed8d9d6cdd7a036fadbd92a2696b72122bd2070039"
+  url "https://github.com/mendersoftware/mender-artifact/archive/refs/tags/4.2.0.tar.gz"
+  sha256 "14ba008df9b24321de72821de394bc4326e4dd9e17ed7c111340689e90d8b596"
   license "Apache-2.0"
 
   # exclude tags like `3.4.0b1` and `internal-v2020.02`
@@ -11,16 +11,13 @@ class MenderArtifact < Formula
     regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
 
-  no_autobump! because: :requires_manual_review
-
   bottle do
-    rebuild 2
-    sha256 cellar: :any,                 arm64_sequoia: "80224c8592a5dc4827fa0a910636f7d34dcfd38bae207b5a4fdb2f948a0037b6"
-    sha256 cellar: :any,                 arm64_sonoma:  "de1ae9470958c874522781e728982d9cb122fb91433137084fa5a8f32f97f853"
-    sha256 cellar: :any,                 arm64_ventura: "36bb71ef0ae85788b6d791a694cc1fa1421998b0fcc6b393385f02b29d57c115"
-    sha256 cellar: :any,                 sonoma:        "99f483948f3b03f67872a6e376565e72847b01bf8c9ef88f5b9be054d8336ed2"
-    sha256 cellar: :any,                 ventura:       "c3a172ee1a0db147f6215f064a1c33cf0bb86d9ff8619236b35f9583574f1e3a"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "07214f6a3d3292b02f755f8189fbb5acc54f57c3dba65ece86d8feb5a3506dd4"
+    sha256 cellar: :any,                 arm64_tahoe:   "9f1ed0f0e51051da55cb919c1a4125a767a97f326d9a0898d1c7ed0cbd9ec303"
+    sha256 cellar: :any,                 arm64_sequoia: "f1ff305b7019e60a2da814e997f604b9e8d2c852a324e486dfc370ca532e4f79"
+    sha256 cellar: :any,                 arm64_sonoma:  "e2596b83eb8c1ff193d4df5e57ff1b3eeabba5a270885a8e2e5c86e2295966b7"
+    sha256 cellar: :any,                 sonoma:        "90a3ba363fd15ef0a110c87f8434d017eb1c092774119570535ca02f119bedc3"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "6883b8d3f4b8b6b571d5b8b1eb0df19594651b33af7777a2c63ad48521dd300d"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6bc04e3ccb4cd4838c1cbcf2f8e07906346c28fbb45d766f526ead3f66da51c0"
   end
 
   depends_on "go" => :build
@@ -31,8 +28,15 @@ class MenderArtifact < Formula
   depends_on "openssl@3"
 
   def install
+    # Workaround to avoid patchelf corruption when cgo is required (for github.com/mendersoftware/openssl)
+    if OS.linux? && Hardware::CPU.arch == :arm64
+      ENV["CGO_ENABLED"] = "1"
+      ENV["GO_EXTLINK_ENABLED"] = "1"
+      ENV.append "GOFLAGS", "-buildmode=pie"
+    end
+
     ldflags = "-s -w -X github.com/mendersoftware/mender-artifact/cli.Version=#{version}"
-    system "go", "build", *std_go_args(ldflags: ldflags)
+    system "go", "build", *std_go_args(ldflags:)
 
     # mender-artifact doesn't support autocomplete generation so we have to
     # install the individual files instead of using

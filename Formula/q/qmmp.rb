@@ -1,8 +1,8 @@
 class Qmmp < Formula
   desc "Qt-based Multimedia Player"
   homepage "https://qmmp.ylsoftware.com/"
-  url "https://qmmp.ylsoftware.com/files/qmmp/2.2/qmmp-2.2.7.tar.bz2"
-  sha256 "ddcff0b618f4790802f6d52d9a796b5f32cb7d0f23c99181b804f614fab5fbb2"
+  url "https://qmmp.ylsoftware.com/files/qmmp/2.3/qmmp-2.3.1.tar.bz2"
+  sha256 "a61d1c1faa9c411c75292a5710999182b918831b8f0f200c87149e3ff353bea9"
   license "GPL-2.0-or-later"
 
   livecheck do
@@ -11,15 +11,18 @@ class Qmmp < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sonoma:  "abcc65eae24b680c092b937273b23f2f17772539fa8e095e4f2a318b3e75a543"
-    sha256 cellar: :any,                 arm64_ventura: "b30e8b46156f3384de8fdc52c6d61015dd1208c1e014596c30624a5a9e65a659"
-    sha256 cellar: :any,                 sonoma:        "3f1da239e10fabaca7411b091a4ac61ed21f30db9dd1d97475995f67ce4fab2d"
-    sha256 cellar: :any,                 ventura:       "81073358ef7aaed49ea386e60910c4897f3024ec32de371e79d10dcbcec895d7"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7d349f25c802a8bb03b32bf197e63ca44b69b0b291d6a282c3b342bf12f92f02"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_tahoe:   "f6f475ce1d985bbc1f5629a8fc3eca7fdef4b455236bbe5014826a9808fb8877"
+    sha256 cellar: :any,                 arm64_sequoia: "14df780f8490ea8f942f2735f42d8055d842f1a4b9bdd2f397084d240dd8995a"
+    sha256 cellar: :any,                 arm64_sonoma:  "5afff4d2c09436aafc49521a5a548f4c53e82d9c8194ffddec947bcab58c0dd2"
+    sha256 cellar: :any,                 sonoma:        "22671d345648a48ac2e78f8aeeb9ba04671fd81de20665597afe41b5702f38aa"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "a4d1f4306bd1e5f83896efd45d48b0d53a7c48bbe0a45c3daff45879ae8ae403"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5fe25b0aa178b76e52520e2d586dc3cecd274def275c79093187aa063a970477"
   end
 
   depends_on "cmake" => :build
   depends_on "pkgconf" => :build
+  depends_on "qttools" => :build
 
   # TODO: on linux: pipewire
   depends_on "faad2"
@@ -31,6 +34,7 @@ class Qmmp < Formula
   depends_on "libbs2b"
   depends_on "libcddb"
   depends_on "libcdio"
+  depends_on "libcdio-paranoia"
   depends_on "libmms"
   depends_on "libmodplug"
   depends_on "libogg"
@@ -39,7 +43,6 @@ class Qmmp < Formula
   depends_on "libsndfile"
   depends_on "libsoxr"
   depends_on "libvorbis"
-  depends_on "libxcb"
   depends_on "libxmp"
   depends_on "mad"
   depends_on "mpg123"
@@ -49,7 +52,8 @@ class Qmmp < Formula
   depends_on "opusfile"
   depends_on "projectm"
   depends_on "pulseaudio"
-  depends_on "qt"
+  depends_on "qtbase"
+  depends_on "qtmultimedia"
   depends_on "taglib"
   depends_on "wavpack"
   depends_on "wildmidi"
@@ -64,12 +68,13 @@ class Qmmp < Formula
   on_linux do
     depends_on "alsa-lib"
     depends_on "libx11"
+    depends_on "libxcb"
     depends_on "mesa"
   end
 
   resource "qmmp-plugin-pack" do
-    url "https://qmmp.ylsoftware.com/files/qmmp-plugin-pack/2.2/qmmp-plugin-pack-2.2.2.tar.bz2"
-    sha256 "0e85c8290b49aceddb7a52f9452d9c0c008539b6fba4ab2296b59a67d0b0846b"
+    url "https://qmmp.ylsoftware.com/files/qmmp-plugin-pack/2.3/qmmp-plugin-pack-2.3.0.tar.bz2"
+    sha256 "a23c202f90faaf6aebb97a9c02ee21fb3c8164b07755514349ccb3e1acb81ab5"
 
     livecheck do
       url "https://qmmp.ylsoftware.com/plugins.php"
@@ -78,8 +83,9 @@ class Qmmp < Formula
   end
 
   def install
+    rpaths = [rpath, "#{loader_path}/../.."]
     cmake_args = %W[
-      -DCMAKE_INSTALL_RPATH=#{rpath}
+      -DCMAKE_INSTALL_RPATH=#{rpaths.join(";")}
       -DCMAKE_STAGING_PREFIX=#{prefix}
       -DUSE_SKINNED=ON
       -DUSE_ENCA=ON
@@ -97,7 +103,7 @@ class Qmmp < Formula
 
     ENV.append_path "PKG_CONFIG_PATH", lib/"pkgconfig"
     resource("qmmp-plugin-pack").stage do
-      system "cmake", "-S", ".", "-B", "build", "-DCMAKE_INSTALL_RPATH=#{rpath}", *std_cmake_args
+      system "cmake", "-S", ".", "-B", "build", "-DCMAKE_INSTALL_RPATH=#{rpaths.join(";")}", *std_cmake_args
       system "cmake", "--build", "build"
       system "cmake", "--install", "build"
     end

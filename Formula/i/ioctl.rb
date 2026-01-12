@@ -1,8 +1,8 @@
 class Ioctl < Formula
   desc "Command-line interface for interacting with the IoTeX blockchain"
   homepage "https://docs.iotex.io/"
-  url "https://github.com/iotexproject/iotex-core/archive/refs/tags/v2.2.1.tar.gz"
-  sha256 "4eba51523829d49c236c64140f7d8ec051f174dd5797bc35e4d3a413953b4526"
+  url "https://github.com/iotexproject/iotex-core/archive/refs/tags/v2.3.3.tar.gz"
+  sha256 "e6502d310408d1f4ae8f215abb87b9d11a514a72f5c532175a065edb7f35dc78"
   license "Apache-2.0"
   head "https://github.com/iotexproject/iotex-core.git", branch: "master"
 
@@ -12,24 +12,36 @@ class Ioctl < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "03653699ad4d3ef4410963127f9115241a897b164a0e5ea7c91aecac25225e03"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "3690ff7cc280480301469fe0672690a01fec2611464b92cbb8388e432f38d0e1"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "66fefd09c3ec1a89e7813e1209e22e6d04e8e58cc409854ea89978431d5448c8"
-    sha256 cellar: :any_skip_relocation, sonoma:        "4f5f4178d9e7cbf5e51c619d302ff9db6feab9ffc122d5d534b5b88d72acd318"
-    sha256 cellar: :any_skip_relocation, ventura:       "0e170d305460a2e9a624b098b9aae7010e84510c20993eba45ddd8d188ec2526"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "707f0ae8c295472b404367e6fda13980d95eb93af3f46c789c85d7616a5f1432"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "00efc183f30b6dbc5fd060a67d240524d4072ba853538bd821e2bb17a33e4361"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "9eedea6ac42d2f903ea355853426e9ade1d8e51c0c8c0970c7845478b7f5f19f"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "0f5ac55590d519e716148a31c1fcc689d0058f7110777a8308ceb3f0910e64bc"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "0cb026c98207704d3131a50d93751f5eadbd74362b434946cc8007811711da1e"
+    sha256 cellar: :any_skip_relocation, sonoma:        "faff9560e695ba6b8ba05881ca90a93f6af05a152ff381059e99d70b0dacdabe"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "7fb99ec75c335dbbfbbf5655859a108933af130beaa5b85e2cdfbd5b20538863"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "b950b02dac2ffc160332555416f3d779db3f02fc2eccd9e8c51a4a3aa998236c"
   end
 
   depends_on "go" => :build
 
   def install
-    system "make", "ioctl"
-    bin.install "bin/ioctl"
+    ENV["CGO_ENABLED"] = "1"
+    ldflags = %W[
+      -s -w
+      -X github.com/iotexproject/iotex-core/v2/pkg/version.PackageVersion=#{version}
+      -X github.com/iotexproject/iotex-core/v2/pkg/version.PackageCommitID=#{tap.user}
+      -X github.com/iotexproject/iotex-core/v2/pkg/version.GitStatus=clean
+      -X github.com/iotexproject/iotex-core/v2/pkg/version.GoVersion=#{Formula["go"].version}
+      -X github.com/iotexproject/iotex-core/v2/pkg/version.BuildTime=#{time.iso8601}
+    ]
+    system "go", "build", *std_go_args(ldflags:, tags: "nosilkworm"), "./tools/ioctl"
+
+    generate_completions_from_executable(bin/"ioctl", shell_parameter_format: :cobra)
   end
 
   test do
-    output = shell_output "#{bin}/ioctl config set endpoint api.iotex.one:443"
+    assert_match version.to_s, shell_output("#{bin}/ioctl version")
+
+    output = shell_output("#{bin}/ioctl config set endpoint api.iotex.one:443")
     assert_match "Endpoint is set to api.iotex.one:443", output
   end
 end

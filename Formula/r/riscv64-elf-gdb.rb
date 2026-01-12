@@ -1,9 +1,9 @@
 class Riscv64ElfGdb < Formula
   desc "GNU debugger for riscv64-elf cross development"
   homepage "https://www.gnu.org/software/gdb/"
-  url "https://ftp.gnu.org/gnu/gdb/gdb-16.3.tar.xz"
-  mirror "https://ftpmirror.gnu.org/gdb/gdb-16.3.tar.xz"
-  sha256 "bcfcd095528a987917acf9fff3f1672181694926cc18d609c99d0042c00224c5"
+  url "https://ftpmirror.gnu.org/gnu/gdb/gdb-17.1.tar.xz"
+  mirror "https://ftp.gnu.org/gnu/gdb/gdb-17.1.tar.xz"
+  sha256 "14996f5f74c9f68f5a543fdc45bca7800207f91f92aeea6c2e791822c7c6d876"
   license "GPL-3.0-or-later"
   head "https://sourceware.org/git/binutils-gdb.git", branch: "master"
 
@@ -14,14 +14,12 @@ class Riscv64ElfGdb < Formula
   no_autobump! because: :requires_manual_review
 
   bottle do
-    rebuild 1
-    sha256 arm64_sequoia: "0496ebf857fd732860b99a501ee7d65e7ccbbd169042413ce702c5444ded3f1e"
-    sha256 arm64_sonoma:  "fe42283e0b56442eb93c110b6a308182324e1eeff5c7cf43cd7d768894485eb0"
-    sha256 arm64_ventura: "96ea7bd381f364f0e5875560a9fd7bef09add6395a53af8d4bea2f12e81e51ec"
-    sha256 sonoma:        "a002cb7302b7dfe52feab0134b31284196a52e65e9bb59f6d00b82ae97960cbd"
-    sha256 ventura:       "05be81fd9d083a1e3996ebb84fae6dfbe60014193e983a9fcaf13fd4569fdadf"
-    sha256 arm64_linux:   "4e3030c62a51aeb071e926c8846f9b5fde6c6b1b6ccce58979219cca0826effd"
-    sha256 x86_64_linux:  "a85cca3d9b3db5281ad8fd34174be330b290d4f6dae08c8029037bb9e8c2d60e"
+    sha256 arm64_tahoe:   "0446cdd101a498b6cf90e72db95fad3dfc1a181412713bb66e3a0cea4f27b161"
+    sha256 arm64_sequoia: "589392414dfd9b40b94efea017e33e482807301ee75d27a6c166d9ea926b8622"
+    sha256 arm64_sonoma:  "8437dcb3edd4f7add81c38bbb8b71240963a69767b63b9949ee6a257fef9283d"
+    sha256 sonoma:        "1b9fa48addd7aee65bb49c2b3f7cbd6a102e20de6a9f0c8229b628b13979a0c6"
+    sha256 arm64_linux:   "0a112d74462e9bc93736643770351dee1a00fa9a3d0a7b168c05d44f616260e3"
+    sha256 x86_64_linux:  "c5938bb683dea6e19984572bf8fd2f2e04408e880b96823ef69c668e0adc9c41"
   end
 
   depends_on "pkgconf" => :build
@@ -29,7 +27,7 @@ class Riscv64ElfGdb < Formula
   depends_on "gmp"
   depends_on "mpfr"
   depends_on "ncurses" # https://github.com/Homebrew/homebrew-core/issues/224294
-  depends_on "python@3.13"
+  depends_on "python@3.14"
   depends_on "readline"
   depends_on "xz" # required for lzma support
   depends_on "zstd"
@@ -62,7 +60,7 @@ class Riscv64ElfGdb < Formula
       --with-curses
       --with-expat
       --with-lzma
-      --with-python=#{which("python3.13")}
+      --with-python=#{which("python3.14")}
       --with-system-readline
       --with-system-zlib
       --with-zstd

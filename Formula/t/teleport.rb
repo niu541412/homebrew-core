@@ -1,8 +1,8 @@
 class Teleport < Formula
   desc "Modern SSH server for teams managing distributed infrastructure"
   homepage "https://goteleport.com/"
-  url "https://github.com/gravitational/teleport/archive/refs/tags/v18.1.1.tar.gz"
-  sha256 "6f5b2bed32d11f74cf4e2281597b4693ad839096ecc392bc387868d3e8f97dc4"
+  url "https://github.com/gravitational/teleport/archive/refs/tags/v18.6.1.tar.gz"
+  sha256 "96923c4f116c9b4726f3abd0da6878c771fa0494631a1737b9200225e425a93f"
   license all_of: ["AGPL-3.0-or-later", "Apache-2.0"]
   head "https://github.com/gravitational/teleport.git", branch: "master"
 
@@ -18,23 +18,22 @@ class Teleport < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "1a4d7c7e68c34d3cf2cafcf7b664fa82b6d34256ce1e00c313cea318ce452a2a"
-    sha256 cellar: :any,                 arm64_sonoma:  "769a6d350561a01364fdae427a741154d132bee0c8c5bf3658b8bb08b5305d65"
-    sha256 cellar: :any,                 arm64_ventura: "403aca71ded8eec776f4eeff393becab5eaf04f8d8e4deee71237dd2b9dc20af"
-    sha256 cellar: :any,                 sonoma:        "5296eaae192c3ab7c0025765056f25a1ecb6ca65b2d79c0f99888a0b869fe652"
-    sha256 cellar: :any,                 ventura:       "9043ea5d7a82a025ca0b96a9796335c40e8e81880406941e3dbdacdfe197c565"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "9245a95122060ec35ddb7c0f204da5c0609ae4a42e8439c9f79bb81961fef402"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "d7e9675ea48333dc278a89bbd48b3449eb6a430f57e59c2e6fe9ea6f31c16e5f"
+    sha256 cellar: :any,                 arm64_tahoe:   "ef87c716916b73aded5ce7c7905919cb2ca4e5b488a196cdc439b3bae5ecf949"
+    sha256 cellar: :any,                 arm64_sequoia: "279f31f42859fc9ff756f2678da07f5167f9fc533926eee4a2527ef8084f9632"
+    sha256 cellar: :any,                 arm64_sonoma:  "da8d4ff36ddf0eb082b146036f1c0f3f7125019099e6731e264568cb2f8adc7a"
+    sha256 cellar: :any,                 sonoma:        "0908dad3662dbe669ea8fc96db59a6bde698d99457446e20420bdc66481c1601"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "0e0785eb19d45d2f6e8131f18d6cdf899bb64f38f21ecdd6355af8785eae8ccb"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "7457dcff2605fa5d39bd7d0efe8edb0d3065c05a4f39203bea0371d0e46f6621"
   end
 
+  depends_on "binaryen" => :build
   depends_on "go" => :build
-  depends_on "node@22" => :build # node 24 support issue, https://github.com/gravitational/teleport/issues/57202
+  depends_on "node" => :build
   depends_on "pkgconf" => :build
   depends_on "pnpm" => :build
   depends_on "rust" => :build
   # TODO: try to remove rustup dependancy, see https://github.com/Homebrew/homebrew-core/pull/191633#discussion_r1774378671
   depends_on "rustup" => :build
-  depends_on "wasm-pack" => :build
   depends_on "libfido2"
   depends_on "openssl@3"
 
@@ -42,9 +41,15 @@ class Teleport < Formula
 
   conflicts_with "etsh", because: "both install `tsh` binaries"
   conflicts_with "tctl", because: "both install `tctl` binaries"
-  conflicts_with cask: "teleport"
+  conflicts_with cask: "teleport-suite"
+  conflicts_with cask: "teleport-suite@17"
+  conflicts_with cask: "teleport-suite@16"
   conflicts_with cask: "tsh", because: "both install `tsh` binaries"
-  conflicts_with cask: "tsh@13", because: "both install `tsh` binaries"
+
+  resource "wasm-bindgen" do
+    url "https://github.com/wasm-bindgen/wasm-bindgen/archive/refs/tags/0.2.99.tar.gz"
+    sha256 "1df06317203c9049752e55e59aee878774c88805cc6196630e514fa747f921f2"
+  end
 
   # disable `wasm-opt` for ironrdp pkg release build, upstream pr ref, https://github.com/gravitational/teleport/pull/50178
   patch :DATA
@@ -58,6 +63,13 @@ class Teleport < Formula
     ENV.prepend_path "PATH", Formula["rustup"].bin
     system "rustup", "set", "profile", "minimal"
     system "rustup", "default", "stable"
+
+    resource("wasm-bindgen").stage do
+      system "cargo", "install", *std_cargo_args(path: "crates/cli", root: buildpath)
+    end
+
+    # Replace wasm-bindgen binary call to the built one
+    inreplace "Makefile", "wasm-bindgen target", buildpath/"bin/wasm-bindgen target"
 
     ENV.deparallelize { system "make", "full", "FIDO2=dynamic" }
     bin.install Dir["build/*"]

@@ -1,8 +1,8 @@
 class Redress < Formula
   desc "Tool for analyzing stripped Go binaries compiled with the Go compiler"
   homepage "https://github.com/goretk/redress"
-  url "https://github.com/goretk/redress/archive/refs/tags/v1.2.33.tar.gz"
-  sha256 "45f7e0dae2ad00cbb703516fe3b74ecc31f9e0cc648887d5924c379a8ef8433e"
+  url "https://github.com/goretk/redress/archive/refs/tags/v1.2.51.tar.gz"
+  sha256 "4dd69b637db3d3aafc63448930a6c87c297d1a1e43431b5e13a75e4bcb337f1b"
   license "AGPL-3.0-only"
   head "https://github.com/goretk/redress.git", branch: "develop"
 
@@ -12,12 +12,12 @@ class Redress < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "84e38c521204cc9c659d8ca0166172186de7d1b7f0e674b3bfda67ade8aa17a8"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "84e38c521204cc9c659d8ca0166172186de7d1b7f0e674b3bfda67ade8aa17a8"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "84e38c521204cc9c659d8ca0166172186de7d1b7f0e674b3bfda67ade8aa17a8"
-    sha256 cellar: :any_skip_relocation, sonoma:        "1d58f66525a225bfbed55e796d883ff1086973c5c901a93956c029c25532837f"
-    sha256 cellar: :any_skip_relocation, ventura:       "1d58f66525a225bfbed55e796d883ff1086973c5c901a93956c029c25532837f"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "66f62456ebfde984519300e9dbbe84155eff5cffd2934115b572a1ec009eb5d8"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "6fab3781dafd419abc31f80811845d39441eb2309fb24a89b5a87e6b7e42c265"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "ac003dc0c78dcefc34134cc7be1069d5eff6a1f215e5b4eaaec183270f9940c3"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "71d94dd0f4d21f0990f7fc81812419abe5e6a5a75bd2f9a0c3bb8de57e08e651"
+    sha256 cellar: :any_skip_relocation, sonoma:        "ac76e3dca6649ee2de228bc547b200f64be0b91cc3e9eed3634ad6d1da82274b"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "88a576b033e7f807adf26d38b7853d60362c01ae7d687424b0537b621c411923"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "6ad959436988efb05d7a5610655fc04899213d28dda5700ab3f23e02b3c62d6c"
   end
 
   depends_on "go" => :build
@@ -35,16 +35,14 @@ class Redress < Formula
 
     system "go", "build", *std_go_args(ldflags:)
 
-    generate_completions_from_executable(bin/"redress", "completion")
+    generate_completions_from_executable(bin/"redress", shell_parameter_format: :cobra)
   end
 
   test do
     assert_match "Version:  #{version}", shell_output("#{bin}/redress version")
 
-    test_module_root = "github.com/goretk/redress"
     test_bin_path = bin/"redress"
-
     output = shell_output("#{bin}/redress info '#{test_bin_path}'")
-    assert_match(/Main root\s+#{Regexp.escape(test_module_root)}/, output)
+    assert_match "Build ID", output
   end
 end

@@ -4,6 +4,7 @@ class Znc < Formula
   url "https://znc.in/releases/znc-1.10.1.tar.gz"
   sha256 "4e6e76851dbf2606185972b53ec5decad68fe53b63a56e4df8b8b3c0a6c46800"
   license "Apache-2.0"
+  revision 3
 
   livecheck do
     url "https://znc.in/releases/"
@@ -11,13 +12,12 @@ class Znc < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "3f879e3a53f671bf91948290672d9afc4b2c525be1a8391a8edcc579c23a1367"
-    sha256 arm64_sonoma:  "f352b0898686f3e1971ac5f93838267f3f25cc7c5dbc21339866f27d764da5f5"
-    sha256 arm64_ventura: "0559e03b2e5cd7017a819de05f004344156598ca0df4e1a645123cdd61aa0a3b"
-    sha256 sonoma:        "53321095073216bd88a4065e2ddd853d6251fd20ed747833d99a5592eb1f3606"
-    sha256 ventura:       "eadae1e71666ba8f013eb2080e91cce2f34d6e2b0113710cfbcc4b6425b0a1d7"
-    sha256 arm64_linux:   "b2567236b256be9c054c3c51bbb8ba3ec2072137e5d80ebe44414ea5fe33bd4b"
-    sha256 x86_64_linux:  "22d73b1c7debe47b930d2cf16eec7cb509d450c4f01c5e8ba2d6babe3be95a53"
+    sha256 arm64_tahoe:   "1e2747232b52e744dab03602e2c64f7e597f1f88137776f4b0a0c8dc7f64c267"
+    sha256 arm64_sequoia: "dd385047888682db30c1faf5154c5f8e57b43730fc82bd9caa9787603a483126"
+    sha256 arm64_sonoma:  "47341f5d07357a6bd1da686a3e729febc24d5e4e4bd35024c30cb67662429c51"
+    sha256 sonoma:        "476b92c741b5434cb920cc71c994905c59310f38758defb7a22bf9e03abc2b40"
+    sha256 arm64_linux:   "bf6d1c94f945793eb5f7120673ca4ebe155533a1548874f3781c73a849698ff0"
+    sha256 x86_64_linux:  "d753d6a0086085f22ac70f0b74d604ba8dbc0816052daa298b3daf472f5f8e93"
   end
 
   depends_on "cmake" => :build
@@ -25,16 +25,16 @@ class Znc < Formula
   depends_on "pkgconf" => :build
   depends_on "boost"
   depends_on "cctz"
-  depends_on "icu4c@77"
+  depends_on "icu4c@78"
   depends_on "openssl@3"
-  depends_on "python@3.13"
+  depends_on "python@3.14"
 
   uses_from_macos "zlib"
 
   def install
     rm_r(["third_party/cctz", "third_party/googletest"])
 
-    python3 = "python3.13"
+    python3 = "python3.14"
     xy = Language::Python.major_minor_version python3
 
     # Fixes: CMake Error: Problem with archive_write_header(): Can't create 'swigpyrun.h'

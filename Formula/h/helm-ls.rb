@@ -1,24 +1,26 @@
 class HelmLs < Formula
   desc "Language server for Helm"
   homepage "https://github.com/mrjosh/helm-ls"
-  url "https://github.com/mrjosh/helm-ls/archive/refs/tags/v0.5.0.tar.gz"
-  sha256 "75da2b8c3397de3361c5e93d256b0d6d1666a83b4039ed5febf3df6ea9f73bc1"
+  url "https://github.com/mrjosh/helm-ls/archive/refs/tags/v0.5.4.tar.gz"
+  sha256 "a8a5490084839af3506c85efcf603fbd71bb9ee37222bbd7817da1da3f054ab3"
   license "MIT"
   head "https://github.com/mrjosh/helm-ls.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "fd280e902cd6bee83a50efd9e84847ee06a012d32caf43524054470ff2e06e26"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "34c82928b7f9333c372ee3d3b2ab35ca9b310d1c9154bd009d03fcd58c3f5574"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "fef517a2220c34cf4d38249448c0d41e062d31d3ea821fe4b254eae4f94ba453"
-    sha256 cellar: :any_skip_relocation, sonoma:        "26749a6dc3cec30e9d37033b409df7346661cbba8bf7867f0d00cab22979f3a0"
-    sha256 cellar: :any_skip_relocation, ventura:       "2128dcf4e463a3298b29c3b4bf23651540354067626c2842507d5debcfaf010a"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "2f8937a909f09051e33acf1f282c9da9faaabc657be936244170710fe08aca90"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "09504a5a5102786ea3efdbeffceb14446b859bed5e3979d0e33a07ae0d9898ac"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "20bdf67a7e0236a71291e8859150a4881cb20f47f18291053c069a75c3f7cf2b"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "33272118580434420cd9afeb6d1b3b9c2a99197f11cf1ebdb5a6cf3b5108c924"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "945a15cc2432578822c0133e2391cc526775455c0606e4271a577d66cb06db5c"
+    sha256 cellar: :any_skip_relocation, sonoma:        "c283d2a66a8ac927eb6823d3936237bb5c09b106621972512720ba83f5ce894d"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "6a7d9b12fb83c20cf9d8af4c64e33f62d5b427c155e6225c9f7579187b132d43"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "27695f6754f9efdd600932665de44b3e4cbd02f87ee95e69a639db027f8620b0"
   end
 
   depends_on "go" => :build
 
   def install
+    ENV["CGO_ENABLED"] = "1" if OS.linux? && Hardware::CPU.arm?
+
     ldflags = %W[
       -s -w
       -X main.Version=#{version}
@@ -28,13 +30,13 @@ class HelmLs < Formula
     ]
     system "go", "build", *std_go_args(ldflags:, output: bin/"helm_ls")
 
-    generate_completions_from_executable(bin/"helm_ls", "completion")
+    generate_completions_from_executable(bin/"helm_ls", shell_parameter_format: :cobra)
   end
 
   test do
     require "open3"
 
-    assert_match version.to_s, shell_output(bin/"helm_ls version")
+    assert_match version.to_s, shell_output("#{bin}/helm_ls version")
 
     json = <<~JSON
       {

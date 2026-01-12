@@ -1,19 +1,18 @@
 class Verilator < Formula
   desc "Verilog simulator"
   homepage "https://www.veripool.org/wiki/verilator"
-  url "https://github.com/verilator/verilator/archive/refs/tags/v5.038.tar.gz"
-  sha256 "f8c03105224fa034095ba6c8a06443f61f6f59e1d72f76b718f89060e905a0d4"
+  url "https://github.com/verilator/verilator/archive/refs/tags/v5.044.tar.gz"
+  sha256 "ded2a4a96e3b836ddc9fd5d01127999d981adee4d19133ff819b7129897d801a"
   license any_of: ["LGPL-3.0-only", "Artistic-2.0"]
   head "https://github.com/verilator/verilator.git", branch: "master"
 
   bottle do
-    sha256 arm64_sequoia: "b632565cd681551708b345d190357db97a964a20bd5eac2e18db5ca08cf89640"
-    sha256 arm64_sonoma:  "50546be0d9f2869306a1ae20c6ab24150eb0056a0bdf30f9d57c2789c3ade21b"
-    sha256 arm64_ventura: "4266406f8102df205f54ce72a922532bba41d992f2b9d3f21a4428a374bb0d61"
-    sha256 sonoma:        "8162d41874319b53cce4dec0a3b0f30cfe80bc8170f163e354138ce4ab15dc71"
-    sha256 ventura:       "efcfd000fb97584e50f686fb2a4baf5466ff32f0f68a1de6e8f87d7c4e8961a3"
-    sha256 arm64_linux:   "dfb62cc4203a70a7443f97806f4e4d60af109a5b8de2223296477a3482219428"
-    sha256 x86_64_linux:  "7c1c97a7a994e6f984f578f834ba4b030509e699e87aec7e55940d02e9ce0190"
+    sha256 arm64_tahoe:   "bd485cc5c1e943c2b6ad0a64030480be106ddf90ce33363f38e3a387e075a310"
+    sha256 arm64_sequoia: "03e76169e8eb2d8c9bfb48f015a8cbb89c921ed1f3aa5cebe68f6c39a824685c"
+    sha256 arm64_sonoma:  "34fd026a4c3df224916898c78271a6367b751ac13aebf8997a11b9c505018ff3"
+    sha256 sonoma:        "a094ca30aa50f7827eb1f59d268ed6d90fcf3c832085c313faa5a816469ca5cd"
+    sha256 arm64_linux:   "fcb4b8a664e61b1e4a1ccdc3a182d8d7626be4f617cb0a7fb51b386793560223"
+    sha256 x86_64_linux:  "7937574dd4ca9aca5ec4b256a2b30106cac9e5ce6ad9766bafc543d61731164e"
   end
 
   depends_on "autoconf" => :build
@@ -23,7 +22,7 @@ class Verilator < Formula
   uses_from_macos "bison" => :build
   uses_from_macos "flex" => :build
   uses_from_macos "perl"
-  uses_from_macos "python", since: :catalina
+  uses_from_macos "python"
 
   skip_clean "bin" # Allows perl scripts to keep their executable flag
 

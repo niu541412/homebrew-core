@@ -6,15 +6,15 @@ class Gupnp < Formula
   url "https://download.gnome.org/sources/gupnp/1.6/gupnp-1.6.9.tar.xz"
   sha256 "2edb6ee3613558e62f538735368aee27151b7e09d4e2e2c51606833da801869b"
   license "LGPL-2.0-or-later"
+  revision 1
 
   bottle do
-    sha256 cellar: :any, arm64_sequoia: "30d6c15e0e67e5f4bfbbffbe5c51376955d296985ee96114f2abbf0316dd04aa"
-    sha256 cellar: :any, arm64_sonoma:  "1830346216a09586177fc3a496373fb8010334893553e0f337885bf18f796c23"
-    sha256 cellar: :any, arm64_ventura: "f046d7600a8bb320134a022c9f3e21ce5435890a1e5a634dad970fb3467548a6"
-    sha256 cellar: :any, sonoma:        "76f7a83431dbe7d15b2fa5996a23e5781344e5d62284005631373b6513217c05"
-    sha256 cellar: :any, ventura:       "c6f43169fffb45b8934f1b88848453e6612704612b24d08eb7a2d3c5d2054264"
-    sha256               arm64_linux:   "af6ffd8565531bfe5989e206e91a4546dad7991304ec7f46600b7f971ea0bd75"
-    sha256               x86_64_linux:  "81e328bd58cc0d5e6d6797134d64c5abe64bbb58829eb337d08f625d6bf65c87"
+    sha256 cellar: :any, arm64_tahoe:   "aab39250b6637df75928cd584b22ac892b3bc88ade13c441c196462147c1e93e"
+    sha256 cellar: :any, arm64_sequoia: "87e030e2cd95bdd576452417203084d6bc5be6ac69ad7d39192468203aee28e9"
+    sha256 cellar: :any, arm64_sonoma:  "8c21ee0403e3e7ac240896b75abab35d089984f0652bdb85b67b3c4b02585f52"
+    sha256 cellar: :any, sonoma:        "20d86cbc848ba2e6cf7eda321d5c88e8ea40193657440d65da84bf34444b7805"
+    sha256               arm64_linux:   "c1d473934e2af40455da184401559fd4a280f7f9ccf41c0ed1f62aa4a7849528"
+    sha256               x86_64_linux:  "ad0e453a04da1f3183e56f79bb793215ce8703bc11f34671aaa28b8b4b4ac5e8"
   end
 
   depends_on "docbook-xsl" => :build
@@ -28,7 +28,7 @@ class Gupnp < Formula
   depends_on "gssdp"
   depends_on "libsoup"
   depends_on "libxml2"
-  depends_on "python@3.13"
+  depends_on "python@3.14"
 
   def install
     ENV.prepend_path "XDG_DATA_DIRS", HOMEBREW_PREFIX/"share"

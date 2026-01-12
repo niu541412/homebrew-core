@@ -1,19 +1,23 @@
 class SoxNg < Formula
   desc "Sound eXchange NG"
   homepage "https://codeberg.org/sox_ng/sox_ng"
-  url "https://codeberg.org/sox_ng/sox_ng/releases/download/sox_ng-14.6.0.3/sox_ng-14.6.0.3.tar.gz"
-  sha256 "a07b2ca63fc9f3953967975655d4b2ea468f228c99fba19413db1547f3c695ad"
+  url "https://codeberg.org/sox_ng/sox_ng/releases/download/sox_ng-14.7.0.3/sox_ng-14.7.0.3.tar.gz"
+  sha256 "969446ace6452a91d7bb5e3d908cadfd57fac05dfd99baa812001474bf68fa63"
   license "GPL-2.0-only"
   head "https://codeberg.org/sox_ng/sox_ng.git", branch: "main"
 
+  livecheck do
+    url :stable
+    regex(/^sox_ng[._-]v?(\d+(?:\.\d+)+)$/i)
+  end
+
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "c151fbc81310ad8fbd81debede5aa9671eadf27b8c38df45862ed82b99db4a1f"
-    sha256 cellar: :any,                 arm64_sonoma:  "342b0f469e662daf687c2ad2078ebcef2f5c0b57c0bb591f13fb676389533537"
-    sha256 cellar: :any,                 arm64_ventura: "c8bd91e8797db5654373c8b9478a3bb5833c8f08cd0da38dbdcfb27a31c755af"
-    sha256 cellar: :any,                 sonoma:        "e4f687857ad7daa50c827e2122e6836ac93e05e03546e5203dd1a73ace8364fe"
-    sha256 cellar: :any,                 ventura:       "3836f80f185122667542210c18b5da1d5dfbb79b4e4d7891bd3876b2c039def9"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "e8baeb0cad975788f07c0e0d5e3b8054ca9b4f78e6450f9eb3e454a8fa8dbab1"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "296c6cb8f2f1a12e0f0989773f0744babf6fd9e542e847c355f7ba1d52889ef7"
+    sha256 cellar: :any,                 arm64_tahoe:   "4f332db69c69c0d917f2fb683e93b4c5ff04df4f9978509941008ad325b11292"
+    sha256 cellar: :any,                 arm64_sequoia: "d67fab4771987698f626494b5132844316a4068cb3a55e70e2a9069fa30cde02"
+    sha256 cellar: :any,                 arm64_sonoma:  "82e7062a2dd6d9e6bf23ceaf2a76ee4e1206a7dbe3b9cac04234eecf942233b4"
+    sha256 cellar: :any,                 sonoma:        "e487b11b3fb4c2cb25149e9208c77570d2f52dce44321d5aeb948c6e6f96d967"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "6e95023f366276ba1e56b2ef4c824a5dc5ab279871001beb03789b651e6f278a"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "e5d31682e9f1c8864085bc898fa4097cf7fe2bf5c2604ce4a0cb7ae215ef2bdb"
   end
 
   depends_on "pkgconf" => :build
@@ -32,6 +36,8 @@ class SoxNg < Formula
   on_linux do
     depends_on "alsa-lib"
   end
+
+  conflicts_with "sox", because: "both install `play`, `rec`, `sox`, `soxi` binaries"
 
   def install
     args = %w[--enable-replace]

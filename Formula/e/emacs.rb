@@ -1,19 +1,20 @@
 class Emacs < Formula
   desc "GNU Emacs text editor"
   homepage "https://www.gnu.org/software/emacs/"
-  url "https://ftp.gnu.org/gnu/emacs/emacs-30.1.tar.xz"
-  mirror "https://ftpmirror.gnu.org/emacs/emacs-30.1.tar.xz"
-  sha256 "6ccac1ae76e6af93c6de1df175e8eb406767c23da3dd2a16aa67e3124a6f138f"
+  # TODO: Bump to use tree-sitter 0.26+ when new Emacs release supports it
+  url "https://ftpmirror.gnu.org/gnu/emacs/emacs-30.2.tar.xz"
+  mirror "https://ftp.gnu.org/gnu/emacs/emacs-30.2.tar.xz"
+  sha256 "b3f36f18a6dd2715713370166257de2fae01f9d38cfe878ced9b1e6ded5befd9"
   license "GPL-3.0-or-later"
+  revision 2
 
   bottle do
-    sha256 arm64_sequoia: "d81d161a42f5d89476996520475596f392b3c932a66585cf89d3cc488a613d51"
-    sha256 arm64_sonoma:  "b54fd2e5cd611295793cdb90d8db00b38c1e82814ccc5c3855f8fcbc492be5c9"
-    sha256 arm64_ventura: "02f3e7aa4614510f085fa4da15573d90c14cbe2d28ee0f0e746bd36e762152c9"
-    sha256 sonoma:        "0198d3055784fdbb38537cac2123a7436bb53fda399318c39c61d1fdcbc792b8"
-    sha256 ventura:       "b49c4ce047726c7115c429ce7fecebaf31e056e94539b7b0333753f38b969778"
-    sha256 arm64_linux:   "38e54b44ff7d38601ee05e206069da88b27266ad658dffb03d408f88122c45d5"
-    sha256 x86_64_linux:  "2641fb80871ba22563f3fa31d2d41aedaf07a1275203214477db2cdc66bebdd0"
+    sha256 arm64_tahoe:   "1e9d72a5821b09957ad3cfc98b91239bd68b905d74edc129537ae97819a49c04"
+    sha256 arm64_sequoia: "d9b7aaf2b753d0e741549390f1996e3283edd8ffea377ee9450ad324b66a239e"
+    sha256 arm64_sonoma:  "d9d52a9f142dbfc902e9b9edbc36d0175f999d0ccfdf8c4c55596b6f43cb2183"
+    sha256 sonoma:        "c0c85e628128ff1d50d811d486a57d67aa28148730304bdbbd3a91f685935104"
+    sha256 arm64_linux:   "a9091dc165ed17e69952976e3990b9027122ab1bde2d54b6aac42d1bacd3717f"
+    sha256 x86_64_linux:  "558b2a64792d33ea76537a2dca64927d15b91ebd0f13e07e776b01ac8acb8495"
   end
 
   head do
@@ -27,7 +28,7 @@ class Emacs < Formula
   depends_on "texinfo" => :build
   depends_on "gmp"
   depends_on "gnutls"
-  depends_on "tree-sitter"
+  depends_on "tree-sitter@0.25"
 
   uses_from_macos "libxml2"
   uses_from_macos "ncurses"
@@ -37,15 +38,11 @@ class Emacs < Formula
     depends_on "jpeg-turbo"
   end
 
-  conflicts_with cask: "emacs"
-  conflicts_with cask: "emacs@nightly"
+  conflicts_with cask: "emacs-app"
+  conflicts_with cask: "emacs-app@nightly"
+  conflicts_with cask: "emacs-app@pretest"
 
   def install
-    # Mojave uses the Catalina SDK which causes issues like
-    # https://github.com/Homebrew/homebrew-core/issues/46393
-    # https://github.com/Homebrew/homebrew-core/pull/70421
-    ENV["ac_cv_func_aligned_alloc"] = "no" if OS.mac? && MacOS.version == :mojave
-
     args = %W[
       --disable-acl
       --disable-silent-rules

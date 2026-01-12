@@ -1,8 +1,8 @@
 class AwsIamAuthenticator < Formula
   desc "Use AWS IAM credentials to authenticate to Kubernetes"
   homepage "https://github.com/kubernetes-sigs/aws-iam-authenticator"
-  url "https://github.com/kubernetes-sigs/aws-iam-authenticator/archive/refs/tags/v0.7.4.tar.gz"
-  sha256 "74d904d9663ae0e9e6425523ca61daaeacfec748f51845042bf6ce5741d39e98"
+  url "https://github.com/kubernetes-sigs/aws-iam-authenticator/archive/refs/tags/v0.7.10.tar.gz"
+  sha256 "79a29650c75bce98ddf04e93370090d35f42011aa8b30818b742946d6d51838b"
   license "Apache-2.0"
   head "https://github.com/kubernetes-sigs/aws-iam-authenticator.git", branch: "master"
 
@@ -16,12 +16,13 @@ class AwsIamAuthenticator < Formula
   end
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "c07b8347be4514f09dbd1829636268605530c374be5c72a978f08412a3df0aff"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "382efb904b41b50a6450223dfb9131526a4391694966cbda1e6e3a9e610e11f4"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "6403e833ec0bd96a7b8cd342513630b0eaa3b5e018a117d6f684cb082840fe3e"
-    sha256 cellar: :any_skip_relocation, sonoma:        "0f2f677731b1124deee088a0d759582a00a5393f323efba8c777c02ae2ef9a9f"
-    sha256 cellar: :any_skip_relocation, ventura:       "1b556a9f226a745a5c68df99046c6e3c28008c93194ada6866ab3cd8328fcfee"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "fbf3140993ca68b2d4059a15cc422bc0ca60bc63ff54d5a6541db1c732da43a3"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "4dadcf1ac88b07fc3475c16e1922bdcea9f56879dc0085b6c2f7c12a0d8b920d"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "52c160f4bc24dd7229624dcc3bce4b595a348f3a07ecb141aefb2a3380732170"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "c1d8e16791f3bf4c36f91167ada5e8d95744f7a20e7b3d24a596a18eba52d22d"
+    sha256 cellar: :any_skip_relocation, sonoma:        "e02d3c25d44d170e96b654ff09a2dad5816aea46ab455e0b67b419a406100fde"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "3bd6aa07c64dca80a99e9a5ef5bdc960437a6e75d6005ccda9e8bf3d5225d8f1"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "36babf102f31dfc35d5a2bf5a21036b1d85111d13454769d5745985129a70065"
   end
 
   depends_on "go" => :build
@@ -34,6 +35,8 @@ class AwsIamAuthenticator < Formula
       -buildid=
     ]
     system "go", "build", *std_go_args(ldflags:), "./cmd/aws-iam-authenticator"
+
+    generate_completions_from_executable(bin/"aws-iam-authenticator", shell_parameter_format: :cobra)
   end
 
   test do

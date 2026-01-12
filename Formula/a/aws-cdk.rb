@@ -1,19 +1,27 @@
 class AwsCdk < Formula
   desc "AWS Cloud Development Kit - framework for defining AWS infra as code"
   homepage "https://github.com/aws/aws-cdk"
-  url "https://registry.npmjs.org/aws-cdk/-/aws-cdk-2.1023.0.tgz"
-  sha256 "190a2a3e616432d7cc9d03a44dd35ba871ebb32350da51cd01a9fdaf71e65fb7"
+  url "https://registry.npmjs.org/aws-cdk/-/aws-cdk-2.1100.3.tgz"
+  sha256 "16cb62414b9815d45e295b1eb924172ac258bba96de756f895748fa1790bfcaa"
   license "Apache-2.0"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, all: "af1bf4138300fc891d5fd14fcce66046db24e77d5277fe8e9fb487dc8d7cedb3"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "bcb79792633946cd19038096f0e0a1394bf91cf92895c74ae58fd44e8c6cbe49"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "c774ba1e4aab64828053b23460641667fd563f7ed9f7f92619d2e1d715ba17af"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "c774ba1e4aab64828053b23460641667fd563f7ed9f7f92619d2e1d715ba17af"
+    sha256 cellar: :any_skip_relocation, sonoma:        "da797de6e592cc1845bac582b98b89d42024fad0949dec7f8adca0df5f8fc356"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "76e0fb6ff5543799cd1dc89990729a4398de2bb436c57726449444227bc6acc4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "76e0fb6ff5543799cd1dc89990729a4398de2bb436c57726449444227bc6acc4"
   end
 
   depends_on "node"
 
   def install
     system "npm", "install", *std_npm_args
-    bin.install_symlink Dir["#{libexec}/bin/*"]
+    bin.install_symlink libexec.glob("bin/*")
+
+    node_modules = libexec/"lib/node_modules/aws-cdk/node_modules"
+    deuniversalize_machos node_modules/"fsevents/fsevents.node" if OS.mac?
   end
 
   test do

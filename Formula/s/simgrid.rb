@@ -3,10 +3,10 @@ class Simgrid < Formula
 
   desc "Studies behavior of large-scale distributed systems"
   homepage "https://simgrid.org/"
-  url "https://gitlab.inria.fr/simgrid/simgrid/-/archive/v4.0/simgrid-v4.0.tar.bz2"
-  sha256 "37387a6b4ab230e37fb062d03af3d6bdb9cd0c76b2c3407ae1a344facc814a8f"
+  url "https://gitlab.inria.fr/simgrid/simgrid/-/archive/v4.1/simgrid-v4.1.tar.bz2"
+  sha256 "a3d02f52cfb9c2e341c380cd8e3b43da4b4885161d8e96f4b033e0d3cc8af611"
   license "LGPL-2.1-only"
-  revision 2
+  revision 1
 
   livecheck do
     url :homepage
@@ -14,13 +14,12 @@ class Simgrid < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "97834d03436634aab59f86174ba9cd102924e4a2b89e1944390a47d5f6d69814"
-    sha256 arm64_sonoma:  "4d315bf4a6fd3e73043b89b650414d247a95e9574653b94bc7be2f07e13280c4"
-    sha256 arm64_ventura: "20a58e8118c0b23f13f92c7fccc16900cd37d705dcda79eaf1365ef8eda85b01"
-    sha256 sonoma:        "b0e32f937d1ea6de4c77cdfdfe079b2ccfc499bbf2d8b5e3b34b177bca6f7890"
-    sha256 ventura:       "b16abf659a7207e2e58cfd0fb434468163c5cea0143965154c33bb249fafcbab"
-    sha256 arm64_linux:   "735fa4b077d9dd0adfe026bc74a5300160fa47a90e4c9fe711b47ab81e76c3b5"
-    sha256 x86_64_linux:  "5ae6ecd508718ff1155fce1ef7b9e376fd0a63cbe3915215cd5c345634e83fa8"
+    sha256 arm64_tahoe:   "034c76ebb8ad1d5afe856a54ff4cdd3fdeb60dba91ba0273d6008a20b360ca2b"
+    sha256 arm64_sequoia: "375e79079d89dc581c9530f1588564ba5ce0db257be5b79985c99aa08a4100da"
+    sha256 arm64_sonoma:  "c0ffdf86b7c64b721333f7580ba02c9c794056e0e12e69962b10bc6cd21fe0ee"
+    sha256 sonoma:        "13c3d84855a6e9788c77ba476525669d4873291eca0b5b8cd93866782879dee3"
+    sha256 arm64_linux:   "dcea28cc28e8c118a7f2ae3c49ffa92a82df38b0feebbd4b9176d2915f6ebe5b"
+    sha256 x86_64_linux:  "20872441e0def64e91fe941260e2a627af91e1ac4e8808bb6ebd50a59a852093"
   end
 
   depends_on "cmake" => :build
@@ -28,7 +27,7 @@ class Simgrid < Formula
   depends_on "boost"
   depends_on "graphviz"
 
-  uses_from_macos "python", since: :catalina
+  uses_from_macos "python"
 
   def install
     # Avoid superenv shim references

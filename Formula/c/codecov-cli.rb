@@ -3,32 +3,30 @@ class CodecovCli < Formula
 
   desc "Codecov's command-line interface"
   homepage "https://cli.codecov.io/"
-  url "https://files.pythonhosted.org/packages/74/ce/286c8a81efbab0981535e0e031f5e7db40b81d0225aa45adbd40701a40e9/codecov_cli-11.1.0.tar.gz"
-  sha256 "488977802c79905f0bd6de0a5ebc7e8ac3f868b96e0c52121a7b372d4a01e15d"
+  url "https://files.pythonhosted.org/packages/8d/61/a9fb6cd8b44671d078f86893985b8f430c1796b5f0c63a0e1d1929c0fe75/codecov_cli-11.2.6.tar.gz"
+  sha256 "fcd87c0af11809fd17c52638f16243b35be2e067011f916a04d0f1115bed39ef"
   license "Apache-2.0"
+  revision 1
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "df8071f3492939ac513d75188c983f2402ab87cd5451d3bdec1bfb8635eb62cf"
-    sha256 cellar: :any,                 arm64_sonoma:  "7a2d5167d75e2c8e45fb3a23cde5c3f164ec1ec6af948a9f3266b6d57ba0103c"
-    sha256 cellar: :any,                 arm64_ventura: "8397a43725667634dac50a774db8b3cd13932ea3092feba1887f09177d253310"
-    sha256 cellar: :any,                 sonoma:        "23244ba29379ffe23f539139d2f82dd80507605273959ae82f7a96b3819bcf6a"
-    sha256 cellar: :any,                 ventura:       "2ca652139f786cf1e8c615d767b3d311dbc94d469305740821221a12f53cc12c"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "048687c595bc8d712bf9bae21a272550c81d15c6983a0a2757bc1637ceb6f179"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8fd9851f2d8318e97d933ee740c228b63ef2304f77d7e9fb90c888d1e2fbddd0"
+    sha256 cellar: :any,                 arm64_tahoe:   "ff68612624b256edcce4620bd2abc969f32c49d6943412ef536d0dbd7d2544b5"
+    sha256 cellar: :any,                 arm64_sequoia: "3c682a905b6fbdccb30b933ea79eea61c76eee166cd477bd2db31a0270ce0848"
+    sha256 cellar: :any,                 arm64_sonoma:  "d3a443fd75f81d3c4527be2e9cbe571d8eb2e62a149141de59827b9f1d3f43a3"
+    sha256 cellar: :any,                 sonoma:        "6620b3869eddee239e14b4a419f518acc61a10ad15cf3d3618892e3bf69ebf74"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "e61efd7c3e31ad16cb0e8d887615fec9f18593d1e963e1e742f7b35566b019fa"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "65cb7ef07968850b7c26c1f5e689aca2da5741dcc93e18997305c4c853148425"
   end
 
   depends_on "rust" => :build
+  depends_on "certifi" => :no_linkage
   depends_on "libyaml"
-  depends_on "python@3.13"
+  depends_on "python@3.14"
 
-  resource "certifi" do
-    url "https://files.pythonhosted.org/packages/b3/76/52c535bcebe74590f296d6c77c86dabf761c41980e1347a2422e4aa2ae41/certifi-2025.7.14.tar.gz"
-    sha256 "8ea99dbdfaaf2ba2f9bac77b9249ef62ec5218e7c2b2e903378ed5fccf765995"
-  end
+  pypi_packages exclude_packages: "certifi"
 
   resource "charset-normalizer" do
-    url "https://files.pythonhosted.org/packages/e4/33/89c2ced2b67d1c2a61c19c6751aa8902d46ce3dacb23600a283619f5a12d/charset_normalizer-3.4.2.tar.gz"
-    sha256 "5baececa9ecba31eff645232d59845c07aa030f0c81ee70184a90d35099a0e63"
+    url "https://files.pythonhosted.org/packages/13/69/33ddede1939fdd074bce5434295f38fae7136463422fe4fd3e0e89b98062/charset_normalizer-3.4.4.tar.gz"
+    sha256 "94537985111c35f28720e43603b8e7b43a6ecfb2ce1d3058bbe955b73404e21a"
   end
 
   resource "click" do
@@ -37,23 +35,23 @@ class CodecovCli < Formula
   end
 
   resource "idna" do
-    url "https://files.pythonhosted.org/packages/f1/70/7703c29685631f5a7590aa73f1f1d3fa9a380e654b86af429e0934a32f7d/idna-3.10.tar.gz"
-    sha256 "12f65c9b470abda6dc35cf8e63cc574b1c52b11df2c86030af0ac09b01b13ea9"
+    url "https://files.pythonhosted.org/packages/6f/6d/0703ccc57f3a7233505399edb88de3cbd678da106337b9fcde432b65ed60/idna-3.11.tar.gz"
+    sha256 "795dafcc9c04ed0c1fb032c2aa73654d8e8c5023a7df64a53f39190ada629902"
   end
 
   resource "ijson" do
-    url "https://files.pythonhosted.org/packages/a3/4f/1cfeada63f5fce87536651268ddf5cca79b8b4bbb457aee4e45777964a0a/ijson-3.4.0.tar.gz"
-    sha256 "5f74dcbad9d592c428d3ca3957f7115a42689ee7ee941458860900236ae9bb13"
+    url "https://files.pythonhosted.org/packages/2d/30/7ab4b9e88e7946f6beef419f74edcc541df3ea562c7882257b4eaa82417d/ijson-3.4.0.post0.tar.gz"
+    sha256 "9aa02dc70bb245670a6ca7fba737b992aeeb4895360980622f7e568dbf23e41e"
   end
 
   resource "pyyaml" do
-    url "https://files.pythonhosted.org/packages/54/ed/79a089b6be93607fa5cdaedf301d7dfb23af5f25c398d5ead2525b063e17/pyyaml-6.0.2.tar.gz"
-    sha256 "d584d9ec91ad65861cc08d42e834324ef890a082e591037abe114850ff7bbc3e"
+    url "https://files.pythonhosted.org/packages/05/8e/961c0007c59b8dd7729d542c61a4d537767a59645b82a0b521206e1e25c2/pyyaml-6.0.3.tar.gz"
+    sha256 "d76623373421df22fb4cf8817020cbb7ef15c725b9d5e45f17e189bfc384190f"
   end
 
   resource "requests" do
-    url "https://files.pythonhosted.org/packages/e1/0a/929373653770d8a0d7ea76c37de6e41f11eb07559b103b1c02cafb3f7cf8/requests-2.32.4.tar.gz"
-    sha256 "27d0316682c8a29834d3264820024b62a36942083d52caf2f14c0591336d3422"
+    url "https://files.pythonhosted.org/packages/c9/74/b3ff8e6c8446842c3f5c837e9c3dfcfe2018ea6ecef224c710c85ef728f4/requests-2.32.5.tar.gz"
+    sha256 "dbba0bac56e100853db0ea71b82b4dfd5fe2bf6d3754a8893c3af500cec7d7cf"
   end
 
   resource "responses" do
@@ -62,18 +60,18 @@ class CodecovCli < Formula
   end
 
   resource "sentry-sdk" do
-    url "https://files.pythonhosted.org/packages/3a/38/10d6bfe23df1bfc65ac2262ed10b45823f47f810b0057d3feeea1ca5c7ed/sentry_sdk-2.34.1.tar.gz"
-    sha256 "69274eb8c5c38562a544c3e9f68b5be0a43be4b697f5fd385bf98e4fbe672687"
+    url "https://files.pythonhosted.org/packages/40/f0/0e9dc590513d5e742d7799e2038df3a05167cba084c6ca4f3cdd75b55164/sentry_sdk-2.48.0.tar.gz"
+    sha256 "5213190977ff7fdff8a58b722fb807f8d5524a80488626ebeda1b5676c0c1473"
   end
 
   resource "test-results-parser" do
-    url "https://files.pythonhosted.org/packages/e9/25/c6459ae54e5b57944417a8f72662d186ab43b0eae956193d6de281619ce4/test_results_parser-0.5.4.tar.gz"
-    sha256 "2fbfd809a2c1f746360146809b6df30690c992463d7d43e7b1fed31c1a7c15b4"
+    url "https://files.pythonhosted.org/packages/e4/bd/ee2278f92c6fdee1490c9dacd3ab5d6cdf61a26de988465723f52c17fb03/test_results_parser-0.6.1.tar.gz"
+    sha256 "5ea92dc7ae84bd89e9c3fc375317d85c981f9d139c3cca1b0afe16d96e34e7f6"
   end
 
   resource "urllib3" do
-    url "https://files.pythonhosted.org/packages/15/22/9ee70a2574a4f4599c47dd506532914ce044817c7752a79b6a51286319bc/urllib3-2.5.0.tar.gz"
-    sha256 "3fc47733c7e419d4bc3f6b3dc2b4f890bb743906a30d56ba4a5bfa4bbff92760"
+    url "https://files.pythonhosted.org/packages/c7/24/5f1b3bdffd70275f6661c76461e25f024d5a38a46f04aaca912426a2b1d3/urllib3-2.6.3.tar.gz"
+    sha256 "1b62b6884944a57dbe321509ab94fd4d3b307075e0c2eae991ac71ee15ad38ed"
   end
 
   def install

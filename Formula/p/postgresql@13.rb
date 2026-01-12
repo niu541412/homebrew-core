@@ -1,32 +1,26 @@
 class PostgresqlAT13 < Formula
   desc "Object-relational database system"
   homepage "https://www.postgresql.org/"
-  url "https://ftp.postgresql.org/pub/source/v13.21/postgresql-13.21.tar.bz2"
-  sha256 "dcda1294df45f033b0656cf7a8e4afbbc624c25e1b144aec79530f74d7ef4ab4"
+  url "https://ftp.postgresql.org/pub/source/v13.23/postgresql-13.23.tar.bz2"
+  sha256 "6ec3c82726af92b7dec873fa1cdf881eca92a4219787dfad05acb6b10e041fd6"
   license "PostgreSQL"
 
-  livecheck do
-    url "https://ftp.postgresql.org/pub/source/"
-    regex(%r{href=["']?v?(13(?:\.\d+)+)/?["' >]}i)
-  end
-
   bottle do
-    sha256 arm64_sequoia: "1980c3a1f68d4bd9aa0c329377c021274193e428ca6ba1197596e9784b2358ba"
-    sha256 arm64_sonoma:  "a3486347b6ec66ec75d9fb2cac42c37657d34876c5cde406e3534d5241455a51"
-    sha256 arm64_ventura: "30ab5734a6e187838ffc311461dcda32c9d1690c9e04cccf06592998cd5913b7"
-    sha256 sonoma:        "465e489a5a3797a997ecaf56f3e08a5b242203e9a6734779eebe720486b729d0"
-    sha256 ventura:       "a9f7551558b0ba8b55ee7c7764b550952f0e281d5633d80e6acc47808dec7bd6"
-    sha256 arm64_linux:   "00c713e2f487fcdfbb7f58864576511ed6e3e7c4da0be4fa0a0adac747db6c56"
-    sha256 x86_64_linux:  "7c9e4641b785c0659b855c0c8c729f06d26e640a0846c24e940947860a44e79f"
+    sha256 arm64_tahoe:   "a164abe87a5feaf5499e942d14c8412f922b5887fa6a98e4d362e51d0d26a348"
+    sha256 arm64_sequoia: "728cf49c02c7764b2fb9e444c627806cae1dcbd155edef25645f03f455f36b32"
+    sha256 arm64_sonoma:  "1e5c8492c74ca97a02f88326e77913fce9a4801ff7c76d9e8569daca0353ea96"
+    sha256 sonoma:        "5d05cd9a57f5754507ed091634ae35aee997d977c32e9d6f78057277fd4c25c2"
+    sha256 arm64_linux:   "2656270dc4f6fb71addd4816ac396e09f6c7b3c66e5f93ec3da46972e1487066"
+    sha256 x86_64_linux:  "ae85182e2bd663d43d2637a9391d924c0d48c0e05742aecad4b2ebd1eac4f9ac"
   end
 
   keg_only :versioned_formula
 
   # https://www.postgresql.org/support/versioning/
-  deprecate! date: "2025-11-13", because: :unsupported
+  disable! date: "2026-03-01", because: :unsupported
 
   depends_on "pkgconf" => :build
-  depends_on "icu4c@77"
+  depends_on "icu4c@78"
 
   # GSSAPI provided by Kerberos.framework crashes when forked.
   # See https://github.com/Homebrew/homebrew-core/issues/47494.
@@ -75,7 +69,7 @@ class PostgresqlAT13 < Formula
 
     # PostgreSQL by default uses xcodebuild internally to determine this,
     # which does not work on CLT-only installs.
-    args << "PG_SYSROOT=#{MacOS.sdk_path}" if OS.mac? && MacOS.sdk_root_needed?
+    args << "PG_SYSROOT=#{MacOS.sdk_path}" if OS.mac?
 
     system "./configure", *args
 
@@ -107,7 +101,7 @@ class PostgresqlAT13 < Formula
     # Don't initialize database, it clashes when testing other PostgreSQL versions.
     return if ENV["HOMEBREW_GITHUB_ACTIONS"]
 
-    system bin/"initdb", "--locale=C", "-E", "UTF-8", postgresql_datadir unless pg_version_exists?
+    system bin/"initdb", "--locale=en_US.UTF-8", "-E", "UTF-8", postgresql_datadir unless pg_version_exists?
   end
 
   def postgresql_datadir
@@ -125,7 +119,7 @@ class PostgresqlAT13 < Formula
   def caveats
     <<~EOS
       This formula has created a default database cluster with:
-        initdb --locale=C -E UTF-8 #{postgresql_datadir}
+        initdb --locale=en_US.UTF-8 -E UTF-8 #{postgresql_datadir}
     EOS
   end
 
@@ -138,7 +132,7 @@ class PostgresqlAT13 < Formula
   end
 
   test do
-    system bin/"initdb", testpath/"test" unless ENV["HOMEBREW_GITHUB_ACTIONS"]
+    system bin/"initdb", "--locale=en_US.UTF-8", "-E UTF-8", testpath/"test" unless ENV["HOMEBREW_GITHUB_ACTIONS"]
     assert_equal opt_pkgshare.to_s, shell_output("#{bin}/pg_config --sharedir").chomp
     assert_equal opt_lib.to_s, shell_output("#{bin}/pg_config --libdir").chomp
     assert_equal (opt_lib/"postgresql").to_s, shell_output("#{bin}/pg_config --pkglibdir").chomp

@@ -1,8 +1,8 @@
 class Gwyddion < Formula
   desc "Scanning Probe Microscopy visualization and analysis tool"
   homepage "https://gwyddion.net/"
-  url "https://downloads.sourceforge.net/project/gwyddion/gwyddion/2.69/gwyddion-2.69.tar.xz"
-  sha256 "597eb6b51ee575a07f350cc0573bc74d005a3490d9832ad136a369e70d30efa6"
+  url "https://downloads.sourceforge.net/project/gwyddion/gwyddion/2.70/gwyddion-2.70.tar.xz"
+  sha256 "942f4e041945a850bc32d05193a115ac8a5118a6f841afa6d4dea510f9913f59"
   license "GPL-2.0-or-later"
 
   livecheck do
@@ -11,12 +11,12 @@ class Gwyddion < Formula
   end
 
   bottle do
-    sha256 arm64_sonoma:  "d123e0af0f28d068466325379d28bfccc2490d4f951cec4ad09cd0c2cd7992d0"
-    sha256 arm64_ventura: "738c889de97a30e82afbb7a655b8c1e00f14a774e7931e74e0a33940f81f3932"
-    sha256 sonoma:        "42295b2db20740abd1ab4c497ad76c6a885054e47426b6795472dc65ca6f6eb6"
-    sha256 ventura:       "ce04ffc46b39091dc6fcc77c620b4c0dd08ee0981a80e9ad92de47b8ff2c7261"
-    sha256 arm64_linux:   "c79557b841749f565a46e5c591c025b7afe25ccbdbb90b141a5bc13965c130f5"
-    sha256 x86_64_linux:  "e44417231b441de439df506d5505169bce65f230516a368456959b4dcb984436"
+    sha256 arm64_tahoe:   "f157397b6c5fa83a8d4e2dd1cb54ef060ab3b6c2298554a8006ccd89bd6ad427"
+    sha256 arm64_sequoia: "c6a93e99ea54d741a02c28858ef4cedb959c039c425ad28fe37f6b47d68a40e2"
+    sha256 arm64_sonoma:  "2667a87710cdf581a8066c19cae2916cf6809f39eaa8437bba648943d6ff1cc8"
+    sha256 sonoma:        "c8e2916309b3431fc392e98de5f8ccd8b99534f0e19513756c9b8189155100a0"
+    sha256 arm64_linux:   "47e3e27c14637c56a991c08256ff8a523325052d54989f6879e94998dce31ddf"
+    sha256 x86_64_linux:  "81002efd521f8c2818f7182c6215feb390a9400c67eb0a1c47991702563bab86"
   end
 
   depends_on "pkgconf" => [:build, :test]

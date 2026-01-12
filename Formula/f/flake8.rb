@@ -9,16 +9,11 @@ class Flake8 < Formula
   head "https://github.com/PyCQA/flake8.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "267809e6dbc558aa736d35ab4888565edfeb5ce2b745d5df46ffa527990435e6"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "267809e6dbc558aa736d35ab4888565edfeb5ce2b745d5df46ffa527990435e6"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "267809e6dbc558aa736d35ab4888565edfeb5ce2b745d5df46ffa527990435e6"
-    sha256 cellar: :any_skip_relocation, sonoma:        "c5d9c63f6473d3e0d349d8ef6dd6c291f22c116863c2851274ff10c73d88030a"
-    sha256 cellar: :any_skip_relocation, ventura:       "c5d9c63f6473d3e0d349d8ef6dd6c291f22c116863c2851274ff10c73d88030a"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "267809e6dbc558aa736d35ab4888565edfeb5ce2b745d5df46ffa527990435e6"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "267809e6dbc558aa736d35ab4888565edfeb5ce2b745d5df46ffa527990435e6"
+    rebuild 2
+    sha256 cellar: :any_skip_relocation, all: "615b6b5c6fba374b684583f57a51c6667a0fcc78ad65ed0e86027b4d93a8c308"
   end
 
-  depends_on "python@3.13"
+  depends_on "python@3.14"
 
   resource "mccabe" do
     url "https://files.pythonhosted.org/packages/e7/ff/0ffefdcac38932a54d2b5eed4e0ba8a408f215002cd178ad1df0f2806ff8/mccabe-0.7.0.tar.gz"

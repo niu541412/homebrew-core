@@ -1,8 +1,8 @@
 class Nss < Formula
   desc "Libraries for security-enabled client and server applications"
   homepage "https://firefox-source-docs.mozilla.org/security/nss/index.html"
-  url "https://ftp.mozilla.org/pub/security/nss/releases/NSS_3_114_RTM/src/nss-3.114.tar.gz"
-  sha256 "cac3c0d67028804fb316e9695f81749fa4dc118e731d674b4c4c347bd849c2f1"
+  url "https://ftp.mozilla.org/pub/security/nss/releases/NSS_3_120_RTM/src/nss-3.120.tar.gz"
+  sha256 "7ce5f5b3a172a41539ffc118d8ef4834974d0a6a782743e4a05a4e208dd6d22f"
   license "MPL-2.0"
 
   livecheck do
@@ -16,13 +16,12 @@ class Nss < Formula
   no_autobump! because: :incompatible_version_format
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "960035ae7cff43892d5bf406a8a902dc8f8681360762ceda57ef5aa27217d4f4"
-    sha256 cellar: :any,                 arm64_sonoma:  "e073674eb3800b0a2dc5d8e08c1151879aff8ea28bd40c986844a6ce9a84631e"
-    sha256 cellar: :any,                 arm64_ventura: "40f1ccafdf50479bf1ff7b1094f9d40230515c7d9452605052406d4a47575643"
-    sha256 cellar: :any,                 sonoma:        "26c86b0b230bb98a1933cbbb5f993b5fb78363d97afa705ba840dcafe2d7c9e1"
-    sha256 cellar: :any,                 ventura:       "e295a34ad6358080e47a945a5fd582581fa6dfc04ffe51a82ef1dd9f1e24eebb"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "bbfa6206b990dbfd2460656d2982c3199936fc179150545ab7591c6d297cfe3d"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a644dd6062598af8a068ff17b768bb4b9530bf8c37d30fc8bbe4fe606a163f86"
+    sha256 cellar: :any,                 arm64_tahoe:   "7f5d4a292ff909f62a43a065aa606cf13947f5f019b5c145bb7937f10df91c9b"
+    sha256 cellar: :any,                 arm64_sequoia: "fcb90df4c249c112b47f6039217ea67ad19917ab8968ce3438edbb8052e4aa3d"
+    sha256 cellar: :any,                 arm64_sonoma:  "27f5cad81beaf6511f24096532c28a5fff94927a8de7086c00612b9a3107491f"
+    sha256 cellar: :any,                 sonoma:        "0c92173031aadc71ae098ecac6c79237590d41091cb06c511478010341c04a74"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "a71eb1468cb270b2d8dbcddc393e605a8a23c6bc6c0d3dee9757672e76bb02b9"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "790e28560844fea12b5cee9e659c638fb5536995dac281a50f3cc561f8711ccb"
   end
 
   depends_on "nspr"

@@ -47,7 +47,6 @@ env:
   HOMEBREW_NO_AUTO_UPDATE: 1
   HOMEBREW_NO_INSTALL_FROM_API: 1
   HOMEBREW_NO_BUILD_ERROR_ISSUES: 1
-  HOMEBREW_ARM64_TESTING: 1
   RUN_URL: ${{github.event.repository.html_url}}/actions/runs/${{github.run_id}}
   DISPATCH_REBOTTLE_SENDER: ${{ github.event.sender.login }}
   DISPATCH_REBOTTLE_FORMULA: ${{ inputs.formula }}
@@ -70,7 +69,6 @@ jobs:
         with:
           core: true
           cask: false
-          test-bot: false
 
       - name: Determine runners
         id: determine-runners
@@ -153,10 +151,9 @@ jobs:
         with:
           core: true
           cask: false
-          test-bot: false
 
       - name: Download bottles from GitHub Actions
-        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
         with:
           pattern: bottles_*
           path: ${{ env.BOTTLES_DIR }}
@@ -174,7 +171,7 @@ jobs:
           signing_key: ${{ secrets.BREWTESTBOT_SSH_SIGNING_KEY }}
 
       - name: Generate build provenance
-        uses: actions/attest-build-provenance@e8998f949152b193b063cb0ec769d69d929409be # v2.4.0
+        uses: actions/attest-build-provenance@00014ed6ed5efc5b1ab7f7f34a39eb55d41aa4f8 # v3.1.0
         with:
           subject-path: ${{ env.BOTTLES_DIR }}/*.tar.gz
 
@@ -287,7 +284,7 @@ jobs:
       pull-requests: write # for Homebrew/actions/post-comment
     needs: [bottle, upload]
     if: failure() && inputs.issue > 0
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     steps:
       - name: Post comment on failure
         uses: Homebrew/actions/post-comment@main

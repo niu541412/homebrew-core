@@ -1,12 +1,11 @@
 class FfmpegAT6 < Formula
   desc "Play, record, convert, and stream audio and video"
   homepage "https://ffmpeg.org/"
-  url "https://ffmpeg.org/releases/ffmpeg-6.1.2.tar.xz"
-  sha256 "3b624649725ecdc565c903ca6643d41f33bd49239922e45c9b1442c63dca4e38"
+  url "https://ffmpeg.org/releases/ffmpeg-6.1.4.tar.xz"
+  sha256 "a231e3d5742c44b1cdaebfb98ad7b6200d12763e0b6db9e1e2c5891f2c083a18"
   # None of these parts are used by default, you have to explicitly pass `--enable-gpl`
   # to configure to activate them. In this case, FFmpeg's license changes to GPL v2+.
   license "GPL-2.0-or-later"
-  revision 10
 
   livecheck do
     url "https://ffmpeg.org/download.html"
@@ -14,13 +13,12 @@ class FfmpegAT6 < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "3813b85a9438ad27df75ca35f8fa7ceb5b3e22270f23750626b06f6ca0018866"
-    sha256 arm64_sonoma:  "2444fddd5f5aafe512d53a3c5b74f0405d30a209806304eb618e8cc0c34e1cb3"
-    sha256 arm64_ventura: "500932112f074c3597a918cabe1772bf9729634bbfc85419cbade06af048a857"
-    sha256 sonoma:        "4528ff212b1e9efeb42c338aae89c4f91221adeb8abcf6ffc7fa6ebc7ce8d5a2"
-    sha256 ventura:       "de1ef312738e010862afdc27244de9ecf66c627490200709a9e99f76427c49a6"
-    sha256 arm64_linux:   "7929f407841b68211dd972398f86b46ba02c5b2ee6b29ec572c789058124e513"
-    sha256 x86_64_linux:  "ed69104b895f9d18a3a76476d5c4be427b03e9bfc4bb1a9ae7d11e77ca1e0bbd"
+    sha256 arm64_tahoe:   "d9810751f734c06357db89e7fe085445afc046e9b95af867b5d01f9951fba106"
+    sha256 arm64_sequoia: "cc014b1a78effa32a96cb50a04e52249cc0b0d7b2a03505099d6eeb1c0a68e1b"
+    sha256 arm64_sonoma:  "4cd8d9dd427220c76e6b2c1792ed28b74e2268fef98ea55242e47e8aa9e6630e"
+    sha256 sonoma:        "a4a5ee337970a24332ebedeb3ce3db3226a16e03b0f4a0665a3796f38f5cfe24"
+    sha256 arm64_linux:   "673b4d6715b74ba45aed373abd5fe5747aa28e0648f68ba6005349fe9680eb1e"
+    sha256 x86_64_linux:  "daab35504afd471e75752462d1c5a9ff7b81d3c8a42fe907c7d958009666a98f"
   end
 
   keg_only :versioned_formula
@@ -102,7 +100,7 @@ class FfmpegAT6 < Formula
 
   def install
     # The new linker leads to duplicate symbol issue https://github.com/homebrew-ffmpeg/homebrew-ffmpeg/issues/140
-    ENV.append "LDFLAGS", "-Wl,-ld_classic" if DevelopmentTools.clang_build_version >= 1500
+    ENV.append "LDFLAGS", "-Wl,-ld_classic" if DevelopmentTools.ld64_version.between?("1015.7", "1022.1")
 
     args = %W[
       --prefix=#{prefix}
@@ -171,9 +169,14 @@ class FfmpegAT6 < Formula
   end
 
   test do
-    # Create an example mp4 file
+    # Create a 5 second test MP4
     mp4out = testpath/"video.mp4"
-    system bin/"ffmpeg", "-filter_complex", "testsrc=rate=1:duration=1", mp4out
-    assert_path_exists mp4out
+    system bin/"ffmpeg", "-filter_complex", "testsrc=rate=1:duration=5", mp4out
+    assert_match(/Duration: 00:00:05\.00,.*Video: h264/m, shell_output("#{bin}/ffprobe -hide_banner #{mp4out} 2>&1"))
+
+    # Re-encode it in HEVC/Matroska
+    mkvout = testpath/"video.mkv"
+    system bin/"ffmpeg", "-i", mp4out, "-c:v", "hevc", mkvout
+    assert_match(/Duration: 00:00:05\.00,.*Video: hevc/m, shell_output("#{bin}/ffprobe -hide_banner #{mkvout} 2>&1"))
   end
 end

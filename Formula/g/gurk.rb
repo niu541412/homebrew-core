@@ -1,18 +1,17 @@
 class Gurk < Formula
   desc "Signal Messenger client for terminal"
   homepage "https://github.com/boxdot/gurk-rs"
-  url "https://github.com/boxdot/gurk-rs/archive/refs/tags/v0.7.1.tar.gz"
-  sha256 "e86e6e0938439ac84af5b1f08a99810f0e632c60c63ba58e566181ffd2578874"
+  url "https://github.com/boxdot/gurk-rs/archive/refs/tags/v0.8.0.tar.gz"
+  sha256 "8254e7aae79d1d1e79a543965c9f44624a817e9cbc0cd8eee973fd3118b3af26"
   license "AGPL-3.0-only"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "f0cc3cef149a12b05ca5b52ca1ea0d888b5f65dd083e4b315f4b3a5a77829a3b"
-    sha256 cellar: :any,                 arm64_sonoma:  "8e156d730b5d988e6b33a2a783067c65010c2624eba23d7b3e28d3446300413f"
-    sha256 cellar: :any,                 arm64_ventura: "fe8c8e3fbff8fa370e82484f882e8455c122d439bf2a81cd68cca44f822db364"
-    sha256 cellar: :any,                 sonoma:        "7d6d5437c710ed6103022b2f61fdf0e88ee8096e206bd5d2e4411fe28fd50c26"
-    sha256 cellar: :any,                 ventura:       "a91f26706d7f12cab12b4ca8c532cb49c5327cc63e7ba3929a10a4dc1fcfd93b"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "a7285b0beae708e057aed8f506b9eef76657e7a8739e25c390e877dff026ea45"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "699e7f4e25955cd8a7613da7bf1f3b07d345672d3b2dac7f8d466fca61f8909c"
+    sha256 cellar: :any,                 arm64_tahoe:   "f89e5c54aeb34f6a3878cbd36179b6fd311457db6b5464fd453bb03c1ac16579"
+    sha256 cellar: :any,                 arm64_sequoia: "b52bd87d7a51c556dc2d1e8f4ea6fe7fcb6eca351cc2aecd365f12ebe516a008"
+    sha256 cellar: :any,                 arm64_sonoma:  "e78ba88a862ea96456f0f2ba5f0b2049321fc9e97f37a43533c46926b8b80a31"
+    sha256 cellar: :any,                 sonoma:        "6ef0b8d129796d0b4c4f0b07c8bc9f1706f31174073fb3e10ba9d266d8afa01a"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "d23f21211c22e078b0e0d9422c58bc952955e0d49a1652fa114ebcbc9c216d7c"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "c2951a701af60d7be93f871d6c21d6cd4c8b7cda69b1274379242ddb4de74d25"
   end
 
   depends_on "pkgconf" => :build
@@ -30,8 +29,6 @@ class Gurk < Formula
 
   test do
     assert_match version.to_s, shell_output("#{bin}/gurk --version")
-
-    return if OS.linux? && ENV["HOMEBREW_GITHUB_ACTIONS"]
 
     begin
       output_log = testpath/"output.log"

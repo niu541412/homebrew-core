@@ -1,18 +1,19 @@
 class Gauge < Formula
   desc "Test automation tool that supports executable documentation"
   homepage "https://gauge.org"
-  url "https://github.com/getgauge/gauge/archive/refs/tags/v1.6.19.tar.gz"
-  sha256 "e56aeaae3686bbb0cecd2f4e6882b40cab2870b0d2f8843660b68b5faa65a6ca"
+  url "https://github.com/getgauge/gauge/archive/refs/tags/v1.6.22.tar.gz"
+  sha256 "4600c344ae29b290d9bd3cccd9ee5611352be1bbda1e1a0e687ac58c0dc546c5"
   license "Apache-2.0"
   head "https://github.com/getgauge/gauge.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "f289ba1acbdd50c6aa697eea7d6e25f9baeaca90c6c5424276d8bc5dd2a1e857"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "64b353a9591c6d5d35f622781d5f4d8538caa3e7c7af292061a07b3976822e02"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "6f475159d46499395448445c1e40cc244a9f99004794567b8c1f0e0f14404ebd"
-    sha256 cellar: :any_skip_relocation, sonoma:        "722ad50cdcfa962dccb9588c03e9aaa892c63b6520b3c636f783759362d0d454"
-    sha256 cellar: :any_skip_relocation, ventura:       "d3a96755c685429db04990dbb057f714cd1c8067a194fecc35230dbaaced5fab"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "68dd039947b5150bf8121ef573a9b4d39f6ca29f0ea2c23ec0335b922c463429"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "9e9130cd4b5d5c676b657b1448184abdc26975ed3350abce063aef1790090626"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "aa677924fb2dff41cfefda046ba45ec7452b969bf9c372a2bd66d42954d87f65"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "a521baff4b9361e4f742f33c91aeec7b605ff913a91d0fc6c53383f6b44bc15e"
+    sha256 cellar: :any_skip_relocation, sonoma:        "48cbb1456cbe0706b8bfd10ccc481016cdb482f884679b56f79a7ef60f2210c4"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "91aee59849b1e680f5cba0ea18baf4afe2c2235d7f879b91959ac12844fe67c4"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "5a9adf7f9c8776c77a17927be76b216d4109e21c5aed87f64f87aaac067ffa1a"
   end
 
   depends_on "go" => :build
@@ -20,6 +21,8 @@ class Gauge < Formula
   def install
     system "go", "run", "build/make.go"
     system "go", "run", "build/make.go", "--install", "--prefix", prefix
+
+    generate_completions_from_executable(bin/"gauge", shell_parameter_format: :cobra)
   end
 
   test do

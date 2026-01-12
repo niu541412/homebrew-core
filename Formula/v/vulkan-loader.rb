@@ -1,30 +1,29 @@
 class VulkanLoader < Formula
   desc "Vulkan ICD Loader"
   homepage "https://github.com/KhronosGroup/Vulkan-Loader"
-  url "https://github.com/KhronosGroup/Vulkan-Loader/archive/refs/tags/v1.4.323.tar.gz"
-  sha256 "12b2bd3ec8a61fc939156ac45a82b889edb02262c021798f1496c983ca8a528e"
+  url "https://github.com/KhronosGroup/Vulkan-Loader/archive/refs/tags/vulkan-sdk-1.4.335.0.tar.gz"
+  sha256 "e1d7f598d42fa87b38fd7e984968c660e406168db64df8e8e23c5be3a66e9bd8"
   license "Apache-2.0"
   head "https://github.com/KhronosGroup/Vulkan-Loader.git", branch: "main"
 
   livecheck do
     url :stable
-    regex(/^v?(\d+(?:\.\d+)+)$/i)
+    regex(/^vulkan-sdk[._-]v?(\d+(?:\.\d+)+)$/i)
   end
 
   bottle do
-    sha256 arm64_sequoia: "be391d9e7df459f65bb8b173ab0c70d6ecc3639ad4adb9dbad85e3d4082a88a9"
-    sha256 arm64_sonoma:  "ffab6c1d9c7a2a1d690df6d0fb2ab46460cc54d5506af9bfc568faed76bc71c9"
-    sha256 arm64_ventura: "4ebe1660f42c4baf0d689d3703cdd9b61337e636e4a87b5c0eea6d1476d4fed2"
-    sha256 sequoia:       "fc26f3eb2920510979c9e9dc2b154ed742bc0d0f0b85b697b3f4c353dcb2b659"
-    sha256 sonoma:        "6ff060885611a4e254800a7b7cd34a8ce9668e1fccf7a9ff4e2de46c791ec3fb"
-    sha256 ventura:       "44e8b7509a89d1cb61a10937484510633cc8eea47c5a4c2bf83315df59bbe494"
-    sha256 arm64_linux:   "12280f10bcf0b1ace296d2f24f69f1a229ac5580d4aba5ec69b184434885751d"
-    sha256 x86_64_linux:  "65cf771aa5056b51bb3439e1d580eb1357d7c67b0ab9eb4e444f74ad9c66826b"
+    sha256               arm64_tahoe:   "8bea1ed56c73ff9b9ccd2729809a6b73e92f0f92f443c078c9b61d26d554d246"
+    sha256               arm64_sequoia: "95c04390b7c74e48c46b85e42d05c0ca917afd7eddb4baa275c6486b385ff737"
+    sha256               arm64_sonoma:  "0a3087f3e2777982210c6967f8bf8a485dedb95f351b58845638ed1e52f87665"
+    sha256 cellar: :any, tahoe:         "c1e32933dc47f2f1c0338aa0cae87081190e26989ecae294de59822f337394cd"
+    sha256 cellar: :any, sequoia:       "a82c7fc5b381237faaf0f48792f5d42d86fa92301da5595909b26ee629f0d3ea"
+    sha256 cellar: :any, sonoma:        "af0213fb3c4690c37984bb17da75c4ea770fd922ae5392fec384804d73f54ab4"
+    sha256               arm64_linux:   "1b21769480ef54ba3528b0292850177e96ee985f6b6716849da731231c73ca26"
+    sha256               x86_64_linux:  "45cc952cc5a793808df5bb2c4533e538938549856d07789ae7aee17c32888f46"
   end
 
   depends_on "cmake" => :build
   depends_on "pkgconf" => :build
-  depends_on "python@3.13" => :build
   depends_on "vulkan-headers"
 
   on_linux do
@@ -38,9 +37,9 @@ class VulkanLoader < Formula
     system "cmake", "-S", ".", "-B", "build",
                     "-DVULKAN_HEADERS_INSTALL_DIR=#{Formula["vulkan-headers"].prefix}",
                     "-DCMAKE_INSTALL_INCLUDEDIR=#{Formula["vulkan-headers"].include}",
-                    "-DFALLBACK_DATA_DIRS=#{HOMEBREW_PREFIX}/share:/usr/local/share:/usr/share",
                     "-DCMAKE_INSTALL_SYSCONFDIR=#{etc}",
                     "-DFALLBACK_CONFIG_DIRS=#{etc}/xdg:/etc/xdg",
+                    "-DFALLBACK_DATA_DIRS=#{HOMEBREW_PREFIX}/share:/usr/local/share:/usr/share",
                     *std_cmake_args
     system "cmake", "--build", "build"
     system "cmake", "--install", "build"

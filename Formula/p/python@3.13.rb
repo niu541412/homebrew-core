@@ -1,8 +1,8 @@
 class PythonAT313 < Formula
   desc "Interpreted, interactive, object-oriented programming language"
   homepage "https://www.python.org/"
-  url "https://www.python.org/ftp/python/3.13.5/Python-3.13.5.tgz"
-  sha256 "e6190f52699b534ee203d9f417bdbca05a92f23e35c19c691a50ed2942835385"
+  url "https://www.python.org/ftp/python/3.13.11/Python-3.13.11.tgz"
+  sha256 "03cfedbe06ce21bc44ce09245e091a77f2fee9ec9be5c52069048a181300b202"
   license "Python-2.0"
 
   livecheck do
@@ -10,18 +10,16 @@ class PythonAT313 < Formula
     regex(%r{href=.*?v?(3\.13(?:\.\d+)*)/?["' >]}i)
   end
 
-  no_autobump! because: :requires_manual_review
-
   bottle do
     rebuild 1
-    sha256 arm64_sequoia: "7bd6e87235b8bf2d4cf4835a5ddbd49cc7cee08d14ab2465ef24c34290a63a8e"
-    sha256 arm64_sonoma:  "c879de56d1a234d03739cf526cecbb0673f3771d7f4c40d0d764edcb0a6eeab0"
-    sha256 arm64_ventura: "16a255eedff03379cc2e7d85173cd755ecc6071c3ded2d296d4cbeaa378682a9"
-    sha256 sequoia:       "60d51cebd864b7b7f60c20533e4a86707fc5a9fd7d6235a3f705fedcae372792"
-    sha256 sonoma:        "bb3eeaefaa9df64e055fc88eec7672c044e35569a4ca8e8f9affcb3779a4f4b9"
-    sha256 ventura:       "de1f3fd0c023711c72acbe737f475d10ad9dc65038f35b207c4fb3178df7d456"
-    sha256 arm64_linux:   "ca4d8f6523c6fdfc7cb56571d1d4222bf8902c3938c436b58d71a05662e54b9b"
-    sha256 x86_64_linux:  "23885628da95ae6a51e56e231216927982b35e2a228fae8d1a64be93b7c231b8"
+    sha256 arm64_tahoe:   "6a8cccd8ff09fd1e5e9f8e3491db8ea9cb93fd90bc06fd4cdbfa0fd437184fbf"
+    sha256 arm64_sequoia: "e3597fc0c7e3613477c8cc3b8399577add9ffd9ef5e36810f11785335dca9e57"
+    sha256 arm64_sonoma:  "857ecdba4e7b67dab93eda7113e85162637bfb1e712fbb02770ef49a006e9529"
+    sha256 tahoe:         "08de93aae754f7442742ba5ebd16e91ca415307ea86d5d473f28afc5c7508fff"
+    sha256 sequoia:       "4726a58b6430de1b58ef337309e913315be4caedc1dbceb5b2c0eed12e0c6e9a"
+    sha256 sonoma:        "044a0bae24e93058a292e10eec67c52bc5f408eb376194cd2d3a9c6c1cf5b786"
+    sha256 arm64_linux:   "ca5662926336672af94417027b0a779c278eb136ee6df05305b8b346174a87dc"
+    sha256 x86_64_linux:  "2ca5b858217abb665e40c501e84f052fe88b2e6283e0c8ca755a0ba8f8e82b30"
   end
 
   depends_on "pkgconf" => :build
@@ -33,7 +31,7 @@ class PythonAT313 < Formula
   uses_from_macos "bzip2"
   uses_from_macos "expat", since: :sequoia
   uses_from_macos "libedit"
-  uses_from_macos "libffi", since: :catalina
+  uses_from_macos "libffi"
   uses_from_macos "ncurses"
   uses_from_macos "unzip"
   uses_from_macos "zlib"
@@ -42,38 +40,20 @@ class PythonAT313 < Formula
     depends_on "berkeley-db@5"
   end
 
-  link_overwrite "bin/2to3"
-  link_overwrite "bin/idle3"
-  link_overwrite "bin/pip3"
-  link_overwrite "bin/pydoc3"
-  link_overwrite "bin/python3"
-  link_overwrite "bin/python3-config"
-  link_overwrite "bin/wheel3"
-  link_overwrite "share/man/man1/python3.1"
-  link_overwrite "lib/libpython3.so"
-  link_overwrite "lib/pkgconfig/python3.pc"
-  link_overwrite "lib/pkgconfig/python3-embed.pc"
   link_overwrite "lib/python3.13/site-packages/pip*"
   link_overwrite "lib/python3.13/site-packages/wheel*"
-  link_overwrite "Frameworks/Python.framework/Headers"
-  link_overwrite "Frameworks/Python.framework/Python"
-  link_overwrite "Frameworks/Python.framework/Resources"
-  link_overwrite "Frameworks/Python.framework/Versions/Current"
 
-  # Always update to latest release
+  pypi_packages package_name:   "",
+                extra_packages: %w[flit-core pip wheel]
+
   resource "flit-core" do
     url "https://files.pythonhosted.org/packages/69/59/b6fc2188dfc7ea4f936cd12b49d707f66a1cb7a1d2c16172963534db741b/flit_core-3.12.0.tar.gz"
     sha256 "18f63100d6f94385c6ed57a72073443e1a71a4acb4339491615d0f16d6ff01b2"
   end
 
   resource "pip" do
-    url "https://files.pythonhosted.org/packages/59/de/241caa0ca606f2ec5fe0c1f4261b0465df78d786a38da693864a116c37f4/pip-25.1.1.tar.gz"
-    sha256 "3de45d411d308d5054c2168185d8da7f9a2cd753dbac8acbfa88a8909ecd9077"
-  end
-
-  resource "setuptools" do
-    url "https://files.pythonhosted.org/packages/18/5d/3bf57dcd21979b887f014ea83c24ae194cfcd12b9e0fda66b957c69d1fca/setuptools-80.9.0.tar.gz"
-    sha256 "f36b47402ecde768dbfafc46e8e4207b4360c654f1f3bb84475f0a28628fb19c"
+    url "https://files.pythonhosted.org/packages/fe/6e/74a3f0179a4a73a53d66ce57fdb4de0080a8baa1de0063de206d6167acc2/pip-25.3.tar.gz"
+    sha256 "8d0538dbbd7babbd207f261ed969c65de439f6bc9e5dbd3b3b9a77f25d95f343"
   end
 
   resource "wheel" do
@@ -85,20 +65,8 @@ class PythonAT313 < Formula
   # Remove when a non-patching mechanism is added (https://bugs.python.org/issue43976).
   # We (ab)use osx_framework_library to exploit pip behaviour to allow --prefix to still work.
   patch do
-    url "https://raw.githubusercontent.com/Homebrew/formula-patches/8b5bcbb262d1ea4e572bba55043bf7d2341a6821/python/3.13-sysconfig.diff"
-    sha256 "e1c2699cf3e39731a19207ed69400a67336cda7767aa08f6f46029f26b1d733b"
-  end
-
-  # Fix os.getlogin for users with longer usernames on macOS.
-  # Change accepted upstream and backported, remove on next release.
-  # https://github.com/Homebrew/homebrew-core/issues/226857
-  # https://github.com/python/cpython/issues/135497
-  # https://github.com/python/cpython/pull/135508
-  # https://github.com/python/cpython/pull/135517
-  # https://github.com/python/cpython/pull/135516
-  patch do
-    url "https://github.com/python/cpython/commit/15340775f8ded517e98604fb416e6f758d21f635.patch?full_index=1"
-    sha256 "921de8bbbf20cebb8b695279bfaf138999460bc39ff8320d1495b61f67ae2e65"
+    url "https://raw.githubusercontent.com/Homebrew/homebrew-core/1cf441a0/Patches/python/3.13-sysconfig.diff"
+    sha256 "9f2eae1d08720b06ac3d9ef1999c09388b9db39dfb52687fc261ff820bff20c3"
   end
 
   def lib_cellar
@@ -110,18 +78,14 @@ class PythonAT313 < Formula
     end
   end
 
-  def site_packages_cellar
-    lib_cellar/"site-packages"
-  end
+  def site_packages_cellar = lib_cellar/"site-packages"
 
   # The HOMEBREW_PREFIX location of site-packages.
-  def site_packages
-    HOMEBREW_PREFIX/"lib/python#{version.major_minor}/site-packages"
-  end
+  def site_packages = HOMEBREW_PREFIX/"lib/python#{version.major_minor}/site-packages"
 
-  def python3
-    bin/"python#{version.major_minor}"
-  end
+  def altinstall? = name != Formula["python3"].name
+
+  def python3 = bin/"python#{version.major_minor}"
 
   def install
     # Unset these so that installing pip and setuptools puts them where we want
@@ -206,8 +170,13 @@ class PythonAT313 < Formula
     system "make"
 
     ENV.deparallelize do
+      # The `altinstall` target prevents the installation of files with only Python's major
+      # version in its name. This allows us to link multiple versioned Python formulae.
+      #   https://github.com/python/cpython#installing-multiple-versions
+      #
       # Tell Python not to install into /Applications (default for framework builds)
-      system "make", "install", "PYTHONAPPSDIR=#{prefix}"
+      target = "#{"alt" if altinstall?}install"
+      system "make", target, "PYTHONAPPSDIR=#{prefix}"
       system "make", "frameworkinstallextras", "PYTHONAPPSDIR=#{pkgshare}" if OS.mac?
     end
 
@@ -240,6 +209,9 @@ class PythonAT313 < Formula
       inreplace lib_cellar/"_sysconfigdata__darwin_darwin.py",
                 %r{('LINKFORSHARED': .*?) (Python.framework/Versions/3.\d+/Python)'}m,
                 "\\1 #{opt_prefix}/Frameworks/\\2'"
+
+      # For an altinstall, remove symlinks that conflict with the main Python formula.
+      rm frameworks.glob("Python.framework/{Headers,Python,Resources,Versions/Current}") if altinstall?
     else
       # Prevent third-party packages from building against fragile Cellar paths
       inreplace Dir[lib_cellar/"**/_sysconfigdata_*linux_x86_64-*.py",
@@ -251,6 +223,9 @@ class PythonAT313 < Formula
       inreplace bin/"python#{version.major_minor}-config",
                 'prefix_real=$(installed_prefix "$0")',
                 "prefix_real=#{opt_prefix}"
+
+      # For an altinstall, remove symlinks that conflict with the main Python formula.
+      rm lib/"libpython3.so" if altinstall?
     end
 
     # Remove the site-packages that Python created in its Cellar.
@@ -266,7 +241,7 @@ class PythonAT313 < Formula
     ]
     whl_build = buildpath/"whl_build"
     system python3, "-m", "venv", whl_build
-    %w[flit-core wheel setuptools].each do |r|
+    %w[flit-core wheel].each do |r|
       resource(r).stage do
         system whl_build/"bin/pip3", "install", *common_pip_args, "."
       end
@@ -290,13 +265,21 @@ class PythonAT313 < Formula
       s.gsub!(/_PIP_VERSION = .*/, "_PIP_VERSION = \"#{resource("pip").version}\"")
     end
 
-    # Install unversioned symlinks in libexec/bin.
+    # Ensure that our new pip wheel is globally readable.
+    chmod "ugo+r", lib_cellar.glob("ensurepip/_bundled/pip-*.whl")
+
+    # Install unversioned (and for an altinstall, major-versioned) symlinks in libexec/bin.
     {
       "idle"          => "idle#{version.major_minor}",
       "pydoc"         => "pydoc#{version.major_minor}",
       "python"        => "python#{version.major_minor}",
       "python-config" => "python#{version.major_minor}-config",
-    }.each do |short_name, long_name|
+    }.merge(altinstall? ? {
+      "idle3"          => "idle#{version.major_minor}",
+      "pydoc3"         => "pydoc#{version.major_minor}",
+      "python3"        => "python#{version.major_minor}",
+      "python3-config" => "python#{version.major_minor}-config",
+    } : {}).each do |short_name, long_name|
       (libexec/"bin").install_symlink (bin/long_name).realpath => short_name
     end
 
@@ -325,14 +308,18 @@ class PythonAT313 < Formula
     rmdir root_site_packages/"bin"
 
     rm bin/"pip"
+    rm bin/"pip3" if altinstall?
     mv bin/"wheel", bin/"wheel#{version.major_minor}"
-    bin.install_symlink "wheel#{version.major_minor}" => "wheel3"
+    bin.install_symlink "wheel#{version.major_minor}" => "wheel3" unless altinstall?
 
-    # Install unversioned symlinks in libexec/bin.
+    # Install unversioned (and for an altinstall, major-versioned) symlinks in libexec/bin.
     {
       "pip"   => "pip#{version.major_minor}",
       "wheel" => "wheel#{version.major_minor}",
-    }.each do |short_name, long_name|
+    }.merge(altinstall? ? {
+      "pip3"   => "pip#{version.major_minor}",
+      "wheel3" => "wheel#{version.major_minor}",
+    } : {}).each do |short_name, long_name|
       (libexec/"bin").install_symlink (bin/long_name).realpath => short_name
     end
 
@@ -409,22 +396,22 @@ class PythonAT313 < Formula
           sys.path.extend(library_packages)
           # the Cellar site-packages is a symlink to the HOMEBREW_PREFIX
           # site_packages; prefer the shorter paths
-          long_prefix = re.compile(r'#{rack}/(?:[0-9\\._abrc]+/Frameworks/Python\\.framework/Versions/#{version.major_minor}/)?lib/python#{version.major_minor}/site-packages')
+          long_prefix = re.compile(r'#{rack}/[0-9\\._abrc]+/(?:Frameworks/Python\\.framework/Versions/#{version.major_minor}/)?lib/python#{version.major_minor}/site-packages')
           sys.path = [long_prefix.sub('#{site_packages}', p) for p in sys.path]
           # Set the sys.executable to use the opt_prefix. Only do this if PYTHONEXECUTABLE is not
           # explicitly set and we are not in a virtualenv:
           if 'PYTHONEXECUTABLE' not in os.environ and sys.prefix == sys.base_prefix:
               sys.executable = sys._base_executable = '#{opt_bin}/python#{version.major_minor}'
       if 'PYTHONHOME' not in os.environ:
-          cellar_prefix = re.compile(r'#{rack}/[0-9\\._abrc]+/')
+          cellar_prefix = re.compile(r'#{rack}/[0-9\\._abrc]+(?=/|$)')
           if os.path.realpath(sys.base_prefix).startswith('#{rack}'):
-              new_prefix = cellar_prefix.sub('#{opt_prefix}/', sys.base_prefix)
+              new_prefix = cellar_prefix.sub('#{opt_prefix}', sys.base_prefix)
               site.PREFIXES[:] = [new_prefix if x == sys.base_prefix else x for x in site.PREFIXES]
               if sys.prefix == sys.base_prefix:
                   sys.prefix = new_prefix
               sys.base_prefix = new_prefix
           if os.path.realpath(sys.base_exec_prefix).startswith('#{rack}'):
-              new_exec_prefix = cellar_prefix.sub('#{opt_prefix}/', sys.base_exec_prefix)
+              new_exec_prefix = cellar_prefix.sub('#{opt_prefix}', sys.base_exec_prefix)
               site.PREFIXES[:] = [new_exec_prefix if x == sys.base_exec_prefix else x for x in site.PREFIXES]
               if sys.exec_prefix == sys.base_exec_prefix:
                   sys.exec_prefix = new_exec_prefix
@@ -445,11 +432,17 @@ class PythonAT313 < Formula
   def caveats
     <<~EOS
       Python is installed as
-        #{HOMEBREW_PREFIX}/bin/python3
+        #{HOMEBREW_PREFIX}/bin/python#{version.major_minor}
 
-      Unversioned symlinks `python`, `python-config`, `pip` etc. pointing to
-      `python3`, `python3-config`, `pip3` etc., respectively, are installed into
+      Unversioned and major-versioned symlinks `python`, `python3`, `python-config`, `python3-config`, `pip`, `pip3`, etc. pointing to
+      `python#{version.major_minor}`, `python#{version.major_minor}-config`, `pip#{version.major_minor}` etc., respectively, are installed into
         #{opt_libexec}/bin
+
+      If you do not need a specific version of Python, and always want Homebrew's `python3` in your PATH:
+        brew install python3
+
+      `idle#{version.major_minor}` requires tkinter, which is available separately:
+        brew install python-tk@#{version.major_minor}
 
       See: https://docs.brew.sh/Homebrew-and-Python
     EOS
@@ -494,6 +487,11 @@ class PythonAT313 < Formula
     system python3, "dbm_test.py"
 
     system bin/"pip#{version.major_minor}", "list", "--format=columns"
+
+    # Check our sitecustomize.py
+    assert_match HOMEBREW_CELLAR.to_s, shell_output("#{python3} -Sc 'import sys; print(sys.base_prefix)'")
+    refute_match HOMEBREW_CELLAR.to_s, shell_output("#{python3} -c 'import sys; print(sys.base_prefix)'")
+    refute_match site_packages_cellar.to_s, shell_output("#{python3} -c 'import sys; print(sys.path)'")
 
     # Verify our sysconfig patches
     sysconfig_path = "import sysconfig; print(sysconfig.get_paths(\"osx_framework_library\")[\"data\"])"

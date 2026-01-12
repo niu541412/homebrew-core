@@ -1,25 +1,28 @@
 class Rollup < Formula
   desc "Next-generation ES module bundler"
   homepage "https://rollupjs.org/"
-  url "https://registry.npmjs.org/rollup/-/rollup-4.46.2.tgz"
-  sha256 "6dc9b57afe35cafcd40fa1d11138f37b8b5871b19b5fe29bd0205b20bf1a6b49"
+  url "https://registry.npmjs.org/rollup/-/rollup-4.55.1.tgz"
+  sha256 "e713356132bd5cef1ff664c4bbe2c2c2f327aa49f139b14f288d81f1c4ee8beb"
   license all_of: ["ISC", "MIT"]
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "f0ad1db1d0a728ddad6f744b705f0d593a5c3bd1112423f957b70427da5c75af"
-    sha256 cellar: :any,                 arm64_sonoma:  "f0ad1db1d0a728ddad6f744b705f0d593a5c3bd1112423f957b70427da5c75af"
-    sha256 cellar: :any,                 arm64_ventura: "f0ad1db1d0a728ddad6f744b705f0d593a5c3bd1112423f957b70427da5c75af"
-    sha256 cellar: :any,                 sonoma:        "51066d36c961f4e443f5855caaf5ac9d874b1160e4cc53bff6548ce9da894eda"
-    sha256 cellar: :any,                 ventura:       "51066d36c961f4e443f5855caaf5ac9d874b1160e4cc53bff6548ce9da894eda"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "e79e86080cb86db217cb09dd500b9e18bbd15dabfe8991541a57b47176d3e707"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "0b2866300def36f54cf290e2b5b041ee16e7ba65e195a657ae6d895b6eafb47e"
+    sha256 cellar: :any,                 arm64_tahoe:   "4b2900e43b8c189109a4e5fdd072f142d6614b2a54c03b1c07d68bc597045dee"
+    sha256 cellar: :any,                 arm64_sequoia: "d49819aade2e48465df3ca7ff76c5b97f85dfeb6aa38a4f0d2ae89cd54a9f592"
+    sha256 cellar: :any,                 arm64_sonoma:  "d49819aade2e48465df3ca7ff76c5b97f85dfeb6aa38a4f0d2ae89cd54a9f592"
+    sha256 cellar: :any,                 sonoma:        "709441bf765878fbfb17a1e54aaef387b73f6bcc5845667e2f3884caf4133644"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "cefc5af98eda83ae6111e76f29923e7779f47a99a46a3b1a64afb3eb31704d47"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "136d48c797387766edae28715441b910ddf8db684fc07dbaf16e41cf549db385"
   end
 
   depends_on "node"
 
   def install
     system "npm", "install", *std_npm_args
-    bin.install_symlink Dir["#{libexec}/bin/*"]
+    bin.install_symlink libexec.glob("bin/*")
+
+    # Replace universal binaries with their native slices
+    node_modules = libexec/"lib/node_modules/rollup/node_modules"
+    deuniversalize_machos node_modules/"fsevents/fsevents.node"
   end
 
   test do

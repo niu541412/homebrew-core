@@ -1,9 +1,9 @@
 class Neon < Formula
   desc "HTTP and WebDAV client library with a C interface"
   homepage "https://notroj.github.io/neon/"
-  url "https://notroj.github.io/neon/neon-0.35.0.tar.gz"
-  mirror "https://fossies.org/linux/www/neon-0.35.0.tar.gz"
-  sha256 "1467afb73f35e3f5d0e9fd70628c14cba266a65e2a1fb6e3f945ee3385c8595b"
+  url "https://notroj.github.io/neon/neon-0.36.0.tar.gz"
+  mirror "https://fossies.org/linux/www/neon-0.36.0.tar.gz"
+  sha256 "70cc7f2aeebde263906e185b266e04e0de92b38e5f4ecccbf61e8b79177c2f07"
   license "LGPL-2.0-or-later"
 
   livecheck do
@@ -12,13 +12,12 @@ class Neon < Formula
   end
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "d2678bf553b660959a46fa76015d02248a4bad6170c9f1f6fc431df55c385acf"
-    sha256 cellar: :any,                 arm64_sonoma:  "fadf31281622306d3cb61696ecdfd8377ff16020ae06ad15ebbb2bd45a62e386"
-    sha256 cellar: :any,                 arm64_ventura: "d8d09b9f936ba9af41aa655d4d518e13f4c19ec377f11810839995b27c10c10e"
-    sha256 cellar: :any,                 sonoma:        "8be89f6c7690b43cad0f9fe25bb23a1be0e931e4012360ad5b035ebf5666d290"
-    sha256 cellar: :any,                 ventura:       "27223b58b2ef27a340c90478e3d0c090a825775c2d7ee1cfbdd6005d0f3f9cd2"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "1452d52bbae2d279acaa6c18ff7c989a67c356c6f5b2eeebdd91df31d172eee1"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a8ae683a2e4863090997632a45ca8aca8d65c32624e18ce06ce08509ab9214b3"
+    sha256 cellar: :any,                 arm64_tahoe:   "6d24e6d4a85eedc5d3e115e585075840bf3687cc48031b8a1fbab682b21a4302"
+    sha256 cellar: :any,                 arm64_sequoia: "457b1f8bdf13be7880864513ab979fed41850619a84251b7e423fb37c7c11c9c"
+    sha256 cellar: :any,                 arm64_sonoma:  "eacd2712bf83e32b980871881b39dcb81f913d46bd9beeb00ccf7f7e7f23919c"
+    sha256 cellar: :any,                 sonoma:        "267c2a5593558bf587b795fc7d84f0611a93faabcd96061a5b3786adca45a526"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "97b5dba9ec6a14e4083d43f7d0855eb056b1f08e4265685615e25a70142a2599"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "3f194476fbe5b1d585ac0e4cb3f02befedb39f724f9bae67d83c01d2a6624fbe"
   end
 
   depends_on "pkgconf" => :build

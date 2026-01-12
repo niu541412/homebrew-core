@@ -1,8 +1,8 @@
 class Imagemagick < Formula
   desc "Tools and libraries to manipulate images in many formats"
   homepage "https://imagemagick.org/index.php"
-  url "https://imagemagick.org/archive/releases/ImageMagick-7.1.2-0.tar.xz"
-  sha256 "edc13694c2f27554b36dc4817d80284f52c07c31e1ef8b88c8a4902a723dd643"
+  url "https://imagemagick.org/archive/releases/ImageMagick-7.1.2-12.tar.xz"
+  sha256 "e22c5dc6cd3f8e708a2809483fd10f8e37438ef7831ec8d3a07951ccd70eceba"
   license "ImageMagick"
   head "https://github.com/ImageMagick/ImageMagick.git", branch: "main"
 
@@ -12,16 +12,16 @@ class Imagemagick < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "48f2e3af4e9a6950936e04abedbf3c5d7458fe84a1ecdd888df4865aeae95130"
-    sha256 arm64_sonoma:  "a0e279a8b7d18db0e6fccf2e3e4da088f10b88262a29c54c0971c1ed8a766e64"
-    sha256 arm64_ventura: "cdd2ac129ea55e56fc5102e99615e2d4f468abe50d642372108665bae921830f"
-    sha256 sonoma:        "0bf9d6a9e5a4597ac4c75e7ae87a2894cbc70a0205e37f0d1b90b843b5ddc6e9"
-    sha256 ventura:       "129b228c7e935daacebb93a01dfa86ffce2480e38fd8fa5dcdfdd623eb2914c9"
-    sha256 arm64_linux:   "fe1203d40737a111f3e4a707e68a969a73525c37205cb25a2bd2a2c713f8f225"
-    sha256 x86_64_linux:  "eb16595179b6cd70da42eca693b5976a6dc2c88d4a85309950969b6761748715"
+    sha256 arm64_tahoe:   "b1127b74cf62f1e39d12ef998d82bdd2980f1354e3418df4575b2c5128626864"
+    sha256 arm64_sequoia: "72fc0bbea94873060546253b97b0067197ad4c4a3915139db04f322ecb328f44"
+    sha256 arm64_sonoma:  "54b6fa5544bdf460b91842b7492d53e103c39d21ba974f983d6208fd8f83ee6a"
+    sha256 sonoma:        "c058fbd1fbd49ffccc719db8d42d27ba5e714fb89d21d660448c94e4f7845d54"
+    sha256 arm64_linux:   "1fdc6ee1ecb4b9f895c08921c2cca1383d2ffd343dae961e59bea23f8a329bce"
+    sha256 x86_64_linux:  "8635ced3861958ea9cc512c03cd006cb23ccc3388833ce8aa78e41e4162fd227"
   end
 
   depends_on "pkgconf" => :build
+  depends_on "cairo"
   depends_on "fontconfig"
   depends_on "freetype"
   depends_on "jpeg-turbo"
@@ -30,8 +30,11 @@ class Imagemagick < Formula
   depends_on "liblqr"
   depends_on "libpng"
   depends_on "libraw"
+  depends_on "librsvg"
   depends_on "libtiff"
   depends_on "libtool"
+  depends_on "libultrahdr"
+  depends_on "libzip"
   depends_on "little-cms2"
   depends_on "openexr"
   depends_on "openjpeg"
@@ -43,6 +46,7 @@ class Imagemagick < Formula
   uses_from_macos "zlib"
 
   on_macos do
+    depends_on "gdk-pixbuf"
     depends_on "gettext"
     depends_on "glib"
     depends_on "imath"
@@ -50,6 +54,7 @@ class Imagemagick < Formula
   end
 
   on_linux do
+    depends_on "glib"
     depends_on "libx11"
     depends_on "libxext"
   end
@@ -69,6 +74,7 @@ class Imagemagick < Formula
       "--enable-shared",
       "--enable-static",
       "--with-freetype=yes",
+      "--with-rsvg=yes",
       "--with-gvc=no",
       "--with-modules",
       "--with-openjp2",
@@ -76,6 +82,8 @@ class Imagemagick < Formula
       "--with-webp=yes",
       "--with-heic=yes",
       "--with-raw=yes",
+      "--with-uhdr=yes",
+      "--with-zip=yes",
       "--without-gslib",
       "--with-gs-font-dir=#{HOMEBREW_PREFIX}/share/ghostscript/fonts",
       "--with-lqr",
@@ -111,7 +119,7 @@ class Imagemagick < Formula
 
     # Check support for recommended features and delegates.
     features = shell_output("#{bin}/magick -version")
-    %w[Modules freetype heic jpeg png raw tiff].each do |feature|
+    %w[Modules freetype heic jpeg png raw rsvg tiff].each do |feature|
       assert_match feature, features
     end
 

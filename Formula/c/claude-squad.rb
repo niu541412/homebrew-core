@@ -1,25 +1,26 @@
 class ClaudeSquad < Formula
   desc "Manage multiple AI agents like Claude Code, Aider and Codex in your terminal"
   homepage "https://smtg-ai.github.io/claude-squad/"
-  url "https://github.com/smtg-ai/claude-squad/archive/refs/tags/v1.0.12.tar.gz"
-  sha256 "dff682cca9565ba5aff21c4a9a6a295097a633def9d5b89872987c52ce4c1404"
+  url "https://github.com/smtg-ai/claude-squad/archive/refs/tags/v1.0.14.tar.gz"
+  sha256 "19951f70917aef7fda3810b47e3e2dc3110fb04027ff5dbbe3f3c502999b9610"
   license "AGPL-3.0-only"
   head "https://github.com/smtg-ai/claude-squad.git", branch: "main"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "ce0f9217a36b72806bf8c839579bfadff9d14834fac7205c7e05721fa9ec372d"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "ce0f9217a36b72806bf8c839579bfadff9d14834fac7205c7e05721fa9ec372d"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "ce0f9217a36b72806bf8c839579bfadff9d14834fac7205c7e05721fa9ec372d"
-    sha256 cellar: :any_skip_relocation, sonoma:        "95ba502d40df7d7c42b60fdfb5a7f96099c78afaf47cb1895eb24820f8a7bc4c"
-    sha256 cellar: :any_skip_relocation, ventura:       "95ba502d40df7d7c42b60fdfb5a7f96099c78afaf47cb1895eb24820f8a7bc4c"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "9c7c3c6554ee70524c9650576e913ded0217ec5b0be54f2d31665a6f88210790"
+    rebuild 1
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "8f606b288872a5a8f339b9b8ef1115ba7c31c65ad6bef10dab79064c491008d2"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "8f606b288872a5a8f339b9b8ef1115ba7c31c65ad6bef10dab79064c491008d2"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "8f606b288872a5a8f339b9b8ef1115ba7c31c65ad6bef10dab79064c491008d2"
+    sha256 cellar: :any_skip_relocation, sonoma:        "4125914a8f0352ed054fbd8f71571441254b425312bd7ef099205686936e7d1a"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "f5ddb361d0f9cb157da039b658ec4cab15750ce3a5a18b1b3d60a95e4c9fc0d2"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "a07e72ba58d582321b8a502e817df5bf0b0a39faae4b316972163445b0ba82d8"
   end
 
   depends_on "go" => :build
 
   def install
     system "go", "build", *std_go_args(ldflags: "-s -w")
-    generate_completions_from_executable(bin/"claude-squad", "completion")
+    generate_completions_from_executable(bin/"claude-squad", shell_parameter_format: :cobra)
   end
 
   test do

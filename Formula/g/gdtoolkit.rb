@@ -3,23 +3,23 @@ class Gdtoolkit < Formula
 
   desc "Independent set of GDScript tools - parser, linter, formatter, and more"
   homepage "https://github.com/Scony/godot-gdscript-toolkit"
-  url "https://files.pythonhosted.org/packages/8f/8c/ec8eb8e8264fedcfc1f30374b56083b917dd187a9e2452d38cabac69f515/gdtoolkit-4.3.4.tar.gz"
-  sha256 "42f8d528829a081809c8492c5936729b9fafca640fc46026ae98299fe0d3a93a"
+  url "https://files.pythonhosted.org/packages/de/39/041c1705dba6450c67e23be0c70d0fcff035e7d240b6695fc59efd8dafb6/gdtoolkit-4.5.0.tar.gz"
+  sha256 "1ab17fb5400d86e4ae66d9c94992f4e3a9b6c27d618d4094782e66101efb3e9a"
   license "MIT"
   head "https://github.com/Scony/godot-gdscript-toolkit.git", branch: "master"
 
   bottle do
-    sha256 cellar: :any,                 arm64_sequoia: "a19edd8a6ab82c0588208bba5c2549e2e309d67e5260037d37392b56c4c6a274"
-    sha256 cellar: :any,                 arm64_sonoma:  "487736b81a2755903965533b6f4d0eca6b212d38e5dd4af6dff31dc8c01ac0dd"
-    sha256 cellar: :any,                 arm64_ventura: "e6d5dbf25ac8cf47e8ee33d20fdb72b2ca451aec83150c907a30ffc22f091d3d"
-    sha256 cellar: :any,                 sonoma:        "2d930f9595453844e4778c67d2463a56a9882f22282f53671948564df9d0efb3"
-    sha256 cellar: :any,                 ventura:       "8b07ef1a7ad6c6ae11a78f27cf0b8ec0ad07ac51769ca1eb13a7d1174bd26916"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "233733e1fdf3b5cb9bac8d4df7e0dda858bbea5856e7e009de1edbc467bb27ee"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "f67079ec7ddd415b8036408e90c4215d2bc6a763040c367ce9c83647a26d6c6c"
+    rebuild 1
+    sha256 cellar: :any,                 arm64_tahoe:   "d6c17d46835130db35d368974625d777f12231fa0dba2a766c22f1637b63b05c"
+    sha256 cellar: :any,                 arm64_sequoia: "cc4514d0b4691e116e3937bb807d598909bd3050fb7e33730afd12cb52cb0365"
+    sha256 cellar: :any,                 arm64_sonoma:  "a6fdce0e5997466eca53cc5fa06dd2533249f6f4ccc67cc33467f9cdd4654a65"
+    sha256 cellar: :any,                 sonoma:        "f51de9f2ab4879db48646fcd0548d26bdf87bdf8cacd2047d5ac15126b93c3dd"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "308fb3375acf24412ed4126d15503cf8ad8fe181ee68ff9bb37a012171344959"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "8affd1ec7249d34797488715e52464e5c3e5ee743ea93298129c77e4ac8f7f30"
   end
 
   depends_on "libyaml"
-  depends_on "python@3.13"
+  depends_on "python@3.14"
 
   resource "colorama" do
     url "https://files.pythonhosted.org/packages/d8/53/6f443c9a4a8358a93a6792e2acffb9d9d5cb0a5cfd8802644b7b1c9a02e4/colorama-0.4.6.tar.gz"
@@ -42,8 +42,8 @@ class Gdtoolkit < Formula
   end
 
   resource "pyyaml" do
-    url "https://files.pythonhosted.org/packages/54/ed/79a089b6be93607fa5cdaedf301d7dfb23af5f25c398d5ead2525b063e17/pyyaml-6.0.2.tar.gz"
-    sha256 "d584d9ec91ad65861cc08d42e834324ef890a082e591037abe114850ff7bbc3e"
+    url "https://files.pythonhosted.org/packages/05/8e/961c0007c59b8dd7729d542c61a4d537767a59645b82a0b521206e1e25c2/pyyaml-6.0.3.tar.gz"
+    sha256 "d76623373421df22fb4cf8817020cbb7ef15c725b9d5e45f17e189bfc384190f"
   end
 
   resource "radon" do
@@ -52,8 +52,8 @@ class Gdtoolkit < Formula
   end
 
   resource "regex" do
-    url "https://files.pythonhosted.org/packages/8e/5f/bd69653fbfb76cf8604468d3b4ec4c403197144c7bfe0e6a5fc9e02a07cb/regex-2024.11.6.tar.gz"
-    sha256 "7ab159b063c52a0333c884e4679f8d7a85112ee3078fe3d9004b2dd875585519"
+    url "https://files.pythonhosted.org/packages/49/d3/eaa0d28aba6ad1827ad1e716d9a93e1ba963ada61887498297d3da715133/regex-2025.9.18.tar.gz"
+    sha256 "c5ba23274c61c6fef447ba6a39333297d0c247f53059dba0bca415cac511edc4"
   end
 
   resource "setuptools" do

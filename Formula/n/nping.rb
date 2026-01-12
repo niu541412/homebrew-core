@@ -1,18 +1,17 @@
 class Nping < Formula
   desc "Ping Tool in Rust with Real-Time Data and Visualizations"
   homepage "https://github.com/hanshuaikang/Nping"
-  url "https://github.com/hanshuaikang/Nping/archive/refs/tags/v0.4.0.tar.gz"
-  sha256 "9f3cc2cdd8da55e41390ccd3a506f14ceb08169e1c09b9f0362f4a1bfb70bb36"
+  url "https://github.com/hanshuaikang/Nping/archive/refs/tags/v0.6.0.tar.gz"
+  sha256 "07ca7ce514b9e9584c33fc6e75c4b4974845deb348833cf92814a34ef4cbaca3"
   license "MIT"
 
   bottle do
-    sha256 cellar: :any_skip_relocation, arm64_sequoia: "dbf392dbb27e3a8ae2e87441cc869047f3d31e5717ad6351ad803b42abacd5f0"
-    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "9a1938bd0556101cb5fd0cc476e0047b15457365c50b95266a63dc22c5fcc094"
-    sha256 cellar: :any_skip_relocation, arm64_ventura: "5bf27a5da091ae144c5e6176b399b4db72277e1836fa612686e9a642d69d7753"
-    sha256 cellar: :any_skip_relocation, sonoma:        "13c67dd0e4e03b092f879dcd9fd61af447f0b731fae1b73dcb98274fc096c385"
-    sha256 cellar: :any_skip_relocation, ventura:       "60b4938b512b6d5e6833b557b4ea3883ceb7c901ffd523b0a672d492d8efb419"
-    sha256 cellar: :any_skip_relocation, arm64_linux:   "f6ff7a20338d9f9b9b0fae0402a3680d8f08f106217ec8dee9ff6d810899a958"
-    sha256 cellar: :any_skip_relocation, x86_64_linux:  "ad71ecba02888016f5259c21ddef36643aa8a1ddec4b153a3ecafd993f6159c6"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:   "7cda869d5a41542db6751d52afe76a4ca1833444f82247873a9d1132d2fdf0c9"
+    sha256 cellar: :any_skip_relocation, arm64_sequoia: "e5a35f802efb766b4626a181f5b40bc5c73d24778c6c1b2e84d1bc08e910ba14"
+    sha256 cellar: :any_skip_relocation, arm64_sonoma:  "f178ee80ca50272e1d0ef634b43f12aa16433b9039eb9d1c4e85f0c8e91d7607"
+    sha256 cellar: :any_skip_relocation, sonoma:        "5d622969409b0a7a427e07dff13353c0199a9e0cc9cb65ba9ad55f9f183ff6cc"
+    sha256 cellar: :any_skip_relocation, arm64_linux:   "75a56f23e207396ebc35b1a60b58e80557da39a6f06ceadc3ab0a48b12613eff"
+    sha256 cellar: :any_skip_relocation, x86_64_linux:  "fb3a2ac9599f60c98f5a945f6c24f284628069fca2c7abf9ed81b90846c8ac50"
   end
 
   depends_on "rust" => :build

@@ -1,8 +1,8 @@
 class Cppcheck < Formula
   desc "Static analysis of C and C++ code"
   homepage "https://sourceforge.net/projects/cppcheck/"
-  url "https://github.com/danmar/cppcheck/archive/refs/tags/2.18.0.tar.gz"
-  sha256 "dc74e300ac59f2ef9f9c05c21d48ae4c8dd1ce17f08914dd30c738ff482e748f"
+  url "https://github.com/danmar/cppcheck/archive/refs/tags/2.19.0.tar.gz"
+  sha256 "c6cff9d3bbcb3da941bf7f525ae974b6c7af3d610c4c5519fcd1be3f21f5ae09"
   license "GPL-3.0-or-later"
   head "https://github.com/danmar/cppcheck.git", branch: "main"
 
@@ -15,31 +15,35 @@ class Cppcheck < Formula
   end
 
   bottle do
-    sha256 arm64_sequoia: "eb0097b36c50984dbb4704c8b92fc9ddc3539b3b0aadacb3447da6d23ddcd8d7"
-    sha256 arm64_sonoma:  "c06383cecb03fc3211e5b454793ef27933502cc15fa82e5c691b74d232818159"
-    sha256 arm64_ventura: "b76f080212e75b4974ab8e9a7fd436cc40366a0f8f21263d9b2773f389d59a5e"
-    sha256 sonoma:        "e201b7dac8a206ce0666b1b45057145f4bfac0392618f309a20af1d6a653e367"
-    sha256 ventura:       "abb6c2780925ded8421fbe46c69266b6ae715e562ad6f4e8092be5d8bc69fc50"
-    sha256 arm64_linux:   "320398fbfeed342b0a4886ae92483bfc7031f75dfa1fe3758b578fb0addaac24"
-    sha256 x86_64_linux:  "bc93065d64304be2541b1ad5bb86588e6020a7e3a935e1415836b65d6f7200a5"
+    rebuild 1
+    sha256 arm64_tahoe:   "142eb5bb3c7b30acd011421d66c34c340f2e7de17e063b2f0c156f8ea9e69def"
+    sha256 arm64_sequoia: "fed60e1e28b77255f09af562bd6d5f73d930731590a05bb9b7f71a72492c3e6d"
+    sha256 arm64_sonoma:  "6ea6c2bd8a6ea919722f008911974397a9d8a3b64b49bbb2b0f3c77482cc117a"
+    sha256 sonoma:        "096d0538409e528f0ea03202a048b22e8c7e57b39b32a210a6ceb31c488ad2a0"
+    sha256 arm64_linux:   "ce98f6b8b78ba143c2019e88d1a291d9909176224ee8617e6c5e6660ee9fa8d3"
+    sha256 x86_64_linux:  "c9af4d9be79e7f7474dfb9d3e3bd9cf797525dd86b45fd0d193bb007635b3628"
   end
 
   depends_on "cmake" => :build
-  depends_on "python@3.13" => [:build, :test]
-  depends_on "pcre"
+  depends_on "python@3.14" => [:build, :test]
   depends_on "tinyxml2"
 
-  uses_from_macos "libxml2"
+  uses_from_macos "libxml2" => :build
 
   def python3
-    which("python3.13")
+    which("python3.14")
   end
 
   def install
     ENV.deparallelize
 
+    # Rules are disabled due to requiring EOL `pcre`. This is same choice made by Debian[^1].
+    # Feature can be re-enabled if upstream adds support for std::regex[^2] or `pcre2`.
+    #
+    # [^1]: https://salsa.debian.org/reichel/cppcheck/-/commit/82df7e7d2aaa717eb594d69861f10d2e4d383ad7
+    # [^2]: https://github.com/danmar/cppcheck/pull/7893
     args = %W[
-      -DHAVE_RULES=ON
+      -DHAVE_RULES=OFF
       -DUSE_BUNDLED_TINYXML2=OFF
       -DPYTHON_EXECUTABLE=#{python3}
       -DFILESDIR=#{pkgshare}

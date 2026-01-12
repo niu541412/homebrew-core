@@ -1,9 +1,10 @@
 class Librsvg < Formula
   desc "Library to render SVG files using Cairo"
   homepage "https://wiki.gnome.org/Projects/LibRsvg"
-  url "https://download.gnome.org/sources/librsvg/2.60/librsvg-2.60.0.tar.xz"
-  sha256 "0b6ffccdf6e70afc9876882f5d2ce9ffcf2c713cbaaf1ad90170daa752e1eec3"
+  url "https://download.gnome.org/sources/librsvg/2.61/librsvg-2.61.3.tar.xz"
+  sha256 "a56d2c80d744ad2f2718f85df466fe71d24ff1f9bc3e5ef588bde4d7e87815f2"
   license "LGPL-2.1-or-later"
+  revision 1
 
   # librsvg doesn't use GNOME's "even-numbered minor is stable" version scheme.
   # This regex matches any version that doesn't have a 90+ patch version, as
@@ -14,14 +15,12 @@ class Librsvg < Formula
   end
 
   bottle do
-    rebuild 2
-    sha256 cellar: :any, arm64_sequoia: "51748ba117c7dbdb0e222f999bc62bf1cdbe2ec6db32a1dd78c0382975e29634"
-    sha256 cellar: :any, arm64_sonoma:  "9d4448c17169474763ebab43fb5d512d959697e371a0129edb8302b473d4db91"
-    sha256 cellar: :any, arm64_ventura: "e83f0f8944fcae8c8a2a8a0cb69ed49c306afde5c8054c2e291483b751198d82"
-    sha256 cellar: :any, sonoma:        "ef35b9e0ed523e2e0c6131109e99772493e416d7583fdfbac473f1c06b0f482d"
-    sha256 cellar: :any, ventura:       "df123793a325fa69288a7e7a543224deb615866a07b3c96dace84f0c91fd35bc"
-    sha256               arm64_linux:   "b88eb59b83d579444d5debc2e108ff6dd2f15f1a4bad7aa02fb6f7d5ceb4e28b"
-    sha256               x86_64_linux:  "a4dfb83a21bf9edad8a35191ea00ed21dd896dda16088b8b1a8135bddb96652a"
+    sha256 cellar: :any, arm64_tahoe:   "946f07e0bf373fc0e3956ddc24eae52e879ede852ca99aef76be6b7042afcc6e"
+    sha256 cellar: :any, arm64_sequoia: "eb5c09756434b0eb037349ac33e32b48b6b056eca9d412880ad247fc9d4ee1d8"
+    sha256 cellar: :any, arm64_sonoma:  "8eab2c19b80b2e83d0c200dddaccd29c259894f06cfa76adc728554b9bc5a124"
+    sha256 cellar: :any, sonoma:        "ea2161952cc5f5bf963b87e22cc4ec363fb94395dc4aa270ad9d9d8c3d610868"
+    sha256               arm64_linux:   "0dd1d9a01ea9091653e8f6b030afcd0f17550166af30b440601d46f5cb20db50"
+    sha256               x86_64_linux:  "79f4d0deda0d8f633b05b971b82651f740cd3a6bf48d0eb115ab8af55c696c78"
   end
 
   depends_on "cargo-c" => :build
@@ -31,24 +30,24 @@ class Librsvg < Formula
   depends_on "pkgconf" => [:build, :test]
   depends_on "rust" => :build
   depends_on "cairo"
+  depends_on "fontconfig"
   depends_on "gdk-pixbuf"
   depends_on "glib"
+  depends_on "harfbuzz"
   depends_on "pango"
 
   uses_from_macos "libxml2"
 
   on_macos do
-    depends_on "fontconfig"
     depends_on "freetype"
     depends_on "gettext"
-    depends_on "harfbuzz"
     depends_on "libpng"
   end
 
   def install
     # Set `RPATH` since `cargo-c` doesn't seem to.
     rpath_flags = [rpath, rpath(source: lib/"gdk-pixbuf-2.0/2.10.0/loaders")].map { |rp| "-rpath,#{rp}" }
-    ENV.append "RUSTFLAGS", "--codegen link-args=-Wl,#{rpath_flags.join(",")}" if OS.mac?
+    ENV.append_to_rustflags "--codegen link-args=-Wl,#{rpath_flags.join(",")}" if OS.mac?
 
     # disable updating gdk-pixbuf cache, we will do this manually in post_install
     # https://github.com/Homebrew/homebrew/issues/40833
